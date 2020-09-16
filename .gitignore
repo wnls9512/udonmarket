@@ -55,3 +55,4 @@ udonmarket/target/classes/com/kh/udon/product/model/dao/ProductDaoImpl.class
 udonmarket/target/classes/com/kh/udon/product/model/service/ProductService.class
 udonmarket/target/classes/com/kh/udon/product/model/service/ProductServiceImpl.class
 udonmarket/target/classes/com/kh/udon/product/model/vo/Product.class
+udonmarket/src/main/resources/datasource.properties
