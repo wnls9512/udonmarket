@@ -24,7 +24,7 @@ public class HomeController {
 	 */
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String home() {
-		//gitTEST 주원! - 200918
+		//gitTEST 주원! - 200918 //수정수정...
 		
 		return "forward:/index.jsp";
 	}
