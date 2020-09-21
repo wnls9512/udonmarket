@@ -23,16 +23,17 @@
 		<beans:property name="suffix" value=".jsp" />
 	</beans:bean>
 	
+	<context:component-scan base-package="com.kh.udon" />
+		
 	<!-- websocket handler -->
-	<beans:bean id="replyEchoHandler" class="com.kh.udon.common.handler.NotiHandler"/>
+<!-- 	<beans:bean id="replyEchoHandler" class="com.kh.udon.common.handler.NotiHandler"/>
 	<websocket:handlers>
 		<websocket:mapping handler="replyEchochoHandler" path="/replayEcho" />
 		<websocket:handshake-interceptors>
 			<beans:bean class="org.springframework.web.socket.server.support.HttpSessionHandshakeInterceptor" />
 		</websocket:handshake-interceptors>
-	</websocket:handlers>
+	</websocket:handlers> -->
 	
 	
-	<context:component-scan base-package="com.kh.udon" />	
 	
 </beans:beans>
