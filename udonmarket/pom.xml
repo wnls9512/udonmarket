@@ -221,6 +221,22 @@
 		    <artifactId>jackson-databind</artifactId>
 		    <version>2.11.0</version>
 		</dependency>
+		
+		<!-- spring websocket 웹 소켓 (알림) 시작 -->
+		<!-- https://mvnrepository.com/artifact/org.springframework/spring-websocket -->
+		<dependency>
+		    <groupId>org.springframework</groupId>
+		    <artifactId>spring-websocket</artifactId>
+		    <version>4.2.4.RELEASE</version>
+		</dependency>
+		<!-- websocket api -->
+		<dependency>
+			<groupId>javax.websocket</groupId>
+			<artifactId>javax.websocket-api</artifactId>
+			<version>1.1</version>
+		</dependency>
+		<!-- spring websocket 웹 소켓 (알림) 끝 -->
+		
 	</dependencies>
     <build>
         <plugins>
