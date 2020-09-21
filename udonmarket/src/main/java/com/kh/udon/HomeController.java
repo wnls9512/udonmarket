@@ -25,6 +25,8 @@ public class HomeController {
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String home() {
 		return "forward:/index.jsp";
+		
+		//Lee Tae Hee Push example
 	}
 	
 }
