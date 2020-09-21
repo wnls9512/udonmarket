@@ -1,6 +1,9 @@
 udonmarket/.classpath
 udonmarket/.gitignore
 udonmarket/.project
+udonmarket/target/
+udonmarket/.settings/
+udonmarket/Workspaces/spring_workspace/udonmarket/target/m2e-wtp/web-resources/META-INF/
 udonmarket/target/classes/datasource.properties
 udonmarket/target/classes/log4j.xml
 udonmarket/target/classes/mybatis-config.xml
@@ -55,3 +58,4 @@ udonmarket/target/classes/com/kh/udon/product/model/dao/ProductDaoImpl.class
 udonmarket/target/classes/com/kh/udon/product/model/service/ProductService.class
 udonmarket/target/classes/com/kh/udon/product/model/service/ProductServiceImpl.class
 udonmarket/target/classes/com/kh/udon/product/model/vo/Product.class
+udonmarket/src/main/resources/datasource.properties
