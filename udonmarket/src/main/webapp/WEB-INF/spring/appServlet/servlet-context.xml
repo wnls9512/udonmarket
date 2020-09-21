@@ -23,6 +23,8 @@
 		<beans:property name="suffix" value=".jsp" />
 	</beans:bean>
 	
+	<context:component-scan base-package="com.kh.udon" />
+		
 	<!-- websocket handler -->
 	<beans:bean id="replyEchoHandler" class="com.kh.udon.common.handler.NotiHandler"/>
 	<websocket:handlers>
@@ -33,6 +35,5 @@
 	</websocket:handlers>
 	
 	
-	<context:component-scan base-package="com.kh.udon" />	
 	
 </beans:beans>
