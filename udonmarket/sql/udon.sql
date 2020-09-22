@@ -1,7 +1,3 @@
-<<<<<<< HEAD
-
-
-=======
 select * from tabs;
 
 drop table report;
@@ -364,8 +360,3 @@ insert into category values(seq_category.nextval, 2, '동네생활이야기');
 insert into category values(seq_category.nextval, 2, '우리동네질문');
 insert into category values(seq_category.nextval, 2, '분실/실종센터');
 insert into category values(seq_category.nextval, 2, '동네사건사고');
-
-
-
-
->>>>>>> refs/remotes/origin/master
