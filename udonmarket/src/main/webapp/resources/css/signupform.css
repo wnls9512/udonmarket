@@ -1,5 +1,5 @@
 .profile-head {
-    transform: translateY(5rem)
+    transform: translateY(3rem)
 }
 
 .cover {
@@ -24,11 +24,14 @@ body {
   color: #555;
 }
 
-/* .nav-link:hover {
+.nav-link:hover {
   background: #f5f5f5;
-} */
-
-#profile {
-	margin: 0px auto;
 }
-
+.signup-container{
+	margin-bottom: 1rem;
+}
+.nav-link-submit-reset {
+	padding: .5rem 1rem;
+	text-align: center;
+	margin-top: 1em;
+}

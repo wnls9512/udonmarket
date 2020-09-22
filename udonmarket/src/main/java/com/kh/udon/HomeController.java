@@ -28,6 +28,8 @@ public class HomeController {
 		//gitTEST 지유aaaaaa
 		
 		return "forward:/index.jsp";
+		
+		//Lee Tae Hee Push example
 	}
 	
 }

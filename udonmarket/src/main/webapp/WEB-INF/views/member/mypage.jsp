@@ -80,7 +80,7 @@ a{text-decoration: none; color: black;}
 	                <div class="p-4 rounded shadow-sm bg-light">
 				        <!-- Vertical Menu-->
 				        <nav class="nav flex-column bg-white shadow-sm rounded p-3">
-				          <a href="#" class="nav-link px-4 rounded-pill">
+				          <a href="${pageContext.request.contextPath }/member/settingsArea" class="nav-link px-4 rounded-pill">
 	                           <i class="fas fa-map-marker-alt"></i>&nbsp; 내 동네 설정
 	                      </a>
 				          <a href="#" class="nav-link px-4 rounded-pill">

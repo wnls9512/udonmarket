@@ -121,6 +121,8 @@ $RECYCLE.BIN/
 # End of https://www.toptal.com/developers/gitignore/api/windows,java,eclipse
 udonmarket/.classpath
 udonmarket/.project
+udonmarket/target/
+udonmarket/.settings/
 udonmarket/target/classes/datasource.properties
 udonmarket/target/classes/log4j.xml
 udonmarket/target/classes/mybatis-config.xml
