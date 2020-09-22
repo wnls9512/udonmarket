@@ -15,7 +15,6 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/mypage.css">
 <style>
 a{text-decoration: none; color: black;}
-html { font-size: 16px; }
 </style>
     <!--================Home Banner Area =================-->
     <!-- breadcrumb start-->

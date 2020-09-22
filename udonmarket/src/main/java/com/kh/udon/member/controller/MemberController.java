@@ -31,22 +31,32 @@ public class MemberController
         return "member/mypage";
     }
     
+    //관심목록
     @RequestMapping("/wishList")
     public String wishList()
     {
         return "member/wishList";
     }
     
+    //판매내역
     @RequestMapping("/salesList")
     public String salseList()
     {
         return "member/salesList";
     }
     
+    //구매내역
     @RequestMapping("/buyList")
     public String buyList()
     {
         return "member/buyList";
+    }
+    
+    //내 동네 설정
+    @RequestMapping("/settingsArea")
+    public String settingsArea()
+    {
+    	return "member/settingsArea";
     }
     
 }
