@@ -18,8 +18,8 @@
                 <div class="col-lg-8">
                     <div class="breadcrumb_iner">
                         <div class="breadcrumb_iner_item">
-                            <h2>중고거래</h2>
-                            <h3>서울 강남구 논현동</h3>
+                            <h2>우리 동네</h2>
+                            <h3>중고 거래</h3>
                         </div>
                     </div>
                 </div>
@@ -37,92 +37,21 @@
                     <div class="left_sidebar_area">
                         <aside class="left_widgets p_filter_widgets">
                             <div class="l_w_title">
-                                <h3>Categories</h3>
+                                <h3>카테고리</h3>
                             </div>
                             <div class="widgets_inner">
                                 <ul class="list">
+                                	<c:forEach items="${category }" var="c" varStatus="status">
                                     <li>
-                                        <a href="#">디지털/가전</a>
-                                        <span>(250)</span>
+                                        <a href="#">${c.categoryName }</a>
+                                        <span>(${categoryCount[status.index] })</span>
                                     </li>
-                                    <li>
-                                        <a href="#">가구/인테리어</a>
-                                        <span>(250)</span>
-                                    </li>
-                                    <li>
-                                        <a href="#">유아동/유아도서</a>
-                                        <span>(250)</span>
-                                    </li>
-                                    <li>
-                                        <a href="#">생활/가공식품</a>
-                                        <span>(250)</span>
-                                    </li>
-                                    <li>
-                                        <a href="#">스포츠/레저</a>
-                                        <span>(250)</span>
-                                    </li>
-                                    <li>
-                                        <a href="#">여성잡화</a>
-                                        <span>(250)</span>
-                                    </li>
-                                    <li>
-                                        <a href="#">여성의류</a>
-                                        <span>(250)</span>
-                                    </li>
-                                    <li>
-                                        <a href="#">남성패션/잡화</a>
-                                        <span>(250)</span>
-                                    </li>
-                                    <li>
-                                        <a href="#">게임/취미</a>
-                                        <span>(250)</span>
-                                    </li>
-                                    <li>
-                                        <a href="#">뷰티/미용</a>
-                                        <span>(250)</span>
-                                    </li>
-                                    <li>
-                                        <a href="#">반려동물용품</a>
-                                        <span>(250)</span>
-                                    </li>
-                                    <li>
-                                        <a href="#">도서/티켓/음반</a>
-                                        <span>(250)</span>
-                                    </li>
-                                    <li>
-                                        <a href="#">기타 중고물품</a>
-                                        <span>(250)</span>
-                                    </li>
-                                    <li>
-                                        <a href="#">삽니다</a>
-                                        <span>(250)</span>
-                                    </li>
+                                    </c:forEach>
                                 </ul>
                             </div>
                         </aside>
 
 
-                        <aside class="left_widgets p_filter_widgets price_rangs_aside">
-                            <div class="l_w_title">
-                                <h3>Price Filter</h3>
-                            </div>
-                            <div class="widgets_inner">
-                                <div class="range_item">
-                                    <!-- <div id="slider-range"></div> -->
-                                    <input type="text" class="js-range-slider" value="" />
-                                    <div class="d-flex">
-                                        <div class="price_text">
-                                            <p>Price :</p>
-                                        </div>
-                                        <div class="price_value d-flex justify-content-center">
-                                            <input type="text" class="js-input-from" id="amount" readonly />
-                                            <span>to</span>
-                                            <input type="text" class="js-input-to" id="amount" readonly />
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </aside>
 
 
                     </div>
@@ -132,29 +61,21 @@
                         <div class="col-lg-12">
                             <div class="product_top_bar d-flex justify-content-between align-items-center">
                                 <div class="single_product_menu">
-                                    <p><span>10000 </span> Prodict Found</p>
+                                    <p><span>10000 </span> 개의 상품</p>
                                 </div>
                                 <div class="single_product_menu d-flex">
-                                    <h5>short by : </h5>
+                                    <h5>정렬 : </h5>
                                     <select>
-                                        <option data-display="Select">name</option>
-                                        <option value="1">price</option>
-                                        <option value="2">product</option>
+                                        <option data-display="최신순">최신순</option>
+                                        <option value="1">가격 ↑</option>
+                                        <option value="1">가격 ↓</option>
+                                        <option value="2">거리순 ↑</option>
+                                        <option value="2">거리순 ↓</option>
                                     </select>
                                 </div>
                                 <div class="single_product_menu d-flex">
-                                    <h5>show :</h5>
-                                    <div class="top_pageniation">
-                                        <ul>
-                                            <li>1</li>
-                                            <li>2</li>
-                                            <li>3</li>
-                                        </ul>
-                                    </div>
-                                </div>
-                                <div class="single_product_menu d-flex">
                                     <div class="input-group">
-                                        <input type="text" class="form-control" placeholder="search"
+                                        <input type="text" class="form-control" placeholder="검색"
                                             aria-describedby="inputGroupPrepend">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text" id="inputGroupPrepend"><i
