@@ -124,7 +124,7 @@ a{text-decoration: none; color: black;}
 				          <a href="#" class="nav-link px-4 rounded-pill">
 		                      <i class="far fa-flag"></i>&nbsp; 공지사항
 	                      </a>
-				          <a href="#" class="nav-link px-4 rounded-pill">
+				          <a href="${pageContext.request.contextPath}/member/FAQ" class="nav-link px-4 rounded-pill">
 		                      <i class="far fa-question-circle"></i>&nbsp; 자주 묻는 질문
 	                      </a>
 				        </nav>

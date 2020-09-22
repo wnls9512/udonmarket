@@ -58,8 +58,13 @@ a{text-decoration: none; color: black;}
 	                <div class="p-4 rounded shadow-sm bg-light">
 				        <!-- Vertical Menu-->
 				        <nav class="nav flex-column bg-white shadow-sm rounded p-3">
-						<input type="text" class="form-control" id="name" name="name" value=""
-                                        placeholder="Mark Williams">
+						<form>
+						  <div class="form-row">
+						    <div class="col">
+						      <input type="text" class="form-control" placeholder="Mark Williams">
+						    </div>
+						  </div>
+						</form>
 				        </nav>
 	                </div>
 	                <button style="margin:10px auto;" type="button" class="btn btn-dark">적용</button>
