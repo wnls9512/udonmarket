@@ -13,6 +13,10 @@
 <!-- mypage css -->
 <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/mypage.css">
 
+<style>
+a{text-decoration: none; color: black;}
+</style>
+
     <!--================Home Banner Area =================-->
     <!-- breadcrumb start-->
 	<section class="breadcrumb breadcrumb_bg">
@@ -49,14 +53,26 @@
 	            </div>
 	            <div class="bg-light p-4 d-flex justify-content-end text-center">
 	                <ul class="list-inline mb-0">
-	                    <li class="list-inline-item">
-	                       <i class="fas fa-receipt fa-2x"></i> <h5 class="font-weight-bold mb-0 d-block">판매목록</h5>
+	                    <li class="list-inline-item">            
+	                       <h6 class="font-weight-bold mb-0 d-block">	                       	
+	                       	<a href="${pageContext.request.contextPath }/member/salesList">
+	                       		<i class="fas fa-receipt fa-2x" ></i> <br /> 판매내역
+	                       	</a>
+	                       </h6>
 	                    </li>
 	                    <li class="list-inline-item">
-	                        <i class="fas fa-shopping-bag fa-2x"></i> <h5 class="font-weight-bold mb-0 d-block">구매목록</h5>
+	                    	<h6 class="font-weight-bold mb-0 d-block">	                       	
+	                       	<a href="${pageContext.request.contextPath }/member/buyList">
+	                       		<i class="fas fa-shopping-bag fa-2x" ></i> <br /> 구매내역
+	                       	</a>
+	                       </h6>
 	                    </li>
 	                    <li class="list-inline-item">
-	                        <i class="fas fa-heart fa-2x"></i> <h5 class="font-weight-bold mb-0 d-block">관심목록</h5>
+	                    	<h6 class="font-weight-bold mb-0 d-block">	                       	
+	                       	<a href="${pageContext.request.contextPath }/member/wishList">
+	                       		<i class="fas fa-heart fa-2x" ></i> <br /> 관심목록
+	                       	</a>
+	                       </h6>
 	                    </li>
 	                </ul>
 	            </div>
@@ -114,7 +130,7 @@
 				        </nav>
 	                </div>
 	            </div>
-	            <!-- <div class="py-4 px-4">
+<!-- 	            <div class="py-4 px-4">
 	                <div class="d-flex align-items-center justify-content-between mb-3">
 	                    <h5 class="mb-0">Recent photos</h5><a href="#" class="btn btn-link text-muted">Show all</a>
 	                </div>
