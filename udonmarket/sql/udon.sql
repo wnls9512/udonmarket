@@ -1,3 +1,7 @@
+<<<<<<< HEAD
+
+
+=======
 select * from tabs;
 
 drop table report;
@@ -364,3 +368,4 @@ insert into category values(seq_category.nextval, 2, '동네사건사고');
 
 
 
+>>>>>>> refs/remotes/origin/master
