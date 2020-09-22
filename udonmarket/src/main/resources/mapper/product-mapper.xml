@@ -6,10 +6,11 @@
 	</select>
 	
 	<select id="selectAllCategoryCount" resultType="_int">
-		select count from 
-		(
-			select c.category_code, count(*)-1 count from category c left join product p on(c.category_code = p.category)
-			group by c.category_code order by 1
-		)
+		select count(*)-1 count from category c left join product p on(c.category_code = p.category)
+		group by c.category_code order by 1
+	</select>
+	
+	<select id="selectTotalCount" resultType="_int">
+		select count(*) from product
 	</select>
 </mapper>

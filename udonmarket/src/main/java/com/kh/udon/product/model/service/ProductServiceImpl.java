@@ -25,6 +25,12 @@ public class ProductServiceImpl implements ProductService
     {
         return dao.selectAllCategoryCount();
     }
+
+    @Override
+    public int selectTotalCount()
+    {
+        return dao.selectTotalCount();
+    }
     
     
 }

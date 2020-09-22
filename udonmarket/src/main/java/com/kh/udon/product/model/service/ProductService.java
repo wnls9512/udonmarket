@@ -11,4 +11,6 @@ public interface ProductService
 
     List<Integer> selectAllCategoryCount();
 
+    int selectTotalCount();
+
 }

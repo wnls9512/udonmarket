@@ -61,7 +61,7 @@
                         <div class="col-lg-12">
                             <div class="product_top_bar d-flex justify-content-between align-items-center">
                                 <div class="single_product_menu">
-                                    <p><span>10000 </span> 개의 상품</p>
+                                    <p><span>${totalCount }</span> 개의 상품</p>
                                 </div>
                                 <div class="single_product_menu d-flex">
                                     <h5>정렬 : </h5>
@@ -82,6 +82,9 @@
                                                     class="ti-search"></i></span>
                                         </div>
                                     </div>
+                                </div>
+                                <div class="single_product_menu d-flex">
+                                	<a href="#" class="genric-btn primary-border">상품 등록</a>
                                 </div>
                             </div>
                         </div>

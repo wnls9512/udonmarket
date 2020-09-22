@@ -31,12 +31,15 @@ public class ProductController
         
         List<ProductCategory> category = service.selectAllCategory();
         List<Integer> categoryCount = service.selectAllCategoryCount();
+        int totalCount = service.selectTotalCount();
         
         log.debug("category = {}", category);
         log.debug("categoryCount = {}", categoryCount);
+        log.debug("totalCount = {}", totalCount);
         
         model.addAttribute("category", category);
         model.addAttribute("categoryCount", categoryCount);
+        model.addAttribute("totalCount", totalCount);
         
         return "product/productListView";
     }

@@ -11,4 +11,6 @@ public interface ProductDao
 
     List<Integer> selectAllCategoryCount();
 
+    int selectTotalCount();
+
 }
