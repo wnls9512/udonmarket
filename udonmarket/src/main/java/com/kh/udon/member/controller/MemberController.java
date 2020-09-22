@@ -31,4 +31,22 @@ public class MemberController
         return "member/mypage";
     }
     
+    @RequestMapping("/wishList")
+    public String wishList()
+    {
+        return "member/wishList";
+    }
+    
+    @RequestMapping("/salesList")
+    public String salseList()
+    {
+        return "member/salesList";
+    }
+    
+    @RequestMapping("/buyList")
+    public String buyList()
+    {
+        return "member/buyList";
+    }
+    
 }
