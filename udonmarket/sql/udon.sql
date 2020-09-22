@@ -67,7 +67,6 @@ create table category
     category_code number,
     category_parent number,
     category_name varchar2(50) not null,
-    category_level number,
     constraint pk_category primary key(category_code),
     constraint fk_category_category_parent foreign key(category_parent) references category(category_code)
 );
@@ -341,8 +340,26 @@ create sequence seq_report;
 --========================================
 --            DUMMY DATA
 --========================================
-
-
+insert into category values(seq_category.nextval, null, '상품'); -- 1
+insert into category values(seq_category.nextval, null, '게시판'); -- 2
+insert into category values(seq_category.nextval, 1, '디지털/가전');
+insert into category values(seq_category.nextval, 1, '가구/인테리어');
+insert into category values(seq_category.nextval, 1, '유아동/유아도서');
+insert into category values(seq_category.nextval, 1, '생활/가공식품');
+insert into category values(seq_category.nextval, 1, '스포츠/레저');
+insert into category values(seq_category.nextval, 1, '여성잡화');
+insert into category values(seq_category.nextval, 1, '여성의류');
+insert into category values(seq_category.nextval, 1, '남성패션/잡화');
+insert into category values(seq_category.nextval, 1, '게임/취미');
+insert into category values(seq_category.nextval, 1, '뷰티/미용');
+insert into category values(seq_category.nextval, 1, '반려동물용품');
+insert into category values(seq_category.nextval, 1, '도서/티켓/음반');
+insert into category values(seq_category.nextval, 1, '기타 중고물품');
+insert into category values(seq_category.nextval, 1, '삽니다');
+insert into category values(seq_category.nextval, 2, '동네생활이야기');
+insert into category values(seq_category.nextval, 2, '우리동네질문');
+insert into category values(seq_category.nextval, 2, '분실/실종센터');
+insert into category values(seq_category.nextval, 2, '동네사건사고');
 
 
 
