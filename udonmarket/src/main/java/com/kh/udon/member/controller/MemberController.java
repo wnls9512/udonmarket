@@ -6,6 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.kh.udon.member.model.service.MemberService;
 import com.kh.udon.member.model.vo.Member;
@@ -60,7 +61,14 @@ public class MemberController
     {
         return "member/mypage";
     }
-    
+
+    //프로필 수정
+	@RequestMapping("/editprofile")
+	public String editProfile() 
+	{
+		return "member/editProfile";
+	}
+	
     //관심목록
     @RequestMapping("/wishList")
     public String wishList()
@@ -88,5 +96,13 @@ public class MemberController
     {
     	return "member/settingsArea";
     }
+    
+    //자주 묻는 질문
+    @RequestMapping("/FAQ")
+    public String FAQ()
+    {
+    	return "member/FAQ";
+    }
+    
     
 }
