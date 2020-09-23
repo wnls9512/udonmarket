@@ -43,7 +43,8 @@
                                 <ul class="list">
                                 	<c:forEach items="${category }" var="c" varStatus="status">
                                     <li>
-                                        <a href="#">${c.categoryName }</a>
+                                        <a href="${pageContext.request.contextPath }/product/categoryList?category=${c.categoryCode }">
+                                        			${c.categoryName }</a>
                                         <span>(${categoryCount[status.index] })</span>
                                     </li>
                                     </c:forEach>

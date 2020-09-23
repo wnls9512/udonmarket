@@ -31,6 +31,12 @@ public class ProductDaoImpl implements ProductDao
     {
         return session.selectOne("product.selectTotalCount");
     }
+
+    @Override
+    public int selectCategoryCount(String categoryCode)
+    {
+        return session.selectOne("product.selectCategoryCount");
+    }
     
     
     
