@@ -83,12 +83,12 @@ a{text-decoration: none; color: black;}
 				          <a href="${pageContext.request.contextPath }/member/settingsArea" class="nav-link px-4 rounded-pill">
 	                           <i class="fas fa-map-marker-alt"></i>&nbsp; 내 동네 설정
 	                      </a>
-				          <a href="#" class="nav-link px-4 rounded-pill">
+				          <a href="${pageContext.request.contextPath }/member/keywordNoti" class="nav-link px-4 rounded-pill">
 		                      <i class="fas fa-tag"></i>&nbsp; 키워드 알림
 	                      </a>
-				          <a href="#" class="nav-link px-4 rounded-pill">
+<!-- 				          <a href="#" class="nav-link px-4 rounded-pill">
 		                      <i class="fas fa-th-large"></i>&nbsp; 모아보기
-	                      </a>
+	                      </a> -->
 				          <a href="#" class="nav-link px-4 rounded-pill">
 		                      <i class="far fa-smile"></i>&nbsp; 받은 거래 후기
 	                      </a>

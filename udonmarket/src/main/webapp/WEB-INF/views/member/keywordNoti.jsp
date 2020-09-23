@@ -142,72 +142,42 @@ html { font-size: 16px; }
 				        <!-- Vertical Menu-->
 				        <nav class="nav flex-column bg-white shadow-sm rounded p-3">
 						<div>
-						<hr />
+							<hr />
 							<div style="text-align: center; ">
 								<h5 style="font-weight: bold;
-									  		color: #575757;">내 동네 설정하기</h5> 		
+									  		color: #575757;">키워드 알림 설정</h5> 		
 							    <p id="myLocal" style=" color: #575757;"></p>
 							</div>
 							<hr />							  
-							<!-- 동네 설정하기 -->
-							<div style="text-align: center;">
-							    <!-- 지도 -->								
-								<div id="map" style="width:100%; 
-													 height:350px;
-													 margin:15px 0;"></div>
-								<form id="changeAddr">
-									<!-- 위치 바꾸기 (현재 위치로) -->
-									<input type="hidden" name="addr"/>
-									<input type="hidden" name="lat"/>
-									<input type="hidden" name="lon"/>
-									<input type="button" 
-										   id="btn-changeAddr"
-										   class="btn btn-outline-primary btn-sm" 
-										   value="현재 위치로 동네 설정하기" />								
-								</form>
-							</div>
-							<hr />
-							<script>
-								$(function(){
-									$("#btn-changeAddr").click(function(){
-										if(!confirm('현재 위치로 동네를 변경하시겠습니까?')) return;
-										let $addr = $("[name=addr]").val();
-										let $lat = $("[name=lat]").val();
-										let $lon = $("[name=lon]").val();
-										console.log($addr);
-										console.log($lat);
-										console.log($lon);
-
-									 	$("#changeAddr").attr("action", "${ pageContext.request.contextPath }/member/updateAddress")
-										.attr("method", "POST")
-										.submit(); 
-										
-									});
-								});
-							</script>
-							
-							<!-- 지역범위 설정하기 -->						
-							<div style="text-align: center;">
+							<div>
 								 <h5 style="font-weight: bold;
-									  		color: #575757;">지역 범위 설정하기</h5>
-								 <p style="color: #575757;">선택한 범위의 게시글만 볼 수 있어요.</p>
+									  		color: #575757;">키워드 알림</h5>
+								 <p style="color: #575757;">키워드를 등록해두면, 해당 키워드와 관련된 판매글이 올라올때 푸시 알림을 받을 수 있어요.</p>
+								 <a href="#" style="color: #007bff;">혹시 키워드 알림이 오지 않나요?</a>
 							</div>
-							<hr />
-							<div style="text-align: center;">							
-								<label class="box-radio-input">
-									<input type="radio" name="cp_item" value="3">
-									<span>우리 동네 </span>
-								</label>
-								<label class="box-radio-input">
-									<input type="radio" name="cp_item" value="4">
-									<span>이웃 동네</span>
-								</label>
-								<label class="box-radio-input">
-									<input type="radio" name="cp_item" value="5">
-									<span>근처 동네</span>
-								</label>
-							</div>
-						</div>
+							<br />
+							<form action="">
+								<div class="input-group mb-3">
+								  <input type="text" 
+								  		 class="form-control" 
+								  		 placeholder="키워드를 입력해주세요." 
+								  		 aria-label="Recipient's username" 
+								  		 aria-describedby="basic-addon2">
+								  <div class="input-group-append">
+								    <input type="submit" class="btn btn-outline-secondary" 
+								    	   value="등록" />
+								  </div>
+								</div>
+							</form>
+							<br />
+							<p>등록된 키워드  <mark style="color: red; background: white;">4</mark>/ 30</p>
+							<h5>
+								<span class="btn btn-outline-primary btn-sm">핸드폰 <a href="#">x</a></span>
+								<span class="btn btn-outline-primary btn-sm">모니터 <a href="#">x</a></span>
+								<span class="btn btn-outline-primary btn-sm">그래픽카드 <a href="#">x</a></span>
+								<span class="btn btn-outline-primary btn-sm">케이스 <a href="#">x</a></span>
+							</h5>
+						</div>													
 				        </nav>
 	                </div>
 	            </div>
@@ -215,111 +185,6 @@ html { font-size: 16px; }
 	    </div>
 	</div>
 
-<script>
-
-	//지도 관련
-	$(function(){
-
-		//사용자 설정 값 가져와서 넣기
-		local(3);
-
-		//지역 범위 설정 지도에 보여주기
-		$("[name=cp_item]").change(function(){
-			var $level = $("[name=cp_item]:checked").val();
-			console.log("$level : " + $level);
-			local($level);
-		});	
-
-		function local(level){
-			//지도를 표시할 div 
-			var mapContainer = document.getElementById('map');
-		 	
-			var	mapOption = { 
-				    center: new kakao.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
-				    level: level // 지도의 확대 레벨 
-				}; 
-			
-			// 지도 생성
-			var map = new kakao.maps.Map(mapContainer, mapOption); 
-
-			// 주소-좌표 변환 객체 생성
-			var geocoder = new kakao.maps.services.Geocoder();
-			
-			//HTML5의 geolocation으로 사용할 수 있는지 확인
-			if (navigator.geolocation) {
-			
-				// GeoLocation을 이용해서 위도경도 얻어오기
-				navigator.geolocation.getCurrentPosition(function(position) {
-				    
-				    var lat = position.coords.latitude; // 위도
-				    var lon = position.coords.longitude; // 경도	
-
-				    //위도 경도로 주소 가져오기
-					var address;
-				    geocoder.coord2RegionCode(lon, lat, function(result, status){
-					    
-				    	if (status === kakao.maps.services.Status.OK) {
-				        	address = result[0].address_name;
-				       	}
-				    $("[name=addr]").val(address);
-				    $("[name=lat]").val(lat);
-				    $("[name=lon]").val(lon);
-				       	
-					var locPosition = new kakao.maps.LatLng(lat, lon); // 마커가 표시될 위치를 geolocation으로 얻어온 좌표로 생성합니다
-					var message = '<div style="padding:5px; font-size: 12px;"> 현재 위치 : '+ address +' </div>'; // 인포윈도우에 표시될 내용입니다
-
-					//현재위치 알려주기
-					var myLocal = document.getElementById("myLocal");
-
-					var dong = address.split(" ");
-						dong = dong[dong.length-1];
-					myLocal.innerHTML = "현재 위치가 <strong>[" + dong +"]</strong> 입니다.";
-				    
-				    // 마커와 인포윈도우를 표시
-				    displayMarker(locPosition, message);		    
-				    });		    
-				});
-			
-			} else { // HTML5의 GeoLocation을 사용할 수 없을때 마커 표시 위치와 인포윈도우 내용 설정
-			
-				var locPosition = new kakao.maps.LatLng(33.450701, 126.570667),    
-				    message = 'geolocation을 사용할수 없습니다';
-				    
-				displayMarker(locPosition, message);
-			}
-			
-			//지도에 마커와 인포윈도우를 표시하는 함수
-			function displayMarker(locPosition, message) {
-				
-				//마커 생성
-				var marker = new kakao.maps.Marker({  
-				    map: map, 
-				    position: locPosition
-				}); 
-				
-				var iwContent = message, // 인포윈도우에 표시할 내용
-				    iwRemoveable = true;
-				
-				// 인포윈도우 생성
-				var infowindow = new kakao.maps.InfoWindow({
-				    content : iwContent,
-				    removable : iwRemoveable
-				});
-			
-				// 인포윈도우를 마커위에 표시
-				infowindow.open(map, marker);
-				
-				// 지도 중심좌표를 접속위치로 변경
-				map.setCenter(locPosition);      
-			}
-		}
-	});	
-</script>
-
-
 
 <jsp:include page="/WEB-INF/views/common/footer.jsp"/>
-	
-	
-	
 	
