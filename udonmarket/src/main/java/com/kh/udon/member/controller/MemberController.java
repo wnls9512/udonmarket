@@ -74,5 +74,12 @@ public class MemberController
     	return "member/FAQ";
     }
     
+    //공지 사항
+    @RequestMapping("/announce")
+    public String announce()
+    {
+    	return "member/announce";
+    }
+    
     
 }

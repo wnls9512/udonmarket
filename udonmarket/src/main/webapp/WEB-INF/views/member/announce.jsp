@@ -7,7 +7,7 @@
 <fmt:requestEncoding value="utf-8"/>
 
 <jsp:include page="/WEB-INF/views/common/header.jsp">
-	<jsp:param value="FAQ" name="pageTitle"/>
+	<jsp:param value="공지사항" name="pageTitle"/>
 </jsp:include>
 
 <!-- mypage css -->
@@ -59,7 +59,7 @@ html { font-size: 16px; }
                 <div class="col-lg-8">
                     <div class="breadcrumb_iner">
                         <div class="breadcrumb_iner_item">
-                            <h2>자주묻는질문(FAQ)</h2>
+                            <h2>공지사항</h2>
 							<!-- <h3>서울 강남구 논현동</h3> -->
                         </div>
                     </div>
@@ -114,23 +114,10 @@ html { font-size: 16px; }
 	            </div>
 	            <div class="px-4 py-3">
 	                <div class="p-4 rounded shadow-sm bg-light">
-	              <!-- 탭 리스트 -->
-	              <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
-				  <li class="nav-item">
-				    <a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home" aria-selected="true">사기,허위 대처</a>
-				  </li>
-				  <li class="nav-item">
-				    <a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#pills-profile" role="tab" aria-controls="pills-profile" aria-selected="false">거래 매너</a>
-				  </li>
-				  <li class="nav-item">
-				    <a class="nav-link" id="pills-contact-tab" data-toggle="pill" href="#pills-contact" role="tab" aria-controls="pills-contact" aria-selected="false">기타</a>
-				  </li>
-				</ul>
-				<!-- 탭 내용 -->
+					<h1><span class="badge badge-secondary">공지사항</span></h1>	             
 				        <nav class="nav flex-column bg-white shadow-sm rounded p-3">
-										<div class="tab-content" id="pills-tabContent">
-						  <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
-						  <table id="tbl-board" class="table table-striped table-hover">
+						<div class="tab-content" id="pills-tabContent">
+						  <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab"><table id="tbl-board" class="table table-striped table-hover">
 								<tr>
 									<th>번호</th>
 									<th>제목</th>
@@ -140,46 +127,12 @@ html { font-size: 16px; }
 									<th>조회수</th>
 								</tr>
 							</table>
-							</div>
-						  
-						  <!-- 거래 매너 -->		
-						  <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
-						  <table id="tbl-board" class="table table-striped table-hover">
-								<tr>
-									<th>번호</th>
-									<th>제목</th>
-									<th>작성자</th>
-									<th>작성일</th>
-									<th>첨부파일</th> <!-- 첨푸파일 있을 경우, /resources/images/file.png 표시 -->
-									<th>조회수</th>
-								</tr>
-							</table>
-							</div>
-					      <!-- 기타 -->
-						  <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">
-						  <table id="tbl-board" class="table table-striped table-hover">
-								<tr>
-									<th>번호</th>
-									<th>제목</th>
-									<th>작성자</th>
-									<th>작성일</th>
-									<th>첨부파일</th> <!-- 첨푸파일 있을 경우, /resources/images/file.png 표시 -->
-									<th>조회수</th>
-								</tr>
-							</table>
-							</div>
-						</div>		
+							</div>		
 				        </nav>
 	                </div>
 	            </div>
 	        </div>
 	    </div>
 	</div>
-
-
-
 <jsp:include page="/WEB-INF/views/common/footer.jsp"/>
-	
-	
-	
 	
