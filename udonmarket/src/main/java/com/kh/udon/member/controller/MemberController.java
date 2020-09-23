@@ -3,6 +3,7 @@ package com.kh.udon.member.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.kh.udon.member.model.service.MemberService;
 
@@ -30,7 +31,14 @@ public class MemberController
     {
         return "member/mypage";
     }
-    
+
+    //프로필 수정
+	@RequestMapping("/editprofile")
+	public String editProfile() 
+	{
+		return "member/editProfile";
+	}
+	
     //관심목록
     @RequestMapping("/wishList")
     public String wishList()
@@ -58,5 +66,13 @@ public class MemberController
     {
     	return "member/settingsArea";
     }
+    
+    //자주 묻는 질문
+    @RequestMapping("/FAQ")
+    public String FAQ()
+    {
+    	return "member/FAQ";
+    }
+    
     
 }
