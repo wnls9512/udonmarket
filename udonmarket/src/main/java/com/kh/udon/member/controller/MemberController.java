@@ -104,5 +104,12 @@ public class MemberController
     	return "member/FAQ";
     }
     
+    //나의 키워드 알림 설정
+    @RequestMapping("/keywordNoti")
+    public String keywordNoti()
+    {
+    	return "member//keywordNoti";
+    }
+    
     
 }
