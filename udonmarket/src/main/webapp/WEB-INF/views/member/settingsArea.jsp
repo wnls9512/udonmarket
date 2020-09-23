@@ -155,11 +155,36 @@ html { font-size: 16px; }
 								<div id="map" style="width:100%; 
 													 height:350px;
 													 margin:15px 0;"></div>
-								<input type="button" 
-									   class="btn btn-outline-primary btn-sm" 
-									   value="현재 위치로 동네 설정하기" />
+								<form id="changeAddr">
+									<!-- 위치 바꾸기 (현재 위치로) -->
+									<input type="hidden" name="addr"/>
+									<input type="hidden" name="lat"/>
+									<input type="hidden" name="lon"/>
+									<input type="button" 
+										   id="btn-changeAddr"
+										   class="btn btn-outline-primary btn-sm" 
+										   value="현재 위치로 동네 설정하기" />								
+								</form>
 							</div>
 							<hr />
+							<script>
+								$(function(){
+									$("#btn-changeAddr").click(function(){
+										if(!confirm('현재 위치로 동네를 변경하시겠습니까?')) return;
+										let $addr = $("[name=addr]").val();
+										let $lat = $("[name=lat]").val();
+										let $lon = $("[name=lon]").val();
+										console.log($addr);
+										console.log($lat);
+										console.log($lon);
+
+									 	$("#changeAddr").attr("action", "${ pageContext.request.contextPath }/member/updateAddress")
+										.attr("method", "POST")
+										.submit(); 
+										
+									});
+								});
+							</script>
 							
 							<!-- 지역범위 설정하기 -->						
 							<div style="text-align: center;">
@@ -171,7 +196,7 @@ html { font-size: 16px; }
 							<div style="text-align: center;">							
 								<label class="box-radio-input">
 									<input type="radio" name="cp_item" value="3">
-									<span>내 동네 </span>
+									<span>우리 동네 </span>
 								</label>
 								<label class="box-radio-input">
 									<input type="radio" name="cp_item" value="4">
@@ -191,9 +216,11 @@ html { font-size: 16px; }
 	</div>
 
 <script>
- 	
+
+	//지도 관련
 	$(function(){
 
+		//사용자 설정 값 가져와서 넣기
 		local(3);
 
 		//지역 범위 설정 지도에 보여주기
@@ -234,7 +261,9 @@ html { font-size: 16px; }
 				    	if (status === kakao.maps.services.Status.OK) {
 				        	address = result[0].address_name;
 				       	}
-				    console.log(address);
+				    $("[name=addr]").val(address);
+				    $("[name=lat]").val(lat);
+				    $("[name=lon]").val(lon);
 				       	
 					var locPosition = new kakao.maps.LatLng(lat, lon); // 마커가 표시될 위치를 geolocation으로 얻어온 좌표로 생성합니다
 					var message = '<div style="padding:5px; font-size: 12px;"> 현재 위치 : '+ address +' </div>'; // 인포윈도우에 표시될 내용입니다
@@ -244,7 +273,6 @@ html { font-size: 16px; }
 
 					var dong = address.split(" ");
 						dong = dong[dong.length-1];
-					console.log(dong[dong.length-1]);
 					myLocal.innerHTML = "현재 위치가 <strong>[" + dong +"]</strong> 입니다.";
 				    
 				    // 마커와 인포윈도우를 표시
@@ -286,7 +314,6 @@ html { font-size: 16px; }
 			}
 		}
 	});	
-	
 </script>
 
 
