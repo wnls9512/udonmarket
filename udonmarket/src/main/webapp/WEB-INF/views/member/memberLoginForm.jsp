@@ -69,7 +69,7 @@
                                         log in
                                     </button>
                                     <div id="kakao_id_login">
-                                    	<a href="${kakao_url }"><img alt="/udon/resources/img/kakaopage.png" ></a>
+                                    	<a href="${kakao_url }"><img src="${pageContext.request.contextPath }/resources/img/kakao_login_page.png" /></a>
                                     </div>
                                     <a class="lost_pass" href="#">forget password?</a>
                                 </div>
