@@ -10,6 +10,19 @@
 	<jsp:param value="동네생활" name="pageTitle"/>
 </jsp:include>
 
+<script>
+
+$(function(){
+
+	$("a[data-board-no]").click(function(){
+		var bCode = $(this).attr("data-board-no");
+		location.href = "${ pageContext.request.contextPath }/community/communityDetailView?bCode=" + bCode;
+	});
+	
+});
+
+</script>
+
     <!--================Home Banner Area =================-->
     <!-- breadcrumb start-->
     <section class="breadcrumb breadcrumb_bg">
@@ -62,7 +75,7 @@
                     
                         <article class="blog_item">
                             <div class="blog_item_img">
-                                <img class="card-img rounded-0" src="${pageContext.request.contextPath}/resources/img/blog/single_blog_1.png" alt="">
+                                <img class="card-img rounded-0" src="${pageContext.request.contextPath}/resources/img/blog/no_img.png" alt="">
                                 <a href="#" class="blog_item_date">
                                     <h3></h3>
                                     <p><fmt:formatDate value="${ c.regDate }" type="both"/></p>
@@ -85,10 +98,10 @@
 							</c:if>
                             	
                             	<br/><br/>
-                                <a class="d-inline-block" href="${pageContext.request.contextPath }/community/communityDetailView">
+                                <a class="d-inline-block" data-board-no="${ c.BCode }" >
                                     <h2>${ c.boardTitle }</h2>
+                                	<p>${ c.boardContent }</p>
                                 </a>
-                                <p>${ c.boardContent }</p>
                                 <ul class="blog-info-link">
                                     <li><a href="#"><i class="fa fa-hashtag"></i> 강아지 </a></li>
                                     <li><a href="#"><i class="far fa-comments"></i> 03 Comments</a></li>
@@ -123,11 +136,18 @@
                 </div>
                 <div class="col-lg-4">
                     <div class="blog_right_sidebar">
+                    		<form action="#">
+                                <button class="button rounded-0 primary-bg text-white w-100 btn_1"
+                                    type="button">게시글 작성하기</button>
+                            </form>
+                            <br /> 	
                         <aside class="single_sidebar_widget search_widget">
+                        	
+                        
                             <form action="#">
                                 <div class="form-group">
                                     <div class="input-group mb-3">
-                                        <input type="text" class="form-control" placeholder='Search Keyword'
+                                        <input type="text" class="form-control" placeholder='키워드를 검색해주세요'
                                             onfocus="this.placeholder = ''"
                                             onblur="this.placeholder = 'Search Keyword'">
                                         <div class="input-group-append">
@@ -136,12 +156,12 @@
                                     </div>
                                 </div>
                                 <button class="button rounded-0 primary-bg text-white w-100 btn_1"
-                                    type="submit">Search</button>
+                                    type="submit">검색하기</button>
                             </form>
                         </aside>
 
                         <aside class="single_sidebar_widget post_category_widget">
-                            <h4 class="widget_title">Category</h4>
+                            <h4 class="widget_title">카테고리</h4>
                             <ul class="list cat-list">
                                 <li>
                                     <a href="#" class="d-flex">
@@ -171,7 +191,7 @@
                         </aside>
 
                         <aside class="single_sidebar_widget popular_post_widget">
-                            <h3 class="widget_title">Recent Post</h3>
+                            <h3 class="widget_title">최근 게시글</h3>
                             <div class="media post_item">
                                 <img src="${pageContext.request.contextPath}/resources/img/post/post_1.png" alt="post">
                                 <div class="media-body">
@@ -210,7 +230,7 @@
                             </div>
                         </aside>
                         <aside class="single_sidebar_widget tag_cloud_widget">
-                            <h4 class="widget_title">Tag</h4>
+                            <h4 class="widget_title">태그</h4>
                             <ul class="list">
                                 <li>
                                     <a href="#">강아지</a>

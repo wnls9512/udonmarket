@@ -5,5 +5,23 @@
 	<select id="selectCommunityList" resultType="community">
 		select * from board order by b_code desc
 	</select>
+	
+	<select id="selectOneCommunityCollection" resultMap="communityCollectionMap">
+		select 
+		    B.*
+		from 
+		    board B
+		where 
+		    B.b_code = #{ bCode }
+	</select>
+	<resultMap type="community" id="communityCollectionMap">
+		<id column="b_code" property="bCode"/>
+		<result column="user_id" property="userId"/>
+		<result column="board_title" property="boardTitle"/>
+		<result column="board_content" property="boardContent"/>
+		<result column="reg_date" property="regDate"/>
+		<result column="hashtag_code" property="hashtagCode"/>
+		<result column="like_this" property="likeThis"/>
+	</resultMap>
 
 </mapper>
