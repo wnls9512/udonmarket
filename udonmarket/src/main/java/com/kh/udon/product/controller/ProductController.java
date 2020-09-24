@@ -22,6 +22,7 @@ public class ProductController
     @Autowired
     private ProductService service;
 
+    // 전체 리스트
     @RequestMapping("/productListView")
     public String productList(Model model)
     {
@@ -29,6 +30,9 @@ public class ProductController
          *      1. 카테고리 목록
          *      2. 카테고리 목록별 갯수
          *      3. 전체 상품 갯수
+         *      
+         *      
+         *      
          *      4. 상품 리스트
          */
         
@@ -47,9 +51,20 @@ public class ProductController
         return "product/productListView";
     }
     
+    // 카테고리별 리스트
     @GetMapping("/categoryList")
     public String categoryList(@RequestParam("category") String categoryCode, Model model)
     {
+        /*
+         *      1. 카테고리 목록
+         *      2. 카테고리 목록별 갯수
+         *      3. 전체 상품 갯수
+         *      
+         *      
+         *      
+         *      4. 선택된 카테고리 상품 리스트
+         */
+        
         log.debug("categoryCode = {}", categoryCode);
         
         List<ProductCategory> category = service.selectAllCategory();
@@ -64,6 +79,10 @@ public class ProductController
         
         return "product/productListView";
     }
+    
+    // 상품 등록 화면
+    @GetMapping("/register")
+    public void register() {}
     
     @RequestMapping("/productDetailView")
     public String productDetail()
