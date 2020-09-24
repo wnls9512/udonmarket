@@ -1,7 +1,9 @@
 package com.kh.udon.product.controller;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -22,6 +24,7 @@ import com.kh.udon.product.model.service.ProductService;
 import com.kh.udon.product.model.vo.ProductCategory;
 
 import lombok.extern.slf4j.Slf4j;
+import net.coobird.thumbnailator.Thumbnailator;
 
 @Controller
 @Slf4j
@@ -122,11 +125,19 @@ public class ProductController
             UUID uuid = UUID.randomUUID();
             uploadFileName = uuid.toString() + "_" + uploadFileName;
             
-            File saveFile = new File(uploadPath, uploadFileName);
             
             try
             {
+                File saveFile = new File(uploadPath, uploadFileName);
                 multipartFile.transferTo(saveFile);
+                
+                // check image type file
+                if(checkImageType(saveFile))
+                {
+                    FileOutputStream thumbnail = new FileOutputStream(new File(uploadPath, "s_" + uploadFileName));
+                    Thumbnailator.createThumbnail(multipartFile.getInputStream(), thumbnail, 100, 100);
+                    thumbnail.close();
+                }
             }
             catch (Exception e)
             {
@@ -143,6 +154,23 @@ public class ProductController
         String str = sdf.format(date);
         
         return str.replace("-", File.separator);
+    }
+    
+    // 이미지 파일 판단 메소드
+    private boolean checkImageType(File file)
+    {
+        try
+        {
+            String contentType = Files.probeContentType(file.toPath());
+            
+            return contentType.startsWith("image");
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+        
+        return false;
     }
     
     @RequestMapping("/productDetailView")
