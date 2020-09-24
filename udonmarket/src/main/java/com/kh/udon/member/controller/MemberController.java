@@ -1,7 +1,6 @@
 package com.kh.udon.member.controller;
 
-import java.util.HashMap;
-import java.util.Map;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -10,12 +9,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.kh.udon.member.model.service.MemberService;
-import com.kh.udon.member.model.vo.Member;
 import com.kh.udon.member.model.vo.Location;
+import com.kh.udon.member.model.vo.Member;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -30,6 +29,9 @@ public class MemberController
     @Autowired
     private BCryptPasswordEncoder bcryptPasswordEncoder;    
     
+    @Autowired
+    private KakaoController kakaoLogin;
+    
     //로그인
     @RequestMapping("/loginForm")
     public String memberLogin()
@@ -37,12 +39,26 @@ public class MemberController
         return "member/memberLoginForm";
     }
     
+    //카카오 로그인
+    @RequestMapping(value="/loginForm", method=RequestMethod.GET)
+    public ModelAndView memberLogin(HttpSession session, ModelAndView mav) {
+    	
+    	String kakaoUrl = kakaoLogin.getAuthorizationUrl(session);
+    	
+    	mav.setViewName("member/memberLoginForm");
+    	mav.addObject("kakao_url", kakaoUrl);
+    	
+    	return mav;
+    }
+    
+    
     // 회원가입
     @RequestMapping("/signupForm")
     public String memberSignup()
     {
         return "member/memberSignupForm";
     }
+    
     
     @RequestMapping(value="/signupForm", method=RequestMethod.POST)
     public String memberSignup(Member member, RedirectAttributes redirectAttr) {
