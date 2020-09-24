@@ -74,13 +74,13 @@ public class MemberController
     	
     	//로그인 성공
     	if(member !=null && bcryptPasswordEncoder.matches(password, member.getPassword())) {
-    		
+    		//세션 처리
+    		model.addAttribute("loginMember", member);
     	}
     	//로그인 실패
     	else {
     		redirectAttr.addFlashAttribute("msg", "아이디 또는 비밀번호가 일치하지 않습니다. ");
-    		//세션 처리
-    		model.addAttribute("loginMember", member);
+
     	}
     	
     	return "redirect:/";
