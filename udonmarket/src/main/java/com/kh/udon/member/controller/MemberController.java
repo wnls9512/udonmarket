@@ -219,5 +219,13 @@ public class MemberController
     	return "redirect:/member/settingsArea";
     }
     
+    //받은 거래 후기
+    @RequestMapping("/myReviewList")
+    public String myReviewList(){
+    	return "member/myReviewList";
+    }
+    
+    
+    
     
 }

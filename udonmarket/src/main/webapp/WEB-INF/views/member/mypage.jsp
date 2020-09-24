@@ -89,7 +89,7 @@ a{text-decoration: none; color: black;}
 <!-- 				          <a href="#" class="nav-link px-4 rounded-pill">
 		                      <i class="fas fa-th-large"></i>&nbsp; 모아보기
 	                      </a> -->
-				          <a href="#" class="nav-link px-4 rounded-pill">
+				          <a href="${pageContext.request.contextPath }/member/myReviewList" class="nav-link px-4 rounded-pill">
 		                      <i class="far fa-smile"></i>&nbsp; 받은 거래 후기
 	                      </a>
 				        </nav>
