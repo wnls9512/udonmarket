@@ -1,5 +1,9 @@
 package com.kh.udon.member.controller;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,10 +13,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.kh.udon.member.model.service.MemberService;
+import com.kh.udon.member.model.vo.Keyword;
 import com.kh.udon.member.model.vo.Location;
 import com.kh.udon.member.model.vo.Member;
 
@@ -126,10 +132,63 @@ public class MemberController
     }
     
     //나의 키워드 알림 설정
-    @RequestMapping("/keywordNoti")
-    public String keywordNoti()
-    {
-    	return "member/keywordNoti";
+    @RequestMapping(value = "/keywordNoti",
+    				method = RequestMethod.GET)
+    public ModelAndView keywordNoti(ModelAndView mav){
+    	
+    	//test id로 테스트
+    	String userId = "test";
+    	List<Keyword> list = service.selectKeywordList(userId);
+    	log.debug("list = {}", list);
+    	
+    	//전체 키워드 수 구하기
+    	int totalKeywordContents = service.selectTotalKeywordContent(userId);
+    	log.debug("totalKeywordContents ={}", String.valueOf(totalKeywordContents));
+    	
+    	mav.addObject("totalKeywordContents", totalKeywordContents);
+    	mav.addObject("list", list);
+    	return mav;
+    }
+    
+    //나의 키워드 추가
+    @RequestMapping(value = "/insertKeyword",
+    			method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> insertKeyword(@RequestParam("userId") String userId,
+    										 @RequestParam("keyword") String keyword){
+    	
+    	//test id로 테스트
+    	userId = "test";
+    	
+    	Map<String, Object> map = new HashMap<>();
+    	map.put("userId", userId);
+    	map.put("keyword", keyword);
+    	System.out.println(map);
+    	
+    	int result = service.insertKeyword(map);
+    			
+    	return map;
+    }
+    
+    //키워드 삭제
+    @RequestMapping(value = "/deleteKeyword")
+    @ResponseBody
+    public String deleteKeyword(RedirectAttributes redirectAttr,
+    							@RequestParam("key") int keyCode){
+    	  
+    	System.out.println(keyCode);
+    	String msg = "삭제 성공!";
+    	try {
+    		int result = service.deleteKeyword(keyCode);   	
+    		redirectAttr.addFlashAttribute("msg", msg);			
+		} catch (Exception e) {
+			log.error("keyword 삭제 실패 오류", e);
+			redirectAttr.addFlashAttribute("msg", "삭제 실패");
+			
+//			throw e; //에러페이지
+		}
+    	
+    	return "redirect:/member/keywordNoti";
     }
 
     //현재 위치로 location 테이블 update
@@ -143,10 +202,6 @@ public class MemberController
     							@RequestParam("lon") float longitude){
     	//test id로 테스트
     	String userId = "test";
-    	
-//    	log.debug(addr);
-//    	System.out.println(latitude);
-//    	System.out.println(longitude);
     	
     	//업무로직
     	String msg = "변경 성공!";
@@ -163,6 +218,14 @@ public class MemberController
     	
     	return "redirect:/member/settingsArea";
     }
+    
+    //받은 거래 후기
+    @RequestMapping("/myReviewList")
+    public String myReviewList(){
+    	return "member/myReviewList";
+    }
+    
+    
     
     
 }
