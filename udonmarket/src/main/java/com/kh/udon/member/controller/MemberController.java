@@ -34,29 +34,13 @@ public class MemberController
     
     @Autowired
     private BCryptPasswordEncoder bcryptPasswordEncoder;    
-    
-    @Autowired
-    private KakaoController kakaoLogin;
-    
+   
     //로그인
     @RequestMapping("/loginForm")
     public String memberLogin()
     {
         return "member/memberLoginForm";
     }
-    
-    //카카오 로그인
-    @RequestMapping(value="/loginForm", method=RequestMethod.GET)
-    public ModelAndView memberLogin(HttpSession session, ModelAndView mav) {
-    	
-    	String kakaoUrl = kakaoLogin.getAuthorizationUrl(session);
-    	
-    	mav.setViewName("member/memberLoginForm");
-    	mav.addObject("kakao_url", kakaoUrl);
-    	
-    	return mav;
-    }
-    
     
     // 회원가입
     @RequestMapping("/signupForm")
@@ -68,17 +52,6 @@ public class MemberController
     
     @RequestMapping(value="/signupForm", method=RequestMethod.POST)
     public String memberSignup(Member member, RedirectAttributes redirectAttr) {
-    	
-    	
-    	log.debug("member = {} ", member);
-    	
-    	
-    	String rawPassword = member.getPassword();
-    	String encryptPassword = bcryptPasswordEncoder.encode(rawPassword);
-    	member.setPassword(encryptPassword);
-    	
-    	log.debug("rawPassword@Controller = {}", rawPassword);
-    	log.debug("encryptPassword@Controller = {}", encryptPassword);    	
     	
     	return "redirect:/";
     }
