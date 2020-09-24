@@ -36,33 +36,32 @@
                 <div class="col-lg-6 col-md-6">
                     <div class="login_part_text text-center" style="background-image:none; border: 1px solid #ff3368; width:100%;">
                         <div class="login_part_text_iner">
-                        	<!-- upload image start -->
-                        	<main class="main_full">
-								<div class="container">
-									<div class="panel">
-										<div class="button_outer">
-											<div class="btn_upload">
-												<input type="file" id="upload_file" name="">
-												Upload Image 0 / 10
+	                        	<!-- upload image start -->
+	                        	<main class="main_full">
+									<div class="container">
+										<div class="panel">
+											<div class="button_outer">
+												<div class="btn_upload">
+													<input type="file" id="upload_file" name="uploadFile" multiple>
+													Upload Image 0 / 10
+												</div>
+												<div class="processing_bar"></div>
+												<div class="success_box"></div>
 											</div>
-											<div class="processing_bar"></div>
-											<div class="success_box"></div>
+										</div>
+										<div class="error_msg"></div>
+										<div class="uploaded_file_view" id="uploaded_view">
+											<span class="file_remove">X</span>
 										</div>
 									</div>
-									<div class="error_msg"></div>
-									<div class="uploaded_file_view" id="uploaded_view">
-										<span class="file_remove">X</span>
-									</div>
-								</div>
-							</main>
-							<!-- upload image end -->
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-6 col-md-6">
-                    <div class="login_part_form">
-                        <div class="login_part_form_iner">
-                            <form class="row contact_form" action="#" method="post" novalidate="novalidate">
+								</main>
+								<!-- upload image end -->
+	                        </div>
+	                    </div>
+	                </div>
+	                <div class="col-lg-6 col-md-6">
+	                    <div class="login_part_form">
+	                        <div class="login_part_form_iner">
                                 <div class="col-md-12 form-group p_star" style="margin-top: 10%;">
                                     <input type="text" name="first_name" placeholder="글 제목"
 											onfocus="this.placeholder = ''" onblur="this.placeholder = '글 제목'" required
@@ -80,7 +79,7 @@
 											<input type="checkbox" id="primary-switch" checked>
 											<label for="primary-switch"></label>
 										</div>
-										<p style="margin-left: 6%; width: 27%; color: darkgray; font-size:14px;">가격제안 받기</p>
+										<p style="margin-left: 6%; width: 30%; color: darkgray; font-size:14px;">가격제안 받기</p>
                                     </div>
                                 </div>
                                 <div class="col-md-12 form-group p_star">
@@ -99,21 +98,51 @@
                                     </div>
                                 </div>
                                 <div class="col-md-12 form-group p_star">
-	                                <button type="submit" value="submit" class="btn_3">
+	                                <button type="button" value="submit" class="btn_3" id="uploadBtn">
 	                                    	완료
 	                                </button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+                           		 </div>
+	                        </div>
+	                    </div>
+	                </div>
+	            </div>
+	        </div>
     </section>
 
 
 <script>
-// file upload js start
+/* ================ file upload start ================*/
+$(function()
+{
+	$("#uploadBtn").on("click", function(e)
+	{
+		var formData = new FormData();
+		var inputFile = $("input[name='uploadFile']");
+		var files = inputFile[0].files;
+
+		console.log(files);
+
+		// add filedata to formdata
+		for(var i = 0; i < files.length; i++)
+		{
+			formData.append("uploadFile", files[i]);
+		}
+
+		$.ajax
+		({
+			url: '${pageContext.request.contextPath}/product/register',
+			processData: false,
+			contentType: false,
+			data: formData,
+			type: 'POST',
+			success: function(result)
+			{
+				alert("Uploaded");
+			}	
+		});
+	});
+});
+
 var btnUpload = $("#upload_file"),
 	btnOuter = $(".button_outer");
 	
@@ -121,19 +150,21 @@ btnUpload.on("change", function(e)
 {
 	var ext = btnUpload.val().split('.').pop().toLowerCase();
 	
-	if($.inArray(ext, ['gif','png','jpg','jpeg']) == -1) 
+	if($.inArray(ext, ['png','jpg','jpeg']) == -1) 
 	{
-		$(".error_msg").text("Not an Image...");
+		$(".error_msg").text("해당 종류의 파일은 업로드할 수 없습니다.");
 	} 
 	else 
 	{
+		// process bar
 		$(".error_msg").text("");
 		btnOuter.addClass("file_uploading");
 		setTimeout(function()
 		{
 			btnOuter.addClass("file_uploaded");
 		},3000);
-		
+
+		// add thumbnail
 		var uploadedFile = URL.createObjectURL(e.target.files[0]);
 		setTimeout(function()
 		{
@@ -142,6 +173,7 @@ btnUpload.on("change", function(e)
 	}
 });
 
+// remove thumbnail
 $(".file_remove").on("click", function(e)
 {
 	$("#uploaded_view").removeClass("show");
@@ -149,7 +181,7 @@ $(".file_remove").on("click", function(e)
 	btnOuter.removeClass("file_uploading");
 	btnOuter.removeClass("file_uploaded");
 });
-//file upload js end
+/* ================ file upload end ================*/
 </script>
 
 <jsp:include page="/WEB-INF/views/common/footer.jsp"/>
