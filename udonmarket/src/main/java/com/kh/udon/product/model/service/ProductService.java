@@ -13,4 +13,6 @@ public interface ProductService
 
     int selectTotalCount();
 
+    int selectCategoryCount(String categoryCode);
+
 }

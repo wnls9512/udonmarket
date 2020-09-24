@@ -13,4 +13,8 @@
 	<select id="selectTotalCount" resultType="_int">
 		select count(*) from product
 	</select>
+	
+	<select id="selectCategoryCount" resultType="_int">
+		select count(*) from product where category = #{categoryCount}
+	</select>
 </mapper>

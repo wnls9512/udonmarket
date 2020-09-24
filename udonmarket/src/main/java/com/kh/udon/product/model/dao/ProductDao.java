@@ -13,4 +13,6 @@ public interface ProductDao
 
     int selectTotalCount();
 
+    int selectCategoryCount(String categoryCode);
+
 }

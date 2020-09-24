@@ -37,13 +37,18 @@
                     <div class="left_sidebar_area">
                         <aside class="left_widgets p_filter_widgets">
                             <div class="l_w_title">
+	                            <div class="single_product_menu d-flex">
+	                            	<a href="${pageContext.request.contextPath }/product/register" class="genric-btn primary radius"
+	                            	   style="width:100%">상품 등록</a>
+	                            </div>
                                 <h3>카테고리</h3>
                             </div>
                             <div class="widgets_inner">
                                 <ul class="list">
                                 	<c:forEach items="${category }" var="c" varStatus="status">
                                     <li>
-                                        <a href="#">${c.categoryName }</a>
+                                        <a href="${pageContext.request.contextPath }/product/categoryList?category=${c.categoryCode }">
+                                        			${c.categoryName }</a>
                                         <span>(${categoryCount[status.index] })</span>
                                     </li>
                                     </c:forEach>
@@ -82,9 +87,6 @@
                                                     class="ti-search"></i></span>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="single_product_menu d-flex">
-                                	<a href="#" class="genric-btn primary-border">상품 등록</a>
                                 </div>
                             </div>
                         </div>

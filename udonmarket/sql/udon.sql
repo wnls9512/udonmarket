@@ -130,11 +130,10 @@ create table product
 
 create table product_photo
 (
-    photo_code number,
+    uuid varchar2(100),
     p_code number not null,
-    original_filename varchar2(50) not null,
-    renamed_filename varchar2(50) not null,
-    constraint pk_product_photo primary key(photo_code),
+    filename varchar2(50) not null,
+    uploadpath varchar2(50) not null,
     constraint fk_product_photo_p_code foreign key(p_code) references product(p_code)
 );
 
