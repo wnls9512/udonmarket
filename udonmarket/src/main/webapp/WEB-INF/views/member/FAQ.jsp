@@ -12,6 +12,8 @@
 
 <!-- mypage css -->
 <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/mypage.css">
+<link href="//cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.4.0/css/bootstrap4-toggle.min.css" rel="stylesheet">  
+<script src="//cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.4.0/js/bootstrap4-toggle.min.js"></script>
 <style>
 a{text-decoration: none; color: black;}
 html { font-size: 16px; }
@@ -152,6 +154,7 @@ html { font-size: 16px; }
 									<th>작성일</th>
 									<th>첨부파일</th> <!-- 첨푸파일 있을 경우, /resources/images/file.png 표시 -->
 									<th>조회수</th>
+									
 								</tr>
 							</table>
 							</div>

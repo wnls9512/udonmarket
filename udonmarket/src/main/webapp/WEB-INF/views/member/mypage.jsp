@@ -105,7 +105,7 @@ a{text-decoration: none; color: black;}
 				          <a href="#" class="nav-link px-4 rounded-pill">
 		                      <i class="far fa-comment-dots"></i>&nbsp; 동네생활 댓글
 	                      </a>
-				          <a href="#" class="nav-link px-4 rounded-pill">
+				          <a href="${pageContext.request.contextPath}/member/interList" class="nav-link px-4 rounded-pill">
 		                      <i class="far fa-star"></i>&nbsp; 관심 주제 목록
 	                      </a>
 				        </nav>

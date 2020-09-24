@@ -81,5 +81,12 @@ public class MemberController
     	return "member/announce";
     }
     
+    //관심 주제 목록
+    @RequestMapping("/interList")
+    public String interList()
+    {
+    	return "member/interList";
+    }
+    
     
 }

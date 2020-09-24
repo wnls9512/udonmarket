@@ -114,20 +114,55 @@ html { font-size: 16px; }
 	            </div>
 	            <div class="px-4 py-3">
 	                <div class="p-4 rounded shadow-sm bg-light">
-					<h1><span class="btn btn-primary">공지사항</span></h1>	             
+					<h3>관심있는 주제를 추가해보세요.</h3>
 				        <nav class="nav flex-column bg-white shadow-sm rounded p-3">
-						<div class="tab-content" id="pills-tabContent">
-						  <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab"><table id="tbl-board" class="table table-striped table-hover">
-								<tr>
-									<th>번호</th>
-									<th>제목</th>
-									<th>작성자</th>
-									<th>작성일</th>
-									<th>첨부파일</th> <!-- 첨푸파일 있을 경우, /resources/images/file.png 표시 -->
-									<th>조회수</th>
-								</tr>
-							</table>
-							</div>		
+	                    <div class="media">
+					  <img id="interList"class="mr-3" src="/udon/resources/img/icon/restaurant.png" alt="Generic placeholder image">
+					  <div class="media-body">
+					    <h5 class="mt-2">동네 맛집</h5>
+					  </div>
+					  <div>
+					  	<button type="button" class="btn btn-info">add</button>
+					  </div>
+					</div><br />
+					<div class="media">
+					  <img id="interList"class="mr-3" src="/udon/resources/img/icon/cafe.png" alt="Generic placeholder image">
+					  <div class="media-body">
+					    <h5 class="mt-2">동네 카페</h5>
+					  </div>
+					  <div>
+					  	<button type="button" class="btn btn-info">add</button>
+					  </div>
+					</div><br />
+					<div class="media">
+					  <img id="interList"class="mr-3" src="/udon/resources/img/icon/house.png" alt="Generic placeholder image">
+					  <div class="media-body">
+					    <h5 class="mt-2">집꾸미기</h5>
+					  </div>
+					  <div>
+					  	<button type="button" class="btn btn-info">add</button>
+					  </div>
+					</div><br />
+					<div class="media">
+					  <img id="interList"class="mr-3" src="/udon/resources/img/icon/cat.png" alt="Generic placeholder image">
+					  <div class="media-body">
+					    <h5 class="mt-2">고양이</h5>
+					  </div>
+					  <div>
+					  	<button type="button" class="btn btn-info">add</button>
+					  </div>
+					</div><br />
+					<div class="media">
+					  <img id="interList"class="mr-3" src="/udon/resources/img/icon/dog.png" alt="Generic placeholder image">
+					  <div class="media-body">
+					    <h5 class="mt-2">강아지</h5>
+					  </div>
+					  <div>
+					  	<button type="button" class="btn btn-info">add</button>
+					  </div>
+					</div>
+					
+						  	
 				        </nav>
 	                </div>
 	            </div>
