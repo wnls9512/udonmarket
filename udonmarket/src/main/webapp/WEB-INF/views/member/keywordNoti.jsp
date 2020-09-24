@@ -156,27 +156,39 @@ html { font-size: 16px; }
 								 <a href="#" style="color: #007bff;">혹시 키워드 알림이 오지 않나요?</a>
 							</div>
 							<br />
-							<form action="">
+							<form action="" class="insertKeyword">
 								<div class="input-group mb-3">
 								  <input type="text" 
+								  		 name="keyword"
 								  		 class="form-control" 
 								  		 placeholder="키워드를 입력해주세요." 
 								  		 aria-label="Recipient's username" 
 								  		 aria-describedby="basic-addon2">
+								  <!-- value = 로그인 중인 유저 아이디 -->
+								  <input type="hidden" name="userId" value="" />
 								  <div class="input-group-append">
-								    <input type="submit" class="btn btn-outline-secondary" 
-								    	   value="등록" />
+							      <input type="submit" 
+							    	     class="btn btn-outline-secondary" 
+							    	     value="등록" />
 								  </div>
 								</div>
 							</form>
 							<br />
-							<p>등록된 키워드  <mark style="color: red; background: white;">4</mark>/ 30</p>
-							<h5>
-								<span class="btn btn-outline-primary btn-sm">핸드폰 <a href="#">x</a></span>
-								<span class="btn btn-outline-primary btn-sm">모니터 <a href="#">x</a></span>
-								<span class="btn btn-outline-primary btn-sm">그래픽카드 <a href="#">x</a></span>
-								<span class="btn btn-outline-primary btn-sm">케이스 <a href="#">x</a></span>
-							</h5>
+							<p>등록된 키워드  <mark style="color: red; background: white;">${totalKeywordContents}</mark>/ 30</p>
+							<div>
+								<c:if test="${ not empty list }">
+									<c:forEach items="${ list }" var="key">
+										<h5 id="keywordList" style="display: inline-block;">
+											<span class="btn btn-outline-primary btn-sm">${key.keyContent}
+											<button type="button" 
+													onclick="deleteKey('${ key.keyCode }')"
+													style="background: none; border: none;">x</button>
+											</span>
+										</h5>							
+									</c:forEach>
+								</c:if>
+								<c:if test="${ empty list }"></c:if>
+							</div>
 						</div>													
 				        </nav>
 	                </div>
@@ -184,7 +196,35 @@ html { font-size: 16px; }
 	        </div>
 	    </div>
 	</div>
+<script>
+function deleteKey(key){
+	location.href = "${ pageContext.request.contextPath }/member/deleteKeyword?key=" + key;
+}
 
+$(".insertKeyword").submit(function(){
+
+	//중복검사
+	
+	
+ 	$.ajax({
+		url : "${pageContext.request.contextPath}/member/insertKeyword",
+		method : "POST",
+		data : {
+			userId : $("[name=userId]").val(),
+			keyword : $("[name=keyword]").val()
+		}, 
+		dataType : "json",
+		success : function(data){
+			console.log("처리 성공", data.userId, data.keyword);
+			
+		},
+		error : function(xhr, status, err){
+			console.log("처리 실패", xhr, status, err);
+		}
+	}); 
+	
+});
+</script>
 
 <jsp:include page="/WEB-INF/views/common/footer.jsp"/>
 	

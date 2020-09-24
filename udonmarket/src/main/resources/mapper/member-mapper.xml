@@ -12,4 +12,39 @@
 		user_id = #{userId}
 </update>
 
+<insert id="insertKeyword">
+	insert into
+		keyword
+	values(
+		seq_keyword.nextval,
+		#{userId},
+		#{keyword}
+	)
+</insert>
+
+<select id="selectKeywordList" resultType="keyword">
+	select 
+		* 
+	from 
+		keyword 
+	where 
+		user_id = #{userId}
+</select>
+
+<select id="selectTotalKeywordContent" resultType="_int" >
+	select 
+		count(*) 
+	from 
+		keyword 
+	where 
+		user_id = #{userId}
+</select>
+
+<delete id="deleteKeyword">
+	delete from
+		keyword
+	where 
+		key_code = #{keyCode}
+</delete>
+
 </mapper>
