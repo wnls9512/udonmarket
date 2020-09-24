@@ -68,6 +68,9 @@
                                     <button type="submit" value="submit" class="btn_3">
                                         log in
                                     </button>
+                                    <div id="kakao_id_login">
+                                    	<a href="${kakao_url }"><img alt="/udon/resources/img/kakaopage.png" ></a>
+                                    </div>
                                     <a class="lost_pass" href="#">forget password?</a>
                                 </div>
                             </form>
