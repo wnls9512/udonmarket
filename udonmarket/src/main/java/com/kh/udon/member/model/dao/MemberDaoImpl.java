@@ -40,7 +40,16 @@ public class MemberDaoImpl implements MemberDao
 	@Override
 	public int deleteKeyword(int keyCode) {
 		return session.delete("member.deleteKeyword", keyCode);
+	}
 
+	@Override
+	public int insertMember(Member member) {
+		return session.insert("member.insertMember", member);
+	}
+
+	@Override
+	public Member selectOneMember(String userId) {
+		return session.selectOne("member.selectOneMember", userId);
 	}
 
 }

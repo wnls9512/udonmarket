@@ -42,4 +42,14 @@ public class MemberServiceImpl implements MemberService
 		return memberDao.deleteKeyword(keyCode);
 	}
 
+	@Override
+	public int insertMember(Member member) {
+		return memberDao.insertMember(member);
+	}
+
+	@Override
+	public Member selectOneMember(String userId) {
+		return memberDao.selectOneMember(userId);
+	}
+
 }
