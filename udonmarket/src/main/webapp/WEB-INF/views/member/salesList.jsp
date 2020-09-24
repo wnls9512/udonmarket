@@ -84,7 +84,7 @@ a{text-decoration: none; color: black;}
 						<table class="table table-hover">
 						  <thead>
 						    <tr>
-						    	<th colspan="4">
+						    	<th colspan="5">
 						    	<p class="h6" style="margin-bottom: 0;">판매 중</p>
 						    	</th>
 						    </tr>

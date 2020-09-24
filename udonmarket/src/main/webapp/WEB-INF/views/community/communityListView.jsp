@@ -39,23 +39,56 @@
             <div class="row">
                 <div class="col-lg-8 mb-5 mb-lg-0">
                     <div class="blog_left_sidebar">
+                    
+<%--   <table id="tbl-board" class="table table-striped table-hover">
+		<tr>
+			<th>번호</th>
+			<th>제목</th>
+			<th>작성자</th>
+			<th>작성일</th>
+		</tr>
+		<c:forEach items="${ list }" var="c">
+		<tr>
+			<td>${ c.bCode }</td>
+			<td>${ c.boardTitle }</td>
+			<td>${ c.userId }</td>
+			<td><fmt:formatDate value="${ c.regDate }" type="both"/></td>
+	
+		</tr>
+		</c:forEach>
+	</table>
+              --%> 
+                    <c:forEach items="${ list }" var="c">
+                    
                         <article class="blog_item">
                             <div class="blog_item_img">
                                 <img class="card-img rounded-0" src="${pageContext.request.contextPath}/resources/img/blog/single_blog_1.png" alt="">
                                 <a href="#" class="blog_item_date">
-                                    <h3>15</h3>
-                                    <p>Jan</p>
+                                    <h3></h3>
+                                    <p><fmt:formatDate value="${ c.regDate }" type="both"/></p>
                                 </a>
                             </div>
 
                             <div class="blog_details">
-                            	<a class="genric-btn success-border medium">동네생활이야기</a>
+                            
+                            <c:if test="${ c.categoryCode == 17 }">
+								<a class="genric-btn success-border medium">동네생활이야기</a>
+							</c:if>
+							<c:if test="${ c.categoryCode == 18 }">
+								<a class="genric-btn success-border medium">우리동네질문</a>
+							</c:if>
+							<c:if test="${ c.categoryCode == 19 }">
+								<a class="genric-btn success-border medium">분실/실종센터</a>
+							</c:if>
+							<c:if test="${ c.categoryCode == 20 }">
+								<a class="genric-btn success-border medium">동네사건사고</a>
+							</c:if>
+                            	
                             	<br/><br/>
                                 <a class="d-inline-block" href="${pageContext.request.contextPath }/community/communityDetailView">
-                                    <h2>Google inks pact for new 35-storey office</h2>
+                                    <h2>${ c.boardTitle }</h2>
                                 </a>
-                                <p>That dominion stars lights dominion divide years for fourth have don't stars is that
-                                    he earth it first without heaven in place seed it second morning saying.</p>
+                                <p>${ c.boardContent }</p>
                                 <ul class="blog-info-link">
                                     <li><a href="#"><i class="fa fa-hashtag"></i> 강아지 </a></li>
                                     <li><a href="#"><i class="far fa-comments"></i> 03 Comments</a></li>
@@ -63,101 +96,8 @@
                             </div>
                         </article>
 
-                        <article class="blog_item">
-                            <div class="blog_item_img">
-                                <img class="card-img rounded-0" src="${pageContext.request.contextPath}/resources/img/blog/single_blog_2.png" alt="">
-                                <a href="#" class="blog_item_date">
-                                    <h3>15</h3>
-                                    <p>Jan</p>
-                                </a>
-                            </div>
-
-                            <div class="blog_details">
-                            	<a class="genric-btn success-border medium">우리동네질문</a>
-                            	<br/><br/>
-                                <a class="d-inline-block" href="single-blog.html">
-                                    <h2>Google inks pact for new 35-storey office</h2>
-                                </a>
-                                <p>That dominion stars lights dominion divide years for fourth have don't stars is that
-                                    he earth it first without heaven in place seed it second morning saying.</p>
-                                <ul class="blog-info-link">
-                                    <li><a href="#"><i class="fa fa-hashtag"></i> 고양이</a></li>
-                                    <li><a href="#"><i class="far fa-comments"></i> 03 Comments</a></li>
-                                </ul>
-                            </div>
-                        </article>
-
-                        <article class="blog_item">
-                            <div class="blog_item_img">
-                                <img class="card-img rounded-0" src="${pageContext.request.contextPath}/resources/img/blog/single_blog_3.png" alt="">
-                                <a href="#" class="blog_item_date">
-                                    <h3>15</h3>
-                                    <p>Jan</p>
-                                </a>
-                            </div>
-
-                            <div class="blog_details">
-                            	<a class="genric-btn success-border medium">분실/실종센터</a>
-                            	<br/><br/>
-                                <a class="d-inline-block" href="single-blog.html">
-                                    <h2>Google inks pact for new 35-storey office</h2>
-                                </a>
-                                <p>That dominion stars lights dominion divide years for fourth have don't stars is that
-                                    he earth it first without heaven in place seed it second morning saying.</p>
-                                <ul class="blog-info-link">
-                                    <li><a href="#"><i class="fa fa-hashtag"></i> 건강</a></li>
-                                    <li><a href="#"><i class="far fa-comments"></i> 03 Comments</a></li>
-                                </ul>
-                            </div>
-                        </article>
-
-                        <article class="blog_item">
-                            <div class="blog_item_img">
-                                <img class="card-img rounded-0" src="${pageContext.request.contextPath}/resources/img/blog/single_blog_4.png" alt="">
-                                <a href="#" class="blog_item_date">
-                                    <h3>15</h3>
-                                    <p>Jan</p>
-                                </a>
-                            </div>
-
-                            <div class="blog_details">
-                            	<a class="genric-btn success-border medium">동네사건사고</a>
-                            	<br/><br/>
-                                <a class="d-inline-block" href="single-blog.html">
-                                    <h2>Google inks pact for new 35-storey office</h2>
-                                </a>
-                                <p>That dominion stars lights dominion divide years for fourth have don't stars is that
-                                    he earth it first without heaven in place seed it second morning saying.</p>
-                                <ul class="blog-info-link">
-                                    <li><a href="#"><i class="fa fa-hashtag"></i> 동네맛집</a></li>
-                                    <li><a href="#"><i class="far fa-comments"></i> 03 Comments</a></li>
-                                </ul>
-                            </div>
-                        </article>
-
-                        <article class="blog_item">
-                            <div class="blog_item_img">
-                                <img class="card-img rounded-0" src="${pageContext.request.contextPath}/resources/img/blog/single_blog_5.png" alt="">
-                                <a href="#" class="blog_item_date">
-                                    <h3>15</h3>
-                                    <p>Jan</p>
-                                </a>
-                            </div>
-
-                            <div class="blog_details">
-                            	<a class="genric-btn success-border medium">동네생활이야기</a>
-                            	<br/><br/>
-                                <a class="d-inline-block" href="single-blog.html">
-                                    <h2>Google inks pact for new 35-storey office</h2>
-                                </a>
-                                <p>That dominion stars lights dominion divide years for fourth have don't stars is that
-                                    he earth it first without heaven in place seed it second morning saying.</p>
-                                <ul class="blog-info-link">
-                                    <li><a href="#"><i class="fa fa-hashtag"></i> 동네카페</a></li>
-                                    <li><a href="#"><i class="far fa-comments"></i> 03 Comments</a></li>
-                                </ul>
-                            </div>
-                        </article>
+                       </c:forEach>
+                       
 
                         <nav class="blog-pagination justify-content-center d-flex">
                             <ul class="pagination">
