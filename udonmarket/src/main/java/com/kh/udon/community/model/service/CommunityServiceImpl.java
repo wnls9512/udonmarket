@@ -24,4 +24,9 @@ public class CommunityServiceImpl implements CommunityService
 		return dao.selectOneCommunityCollection(bCode);
 	}
     
+//    @Override
+//   	public Community selectCategory(int categoryCode) {
+//   		return dao.selectCategory(categoryCode);
+//   	}
+    
 }
