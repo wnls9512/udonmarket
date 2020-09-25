@@ -22,4 +22,8 @@ public interface MemberService
 	int insertMember(Member member);
 
 	Member selectOneMember(String userId);
+
+	int selectRadius(String userId);
+
+	int updateRadius(Map<String, Object> map);
 }

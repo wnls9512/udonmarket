@@ -167,25 +167,6 @@ html { font-size: 16px; }
 								</form>
 							</div>
 							<hr />
-							<script>
-								$(function(){
-									$("#btn-changeAddr").click(function(){
-										if(!confirm('현재 위치로 동네를 변경하시겠습니까?')) return;
-										let $addr = $("[name=addr]").val();
-										let $lat = $("[name=lat]").val();
-										let $lon = $("[name=lon]").val();
-										console.log($addr);
-										console.log($lat);
-										console.log($lon);
-
-									 	$("#changeAddr").attr("action", "${ pageContext.request.contextPath }/member/updateAddress")
-										.attr("method", "POST")
-										.submit(); 
-										
-									});
-								});
-							</script>
-							
 							<!-- 지역범위 설정하기 -->						
 							<div style="text-align: center;">
 								 <h5 style="font-weight: bold;
@@ -195,15 +176,15 @@ html { font-size: 16px; }
 							<hr />
 							<div style="text-align: center;">							
 								<label class="box-radio-input">
-									<input type="radio" name="cp_item" value="3">
+									<input type="radio" name="cp_item" value="3" ${radius eq '3' ? 'checked' : '' }>
 									<span>우리 동네 </span>
 								</label>
 								<label class="box-radio-input">
-									<input type="radio" name="cp_item" value="4">
+									<input type="radio" name="cp_item" value="5" ${radius eq '5' ? 'checked' : '' }>
 									<span>이웃 동네</span>
 								</label>
 								<label class="box-radio-input">
-									<input type="radio" name="cp_item" value="5">
+									<input type="radio" name="cp_item" value="7" ${radius eq '7' ? 'checked' : '' }>
 									<span>근처 동네</span>
 								</label>
 							</div>
@@ -221,13 +202,29 @@ html { font-size: 16px; }
 	$(function(){
 
 		//사용자 설정 값 가져와서 넣기
-		local(3);
+		local(${radius});
+//		console.log(${radius});
 
 		//지역 범위 설정 지도에 보여주기
 		$("[name=cp_item]").change(function(){
 			var $level = $("[name=cp_item]:checked").val();
-			console.log("$level : " + $level);
+//			console.log("$level : " + $level);
 			local($level);
+
+			//범위 설정 update 하기
+			$.ajax({
+				url : "${pageContext.request.contextPath}/member/updateRadius",
+				method : "POST",
+				data : {radius : $level}, 
+				dataType : "json",
+				success : function(data){
+					alert("지역 범위를 재설정했어요");										
+				},
+				error : function(xhr, status, err){
+					console.log("처리 실패", xhr, status, err);
+				}
+			});
+			
 		});	
 
 		function local(level){
@@ -235,7 +232,7 @@ html { font-size: 16px; }
 			var mapContainer = document.getElementById('map');
 		 	
 			var	mapOption = { 
-				    center: new kakao.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
+				    center: new kakao.maps.LatLng(37.4969519, 127.0261588), // 지도의 중심좌표
 				    level: level // 지도의 확대 레벨 
 				}; 
 			
@@ -314,8 +311,25 @@ html { font-size: 16px; }
 			}
 		}
 	});	
-</script>
 
+	//위치 변경 버튼 클릭
+	$(function(){
+		$("#btn-changeAddr").click(function(){
+			if(!confirm('현재 위치로 동네를 변경하시겠습니까?')) return;
+			let $addr = $("[name=addr]").val();
+			let $lat = $("[name=lat]").val();
+			let $lon = $("[name=lon]").val();
+//			console.log($addr);
+//			console.log($lat);
+//			console.log($lon);
+
+		 	$("#changeAddr").attr("action", "${ pageContext.request.contextPath }/member/updateAddress")
+			.attr("method", "POST")
+			.submit(); 			
+		});
+	});
+
+</script>
 
 
 <jsp:include page="/WEB-INF/views/common/footer.jsp"/>

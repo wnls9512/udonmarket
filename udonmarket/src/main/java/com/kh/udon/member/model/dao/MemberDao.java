@@ -24,4 +24,8 @@ public interface MemberDao
 
 	Member selectOneMember(String userId);
 
+	int selectRadius(String userId);
+
+	int updateRadius(Map<String, Object> map);
+
 }
