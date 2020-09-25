@@ -106,7 +106,7 @@ html { font-size: 16px; }
 						      		<span class="badge badge-secondary">거래완료</span>
 						      		580,000원
 						      	</p>
-						      	<p>❤ 8  💭 2<br />
+						      	<p><i class="far fa-heart"></i> 8  <i class="far fa-comments"></i> 2<br />
 						      	<div style="margin:10px 0px;">
 						      	<button type="button" class="btn btn-outline-secondary btn-sm"
 						      			style="margin: 0px 0.15rem;">작성한 후기 보기</button>
@@ -129,7 +129,7 @@ html { font-size: 16px; }
 						      		160,000원
 						      	</p>
 						      	<br />
-						      	<p>❤ 8  💭 2<br />
+						      	<p><i class="far fa-heart"></i> 8  <i class="far fa-comments"></i> 2<br />
 						      	<div style="margin:10px 0px;">
 						      	<button type="button" class="btn btn-outline-secondary btn-sm"
 						      			style="margin: 0px 1.5px;">작성한 후기 보기</button>
@@ -152,7 +152,7 @@ html { font-size: 16px; }
 						      		60,000원
 						      	</p>
 						      	<br />
-						      	<p>❤ 8  💭 2<br />
+						      	<p><i class="far fa-heart"></i> 8 <i class="far fa-comments"></i>  2<br />
 						      	<div style="margin:10px 0px;">
 						      	<button type="button" class="btn btn-outline-secondary btn-sm"
 						      			style="margin: 0px 1.5px;">작성한 후기 보기</button>
