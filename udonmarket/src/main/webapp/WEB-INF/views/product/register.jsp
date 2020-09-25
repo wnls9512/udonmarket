@@ -11,6 +11,7 @@
 </jsp:include>
 
 <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/upload.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/modal.css">
 
     <!--================Home Banner Area =================-->
     <!-- breadcrumb start-->
@@ -34,25 +35,27 @@
         <div class="container">
             <div class="row align-items-center">
                 <div class="col-lg-6 col-md-6">
-                    <div class="login_part_text text-center" style="background-image:none; border: 1px solid #ff3368; width:100%;">
+                    <div class="login_part_text text-center" style="background-image:none; border: 1px solid #ff3368; width:100%; padding: 50px 70px;">
                         <div class="login_part_text_iner">
 	                        	<!-- upload image start -->
 	                        	<main class="main_full">
 									<div class="container">
-										<div class="panel">
+										<div class="panel" style="margin-top: 0;">
 											<div class="button_outer">
 												<div class="btn_upload">
 													<input type="file" id="upload_file" name="uploadFile" multiple>
-													Upload Image 0 / 10
+													Upload Image 0 / 5
 												</div>
 												<div class="processing_bar"></div>
 												<div class="success_box"></div>
 											</div>
 										</div>
 										<div class="error_msg"></div>
-										<div class="uploaded_file_view" id="uploaded_view">
-											<span class="file_remove">X</span>
-										</div>
+										<div class="preview popup-gallery" id="preview0"></div>
+										<div class="preview popup-gallery" id="preview1"></div>
+										<div class="preview popup-gallery" id="preview2"></div>
+										<div class="preview popup-gallery" id="preview3"></div>
+										<div class="preview popup-gallery" id="preview4"></div>
 									</div>
 								</main>
 								<!-- upload image end -->
@@ -68,7 +71,7 @@
 											class="single-input-primary">
                                 </div>
                                 <div class="col-md-12 form-group p_star">
-                                	<a href="#" class="genric-btn default-border" style="width: 100%;">카테고리 선택 &nbsp;&nbsp;&nbsp;&nbsp; ></a>
+                                	<button data-toggle="modal" data-target="#modal_aside_left" class="btn btn-primary genric-btn default-border" type="button" style="width: 100%; color: #007bff">카테고리 선택 &nbsp;&nbsp;&nbsp;&nbsp; ></button>
                                 </div>
                                 <div class="col-md-12 form-group">
                                     <div class="creat_account d-flex align-items-center">
@@ -108,13 +111,45 @@
 	            </div>
 	        </div>
     </section>
-
-
+    
+<!-- ====== Category Modal ======  -->
+<div id="modal_aside_left" class="modal fixed-left fade" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-dialog-aside" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Category</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+		<div class="button-group-area mt-40">
+			<c:forEach items="${category }" var="c" varStatus="status">
+			<c:if test="${status.count % 2 == 0}">
+			<a href="#" class="genric-btn primary radius" style="width: 100%;" data-code="${c.categoryCode }">${c.categoryName }</a>
+			</c:if>
+			<c:if test="${status.count % 2 == 1}">
+			<a href="#" class="genric-btn success radius" style="width: 100%;" data-code="${c.categoryCode }">${c.categoryName }</a>
+			</c:if>
+			</c:forEach>
+		</div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div> 
 <script>
 /* ================ file upload start ================*/
+
+var btnUpload = $("#upload_file"),
+	btnOuter = $(".button_outer");
+
 $(function()
 {
-	$("#uploadBtn").on("click", function(e)
+	btnUpload.on("change", function(e)
 	{
 		var formData = new FormData();
 		var inputFile = $("input[name='uploadFile']");
@@ -135,16 +170,20 @@ $(function()
 			contentType: false,
 			data: formData,
 			type: 'POST',
+			dataType: 'json',
 			success: function(result)
 			{
-				alert("Uploaded");
+				console.log(result);
+
+				showUploadedFile(result);
+
+				$(".btn_upload").html("Upload Image " + result.length + " / 5");
 			}	
 		});
 	});
 });
 
-var btnUpload = $("#upload_file"),
-	btnOuter = $(".button_outer");
+
 	
 btnUpload.on("change", function(e)
 {
@@ -161,17 +200,46 @@ btnUpload.on("change", function(e)
 		btnOuter.addClass("file_uploading");
 		setTimeout(function()
 		{
-			btnOuter.addClass("file_uploaded");
+			btnOuter.removeClass("file_uploading");
 		},3000);
-
-		// add thumbnail
-		var uploadedFile = URL.createObjectURL(e.target.files[0]);
-		setTimeout(function()
-		{
-			$("#uploaded_view").append('<img src="'+uploadedFile+'" />').addClass("show");
-		},3500);
 	}
 });
+
+// show thumbnail
+function showUploadedFile(uploadResultArr)
+{
+	var str = "";
+	
+	$(uploadResultArr).each(function(i, obj)
+	{
+		var fileCallPath = encodeURIComponent(obj.uploadPath + "/s_" + obj.uuid + "_" + obj.fileName);
+		var originPath = obj.uploadPath + "\\" + obj.uuid + "_" + obj.fileName;
+		originPath = originPath.replace(new RegExp(/\\/g), "/");
+
+		str += "<a href='${pageContext.request.contextPath}/product/display?fileName=" + originPath + "'>";
+		str += "<img src='${pageContext.request.contextPath}/product/display?fileName=" + fileCallPath + "'></a>";
+
+
+		
+		$("#preview" + i).append(str);
+
+		str = "";
+	});
+
+
+	$.each ($("[id^=preview]"), function (i, el) 
+	{
+		$("#preview" + i).hide();
+		
+		if($("#preview" + i).find($("img")).length)
+		{
+			setTimeout(function()
+			{
+				$("#preview" + i).show();
+			},3500);
+		}
+	});
+}
 
 // remove thumbnail
 $(".file_remove").on("click", function(e)
@@ -181,7 +249,30 @@ $(".file_remove").on("click", function(e)
 	btnOuter.removeClass("file_uploading");
 	btnOuter.removeClass("file_uploaded");
 });
+
+// show original image
+$(document).ready(function() {
+	$('.popup-gallery').magnificPopup({
+		delegate: 'a',
+		type: 'image',
+		tLoading: 'Loading image #%curr%...',
+		mainClass: 'mfp-img-mobile',
+		gallery: {
+			enabled: true,
+			navigateByImgClick: true,
+			preload: [0,1] // Will preload 0 - before current, and 1 after the current image
+		},
+		image: {
+			tError: '<a href="%url%">The image #%curr%</a> could not be loaded.',
+			titleSrc: function(item) {
+				return item.el.attr('title') + '<small>by Marsel Van Oosten</small>';
+			}
+		}
+	});
+});
 /* ================ file upload end ================*/
+
+
 </script>
 
 <jsp:include page="/WEB-INF/views/common/footer.jsp"/>

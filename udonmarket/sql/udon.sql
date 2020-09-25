@@ -247,8 +247,9 @@ create table evaluate
 create table location
 (
     user_id varchar2(50),
-    latitude number(10,6) not null,
-    longitude number(10,6) not null,
+    latitude number(10,6),
+    longitude number(10,6),
+    radius number,
     constraint pk_location primary key(user_id),
     constraint fk_location_user_id foreign key(user_id) references member(user_id)
 );
@@ -359,3 +360,21 @@ insert into category values(seq_category.nextval, 2, '동네생활이야기');
 insert into category values(seq_category.nextval, 2, '우리동네질문');
 insert into category values(seq_category.nextval, 2, '분실/실종센터');
 insert into category values(seq_category.nextval, 2, '동네사건사고');
+
+insert into hashtag values(1, '강아지');
+insert into hashtag values(2, '고양이');
+insert into hashtag values(3, '건강');
+insert into hashtag values(4, '동네맛집');
+insert into hashtag values(5, '동네카페');
+insert into hashtag values(6, '살림/청소/정리');
+insert into hashtag values(7, '식물');
+insert into hashtag values(8, '임신/출산/육아');
+insert into hashtag values(9, '집꾸미기');
+
+insert into board values(SEQ_BOARD_NO.nextval, 'test', 17, '테스트입니다', '안녕하세요 반갑습니다', sysdate, null, 0);
+insert into board values(SEQ_BOARD_NO.nextval, 'test', 18, '질문입니다', '질문질문', sysdate, null, 0);
+insert into board values(SEQ_BOARD_NO.nextval, 'test', 19, '분실됐습니다', '찾아주세요', sysdate, null, 0);
+insert into board values(SEQ_BOARD_NO.nextval, 'test', 20, '사건입니다', '큰일났네요', sysdate, null, 0);
+insert into board values(SEQ_BOARD_NO.nextval, 'test', 17, '장문 테스트', '안녕 오늘도 같은 자리 버스 창가에 기대 앉은 네게 인사를 해 역시 넌 받아 주지를 않네 인기 많고 잘생긴 넌 내게만 그렇게 쌀쌀하게 굴더라', sysdate, null, 0);
+insert into board values(SEQ_BOARD_NO.nextval, 'test', 17, '더 긴 장문 테스트', '중앙방역대책본부는 24일 0시 기준으로 국내 코로나바이러스 감염증(코로나19) 신규 확진자가 125명 늘어 누적 2만3341명이라고 밝혔다. 신규 확진자 수는 전날 110명에 이어 이틀 연속 세 자릿수를 나타냈다. 앞서 국내 신규 확진자는 지난달 14일부터 이달 19일까지 37일 연속 세 자릿수를 기록했었다.', sysdate, null, 0);
+
