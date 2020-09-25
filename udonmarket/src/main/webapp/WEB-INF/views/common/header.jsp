@@ -87,7 +87,15 @@
                             <a href="#" id="bell"><i class="ti-bell"></i></a>
                             <a href="${pageContext.request.contextPath }/chat/chatListView"><i class="ti-comments-smiley"></i></a>
                             <a href="${pageContext.request.contextPath }/member/mypage"><i class="ti-user"></i></a>
-                            <a href="${pageContext.request.contextPath }/member/loginForm"><i class="ti-power-off"></i></a>
+                            
+                            <c:if test="${empty loginMember }">
+	                            <a href="${pageContext.request.contextPath }/member/loginForm"><i class="ti-power-off"></i></a>
+                            </c:if>
+                            <c:if test="${not empty loginMember }">
+                            	<span>${ loginMember.userId}</span>님, 반갑습니다. 
+                            	<a href="${pageContext.request.contextPath }/member/logout">로그아웃<i class="ti-power-off"></i></a>
+                            </c:if>f
+                            
                         </div>
                         
                         <div class="notifications" id="box">

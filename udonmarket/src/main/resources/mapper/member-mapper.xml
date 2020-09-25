@@ -47,4 +47,22 @@
 		key_code = #{keyCode}
 </delete>
 
+<insert id="insertMember">
+	insert into member
+	values(#{userId},#{password},#{email},#{nickName},#{address},null,null,default,default,default)
+
+</insert>
+
+<select id="selectOneMember" resultMap="memberMap">
+	select *
+	from member
+	where user_id = #{userId}
+</select>
+<resultMap type="member" id="memberMap">
+
+
+</resultMap>
+
+
+
 </mapper>

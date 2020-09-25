@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.kh.udon.member.model.vo.Keyword;
 import com.kh.udon.member.model.vo.Location;
+import com.kh.udon.member.model.vo.Member;
 
 public interface MemberService
 {
@@ -17,4 +18,8 @@ public interface MemberService
 	int selectTotalKeywordContent(String userId);
 
 	int deleteKeyword(int keyCode);
+
+	int insertMember(Member member);
+
+	Member selectOneMember(String userId);
 }
