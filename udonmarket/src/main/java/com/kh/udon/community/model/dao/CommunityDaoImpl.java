@@ -26,5 +26,11 @@ public class CommunityDaoImpl implements CommunityDao
 	public Community selectOneCommunityCollection(int bCode) {
 		return session.selectOne("community.selectOneCommunityCollection", bCode);
 	}
+    
+//    @Override
+//	public Community selectCategory(int categoryCode) {
+//		return session.selectOne("community.selectCategory", categoryCode);
+//	}
+    
 
 }

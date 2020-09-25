@@ -12,6 +12,8 @@ public interface CommunityService
 	
 	Community selectOneCommunityCollection(int bCode);
 
+//	Community selectCategory(int categoryCode);
+
 //	int selectBoardTotalContents();
 	
 }
