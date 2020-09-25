@@ -5,23 +5,29 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-import javax.swing.plaf.multi.MultiFileChooserUI;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.kh.udon.product.model.service.ProductService;
 import com.kh.udon.product.model.vo.ProductCategory;
+import com.kh.udon.product.model.vo.ProductPhotoDTO;
 
 import lombok.extern.slf4j.Slf4j;
 import net.coobird.thumbnailator.Thumbnailator;
@@ -97,14 +103,16 @@ public class ProductController
     public void register() {}
     
     // 상품 등록
-    @PostMapping("/register")
-    public void register(MultipartFile[] uploadFile)
+    @PostMapping(value = "/register", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ResponseBody
+    public ResponseEntity<List<ProductPhotoDTO>> register(MultipartFile[] uploadFile)
     {
-        
+        List<ProductPhotoDTO> list = new ArrayList<ProductPhotoDTO>();
         String uploadFolder = "C:\\upload";
         
+        String uploadFolderPath = getFolder();
         // make 'yyyy/MM/dd folder
-        File uploadPath = new File(uploadFolder, getFolder());
+        File uploadPath = new File(uploadFolder, uploadFolderPath);
         
         if(uploadPath.exists() == false)
             uploadPath.mkdirs();
@@ -112,38 +120,42 @@ public class ProductController
         // save files
         for(MultipartFile multipartFile : uploadFile)
         {
-            log.debug("Upload File Name = {}", multipartFile.getOriginalFilename());
-            log.debug("Upload File Size = {}", multipartFile.getSize());
-            
+            ProductPhotoDTO photoDTO = new ProductPhotoDTO();
             String uploadFileName = multipartFile.getOriginalFilename();
             
             // IE has file path
             uploadFileName = uploadFileName.substring(uploadFileName.lastIndexOf("\\") + 1);
-            
-            log.debug("only file name = {}", uploadFileName);
+            photoDTO.setFileName(uploadFileName);
             
             UUID uuid = UUID.randomUUID();
             uploadFileName = uuid.toString() + "_" + uploadFileName;
-            
             
             try
             {
                 File saveFile = new File(uploadPath, uploadFileName);
                 multipartFile.transferTo(saveFile);
                 
+                photoDTO.setUuid(uuid.toString());
+                photoDTO.setUploadPath(uploadFolderPath);
+                
                 // check image type file
                 if(checkImageType(saveFile))
                 {
                     FileOutputStream thumbnail = new FileOutputStream(new File(uploadPath, "s_" + uploadFileName));
-                    Thumbnailator.createThumbnail(multipartFile.getInputStream(), thumbnail, 100, 100);
+                    Thumbnailator.createThumbnail(multipartFile.getInputStream(), thumbnail, 200, 200);
                     thumbnail.close();
                 }
+                
+                list.add(photoDTO);
+                
             }
             catch (Exception e)
             {
                 log.error(e.getMessage());
             }
         }
+        
+        return new ResponseEntity<List<ProductPhotoDTO>>(list, HttpStatus.OK);
     }
     
     // 폴더 생성 메소드
@@ -171,6 +183,34 @@ public class ProductController
         }
         
         return false;
+    }
+    
+    // 썸네일 데이터 전송
+    @GetMapping("/display")
+    @ResponseBody
+    public ResponseEntity<byte[]> getFile(String fileName)
+    {
+        log.debug("fileName = {}", fileName);
+        
+        File file = new File("c:\\upload\\" + fileName);
+        
+        log.debug("file = {}", file);
+        
+        ResponseEntity<byte[]> result = null;
+
+        HttpHeaders header = new HttpHeaders();
+        
+        try
+        {
+            header.add("Content-Type", Files.probeContentType(file.toPath()));
+            result = new ResponseEntity<byte[]>(FileCopyUtils.copyToByteArray(file), header, HttpStatus.OK);
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+        
+        return result;
     }
     
     @RequestMapping("/productDetailView")

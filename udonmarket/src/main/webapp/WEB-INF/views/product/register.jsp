@@ -51,7 +51,7 @@
 										</div>
 										<div class="error_msg"></div>
 										<div class="uploaded_file_view" id="uploaded_view">
-											<span class="file_remove">X</span>
+											<ul style="list-style-type: none !important;"></ul>
 										</div>
 									</div>
 								</main>
@@ -112,9 +112,13 @@
 
 <script>
 /* ================ file upload start ================*/
+
+var btnUpload = $("#upload_file"),
+	btnOuter = $(".button_outer");
+
 $(function()
 {
-	$("#uploadBtn").on("click", function(e)
+	btnUpload.on("change", function(e)
 	{
 		var formData = new FormData();
 		var inputFile = $("input[name='uploadFile']");
@@ -135,16 +139,20 @@ $(function()
 			contentType: false,
 			data: formData,
 			type: 'POST',
+			dataType: 'json',
 			success: function(result)
 			{
-				alert("Uploaded");
+				console.log(result);
+
+				showUploadedFile(result);
+
+				$(".btn_upload").html("Upload Image " + result.length + " / 10");
 			}	
 		});
 	});
 });
 
-var btnUpload = $("#upload_file"),
-	btnOuter = $(".button_outer");
+
 	
 btnUpload.on("change", function(e)
 {
@@ -161,17 +169,39 @@ btnUpload.on("change", function(e)
 		btnOuter.addClass("file_uploading");
 		setTimeout(function()
 		{
-			btnOuter.addClass("file_uploaded");
+			btnOuter.removeClass("file_uploading");
 		},3000);
 
 		// add thumbnail
-		var uploadedFile = URL.createObjectURL(e.target.files[0]);
+		
+		/* var uploadedFile = URL.createObjectURL(e.target.files[0]);
 		setTimeout(function()
 		{
 			$("#uploaded_view").append('<img src="'+uploadedFile+'" />').addClass("show");
-		},3500);
+		},3500); */
 	}
 });
+
+// show thumbnail
+
+function showUploadedFile(uploadResultArr)
+{
+	var str = "";
+	
+	$(uploadResultArr).each(function(i, obj)
+	{
+		var fileCallPath = encodeURIComponent(obj.uploadPath + "/s_" + obj.uuid + "_" + obj.fileName);
+		
+		str += "<li><img src='${pageContext.request.contextPath}/product/display?fileName=" + fileCallPath + "'></li>";
+		
+	});
+
+	setTimeout(function()
+	{
+		$("#uploaded_view").append(str).addClass("show");;
+	},3500);
+
+}
 
 // remove thumbnail
 $(".file_remove").on("click", function(e)
