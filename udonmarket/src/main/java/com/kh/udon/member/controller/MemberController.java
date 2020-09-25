@@ -145,6 +145,20 @@ public class MemberController
     	return "member/FAQ";
     }
     
+    //공지 사항
+    @RequestMapping("/announce")
+    public String announce()
+    {
+    	return "member/announce";
+    }
+    
+    //관심 주제 목록
+    @RequestMapping("/interList")
+    public String interList()
+    {
+    	return "member/interList";
+    }
+    	
     //나의 키워드 알림 설정
     @RequestMapping(value = "/keywordNoti",
     				method = RequestMethod.GET)
@@ -233,13 +247,24 @@ public class MemberController
     	return "redirect:/member/settingsArea";
     }
     
-    //받은 거래 후기
-    @RequestMapping("/myReviewList")
-    public String myReviewList(){
-    	return "member/myReviewList";
+    //동네생활 댓글
+    @RequestMapping("/myComment")
+    public String mycomment()
+    {
+    	return "member/myComment";
     }
     
+    //동네생활 게시글
+    @RequestMapping("/myPost")
+    public String mypost()
+    {
+    	return "member/myPost";
+    }
     
-    
-    
+    //받은 거래 후기
+    @RequestMapping("/myReviewList")
+    public String myReviewList()
+    {
+    	return "member/myReviewList";
+    }  
 }

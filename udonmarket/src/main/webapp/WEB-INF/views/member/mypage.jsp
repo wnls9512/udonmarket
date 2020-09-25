@@ -99,13 +99,13 @@ a{text-decoration: none; color: black;}
 	                <div class="p-4 rounded shadow-sm bg-light">
 				        <!-- Vertical Menu-->
 				        <nav class="nav flex-column bg-white shadow-sm rounded p-3">
-				          <a href="#" class="nav-link px-4 rounded-pill">
+				          <a href="${pageContext.request.contextPath}/member/myPost" class="nav-link px-4 rounded-pill">
 	                           <i class="far fa-edit"></i>&nbsp; 동네생활 글
 	                      </a>
-				          <a href="#" class="nav-link px-4 rounded-pill">
+				          <a href="${pageContext.request.contextPath}/member/myComment" class="nav-link px-4 rounded-pill">
 		                      <i class="far fa-comment-dots"></i>&nbsp; 동네생활 댓글
 	                      </a>
-				          <a href="#" class="nav-link px-4 rounded-pill">
+				          <a href="${pageContext.request.contextPath}/member/interList" class="nav-link px-4 rounded-pill">
 		                      <i class="far fa-star"></i>&nbsp; 관심 주제 목록
 	                      </a>
 				        </nav>
@@ -121,7 +121,7 @@ a{text-decoration: none; color: black;}
 				          <a href="#" class="nav-link px-4 rounded-pill">
 		                      <i class="fas fa-share-alt"></i>&nbsp; 당근마켓 공유
 	                      </a>
-				          <a href="#" class="nav-link px-4 rounded-pill">
+				          <a href="${pageContext.request.contextPath}/member/announce" class="nav-link px-4 rounded-pill">
 		                      <i class="far fa-flag"></i>&nbsp; 공지사항
 	                      </a>
 				          <a href="${pageContext.request.contextPath}/member/FAQ" class="nav-link px-4 rounded-pill">
