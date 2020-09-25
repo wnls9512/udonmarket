@@ -10,4 +10,6 @@ public interface CommunityDao
 
 	List<Community> selectCommunityList();
 	
+	Community selectOneCommunityCollection(int bCode);
+	
 }

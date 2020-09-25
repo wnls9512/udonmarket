@@ -18,4 +18,10 @@ public class CommunityServiceImpl implements CommunityService
 	public List<Community> selectCommunityList() {
 		return dao.selectCommunityList();
 	}
+    
+    @Override
+	public Community selectOneCommunityCollection(int bCode) {
+		return dao.selectOneCommunityCollection(bCode);
+	}
+    
 }

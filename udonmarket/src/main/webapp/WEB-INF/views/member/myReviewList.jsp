@@ -142,89 +142,57 @@ html { font-size: 16px; }
 				        <!-- Vertical Menu-->
 				        <nav class="nav flex-column bg-white shadow-sm rounded p-3">
 						<div>
-							<hr />
+						<hr />
 							<div style="text-align: center; ">
 								<h5 style="font-weight: bold;
-									  		color: #575757;">키워드 알림 설정</h5> 		
+									  		color: #575757;">받은 매너 평가</h5> 		
 							    <p id="myLocal" style=" color: #575757;"></p>
 							</div>
 							<hr />							  
-							<div>
+							
+							<div style="text-align: center;">
+							<p>53245 명 친절하고 매너가 좋아요 </p>				
+							<p>53245 명 친절하고 매너가 좋아요 </p>				
+							<p>53245 명 친절하고 매너가 좋아요 </p>				
+							</div>
+							<hr />
+							
+							<!-- 지역범위 설정하기 -->						
+							<div style="text-align: center;">
 								 <h5 style="font-weight: bold;
-									  		color: #575757;">키워드 알림</h5>
-								 <p style="color: #575757;">키워드를 등록해두면, 해당 키워드와 관련된 판매글이 올라올때 푸시 알림을 받을 수 있어요.</p>
-								 <a href="#" style="color: #007bff;">혹시 키워드 알림이 오지 않나요?</a>
+									  		color: #575757;">받은 거래 후기(12)</h5>
 							</div>
-							<br />
-							<form action="" class="insertKeyword">
-								<div class="input-group mb-3">
-								  <input type="text" 
-								  		 name="keyword"
-								  		 class="form-control" 
-								  		 placeholder="키워드를 입력해주세요." 
-								  		 aria-label="Recipient's username" 
-								  		 aria-describedby="basic-addon2">
-								  <!-- value = 로그인 중인 유저 아이디 -->
-								  <input type="hidden" name="userId" value="" />
-								  <div class="input-group-append">
-							      <input type="submit" 
-							    	     class="btn btn-outline-secondary" 
-							    	     value="등록" />
-								  </div>
-								</div>
-							</form>
-							<br />
-							<p>등록된 키워드  <mark style="color: red; background: white;">${totalKeywordContents}</mark>/ 30</p>
-							<div>
-								<c:if test="${ not empty list }">
-									<c:forEach items="${ list }" var="key">
-										<h5 id="keywordList" style="display: inline-block;">
-											<span class="btn btn-outline-primary btn-sm">${key.keyContent}
-											<button type="button" 
-													onclick="deleteKey('${ key.keyCode }')"
-													style="background: none; border: none;">x</button>
-											</span>
-										</h5>							
-									</c:forEach>
-								</c:if>
-								<c:if test="${ empty list }"></c:if>
+							<div style="text-align: center;">							
+								<table class="table table-hover">
+								  <tbody>
+								    <tr>
+								       <td colspan="3">
+								       		<p>익명 사용자</p>
+									      	<p style="font-size: 1rem;">잘 받았습니다 저희 집 근처까지 와주셔서 편하게 거래했어요</p>
+									      	<p style="color: #545454; font-size: 0.9rem;">9월 24일</p>
+									      	<br />
+								       </td>
+								      <td scope="row">
+								      	<a href="#">
+								      		<img src="/udon/resources/img/product/product/feature-product/f-p-1.jpg" 
+								      			 class="img-fluid" alt="product"
+								      			 style="max-height: 200px;">
+								      	</a>
+								       </td>
+								      </tr>
+						  		</tbody>
+								</table>
 							</div>
-						</div>													
+						</div>
 				        </nav>
 	                </div>
 	            </div>
 	        </div>
 	    </div>
 	</div>
-<script>
-function deleteKey(key){
-	location.href = "${ pageContext.request.contextPath }/member/deleteKeyword?key=" + key;
-}
-
-$(".insertKeyword").submit(function(){
-
-	//중복검사
-	
-	
- 	$.ajax({
-		url : "${pageContext.request.contextPath}/member/insertKeyword",
-		method : "POST",
-		data : {
-			userId : $("[name=userId]").val(),
-			keyword : $("[name=keyword]").val()
-		}, 
-		dataType : "json",
-		success : function(data){
-			console.log("처리 성공", data.userId, data.keyword);
-			
-		},
-		error : function(xhr, status, err){
-			console.log("처리 실패", xhr, status, err);
-		}
-	}); 
-	
-});
-</script>
 
 <jsp:include page="/WEB-INF/views/common/footer.jsp"/>
+	
+	
+	
 	

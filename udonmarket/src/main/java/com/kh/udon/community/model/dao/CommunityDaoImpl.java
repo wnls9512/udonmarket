@@ -21,4 +21,10 @@ public class CommunityDaoImpl implements CommunityDao
 //		RowBounds rowBounds = new RowBounds();
 		return session.selectList("community.selectCommunityList");
 	}
+    
+    @Override
+	public Community selectOneCommunityCollection(int bCode) {
+		return session.selectOne("community.selectOneCommunityCollection", bCode);
+	}
+
 }

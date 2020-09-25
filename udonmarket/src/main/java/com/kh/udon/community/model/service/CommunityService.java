@@ -9,6 +9,8 @@ public interface CommunityService
 {
 
 	List<Community> selectCommunityList();
+	
+	Community selectOneCommunityCollection(int bCode);
 
 //	int selectBoardTotalContents();
 	

@@ -18,8 +18,19 @@
                 <div class="col-lg-8">
                     <div class="breadcrumb_iner">
                         <div class="breadcrumb_iner_item">
-                            <h2>게시글 제목</h2>
-							<h3>동네사건사고</h3>
+                            <h2>${ community.boardTitle }</h2>
+                            <c:if test="${ community.categoryCode == 17 }">
+								<h3>동네생활이야기</h3>
+							</c:if>
+							<c:if test="${ community.categoryCode == 18 }">
+								<h3>우리동네질문</h3>
+							</c:if>
+							<c:if test="${ community.categoryCode == 19 }">
+								<h3>분실/실종센터</h3>
+							</c:if>
+							<c:if test="${ community.categoryCode == 20 }">
+								<h3>동네사건사고</h3>
+							</c:if>
                         </div>
                     </div>
                 </div>
@@ -38,54 +49,53 @@
             <div class="col-lg-8 posts-list">
                <div class="single-post">
                   <div class="feature-img">
-                     <img class="img-fluid" src="${pageContext.request.contextPath}/resources/img/blog/single_blog_1.png" alt="">
+                     <img class="img-fluid" src="${pageContext.request.contextPath}/resources/img/blog/no_img.png" alt="">
                   </div>
                   <div class="blog_details">
-                   	 <a class="genric-btn success-border medium">동네생활이야기</a>
+							<c:if test="${ community.categoryCode == 17 }">
+								<a class="genric-btn success-border medium">동네생활이야기</a>
+							</c:if>
+							<c:if test="${ community.categoryCode == 18 }">
+								<a class="genric-btn success-border medium">우리동네질문</a>
+							</c:if>
+							<c:if test="${ community.categoryCode == 19 }">
+								<a class="genric-btn success-border medium">분실/실종센터</a>
+							</c:if>
+							<c:if test="${ community.categoryCode == 20 }">
+								<a class="genric-btn success-border medium">동네사건사고</a>
+							</c:if>
                    	 <br/><br/>
-                     <h2>Second divided from form fish beast made every of seas
-                        all gathered us saying he our
+                     <h2>
+                     	${ community.boardTitle }
                      </h2>
+                     <h6><fmt:formatDate value="${ community.regDate }"/></h6>
+                     <br />
+                     <p class="excert">
+                        ${ community.boardContent }
+                     </p>
                      <ul class="blog-info-link mt-3 mb-4">
                         <li><a href="#"><i class="fa fa-hashtag"></i> 강아지 </a></li>
-                        <li><a href="#"><i class="far fa-comments"></i> 03 Comments</a></li>
                      </ul>
-                     <p class="excert">
-                        MCSE boot camps have its supporters and its detractors. Some people do not understand why you
-                        should have to spend money on boot camp when you can get the MCSE study materials yourself at a
-                        fraction of the camp price. However, who has the willpower
-                     </p>
-                     <p>
-                        MCSE boot camps have its supporters and its detractors. Some people do not understand why you
-                        should have to spend money on boot camp when you can get the MCSE study materials yourself at a
-                        fraction of the camp price. However, who has the willpower to actually sit through a
-                        self-imposed MCSE training. who has the willpower to actually
-                     </p>
-                     <div class="quote-wrapper">
-                        <div class="quotes">
-                           MCSE boot camps have its supporters and its detractors. Some people do not understand why you
-                           should have to spend money on boot camp when you can get the MCSE study materials yourself at
-                           a fraction of the camp price. However, who has the willpower to actually sit through a
-                           self-imposed MCSE training.
-                        </div>
+                     
+                     <a href="#">
+                     <div class="blog-author" style="width: 100%;/*  margin:0 auto; */ margin-top: 5px; /* background-color: white; */">
+                  <div class="media align-items-center" >
+                     <img src="${pageContext.request.contextPath}/resources/img/blog/author.png" alt="">
+                     <div class="media-body">
+                        
+                           <h4>닉네임</h4>
+                        
+                        <p>서울시 강남구 논현동</p>
                      </div>
-                     <p>
-                        MCSE boot camps have its supporters and its detractors. Some people do not understand why you
-                        should have to spend money on boot camp when you can get the MCSE study materials yourself at a
-                        fraction of the camp price. However, who has the willpower
-                     </p>
-                     <p>
-                        MCSE boot camps have its supporters and its detractors. Some people do not understand why you
-                        should have to spend money on boot camp when you can get the MCSE study materials yourself at a
-                        fraction of the camp price. However, who has the willpower to actually sit through a
-                        self-imposed MCSE training. who has the willpower to actually
-                     </p>
+                  </div>
+               </div>
+               </a>
+                  
                   </div>
                </div>
                <div class="navigation-top">
                   <div class="d-sm-flex justify-content-between text-center">
-                     <p class="like-info"><span class="align-middle"><a href="#"><i class="far fa-heart"></i></a></span> Lily and 4
-                        people like this</p>
+                     <p class="like-info"><span class="align-middle"><a href="#"><i class="far fa-heart"></i></a></span> 4명의 이웃이 이 게시글을 좋아합니다. </p>
                      <div class="col-sm-4 text-center my-2 my-sm-0">
                         <!-- <p class="comment-count"><span class="align-middle"><i class="far fa-comment"></i></span> 06 Comments</p> -->
                      </div>
@@ -106,18 +116,18 @@
                               </a>
                            </div>
                            <div class="detials">
-                              <p>Prev Post</p>
+                              <p>이전 게시글</p>
                               <a href="#">
-                                 <h4>Space The Final Frontier</h4>
+                                 <h4>ㅎㅎ</h4>
                               </a>
                            </div>
                         </div>
                         <div
                            class="col-lg-6 col-md-6 col-12 nav-right flex-row d-flex justify-content-end align-items-center">
                            <div class="detials">
-                              <p>Next Post</p>
+                              <p>다음 게시글</p>
                               <a href="#">
-                                 <h4>Telescopes 101</h4>
+                                 <h4>ㅋㅋ</h4>
                               </a>
                            </div>
                            <div class="arrow">
@@ -134,20 +144,9 @@
                      </div>
                   </div>
                </div>
-               <div class="blog-author">
-                  <div class="media align-items-center">
-                     <img src="${pageContext.request.contextPath}/resources/img/blog/author.png" alt="">
-                     <div class="media-body">
-                        <a href="#">
-                           <h4>Harvard milan</h4>
-                        </a>
-                        <p>Second divided from form fish beast made. Every of seas all gathered use saying you're, he
-                           our dominion twon Second divided from</p>
-                     </div>
-                  </div>
-               </div>
+               
                <div class="comments-area">
-                  <h4>05 Comments</h4>
+                  <h4>댓글 <span style="color: red">3</span></h4>
                   <div class="comment-list">
                      <div class="single-comment justify-content-between d-flex">
                         <div class="user justify-content-between d-flex">
@@ -156,19 +155,16 @@
                            </div>
                            <div class="desc">
                               <p class="comment">
-                                 Multiply sea night grass fourth day sea lesser rule open subdue female fill which them
-                                 Blessed, give fill lesser bearing multiply sea night grass fourth day sea lesser
+                                	댓글내용
                               </p>
                               <div class="d-flex justify-content-between">
                                  <div class="d-flex align-items-center">
                                     <h5>
-                                       <a href="#">Emilly Blunt</a>
+                                       <a href="#">닉네임</a>
                                     </h5>
-                                    <p class="date">December 4, 2017 at 3:12 pm </p>
-                                    &nbsp;&nbsp;
-                                    <a href="#"><i class="far fa-heart"></i></a>
-                                    &nbsp;&nbsp;
-                                    <a href="#"><i class="fas fa-ellipsis-h"></i></a>(신고하기)
+                                    <p class="date"> 2020. 09. 24 </p>
+                                      &nbsp;&nbsp; &nbsp;&nbsp;
+                                    <a href="#">신고하기</a>
                                  </div>
                                  <div class="reply-btn">
                                     <a href="#" class="btn-reply text-uppercase">reply</a>
@@ -182,23 +178,20 @@
                      <div class="single-comment justify-content-between d-flex">
                         <div class="user justify-content-between d-flex">
                            <div class="thumb">
-                              <img src="${pageContext.request.contextPath}/resources/img/comment/comment_2.png" alt="">
+                              <img src="${pageContext.request.contextPath}/resources/img/comment/comment_1.png" alt="">
                            </div>
                            <div class="desc">
                               <p class="comment">
-                                 Multiply sea night grass fourth day sea lesser rule open subdue female fill which them
-                                 Blessed, give fill lesser bearing multiply sea night grass fourth day sea lesser
+                                	댓글내용
                               </p>
                               <div class="d-flex justify-content-between">
                                  <div class="d-flex align-items-center">
                                     <h5>
-                                       <a href="#">Emilly Blunt</a>
+                                       <a href="#">닉네임</a>
                                     </h5>
-                                    <p class="date">December 4, 2017 at 3:12 pm </p>
-                                    &nbsp;&nbsp;
-                                    <a href="#"><i class="far fa-heart"></i></a>
-                                    &nbsp;&nbsp;
-                                    <a href="#"><i class="fas fa-ellipsis-h"></i></a>
+                                    <p class="date"> 2020. 09. 24 </p>
+                                      &nbsp;&nbsp; &nbsp;&nbsp;
+                                    <a href="#">신고하기</a>
                                  </div>
                                  <div class="reply-btn">
                                     <a href="#" class="btn-reply text-uppercase">reply</a>
@@ -212,23 +205,20 @@
                      <div class="single-comment justify-content-between d-flex">
                         <div class="user justify-content-between d-flex">
                            <div class="thumb">
-                              <img src="${pageContext.request.contextPath}/resources/img/comment/comment_3.png" alt="">
+                              <img src="${pageContext.request.contextPath}/resources/img/comment/comment_1.png" alt="">
                            </div>
                            <div class="desc">
                               <p class="comment">
-                                 Multiply sea night grass fourth day sea lesser rule open subdue female fill which them
-                                 Blessed, give fill lesser bearing multiply sea night grass fourth day sea lesser
+                                	댓글내용
                               </p>
                               <div class="d-flex justify-content-between">
                                  <div class="d-flex align-items-center">
                                     <h5>
-                                       <a href="#">Emilly Blunt</a>
+                                       <a href="#">닉네임</a>
                                     </h5>
-                                    <p class="date">December 4, 2017 at 3:12 pm </p>
-                                    &nbsp;&nbsp;
-                                    <a href="#"><i class="far fa-heart"></i></a>
-                                    &nbsp;&nbsp;
-                                    <a href="#"><i class="fas fa-ellipsis-h"></i></a>
+                                    <p class="date"> 2020. 09. 24 </p>
+                                      &nbsp;&nbsp; &nbsp;&nbsp;
+                                    <a href="#">신고하기</a>
                                  </div>
                                  <div class="reply-btn">
                                     <a href="#" class="btn-reply text-uppercase">reply</a>
@@ -240,41 +230,49 @@
                   </div>
                </div>
                <div class="comment-form">
-                  <h4>Leave a Reply</h4>
                   <form class="form-contact comment_form" action="#" id="commentForm">
                      <div class="row">
                         <div class="col-12">
                            <div class="form-group">
-                              <textarea class="form-control w-100" name="comment" id="comment" cols="30" rows="9"
-                                 placeholder="Write Comment"></textarea>
+                              <textarea class="form-control w-100" name="comment" id="comment" cols="30" rows="5"
+                                 placeholder="댓글 작성 시 타인에 대한 배려와 책임을 담아주세요."></textarea>
                            </div>
                         </div>
                      </div>
                      <div class="form-group mt-3">
-                        <a href="#" class="btn_3 button-contactForm">Leave Comment</a>
+                        <a href="#" class="btn_3 button-contactForm">댓글 작성</a>
                      </div>
                   </form>
                </div>
             </div>
             <div class="col-lg-4">
-               <div class="blog_right_sidebar">
-                  <aside class="single_sidebar_widget search_widget">
-                     <form action="#">
-                        <div class="form-group">
-                           <div class="input-group mb-3">
-                              <input type="text" class="form-control" placeholder='Search Keyword'
-                                 onfocus="this.placeholder = ''" onblur="this.placeholder = 'Search Keyword'">
-                              <div class="input-group-append">
-                                 <button class="btn" type="button"><i class="ti-search"></i></button>
-                              </div>
-                           </div>
-                        </div>
-                        <button class="button rounded-0 primary-bg text-white w-100 btn_1" type="submit">Search</button>
-                     </form>
-                  </aside>
+                    <div class="blog_right_sidebar">
+                    		<form action="#">
+                                <button  class="button rounded-0 primary-bg text-white w-100 btn_1"
+                                    type="button" >게시글 작성하기</button>
+                            </form>
+                            <br /> 	
+                        <aside class="single_sidebar_widget search_widget">
+                        	
+                        
+                            <form action="#">
+                                <div class="form-group">
+                                    <div class="input-group mb-3">
+                                        <input type="text" class="form-control" placeholder='키워드를 검색해주세요'
+                                            onfocus="this.placeholder = ''"
+                                            onblur="this.placeholder = 'Search Keyword'">
+                                        <div class="input-group-append">
+                                            <button class="btn" type="button"><i class="ti-search"></i></button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <button class="button rounded-0 primary-bg text-white w-100 btn_1"
+                                    type="submit">검색하기</button>
+                            </form>
+                        </aside>
 
                         <aside class="single_sidebar_widget post_category_widget">
-                            <h4 class="widget_title">Category</h4>
+                            <h4 class="widget_title">카테고리</h4>
                             <ul class="list cat-list">
                                 <li>
                                     <a href="#" class="d-flex">
@@ -303,47 +301,47 @@
                             </ul>
                         </aside>
 
-                  <aside class="single_sidebar_widget popular_post_widget">
-                     <h3 class="widget_title">Recent Post</h3>
-                     <div class="media post_item">
-                        <img src="${pageContext.request.contextPath}/resources/img/post/post_1.png" alt="post">
-                        <div class="media-body">
-                           <a href="single-blog.html">
-                              <h3>From life was you fish...</h3>
-                           </a>
-                           <p>January 12, 2019</p>
-                        </div>
-                     </div>
-                     <div class="media post_item">
-                        <img src="${pageContext.request.contextPath}/resources/img/post/post_2.png" alt="post">
-                        <div class="media-body">
-                           <a href="single-blog.html">
-                              <h3>The Amazing Hubble</h3>
-                           </a>
-                           <p>02 Hours ago</p>
-                        </div>
-                     </div>
-                     <div class="media post_item">
-                        <img src="${pageContext.request.contextPath}/resources/img/post/post_3.png" alt="post">
-                        <div class="media-body">
-                           <a href="single-blog.html">
-                              <h3>Astronomy Or Astrology</h3>
-                           </a>
-                           <p>03 Hours ago</p>
-                        </div>
-                     </div>
-                     <div class="media post_item">
-                        <img src="${pageContext.request.contextPath}/resources/img/post/post_4.png" alt="post">
-                        <div class="media-body">
-                           <a href="single-blog.html">
-                              <h3>Asteroids telescope</h3>
-                           </a>
-                           <p>01 Hours ago</p>
-                        </div>
-                     </div>
-                  </aside>
+                        <aside class="single_sidebar_widget popular_post_widget">
+                            <h3 class="widget_title">최근 게시글</h3>
+                            <div class="media post_item">
+                                <img src="${pageContext.request.contextPath}/resources/img/post/post_1.png" alt="post">
+                                <div class="media-body">
+                                    <a href="single-blog.html">
+                                        <h3>From life was you fish...</h3>
+                                    </a>
+                                    <p>January 12, 2019</p>
+                                </div>
+                            </div>
+                            <div class="media post_item">
+                                <img src="${pageContext.request.contextPath}/resources/img/post/post_2.png" alt="post">
+                                <div class="media-body">
+                                    <a href="single-blog.html">
+                                        <h3>The Amazing Hubble</h3>
+                                    </a>
+                                    <p>02 Hours ago</p>
+                                </div>
+                            </div>
+                            <div class="media post_item">
+                                <img src="${pageContext.request.contextPath}/resources/img/post/post_3.png" alt="post">
+                                <div class="media-body">
+                                    <a href="single-blog.html">
+                                        <h3>Astronomy Or Astrology</h3>
+                                    </a>
+                                    <p>03 Hours ago</p>
+                                </div>
+                            </div>
+                            <div class="media post_item">
+                                <img src="${pageContext.request.contextPath}/resources/img/post/post_4.png" alt="post">
+                                <div class="media-body">
+                                    <a href="single-blog.html">
+                                        <h3>Asteroids telescope</h3>
+                                    </a>
+                                    <p>01 Hours ago</p>
+                                </div>
+                            </div>
+                        </aside>
                         <aside class="single_sidebar_widget tag_cloud_widget">
-                            <h4 class="widget_title">Tag</h4>
+                            <h4 class="widget_title">태그</h4>
                             <ul class="list">
                                 <li>
                                     <a href="#">강아지</a>
@@ -374,8 +372,9 @@
                                 </li>
                             </ul>
                         </aside>
-               </div>
-            </div>
+
+                    </div>
+                </div>
          </div>
       </div>
    </section>

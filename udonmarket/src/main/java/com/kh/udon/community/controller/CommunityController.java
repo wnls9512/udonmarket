@@ -50,14 +50,18 @@ public class CommunityController
 				//3. view단 처리
 //				mav.addObject("totalContents", totalContents);
 				model.addAttribute("list", list);
-//				mav.setViewName("community/communityListView");
 				return "community/communityListView";
     }
     
     @RequestMapping("/communityDetailView")
-    public String communityDetail()
-    {
-        return "community/communityDetailView";
+    public String communityDetail(@RequestParam int bCode,
+			  Model model) {
+		
+    			Community community = service.selectOneCommunityCollection(bCode);
+    			log.debug("Community = {}", community);
+
+    			model.addAttribute("community", community);
+    			return "community/communityDetailView";
     }
 }
 

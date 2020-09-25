@@ -138,3 +138,4 @@ udonmarket/Workspaces/spring_workspace/udonmarket/target/m2e-wtp/web-resources/M
 udonmarket/Workspaces/spring_workspace/udonmarket/target/m2e-wtp/web-resources/META-INF/maven/com.kh/udon/pom.properties
 udonmarket/Workspaces/spring_workspace/udonmarket/target/m2e-wtp/web-resources/META-INF/maven/com.kh/udon/pom.xml
 udonmarket/src/main/resources/datasource.properties
+udonmarket/src/main/webapp/WEB-INF/jspwork/
