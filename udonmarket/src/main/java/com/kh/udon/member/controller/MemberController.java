@@ -95,8 +95,6 @@ public class MemberController
     	return "redirect:/";
     }
     
-    
-    
     @RequestMapping("/mypage")
     public String mypage()
     {
@@ -131,11 +129,73 @@ public class MemberController
         return "member/buyList";
     }
     
-    //내 동네 설정
+    //내 동네 설정 페이지 띄우기
     @RequestMapping("/settingsArea")
-    public String settingsArea()
-    {
-    	return "member/settingsArea";
+    public Model settingsArea(Model model,
+    						 HttpSession session) {
+    	
+    	//세션에 담긴 로그인 중 인 유저 아이디
+//    	String userId = ((Member)session.getAttribute("loginMember")).getUserId();
+    	//test id로 테스트 (세션에 담긴 로그인 중인 아이디)
+    	String userId = "test";
+    	log.debug("loginMemberId = {} ", userId);
+    	
+    	int radius = service.selectRadius(userId);
+    	log.debug("radius = {}",String.valueOf(radius));
+    	model.addAttribute("radius", radius);
+    	
+    	return model;
+    }
+    
+    //현재 위치로 location 테이블 update
+    //현재 위치(주소)로 member 테이블 update
+    @PostMapping("/updateAddress")
+    public String updateAddress(RedirectAttributes redirectAttr,
+    							HttpSession session,
+    							@RequestParam("addr") String addr,
+    							@RequestParam("lat") float latitude,
+    							@RequestParam("lon") float longitude){
+    	
+    	//세션에 담긴 로그인 중 인 유저 아이디
+//    	String userId = ((Member)session.getAttribute("loginMember")).getUserId();
+    	//test id로 테스트
+    	String userId = "test";
+    	
+    	//업무로직
+    	String msg = "변경 성공!";
+    	Location loc = new Location(userId, latitude, longitude); 
+    	try {
+    		int result = service.updateLocation(loc);
+    		redirectAttr.addFlashAttribute("msg", msg);			
+		} catch (Exception e) {
+			log.error("location 수정 실패 오류", e);
+			redirectAttr.addFlashAttribute("msg", "변경 실패");
+			
+//			throw e; //에러페이지
+		}
+    	
+    	return "redirect:/member/settingsArea";
+    }
+    
+    @PostMapping("/updateRadius")
+    @ResponseBody
+    public Map<String, Object> updateRadius(HttpSession session,
+    						  @RequestParam("radius") int radius) {
+
+    	//test id로 테스트
+    	String userId = "test";
+    	//세션에 담긴 로그인 중 인 유저 아이디
+//    	String userId = ((Member)session.getAttribute("loginMember")).getUserId();
+
+    	log.debug(String.valueOf(radius));
+    	
+    	Map<String, Object> map = new HashMap<>();
+    	map.put("userId", userId);
+    	map.put("radius", radius);
+    	
+    	int result = service.updateRadius(map);
+    	
+    	return map;
     }
     
     //자주 묻는 질문
@@ -151,21 +211,39 @@ public class MemberController
     {
     	return "member/announce";
     }
-    
+
     //관심 주제 목록
     @RequestMapping("/interList")
     public String interList()
     {
     	return "member/interList";
     }
-    	
+    
+    //동네생활 댓글
+    @RequestMapping("/myComment")
+    public String mycomment()
+    {
+    	return "member/myComment";
+    }
+
+    //동네생활 게시글
+    @RequestMapping("/myPost")
+    public String mypost()
+    {
+    	return "member/myPost";
+    }
+    
     //나의 키워드 알림 설정
     @RequestMapping(value = "/keywordNoti",
     				method = RequestMethod.GET)
-    public ModelAndView keywordNoti(ModelAndView mav){
+    public ModelAndView keywordNoti(HttpSession session,
+    								ModelAndView mav){
     	
     	//test id로 테스트
     	String userId = "test";
+    	//세션에 담긴 로그인 중 인 유저 아이디
+//    	String userId = ((Member)session.getAttribute("loginMember")).getUserId();
+    	
     	List<Keyword> list = service.selectKeywordList(userId);
     	log.debug("list = {}", list);
     	
@@ -182,11 +260,14 @@ public class MemberController
     @RequestMapping(value = "/insertKeyword",
     			method = RequestMethod.POST)
     @ResponseBody
-    public Map<String, Object> insertKeyword(@RequestParam("userId") String userId,
+    public Map<String, Object> insertKeyword(HttpSession session,
+    										 @RequestParam("userId") String userId,
     										 @RequestParam("keyword") String keyword){
     	
     	//test id로 테스트
     	userId = "test";
+    	//세션에 담긴 로그인 중 인 유저 아이디
+//    	String userId = ((Member)session.getAttribute("loginMember")).getUserId();
     	
     	Map<String, Object> map = new HashMap<>();
     	map.put("userId", userId);
@@ -200,7 +281,6 @@ public class MemberController
     
     //키워드 삭제
     @RequestMapping(value = "/deleteKeyword")
-    @ResponseBody
     public String deleteKeyword(RedirectAttributes redirectAttr,
     							@RequestParam("key") int keyCode){
     	  
@@ -218,53 +298,11 @@ public class MemberController
     	
     	return "redirect:/member/keywordNoti";
     }
-
-    //현재 위치로 location 테이블 update
-    //현재 위치(주소)로 member 테이블 update (?)
-    @PostMapping("/updateAddress")
-    public String updateAddress(RedirectAttributes redirectAttr,
-    							//로그인 중인 아이디 가져오기
-    							//@RequestParam("userId") String userId,
-    							@RequestParam("addr") String addr,
-    							@RequestParam("lat") float latitude,
-    							@RequestParam("lon") float longitude){
-    	//test id로 테스트
-    	String userId = "test";
-    	
-    	//업무로직
-    	String msg = "변경 성공!";
-    	Location loc = new Location(userId, latitude, longitude); 
-    	try {
-    		int result = service.updateLocation(loc);   	
-    		redirectAttr.addFlashAttribute("msg", msg);			
-		} catch (Exception e) {
-			log.error("location 수정 실패 오류", e);
-			redirectAttr.addFlashAttribute("msg", "변경 실패");
-			
-//			throw e; //에러페이지
-		}
-    	
-    	return "redirect:/member/settingsArea";
-    }
-    
-    //동네생활 댓글
-    @RequestMapping("/myComment")
-    public String mycomment()
-    {
-    	return "member/myComment";
-    }
-    
-    //동네생활 게시글
-    @RequestMapping("/myPost")
-    public String mypost()
-    {
-    	return "member/myPost";
-    }
     
     //받은 거래 후기
     @RequestMapping("/myReviewList")
-    public String myReviewList()
-    {
+    public String myReviewList(){
     	return "member/myReviewList";
-    }  
+    }
+    
 }

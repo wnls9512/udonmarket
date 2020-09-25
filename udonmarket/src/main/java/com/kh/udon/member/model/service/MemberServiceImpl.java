@@ -52,4 +52,16 @@ public class MemberServiceImpl implements MemberService
 		return memberDao.selectOneMember(userId);
 	}
 
+	@Override
+	public int selectRadius(String userId) {
+		return memberDao.selectRadius(userId);
+	}
+
+	@Override
+	public int updateRadius(Map<String, Object> map) {
+		return memberDao.updateRadius(map);
+	}
+
+
+
 }

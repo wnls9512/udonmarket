@@ -102,7 +102,7 @@ a{text-decoration: none; color: black;}
 						      	<p style="font-size: 1rem;">아이패드 프로 3세대 64기가 애플펜슬 1세대 포함</p>
 						      	<p style="color: #545454; font-size: 0.9rem;">서울시 강남구 역삼동</p>
 						      	<p style="font-weight: bold;">580,000원</p>
-						      	<p>❤ 8  💭 2<br />
+						      	<p><i class="far fa-heart"></i> 8  <i class="far fa-comments"></i> 2<br />
 						      	<div style="margin:10px 0px;">
 						      	<button type="button" class="btn btn-outline-secondary btn-sm"
 						      			style="margin: 0px 0.15rem;">예약중으로 변경</button>
@@ -138,7 +138,7 @@ a{text-decoration: none; color: black;}
 						      	<p style="color: #545454; font-size: 0.9rem;">서울시 강남구 역삼동</p>
 						      	<p style="font-weight: bold;">160,000원</p>
 						      	<br />
-						      	<p>❤ 8  💭 2<br />
+						      	<p><i class="far fa-heart"></i> 8  <i class="far fa-comments"></i> 2<br />
 						      	<div style="margin:10px 0px;">
 						      	<button type="button" class="btn btn-outline-secondary btn-sm"
 						      			style="margin: 0px 1.5px;">예약중으로 변경</button>
@@ -174,7 +174,7 @@ a{text-decoration: none; color: black;}
 						      	<p style="color: #545454; font-size: 0.9rem;">서울시 강남구 역삼동</p>
 						      	<p style="font-weight: bold;">60,000원</p>
 						      	<br />
-						      	<p>❤ 8  💭 2<br />
+						      	<p><i class="far fa-heart"></i> 8  <i class="far fa-comments"></i> 2<br />
 						      	<div style="margin:10px 0px;">
 						      	<button type="button" class="btn btn-outline-secondary btn-sm"
 						      			style="margin: 0px 1.5px;">예약중으로 변경</button>

@@ -104,7 +104,7 @@ html { font-size: 16px; }
 						      	<p style="color: #545454; font-size: 0.9rem;">서울시 강남구 역삼동</p>
 						      	<p style="font-weight: bold;">580,000원</p>
 						      	<br />
-						      	<a href="#">❤ 8</a> 
+						      	<a href="#"><i class="far fa-heart"></i> 8</a> 
 						      </td>
 						    </tr>
 						    <tr>
@@ -120,7 +120,7 @@ html { font-size: 16px; }
 						      	<p style="color: #545454; font-size: 0.9rem;">서울시 강남구 역삼동</p>
 						      	<p style="font-weight: bold;">160,000원</p>
 						      	<br />
-						      	<a href="#">❤ 8</a> 
+						      	<a href="#"><i class="far fa-heart"></i> 8</a> 
 						      </td>
 						    </tr>
 						    <tr>
@@ -136,7 +136,7 @@ html { font-size: 16px; }
 						      	<p style="color: #545454; font-size: 0.9rem;">서울시 강남구 역삼동</p>
 						      	<p style="font-weight: bold;">60,000원</p>
 						      	<br />
-						      	<a href="#">❤ 8</a> 
+						      	<a href="#"><i class="far fa-heart"></i> 8</a> 
 						      </td>
 						    </tr>
 						  </tbody>

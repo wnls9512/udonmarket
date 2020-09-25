@@ -2,6 +2,7 @@
 <!DOCTYPE mapper PUBLIC "//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="member">
 
+<!-- 내 동네 설정 업데이트 -->
 <update id="updateLocation">
 	update
 		location
@@ -12,6 +13,25 @@
 		user_id = #{userId}
 </update>
 
+<!-- 지역 범위 가져오기 -->
+<select id="selectRadius" resultType="_int">
+	select 
+		radius 
+	from 
+		location 
+	where user_id = #{userId}
+</select>
+
+<update id="updateRadius">
+	update
+		location
+	set
+		radius = #{radius}
+	where 
+		user_id = #{userId}
+</update>
+
+<!-- 키워드 추가 -->
 <insert id="insertKeyword">
 	insert into
 		keyword
@@ -22,6 +42,7 @@
 	)
 </insert>
 
+<!-- 키워드 가져와서 view단 뿌리기 용 -->
 <select id="selectKeywordList" resultType="keyword">
 	select 
 		* 
@@ -31,6 +52,7 @@
 		user_id = #{userId}
 </select>
 
+<!-- 키워드 갯수 -->
 <select id="selectTotalKeywordContent" resultType="_int" >
 	select 
 		count(*) 
@@ -40,6 +62,7 @@
 		user_id = #{userId}
 </select>
 
+<!-- 키워드 삭제 -->
 <delete id="deleteKeyword">
 	delete from
 		keyword
@@ -62,7 +85,6 @@
 
 
 </resultMap>
-
 
 
 </mapper>

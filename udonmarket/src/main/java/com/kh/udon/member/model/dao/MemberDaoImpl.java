@@ -52,4 +52,15 @@ public class MemberDaoImpl implements MemberDao
 		return session.selectOne("member.selectOneMember", userId);
 	}
 
+	@Override
+	public int selectRadius(String userId) {
+		return session.selectOne("member.selectRadius", userId);
+	}
+
+	@Override
+	public int updateRadius(Map<String, Object> map) {
+		return session.update("member.updateRadius", map);
+	}
+
+	
 }
