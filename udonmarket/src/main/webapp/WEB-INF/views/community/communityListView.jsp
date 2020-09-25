@@ -21,6 +21,10 @@ $(function(){
 	
 });
 
+
+
+
+
 </script>
 
     <!--================Home Banner Area =================-->
@@ -70,6 +74,7 @@ $(function(){
 		</tr>
 		</c:forEach>
 	</table>
+
               --%> 
                     <c:forEach items="${ list }" var="c">
                     
@@ -136,10 +141,13 @@ $(function(){
                 </div>
                 <div class="col-lg-4">
                     <div class="blog_right_sidebar">
-                    		<form action="#">
-                                <button class="button rounded-0 primary-bg text-white w-100 btn_1"
+                    		<a href="${ pageContext.request.contextPath }/community/communityForm">
+                    		<form>
+                                <button 
+                                	class="genric-btn primary radius" style="width:100%"
                                     type="button">게시글 작성하기</button>
                             </form>
+                            </a>
                             <br /> 	
                         <aside class="single_sidebar_widget search_widget">
                         	
@@ -164,27 +172,23 @@ $(function(){
                             <h4 class="widget_title">카테고리</h4>
                             <ul class="list cat-list">
                                 <li>
-                                    <a href="#" class="d-flex">
+                                    <a href="communityListView?categoryCode=17" class="d-flex">
                                         <p>동네생활이야기</p>
-                                        <p>(37)</p>
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="#" class="d-flex">
+                                    <a href="communityListView?categoryCode=18" class="d-flex">
                                         <p>우리동네질문</p>
-                                        <p>(10)</p>
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="#" class="d-flex">
+                                    <a href="communityListView?categoryCode=19" class="d-flex">
                                         <p>분실/실종센터</p>
-                                        <p>(03)</p>
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="#" class="d-flex">
+                                    <a href="communityListView?categoryCode=20" class="d-flex">
                                         <p>동네사건사고</p>
-                                        <p>(11)</p>
                                     </a>
                                 </li>
                             </ul>
@@ -192,42 +196,19 @@ $(function(){
 
                         <aside class="single_sidebar_widget popular_post_widget">
                             <h3 class="widget_title">최근 게시글</h3>
-                            <div class="media post_item">
-                                <img src="${pageContext.request.contextPath}/resources/img/post/post_1.png" alt="post">
-                                <div class="media-body">
-                                    <a href="single-blog.html">
-                                        <h3>From life was you fish...</h3>
-                                    </a>
-                                    <p>January 12, 2019</p>
-                                </div>
-                            </div>
-                            <div class="media post_item">
-                                <img src="${pageContext.request.contextPath}/resources/img/post/post_2.png" alt="post">
-                                <div class="media-body">
-                                    <a href="single-blog.html">
-                                        <h3>The Amazing Hubble</h3>
-                                    </a>
-                                    <p>02 Hours ago</p>
-                                </div>
-                            </div>
-                            <div class="media post_item">
-                                <img src="${pageContext.request.contextPath}/resources/img/post/post_3.png" alt="post">
-                                <div class="media-body">
-                                    <a href="single-blog.html">
-                                        <h3>Astronomy Or Astrology</h3>
-                                    </a>
-                                    <p>03 Hours ago</p>
-                                </div>
-                            </div>
-                            <div class="media post_item">
-                                <img src="${pageContext.request.contextPath}/resources/img/post/post_4.png" alt="post">
-                                <div class="media-body">
-                                    <a href="single-blog.html">
-                                        <h3>Asteroids telescope</h3>
-                                    </a>
-                                    <p>01 Hours ago</p>
-                                </div>
-                            </div>
+                           
+                           <c:forEach var="c" items="${ list }"  begin="0" end="3" step="1">
+								<div class="media post_item">
+									<a data-board-no="${ c.BCode }">
+									<img src="${pageContext.request.contextPath}/resources/img/blog/no_img.png" alt="post" style="width: 42px; height: 42px">
+									<div class="media-body">
+										<h3 style="font-weight: bold;">${c.boardTitle}</h3>
+									<p><fmt:formatDate value="${ c.regDate }" type="both"/></p>
+									</a>
+									</div>
+								</div>
+							</c:forEach>
+                           
                         </aside>
                         <aside class="single_sidebar_widget tag_cloud_widget">
                             <h4 class="widget_title">태그</h4>

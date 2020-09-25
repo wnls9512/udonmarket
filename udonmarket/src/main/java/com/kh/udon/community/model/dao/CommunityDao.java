@@ -12,4 +12,6 @@ public interface CommunityDao
 	
 	Community selectOneCommunityCollection(int bCode);
 	
+//	Community selectCategory(int categoryCode);
+	
 }
