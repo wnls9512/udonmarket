@@ -32,7 +32,8 @@ public class CommunityController
 //	ResourceLoader resourceLoader;
     
     @RequestMapping("/communityListView")
-    public String CommunityList(Model model) {
+	public String CommunityList(/* @RequestParam int categoryCode, */
+    						Model model) {
 //							  @RequestParam(defaultValue = "1", 
 //								value = "cPage") int cPage) {
 				//1.사용자 입력값 
@@ -41,7 +42,9 @@ public class CommunityController
 				
 				//2. 업무로직
 				List<Community> list = service.selectCommunityList();
+//				Community community = service.selectCategory(categoryCode);
 				log.debug("list = {}", list);
+//				log.debug("Community = {}", community);
 				
 				//전체컨텐츠수 구하기
 //				int totalContents = service.selectBoardTotalContents();
@@ -49,6 +52,7 @@ public class CommunityController
 				
 				//3. view단 처리
 //				mav.addObject("totalContents", totalContents);
+//				model.addAttribute("community", community);
 				model.addAttribute("list", list);
 				return "community/communityListView";
     }
@@ -58,11 +62,22 @@ public class CommunityController
 			  Model model) {
 		
     			Community community = service.selectOneCommunityCollection(bCode);
+    			List<Community> list = service.selectCommunityList();
     			log.debug("Community = {}", community);
+				log.debug("list = {}", list);
 
     			model.addAttribute("community", community);
+    			model.addAttribute("list", list);
     			return "community/communityDetailView";
     }
+    
+    @RequestMapping("/communityForm")
+    public String communityForm() {
+    	
+    	return "community/communityForm";
+    	
+    }
+    
 }
 
 

@@ -23,5 +23,9 @@
 		<result column="hashtag_code" property="hashtagCode"/>
 		<result column="like_this" property="likeThis"/>
 	</resultMap>
+	
+	<!-- <select id="selectCommunityCategory" resultType="community">
+		select * from board where category_code = #{ categoryCode } order by b_code desc
+	</select> -->
 
 </mapper>
