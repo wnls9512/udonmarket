@@ -34,25 +34,27 @@
         <div class="container">
             <div class="row align-items-center">
                 <div class="col-lg-6 col-md-6">
-                    <div class="login_part_text text-center" style="background-image:none; border: 1px solid #ff3368; width:100%;">
+                    <div class="login_part_text text-center" style="background-image:none; border: 1px solid #ff3368; width:100%; padding: 50px 70px;">
                         <div class="login_part_text_iner">
 	                        	<!-- upload image start -->
 	                        	<main class="main_full">
 									<div class="container">
-										<div class="panel">
+										<div class="panel" style="margin-top: 0;">
 											<div class="button_outer">
 												<div class="btn_upload">
 													<input type="file" id="upload_file" name="uploadFile" multiple>
-													Upload Image 0 / 10
+													Upload Image 0 / 5
 												</div>
 												<div class="processing_bar"></div>
 												<div class="success_box"></div>
 											</div>
 										</div>
 										<div class="error_msg"></div>
-										<div class="uploaded_file_view" id="uploaded_view">
-											<ul style="list-style-type: none !important;"></ul>
-										</div>
+										<div class="uploaded_file_view" id="uploaded_view0"></div>
+										<div class="uploaded_file_view" id="uploaded_view1"></div>
+										<div class="uploaded_file_view" id="uploaded_view2"></div>
+										<div class="uploaded_file_view" id="uploaded_view3"></div>
+										<div class="uploaded_file_view" id="uploaded_view4"></div>
 									</div>
 								</main>
 								<!-- upload image end -->
@@ -146,7 +148,7 @@ $(function()
 
 				showUploadedFile(result);
 
-				$(".btn_upload").html("Upload Image " + result.length + " / 10");
+				$(".btn_upload").html("Upload Image " + result.length + " / 5");
 			}	
 		});
 	});
@@ -171,19 +173,10 @@ btnUpload.on("change", function(e)
 		{
 			btnOuter.removeClass("file_uploading");
 		},3000);
-
-		// add thumbnail
-		
-		/* var uploadedFile = URL.createObjectURL(e.target.files[0]);
-		setTimeout(function()
-		{
-			$("#uploaded_view").append('<img src="'+uploadedFile+'" />').addClass("show");
-		},3500); */
 	}
 });
 
 // show thumbnail
-
 function showUploadedFile(uploadResultArr)
 {
 	var str = "";
@@ -192,15 +185,24 @@ function showUploadedFile(uploadResultArr)
 	{
 		var fileCallPath = encodeURIComponent(obj.uploadPath + "/s_" + obj.uuid + "_" + obj.fileName);
 		
-		str += "<li><img src='${pageContext.request.contextPath}/product/display?fileName=" + fileCallPath + "'></li>";
-		
+		str += "<img src='${pageContext.request.contextPath}/product/display?fileName=" + fileCallPath + "'>";
+
+		$("#uploaded_view" + i).append(str);
+
+		str = "";
 	});
 
-	setTimeout(function()
-	{
-		$("#uploaded_view").append(str).addClass("show");;
-	},3500);
 
+	$.each ($("[id^=uploaded_view]"), function (i, el) 
+	{
+		if($("#uploaded_view" + i).find($("img")).length)
+		{
+			setTimeout(function()
+			{
+				$("#uploaded_view" + i).addClass("show");
+			},3500);
+		}
+	});
 }
 
 // remove thumbnail
