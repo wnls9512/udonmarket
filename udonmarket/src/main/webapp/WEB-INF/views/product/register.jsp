@@ -11,6 +11,12 @@
 </jsp:include>
 
 <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/upload.css">
+<!-- Magnific Popup core CSS file -->
+<link rel="stylesheet" href="magnific-popup/magnific-popup.css">
+<!-- jQuery 1.7.2+ or Zepto.js 1.0+ -->
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<!-- Magnific Popup core JS file -->
+<script src="magnific-popup/jquery.magnific-popup.js"></script>
 
     <!--================Home Banner Area =================-->
     <!-- breadcrumb start-->
@@ -50,11 +56,11 @@
 											</div>
 										</div>
 										<div class="error_msg"></div>
-										<div class="preview" id="preview0"></div>
-										<div class="preview" id="preview1"></div>
-										<div class="preview" id="preview2"></div>
-										<div class="preview" id="preview3"></div>
-										<div class="preview" id="preview4"></div>
+										<div class="preview popup-gallery" id="preview0"></div>
+										<div class="preview popup-gallery" id="preview1"></div>
+										<div class="preview popup-gallery" id="preview2"></div>
+										<div class="preview popup-gallery" id="preview3"></div>
+										<div class="preview popup-gallery" id="preview4"></div>
 									</div>
 								</main>
 								<!-- upload image end -->
@@ -110,8 +116,6 @@
 	            </div>
 	        </div>
     </section>
-
-
 <script>
 /* ================ file upload start ================*/
 
@@ -187,9 +191,11 @@ function showUploadedFile(uploadResultArr)
 		var originPath = obj.uploadPath + "\\" + obj.uuid + "_" + obj.fileName;
 		originPath = originPath.replace(new RegExp(/\\/g), "/");
 
-		str += "<a href=\"javascript:showImage(\'" + originPath + "\')\">";
+		str += "<a href='${pageContext.request.contextPath}/product/display?fileName=" + originPath + "'>";
 		str += "<img src='${pageContext.request.contextPath}/product/display?fileName=" + fileCallPath + "'></a>";
 
+
+		
 		$("#preview" + i).append(str);
 
 		str = "";
@@ -220,10 +226,25 @@ $(".file_remove").on("click", function(e)
 });
 
 // show original image
-function showImage(fileCallPath)
-{
-	alert(fileCallPath);
-}
+$(document).ready(function() {
+	$('.popup-gallery').magnificPopup({
+		delegate: 'a',
+		type: 'image',
+		tLoading: 'Loading image #%curr%...',
+		mainClass: 'mfp-img-mobile',
+		gallery: {
+			enabled: true,
+			navigateByImgClick: true,
+			preload: [0,1] // Will preload 0 - before current, and 1 after the current image
+		},
+		image: {
+			tError: '<a href="%url%">The image #%curr%</a> could not be loaded.',
+			titleSrc: function(item) {
+				return item.el.attr('title') + '<small>by Marsel Van Oosten</small>';
+			}
+		}
+	});
+});
 /* ================ file upload end ================*/
 </script>
 
