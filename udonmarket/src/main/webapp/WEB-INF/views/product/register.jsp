@@ -50,11 +50,11 @@
 											</div>
 										</div>
 										<div class="error_msg"></div>
-										<div class="uploaded_file_view" id="uploaded_view0"></div>
-										<div class="uploaded_file_view" id="uploaded_view1"></div>
-										<div class="uploaded_file_view" id="uploaded_view2"></div>
-										<div class="uploaded_file_view" id="uploaded_view3"></div>
-										<div class="uploaded_file_view" id="uploaded_view4"></div>
+										<div class="preview" id="preview0"></div>
+										<div class="preview" id="preview1"></div>
+										<div class="preview" id="preview2"></div>
+										<div class="preview" id="preview3"></div>
+										<div class="preview" id="preview4"></div>
 									</div>
 								</main>
 								<!-- upload image end -->
@@ -184,22 +184,27 @@ function showUploadedFile(uploadResultArr)
 	$(uploadResultArr).each(function(i, obj)
 	{
 		var fileCallPath = encodeURIComponent(obj.uploadPath + "/s_" + obj.uuid + "_" + obj.fileName);
-		
-		str += "<img src='${pageContext.request.contextPath}/product/display?fileName=" + fileCallPath + "'>";
+		var originPath = obj.uploadPath + "\\" + obj.uuid + "_" + obj.fileName;
+		originPath = originPath.replace(new RegExp(/\\/g), "/");
 
-		$("#uploaded_view" + i).append(str);
+		str += "<a href=\"javascript:showImage(\'" + originPath + "\')\">";
+		str += "<img src='${pageContext.request.contextPath}/product/display?fileName=" + fileCallPath + "'></a>";
+
+		$("#preview" + i).append(str);
 
 		str = "";
 	});
 
 
-	$.each ($("[id^=uploaded_view]"), function (i, el) 
+	$.each ($("[id^=preview]"), function (i, el) 
 	{
-		if($("#uploaded_view" + i).find($("img")).length)
+		$("#preview" + i).hide();
+		
+		if($("#preview" + i).find($("img")).length)
 		{
 			setTimeout(function()
 			{
-				$("#uploaded_view" + i).addClass("show");
+				$("#preview" + i).show();
 			},3500);
 		}
 	});
@@ -213,6 +218,12 @@ $(".file_remove").on("click", function(e)
 	btnOuter.removeClass("file_uploading");
 	btnOuter.removeClass("file_uploaded");
 });
+
+// show original image
+function showImage(fileCallPath)
+{
+	alert(fileCallPath);
+}
 /* ================ file upload end ================*/
 </script>
 
