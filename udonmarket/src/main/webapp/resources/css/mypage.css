@@ -32,3 +32,8 @@ body {
 	margin: 0px auto;
 }
 
+#interList{
+	border-radius: 50%;
+	max-width: 5%;
+}
+
