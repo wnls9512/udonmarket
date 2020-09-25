@@ -95,8 +95,6 @@ public class MemberController
     	return "redirect:/";
     }
     
-    
-    
     @RequestMapping("/mypage")
     public String mypage()
     {
@@ -205,6 +203,34 @@ public class MemberController
     public String FAQ()
     {
     	return "member/FAQ";
+    }
+    
+    //공지 사항
+    @RequestMapping("/announce")
+    public String announce()
+    {
+    	return "member/announce";
+    }
+
+    //관심 주제 목록
+    @RequestMapping("/interList")
+    public String interList()
+    {
+    	return "member/interList";
+    }
+    
+    //동네생활 댓글
+    @RequestMapping("/myComment")
+    public String mycomment()
+    {
+    	return "member/myComment";
+    }
+
+    //동네생활 게시글
+    @RequestMapping("/myPost")
+    public String mypost()
+    {
+    	return "member/myPost";
     }
     
     //나의 키워드 알림 설정
