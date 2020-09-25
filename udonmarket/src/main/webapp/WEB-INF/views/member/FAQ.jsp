@@ -116,6 +116,13 @@ html { font-size: 16px; }
 	            </div>
 	            <div class="px-4 py-3">
 	                <div class="p-4 rounded shadow-sm bg-light">
+	            <hr />
+				<div style="text-align: center; ">
+					<h5 style="font-weight: bold;
+						  		color: #575757;">관심 주제 목록</h5> 		
+				     <p style="color: #575757;">관심 주제를 추가해보세요</p>
+				</div>
+				<hr />			
 	              <!-- 탭 리스트 -->
 	              <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
 				  <li class="nav-item">

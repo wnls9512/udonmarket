@@ -117,58 +117,33 @@ html { font-size: 16px; }
 					<hr />
 							<div style="text-align: center; ">
 								<h5 style="font-weight: bold;
-									  		color: #575757;">관심 주제 목록</h5> 		
-							     <p style="color: #575757;">관심 주제를 추가해보세요</p>
+									  		color: #575757;">동네 생활 글</h5> 		
 							</div>
 							<hr />			
 				        <nav class="nav flex-column bg-white shadow-sm rounded p-3">
-	                    <div class="media">
-					  <img id="interList"class="mr-3" src="/udon/resources/img/icon/restaurant.png" alt="Generic placeholder image">
-					  <div class="media-body">
-					    <h5 class="mt-2">동네 맛집</h5>
-					  </div>
-					  <div>
-					  	<button type="button" class="btn btn-info">add</button>
-					  </div>
-					</div><br />
-					<div class="media">
-					  <img id="interList"class="mr-3" src="/udon/resources/img/icon/cafe.png" alt="Generic placeholder image">
-					  <div class="media-body">
-					    <h5 class="mt-2">동네 카페</h5>
-					  </div>
-					  <div>
-					  	<button type="button" class="btn btn-info">add</button>
-					  </div>
-					</div><br />
-					<div class="media">
-					  <img id="interList"class="mr-3" src="/udon/resources/img/icon/house.png" alt="Generic placeholder image">
-					  <div class="media-body">
-					    <h5 class="mt-2">집꾸미기</h5>
-					  </div>
-					  <div>
-					  	<button type="button" class="btn btn-info">add</button>
-					  </div>
-					</div><br />
-					<div class="media">
-					  <img id="interList"class="mr-3" src="/udon/resources/img/icon/cat.png" alt="Generic placeholder image">
-					  <div class="media-body">
-					    <h5 class="mt-2">고양이</h5>
-					  </div>
-					  <div>
-					  	<button type="button" class="btn btn-info">add</button>
-					  </div>
-					</div><br />
-					<div class="media">
-					  <img id="interList"class="mr-3" src="/udon/resources/img/icon/dog.png" alt="Generic placeholder image">
-					  <div class="media-body">
-					    <h5 class="mt-2">강아지</h5>
-					  </div>
-					  <div>
-					  	<button type="button" class="btn btn-info">add</button>
-					  </div>
-					</div>
-					
-						  	
+				        <table class="table table-striped">
+						  <thead>
+						    <tr>
+						      <th scope="col">#</th>
+						      <th scope="col">내 게시글</th>
+						    </tr>
+						  </thead>
+						  <tbody>
+						    <tr>
+						      <th scope="row">1</th>
+						      <td>우리동네 맛집 추천할게요!</td>
+						     
+						    </tr>
+						    <tr>
+						      <th scope="row">2</th>
+						      <td>이쁜 카페 아는분 계신가요?</td>
+						    </tr>
+						    <tr>
+						      <th scope="row">3</th>
+						      <td>강아지 산책시키기 좋은 장소 추천</td>
+						    </tr>
+						  </tbody>
+						</table>
 				        </nav>
 	                </div>
 	            </div>

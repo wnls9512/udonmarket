@@ -178,5 +178,19 @@ public class MemberController
     	return "redirect:/member/settingsArea";
     }
     
+    //동네생활 댓글
+    @RequestMapping("/myComment")
+    public String mycomment()
+    {
+    	return "member/myComment";
+    }
+    
+    //동네생활 게시글
+    @RequestMapping("/myPost")
+    public String mypost()
+    {
+    	return "member/myPost";
+    }
+    
     
 }

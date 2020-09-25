@@ -114,7 +114,13 @@ html { font-size: 16px; }
 	            </div>
 	            <div class="px-4 py-3">
 	                <div class="p-4 rounded shadow-sm bg-light">
-					<h1><span class="btn btn-primary">공지사항</span></h1>	             
+					<hr />
+							<div style="text-align: center; ">
+								<h5 style="font-weight: bold;
+									  		color: #575757;">공지사항</h5> 		
+							    <p id="myLocal" style=" color: #575757;"></p>
+							</div>
+							<hr />			            
 				        <nav class="nav flex-column bg-white shadow-sm rounded p-3">
 						<div class="tab-content" id="pills-tabContent">
 						  <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab"><table id="tbl-board" class="table table-striped table-hover">
