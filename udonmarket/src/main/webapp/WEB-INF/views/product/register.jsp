@@ -11,12 +11,7 @@
 </jsp:include>
 
 <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/upload.css">
-<!-- Magnific Popup core CSS file -->
-<link rel="stylesheet" href="magnific-popup/magnific-popup.css">
-<!-- jQuery 1.7.2+ or Zepto.js 1.0+ -->
-<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-<!-- Magnific Popup core JS file -->
-<script src="magnific-popup/jquery.magnific-popup.js"></script>
+<link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/modal.css">
 
     <!--================Home Banner Area =================-->
     <!-- breadcrumb start-->
@@ -76,7 +71,7 @@
 											class="single-input-primary">
                                 </div>
                                 <div class="col-md-12 form-group p_star">
-                                	<a href="#" class="genric-btn default-border" style="width: 100%;">카테고리 선택 &nbsp;&nbsp;&nbsp;&nbsp; ></a>
+                                	<button data-toggle="modal" data-target="#modal_aside_left" class="btn btn-primary genric-btn default-border" type="button" style="width: 100%; color: #007bff">카테고리 선택 &nbsp;&nbsp;&nbsp;&nbsp; ></button>
                                 </div>
                                 <div class="col-md-12 form-group">
                                     <div class="creat_account d-flex align-items-center">
@@ -116,6 +111,36 @@
 	            </div>
 	        </div>
     </section>
+    
+<!-- ====== Category Modal ======  -->
+<div id="modal_aside_left" class="modal fixed-left fade" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-dialog-aside" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Category</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+		<div class="button-group-area mt-40">
+			<c:forEach items="${category }" var="c" varStatus="status">
+			<c:if test="${status.count % 2 == 0}">
+			<a href="#" class="genric-btn primary radius" style="width: 100%;" data-code="${c.categoryCode }">${c.categoryName }</a>
+			</c:if>
+			<c:if test="${status.count % 2 == 1}">
+			<a href="#" class="genric-btn success radius" style="width: 100%;" data-code="${c.categoryCode }">${c.categoryName }</a>
+			</c:if>
+			</c:forEach>
+		</div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div> 
 <script>
 /* ================ file upload start ================*/
 
@@ -246,6 +271,8 @@ $(document).ready(function() {
 	});
 });
 /* ================ file upload end ================*/
+
+
 </script>
 
 <jsp:include page="/WEB-INF/views/common/footer.jsp"/>

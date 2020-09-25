@@ -100,7 +100,11 @@ public class ProductController
     
     // 상품 등록 화면
     @GetMapping("/register")
-    public void register() {}
+    public void register(Model model) 
+    {
+        List<ProductCategory> category = service.selectAllCategory();
+        model.addAttribute("category", category);
+    }
     
     // 상품 등록
     @PostMapping(value = "/register", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
