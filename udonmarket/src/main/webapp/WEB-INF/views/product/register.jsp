@@ -71,7 +71,7 @@
 											class="single-input-primary">
                                 </div>
                                 <div class="col-md-12 form-group p_star">
-                                	<button data-toggle="modal" data-target="#modal_aside_left" class="btn btn-primary genric-btn default-border" type="button" style="width: 100%; color: #007bff">카테고리 선택 &nbsp;&nbsp;&nbsp;&nbsp; ></button>
+                                	<button data-toggle="modal" data-target="#categoryModal" class="btn btn-primary genric-btn default-border" type="button" style="width: 100%; color: #007bff;">카테고리 선택 &nbsp;&nbsp;&nbsp;&nbsp; ></button>
                                 </div>
                                 <div class="col-md-12 form-group">
                                     <div class="creat_account d-flex align-items-center">
@@ -92,7 +92,7 @@
                                 </div>
                                 <div class="col-md-12 form-group">
                                     <div class="creat_account d-flex align-items-center">
-	                                	<a href="#" class="genric-btn default-border" style="width: 68%;">쿠폰 조회</a>
+	                                	<button type="button" class="genric-btn default-border btn btn-primary" data-toggle="modal" data-target="#couponModal" style="width: 68%; color: #007bff;">쿠폰 조회</button>
 	                   					<div class="confirm-switch">
 											<input type="checkbox" id="primary-switch" checked>
 											<label for="confirm-switch"></label>
@@ -113,7 +113,7 @@
     </section>
     
 <!-- ====== Category Modal ======  -->
-<div id="modal_aside_left" class="modal fixed-left fade" tabindex="-1" role="dialog">
+<div id="categoryModal" class="modal fixed-left fade" tabindex="-1" role="dialog">
   <div class="modal-dialog modal-dialog-aside" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -136,11 +136,60 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
       </div>
     </div>
   </div>
-</div> 
+</div>
+
+<!-- ====== Coupon Modal ======  -->
+<div class="modal fade" id="couponModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Coupon</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+	   <div class="row text-center align-items-end">
+	      <!-- Coupon Table START -->
+	      <div class="mb-5 mb-lg-0" style="float:none; margin:0 auto;">
+	        <div class="bg-white p-5 rounded-lg shadow">
+	          <h1 class="h6 text-uppercase font-weight-bold mb-4">강남구 11월 판매왕</h1>
+	          <h2 class="h1 font-weight-bold">3<span class="text-small font-weight-normal ml-2">개</span></h2>
+	
+	          <div class="custom-separator my-4 mx-auto bg-primary"></div>
+	
+	          <ul class="list-unstyled my-5 text-small text-left">
+	            <li class="mb-3">
+	              <i class="fa fa-check mr-2 text-primary"></i> 쿠폰 적용된 상품은 전국에 노출됩니다.</li>
+	            <li class="mb-3">
+	              <i class="fa fa-check mr-2 text-primary"></i> 유효기간은 <span class="text-small font-weight-normal ml-2">2020/11/30</span>까지 입니다.</li>
+	            <li class="mb-3 text-muted">
+	              <i class="fa fa-times mr-2"></i>해당 쿠폰은 타인 양도 불가합니다.
+	            </li>
+	            <li class="mb-3 text-muted">
+	              <i class="fa fa-times mr-2"></i>거짓물품 배송시 사이트 이용에 제한이 생깁니다.
+	            </li>
+	            <li class="mb-3 text-muted">
+	              <i class="fa fa-times mr-2"></i>쿠폰 적용 후 취소는 불가합니다.
+	            </li>
+	          </ul>
+	          <a href="#" class="btn btn-primary btn-block p-2 shadow rounded-pill">적용</a>
+	        </div>
+	      </div>
+	      <!-- Coupon Table END -->
+      	</div>
+	  </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+ 
 <script>
 /* ================ file upload start ================*/
 
