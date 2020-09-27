@@ -9,8 +9,6 @@ import com.kh.udon.member.model.vo.Member;
 
 public interface MemberService
 {
-	int updateLocation(Location loc);
-
 	int insertKeyword(Map<String, Object> map);
 
 	List<Keyword> selectKeywordList(String userId);
@@ -26,4 +24,8 @@ public interface MemberService
 	int selectRadius(String userId);
 
 	int updateRadius(Map<String, Object> map);
+
+	int updateAddrAndLoc(Map<String, Object> map);
+
+	int selectKeyword(Map<String, Object> key);
 }
