@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -161,11 +162,16 @@ public class MemberController
     	//test id로 테스트
     	String userId = "test";
     	
+    	Map<String, Object> map = new HashMap<>();
+    	map.put("userId", userId);
+    	map.put("address", addr);
+    	map.put("latitude", latitude);
+    	map.put("longitude", longitude);
+    	
     	//업무로직
     	String msg = "변경 성공!";
-    	Location loc = new Location(userId, latitude, longitude); 
     	try {
-    		int result = service.updateLocation(loc);
+    		int result = service.updateAddrAndLoc(map);
     		redirectAttr.addFlashAttribute("msg", msg);			
 		} catch (Exception e) {
 			log.error("location 수정 실패 오류", e);
@@ -259,10 +265,10 @@ public class MemberController
     //나의 키워드 추가
     @RequestMapping(value = "/insertKeyword",
     			method = RequestMethod.POST)
-    @ResponseBody
-    public Map<String, Object> insertKeyword(HttpSession session,
-    										 @RequestParam("userId") String userId,
-    										 @RequestParam("keyword") String keyword){
+    public String insertKeyword(HttpSession session,
+    						   RedirectAttributes redirectAttr,
+    						   @RequestParam("userId") String userId,
+    						   @RequestParam("keyword") String keyword){
     	
     	//test id로 테스트
     	userId = "test";
@@ -272,11 +278,20 @@ public class MemberController
     	Map<String, Object> map = new HashMap<>();
     	map.put("userId", userId);
     	map.put("keyword", keyword);
-    	System.out.println(map);
-    	
-    	int result = service.insertKeyword(map);
-    			
-    	return map;
+//    	System.out.println(map);
+
+    	String msg = "등록 성공!";
+    	try {
+    		int result = service.insertKeyword(map);
+    	} catch (Exception e) {
+    		log.error("keyword 등록 실패 오류", e);
+			msg = "등록 실패";
+			
+//			throw e; //에러페이지
+		}
+    		
+    	redirectAttr.addFlashAttribute("msg", msg);
+    	return "redirect:/member/keywordNoti";
     }
     
     //키워드 삭제
@@ -287,16 +302,39 @@ public class MemberController
     	System.out.println(keyCode);
     	String msg = "삭제 성공!";
     	try {
-    		int result = service.deleteKeyword(keyCode);   	
-    		redirectAttr.addFlashAttribute("msg", msg);			
+    		int result = service.deleteKeyword(keyCode);  		
 		} catch (Exception e) {
 			log.error("keyword 삭제 실패 오류", e);
-			redirectAttr.addFlashAttribute("msg", "삭제 실패");
+			msg = "삭제 실패";
 			
 //			throw e; //에러페이지
 		}
     	
+    	redirectAttr.addFlashAttribute("msg", msg);	
     	return "redirect:/member/keywordNoti";
+    }
+    
+    //키워드 중복검사
+    @GetMapping("/checkKeywordDuplicate")
+    @ResponseBody
+    public Map<String, Object> checkKeywordDuplicate(@RequestParam("userId") String userId,
+    												 @RequestParam("keyword") String keyword){
+    	
+    	//test id로 테스트
+    	userId = "test";
+    	
+    	Map<String, Object> key = new HashMap<>();
+    	key.put("userId", userId);
+    	key.put("keyword", keyword);
+    	
+    	int result = service.selectKeyword(key);
+    	//같은키워드가 0개여야 새로 추가 가능한 키워드 임
+    	boolean isUsable = (result == 0); 
+    	
+    	Map<String, Object> map = new HashMap<>();
+		map.put("isUsable", isUsable);
+		map.put("userId", userId);
+    	return map;
     }
     
     //받은 거래 후기

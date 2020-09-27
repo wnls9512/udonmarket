@@ -19,62 +19,6 @@
 <style>
 a{text-decoration: none; color: black;}
 html { font-size: 16px; }
-.slidecontainer {width: 100%;}
-
-.slider {
-  -webkit-appearance: none;
-  width: 100%;
-  height: 15px;
-  border-radius: 5px;
-  background: #d3d3d3;
-  outline: none;
-  opacity: 0.7;
-  -webkit-transition: .2s;
-  transition: opacity .2s;
-}
-
-.slider:hover {
-  opacity: 1;
-}
-
-.slider::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  appearance: none;
-  width: 25px;
-  height: 25px;
-  border-radius: 50%;
-  background: #4CAF50;
-  cursor: pointer;
-}
-
-.slider::-moz-range-thumb {
-  width: 25px;
-  height: 25px;
-  border-radius: 50%;
-  background: #4CAF50;
-  cursor: pointer;
-}
-.box-radio-input input[type="radio"]{
-    display:none;
-}
-
-.box-radio-input input[type="radio"] + span{
-    display:inline-block;
-    background:none;
-    border:1px solid #dfdfdf;    
-    padding:0px 10px;
-    text-align:center;
-    height:35px;
-    line-height:33px;
-    font-weight:500;
-    cursor:pointer;
-}
-
-.box-radio-input input[type="radio"]:checked + span{
-    border:1px solid #23a3a7;
-    background:#23a3a7;
-    color:#fff;
-}
 </style>
 
     <!--================Home Banner Area =================-->
@@ -167,11 +111,14 @@ html { font-size: 16px; }
 								  <!-- value = 로그인 중인 유저 아이디 -->
 								  <input type="hidden" name="userId" value="" />
 								  <div class="input-group-append">
-							      <input type="submit" 
+							      <input type="button" 
+							      		 id="btn-insert"
 							    	     class="btn btn-outline-secondary" 
 							    	     value="등록" />
 								  </div>
 								</div>
+								<span class="guide error">이미 추가된 키워드예요 🤔 </span>
+								<input type="hidden" id="idValid" value="0" />
 							</form>
 							<br />
 							<p>등록된 키워드  <mark style="color: red; background: white;">${totalKeywordContents}</mark>/ 30</p>
@@ -197,31 +144,63 @@ html { font-size: 16px; }
 	    </div>
 	</div>
 <script>
+$(function(){
+	$(".guide.error").hide();
+	$("#idValid").val(0);
+	$("#btn-insert").attr('disabled', true);
+
+	//키워드 중복 검사
+	$("[name=keyword]").keyup(function(){
+
+	 	if($(this).val() == ''){
+	 		$(".guide.error").hide();
+			$("#idValid").val(0);
+			$("#btn-insert").attr('disabled', true);
+			return;
+		} 
+		
+		$.ajax({
+			url : "${pageContext.request.contextPath}/member/checkKeywordDuplicate",
+			data : {
+				userId : $("[name=userId]").val(),
+				keyword : $("[name=keyword]").val()
+			},
+			dataType : "json",
+			success : function(data){
+				//console.log(data);
+
+				if(data.isUsable == true){
+					$(".guide.error").hide();
+					$("#idValid").val(1);
+					$("#btn-insert").attr('disabled', false);
+				}
+				else{
+					$(".guide.error").show();
+					$("#idValid").val(0);
+					$("#btn-insert").attr('disabled', true);
+				}
+					
+			},
+			error : function(xhr, status, err){
+				 console.log("처리 실패", xhr, status, err)
+			}
+
+		});
+		
+	});
+	
+});
+
 function deleteKey(key){
+	if(!confirm('정말 삭제할까요?')) return;
 	location.href = "${ pageContext.request.contextPath }/member/deleteKeyword?key=" + key;
 }
 
-$(".insertKeyword").submit(function(){
+$("#btn-insert").click(function(){
 
-	//중복검사
-	
-	
- 	$.ajax({
-		url : "${pageContext.request.contextPath}/member/insertKeyword",
-		method : "POST",
-		data : {
-			userId : $("[name=userId]").val(),
-			keyword : $("[name=keyword]").val()
-		}, 
-		dataType : "json",
-		success : function(data){
-			console.log("처리 성공", data.userId, data.keyword);
-			
-		},
-		error : function(xhr, status, err){
-			console.log("처리 실패", xhr, status, err);
-		}
-	}); 
+	$(".insertKeyword").attr("action", "${ pageContext.request.contextPath }/member/insertKeyword")
+	.attr("method", "POST")
+	.submit();	
 	
 });
 </script>

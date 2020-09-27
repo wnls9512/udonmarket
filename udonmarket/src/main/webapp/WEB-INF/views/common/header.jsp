@@ -94,7 +94,7 @@
                             <c:if test="${not empty loginMember }">
                             	<span>${ loginMember.userId}</span>님, 반갑습니다. 
                             	<a href="${pageContext.request.contextPath }/member/logout">로그아웃<i class="ti-power-off"></i></a>
-                            </c:if>f
+                            </c:if>
                             
                         </div>
                         
