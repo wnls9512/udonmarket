@@ -44,14 +44,23 @@ a{text-decoration: none; color: black;}
 	        <div class="bg-white shadow rounded overflow-hidden">
 	            <div class="px-4 pt-0 pb-4 cover">
 	                <div class="media align-items-end profile-head">
-	                    <div class="profile mr-3"><img src="https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=80" alt="..." width="130" class="rounded mb-2 img-thumbnail"><a href="${pageContext.request.contextPath}/member/editprofile" class="btn btn-outline-dark btn-sm btn-block">Edit profile</a></div>
+	                    <div class="profile mr-3"><img src="https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=80" alt="..." width="130" class="rounded mb-2 img-thumbnail">
+	                    <a href="${pageContext.request.contextPath}/member/editprofile" class="btn btn-outline-dark btn-sm btn-block">Edit profile</a>
+	                    </div>
 	                    <div class="media-body mb-5 text-white">
 	                        <h4 class="mt-0 mb-0" style="color:white;">Mark Williams</h4>
 	                        <p class="small mb-4" style="color:white;"> <i class="fas fa-map-marker-alt mr-2"></i>New York</p>
 	                    </div>
 	                </div>
 	            </div>
-	            <div class="bg-light p-4 d-flex justify-content-end text-center">
+	            <div class="bg-light p-4">
+	           <!-- <span class="d-flex justify-content-center"><h2>36.5ºc</h2></span> -->
+	           <div class="d-flex justify-content-around text-center">
+	           <!-- 여백맞추기용 -->
+	           <p></p><p></p><p></p><p></p><p></p><p></p><p></p><p></p><p></p><p></p><p></p><p></p><p></p>
+	           <!-- <h2 class="tempe">36.5ºc</h2> -->
+	           <!-- 여백맞추기용 -->
+	           <p></p><p></p><p></p><p></p>
 	                <ul class="list-inline mb-0">
 	                    <li class="list-inline-item">            
 	                       <h6 class="font-weight-bold mb-0 d-block">	                       	
@@ -75,6 +84,11 @@ a{text-decoration: none; color: black;}
 	                       </h6>
 	                    </li>
 	                </ul>
+	                </div>
+	                 <!-- 매너온도 게이지 -->
+	              <div class="progress" style="height: 20px;">
+					  <div class="progress-bar" role="progressbar" style="width: 25%;" aria-valuenow="36.5" aria-valuemin="0" aria-valuemax="100">36.5ºc</div>
+					</div>
 	            </div>
 	            <div class="px-4 py-3">
 	                <div class="p-4 rounded shadow-sm bg-light">
@@ -115,12 +129,6 @@ a{text-decoration: none; color: black;}
 	                <div class="p-4 rounded shadow-sm bg-light">
 				        <!-- Vertical Menu-->
 				        <nav class="nav flex-column bg-white shadow-sm rounded p-3">
-				          <a href="#" class="nav-link px-4 rounded-pill">
-	                           <i class="far fa-envelope"></i>&nbsp; 친구초대
-	                      </a>
-				          <a href="#" class="nav-link px-4 rounded-pill">
-		                      <i class="fas fa-share-alt"></i>&nbsp; 당근마켓 공유
-	                      </a>
 				          <a href="${pageContext.request.contextPath}/member/announce" class="nav-link px-4 rounded-pill">
 		                      <i class="far fa-flag"></i>&nbsp; 공지사항
 	                      </a>
