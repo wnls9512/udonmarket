@@ -2,17 +2,20 @@ package com.kh.udon.product.model.service;
 
 import java.util.List;
 
-import com.kh.udon.product.model.vo.ProductCategory;
+import com.kh.udon.product.model.vo.CategoryVO;
+import com.kh.udon.product.model.vo.CouponDTO;
 
 public interface ProductService
 {
 
-    List<ProductCategory> selectAllCategory();
+    List<CategoryVO> selectAllCategory();
 
     List<Integer> selectAllCategoryCount();
 
     int selectTotalCount();
 
     int selectCategoryCount(String categoryCode);
+
+    CouponDTO selectCoupon(String userId);
 
 }

@@ -378,3 +378,6 @@ insert into board values(SEQ_BOARD_NO.nextval, 'test', 20, '사건입니다', '�
 insert into board values(SEQ_BOARD_NO.nextval, 'test', 17, '장문 테스트', '안녕 오늘도 같은 자리 버스 창가에 기대 앉은 네게 인사를 해 역시 넌 받아 주지를 않네 인기 많고 잘생긴 넌 내게만 그렇게 쌀쌀하게 굴더라', sysdate, null, 0);
 insert into board values(SEQ_BOARD_NO.nextval, 'test', 17, '더 긴 장문 테스트', '중앙방역대책본부는 24일 0시 기준으로 국내 코로나바이러스 감염증(코로나19) 신규 확진자가 125명 늘어 누적 2만3341명이라고 밝혔다. 신규 확진자 수는 전날 110명에 이어 이틀 연속 세 자릿수를 나타냈다. 앞서 국내 신규 확진자는 지난달 14일부터 이달 19일까지 37일 연속 세 자릿수를 기록했었다.', sysdate, null, 0);
 
+insert into coupon values(seq_coupon.nextval, 'test', '강남구 11월 판매왕', to_date(sysdate + 7, 'yyyy-mm-dd'), 0);
+
+

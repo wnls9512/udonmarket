@@ -5,7 +5,7 @@ import java.io.Serializable;
 import lombok.Data;
 
 @Data
-public class Product implements Serializable
+public class ProductVO implements Serializable
 {
 
 }

@@ -156,8 +156,8 @@
 	      <!-- Coupon Table START -->
 	      <div class="mb-5 mb-lg-0" style="float:none; margin:0 auto;">
 	        <div class="bg-white p-5 rounded-lg shadow">
-	          <h1 class="h6 text-uppercase font-weight-bold mb-4">강남구 11월 판매왕</h1>
-	          <h2 class="h1 font-weight-bold">3<span class="text-small font-weight-normal ml-2">개</span></h2>
+	          <h1 class="h6 text-uppercase font-weight-bold mb-4">${coupon.couponName }</h1>
+	          <h2 class="h1 font-weight-bold">${coupon.amount }<span class="text-small font-weight-normal ml-2">개</span></h2>
 	
 	          <div class="custom-separator my-4 mx-auto bg-primary"></div>
 	
@@ -165,7 +165,7 @@
 	            <li class="mb-3">
 	              <i class="fa fa-check mr-2 text-primary"></i> 쿠폰 적용된 상품은 전국에 노출됩니다.</li>
 	            <li class="mb-3">
-	              <i class="fa fa-check mr-2 text-primary"></i> 유효기간은 <span class="text-small font-weight-normal ml-2">2020/11/30</span>까지 입니다.</li>
+	              <i class="fa fa-check mr-2 text-primary"></i> 유효기간은 <span class="text-small font-weight-normal ml-2">${coupon.expireDate }</span>까지 입니다.</li>
 	            <li class="mb-3 text-muted">
 	              <i class="fa fa-times mr-2"></i>해당 쿠폰은 타인 양도 불가합니다.
 	            </li>
