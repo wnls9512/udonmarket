@@ -222,7 +222,7 @@ $(function()
 
 		$.ajax
 		({
-			url: '${pageContext.request.contextPath}/product/register',
+			url: '${pageContext.request.contextPath}/product/createThumbnail',
 			processData: false,
 			contentType: false,
 			data: formData,
@@ -388,28 +388,29 @@ $(function()
 		formData.append("category", $("[name=category]").val());
 		formData.append("content", $("[name=content]").val());
 		formData.append("price", $("[name=price]").val());
-		formData.append("coupon", $("[name=coupon]").val());
-		formData.append("offer", $("[name=offer]").val());
+		formData.append("coupon", $("[name=coupon]").val() == 1 ? true : false);
+		formData.append("offer", $("[name=offer]").val() == 1 ? true : false);
 		
+		$.ajax
+		({
+			url: '${pageContext.request.contextPath}/product/register',
+			processData: false,
+			contentType: false,
+			data: formData,
+			type: 'POST',
+			dataType: 'json',
+			success: function(result)
+			{
+				alert("성공!");
+			},
+			error: function()
+			{
+				alert("실패");
+			}	
+		});
 	});  
 
-	$.ajax
-	({
-		url: '${pageContext.request.contextPath}/product/register',
-		processData: false,
-		contentType: false,
-		data: formData,
-		type: 'POST',
-		dataType: 'json',
-		success: function(result)
-		{
-			console.log(result);
 
-			showUploadedFile(result);
-
-			$(".btn_upload").html("Upload Image " + result.length + " / 5");
-		}	
-	});
 });
 /* ================ submit form END ================*/
 

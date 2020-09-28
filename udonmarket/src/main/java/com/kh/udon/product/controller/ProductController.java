@@ -29,6 +29,7 @@ import com.kh.udon.product.model.service.ProductService;
 import com.kh.udon.product.model.vo.CategoryVO;
 import com.kh.udon.product.model.vo.CouponDTO;
 import com.kh.udon.product.model.vo.ProductPhotoDTO;
+import com.kh.udon.product.model.vo.ProductVO;
 
 import lombok.extern.slf4j.Slf4j;
 import net.coobird.thumbnailator.Thumbnailator;
@@ -104,10 +105,10 @@ public class ProductController
         model.addAttribute("coupon", coupon);
     }
     
-    // 상품 등록
-    @PostMapping(value = "/register", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    // 썸네일 생성
+    @PostMapping(value = "/createThumbnail", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
-    public ResponseEntity<List<ProductPhotoDTO>> register(MultipartFile[] uploadFile)
+    public ResponseEntity<List<ProductPhotoDTO>> createThumbnail(MultipartFile[] uploadFile)
     {
         List<ProductPhotoDTO> list = new ArrayList<ProductPhotoDTO>();
         String uploadFolder = "C:\\upload";
@@ -211,6 +212,18 @@ public class ProductController
         {
             e.printStackTrace();
         }
+        
+        return result;
+    }
+    
+    // 게시글 등록
+    @PostMapping("/register")
+    @ResponseBody
+    public ResponseEntity<Integer> register(ProductVO product)
+    {
+        ResponseEntity<Integer> result = new ResponseEntity<Integer>(1, HttpStatus.OK);
+        
+        log.debug("product = {}", product);
         
         return result;
     }
