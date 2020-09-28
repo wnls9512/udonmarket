@@ -62,5 +62,10 @@ public class MemberDaoImpl implements MemberDao
 		return session.update("member.updateRadius", map);
 	}
 
+	@Override
+	public int insertLocation(Location location) {
+		return session.insert("member.insertLocation", location);
+	}
+
 	
 }

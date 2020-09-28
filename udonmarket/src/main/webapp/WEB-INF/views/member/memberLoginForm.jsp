@@ -51,12 +51,12 @@
                         <div class="login_part_form_iner">
                             <h3>Welcome Back ! <br>
                                 Please Sign in now</h3>
-                            <form class="row contact_form" action="login" method="post" novalidate="novalidate">
+                            <form class="row contact_form" action="${pageContext.request.contextPath }/member/login" method="post" novalidate="novalidate">
                                 <div class="col-md-12 form-group p_star">
-                                    <input type="text" class="form-control" id="userId" name="name" placeholder="Username">
+                                    <input type="text" class="form-control" id="userId" name="name" placeholder="아이디">
                                 </div>
                                 <div class="col-md-12 form-group p_star">
-                                    <input type="password" class="form-control" id="password" name="password" placeholder="Password">
+                                    <input type="password" class="form-control" id="password" name="password" placeholder="비밀번호">
                                 </div>
                                 <div class="col-md-12 form-group">
                                     <div class="creat_account d-flex align-items-center">

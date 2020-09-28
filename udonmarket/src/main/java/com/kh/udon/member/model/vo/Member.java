@@ -2,6 +2,7 @@ package com.kh.udon.member.model.vo;
 
 import java.io.Serializable;
 import java.sql.Date;
+import java.util.List;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -27,4 +28,5 @@ public class Member implements Serializable{
 	private Date regDate;
 	private boolean enabled;
 	private char quitYn;
+	private List<Location> locationList;
 }

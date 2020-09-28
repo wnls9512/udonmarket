@@ -28,4 +28,6 @@ public interface MemberDao
 
 	int updateRadius(Map<String, Object> map);
 
+	int insertLocation(Location location);
+
 }

@@ -35,3 +35,25 @@ body {
 	text-align: center;
 	margin-top: 1em;
 }
+/*중복아이디체크관련*/
+div#userId-container {
+	position: relative;
+	padding: 0px;
+	margin-bottom: 1rem;
+}
+
+div#userId-container span.guide {
+	display: none;
+	font-size: 12px;
+	position: absolute;
+	top: 12px;
+	right: 10px;
+}
+
+div#userId-container span.ok {
+	color: green;
+}
+
+div#userId-container span.error {
+	color: red;
+}

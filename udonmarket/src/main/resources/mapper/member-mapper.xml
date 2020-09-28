@@ -70,12 +70,13 @@
 		key_code = #{keyCode}
 </delete>
 
+<!-- 회원가입 -->
 <insert id="insertMember">
 	insert into member
 	values(#{userId},#{password},#{email},#{nickName},#{address},null,null,default,default,default)
-
 </insert>
 
+<!-- 로그인 -->
 <select id="selectOneMember" resultMap="memberMap">
 	select *
 	from member

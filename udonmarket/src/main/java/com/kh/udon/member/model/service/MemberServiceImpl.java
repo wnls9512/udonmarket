@@ -11,12 +11,15 @@ import com.kh.udon.member.model.vo.Keyword;
 import com.kh.udon.member.model.vo.Location;
 import com.kh.udon.member.model.vo.Member;
 
+import lombok.extern.slf4j.Slf4j;
+
 @Service
+@Slf4j
 public class MemberServiceImpl implements MemberService
 {
     @Autowired
     private MemberDao memberDao;
-
+    
 	@Override
 	public int updateLocation(Location loc) {
 		return memberDao.updateLocation(loc);
@@ -42,6 +45,7 @@ public class MemberServiceImpl implements MemberService
 		return memberDao.deleteKeyword(keyCode);
 	}
 
+	
 	@Override
 	public int insertMember(Member member) {
 		return memberDao.insertMember(member);
