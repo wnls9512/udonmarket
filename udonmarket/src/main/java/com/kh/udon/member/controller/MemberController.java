@@ -22,9 +22,10 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.kh.udon.member.model.service.MemberService;
+import com.kh.udon.member.model.vo.Evaluate;
 import com.kh.udon.member.model.vo.Keyword;
-import com.kh.udon.member.model.vo.Location;
 import com.kh.udon.member.model.vo.Member;
+import com.kh.udon.member.model.vo.Review;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -278,7 +279,6 @@ public class MemberController
     	Map<String, Object> map = new HashMap<>();
     	map.put("userId", userId);
     	map.put("keyword", keyword);
-//    	System.out.println(map);
 
     	String msg = "등록 성공!";
     	try {
@@ -299,7 +299,7 @@ public class MemberController
     public String deleteKeyword(RedirectAttributes redirectAttr,
     							@RequestParam("key") int keyCode){
     	  
-    	System.out.println(keyCode);
+//    	System.out.println(keyCode);
     	String msg = "삭제 성공!";
     	try {
     		int result = service.deleteKeyword(keyCode);  		
@@ -337,10 +337,33 @@ public class MemberController
     	return map;
     }
     
-    //받은 거래 후기
+    //받은 거래 후기/매너 평가
     @RequestMapping("/myReviewList")
-    public String myReviewList(){
-    	return "member/myReviewList";
+    public Model myReviewList(HttpSession session,
+    						  Model model){
+    	
+    	//test id로 테스트
+    	String userId = "test";
+    	//세션에 담긴 로그인 중 인 유저 아이디
+//    	String userId = ((Member)session.getAttribute("loginMember")).getUserId();
+
+    	//매너 평가
+    	List<Evaluate> evaList = service.selectAllEva(userId);
+    	log.debug("list = {}", evaList);
+    	
+    	//거래 후기
+    	//1. 거래 후기 총 개수
+    	int totalReview = service.selectTotalReview(userId);
+    	log.debug("totalReview = {}", totalReview);
+    	
+    	//2. 거래 후기 - userId가 수신자 인 것만
+    	List<Review> reviewList = service.selectAllReview(userId);
+    	log.debug("reviewList = {}", reviewList);
+    	
+    	model.addAttribute("evaList", evaList);
+    	model.addAttribute("totalReview", totalReview);
+    	model.addAttribute("reviewList", reviewList);
+    	return model;
     }
     
 }
