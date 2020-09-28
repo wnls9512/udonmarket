@@ -98,6 +98,11 @@
 	insert into member
 	values(#{userId},#{password},#{email},#{nickName},#{address},null,null,default,default,default)
 </insert>
+<insert id="insertLocation">
+	insert into location
+	values (#{userId}, '37.4969519', '127.0261588','3')
+
+</insert>
 
 <!-- 로그인 -->
 <select id="selectOneMember" resultMap="memberMap">

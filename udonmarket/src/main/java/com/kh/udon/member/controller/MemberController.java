@@ -63,7 +63,10 @@ public class MemberController {
 		log.debug("rawPassword@controller = {}", rawPassword);
 		log.debug("encryptPassword@controller = {}", encryptPassword);
 
-		int result = service.insertMember(member);
+		int result = service.insertMemberLoc(member);
+		
+		
+		log.debug("result@controller = {}", result);
 
 		String msg = (result > 0) ? "회원가입성공!" : "회원가입성공!";
 		log.debug("msg@controller = " + msg);

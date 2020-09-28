@@ -87,9 +87,8 @@
                             <a href="#" id="bell"><i class="ti-bell"></i></a>
                             <a href="${pageContext.request.contextPath }/chat/chatListView"><i class="ti-comments-smiley"></i></a>
                             <a href="${pageContext.request.contextPath }/member/mypage"><i class="ti-user"></i></a>
-<<<<<<< HEAD
 	                        <a href="${pageContext.request.contextPath }/member/loginForm"><i class="ti-power-off"></i></a>
-=======
+
                             
                             <c:if test="${empty loginMember }">
 	                            <a href="${pageContext.request.contextPath }/member/loginForm"><i class="ti-power-off"></i></a>
@@ -99,7 +98,7 @@
                             	<a href="${pageContext.request.contextPath }/member/logout">로그아웃<i class="ti-power-off"></i></a>
                             </c:if>
                             
->>>>>>> refs/remotes/origin/master
+
                         </div>
                         
                         <div class="notifications" id="box">

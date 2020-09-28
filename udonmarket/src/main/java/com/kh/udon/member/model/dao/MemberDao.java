@@ -22,8 +22,6 @@ public interface MemberDao
 
 	int deleteKeyword(int keyCode);
 
-	int insertMember(Member member);
-
 	Member selectOneMember(String userId);
 
 	int selectRadius(String userId);
@@ -34,11 +32,15 @@ public interface MemberDao
 
 	int selectKeyword(Map<String, Object> key);
 
-
 	List<Evaluate> selectAllEva(String userId);
 
 	int selectTotalReview(String userId);
 
 	List<Review> selectAllReview(String userId);
+
+	int insertMember(Member member);
+
+	int insertLocation(String userId);
+
 
 }

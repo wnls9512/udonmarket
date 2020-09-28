@@ -28,5 +28,7 @@ public class Member implements Serializable{
 	private Date regDate;
 	private boolean enabled;
 	private char quitYn;
+	
+	
 	private List<Location> locationList;
 }

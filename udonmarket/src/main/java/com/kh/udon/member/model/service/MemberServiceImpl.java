@@ -43,12 +43,6 @@ public class MemberServiceImpl implements MemberService
 		return memberDao.deleteKeyword(keyCode);
 	}
 
-	
-	@Override
-	public int insertMember(Member member) {
-		return memberDao.insertMember(member);
-	}
-
 	@Override
 	public Member selectOneMember(String userId) {
 		return memberDao.selectOneMember(userId);
@@ -99,5 +93,24 @@ public class MemberServiceImpl implements MemberService
 		return memberDao.selectAllReview(userId);
 	}
 
+	@Transactional(rollbackFor = { Exception.class })
+	@Override
+	public int insertMemberLoc(Member member) {
+		
+		int result = 0;
+		
+		result = memberDao.insertMember(member);
+		log.debug("result = {}", result);
+		log.debug("member = {}", member);
+
+		
+		if(result > 0) {
+			result = memberDao.insertLocation(member.getUserId());
+			log.debug("result = {}", result);
+
+		}
+		
+		return result;
+	}
 
 }

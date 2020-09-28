@@ -45,11 +45,6 @@ public class MemberDaoImpl implements MemberDao
 	}
 
 	@Override
-	public int insertMember(Member member) {
-		return session.insert("member.insertMember", member);
-	}
-
-	@Override
 	public Member selectOneMember(String userId) {
 		return session.selectOne("member.selectOneMember", userId);
 	}
@@ -87,5 +82,15 @@ public class MemberDaoImpl implements MemberDao
 	@Override
 	public List<Review> selectAllReview(String userId) {
 		return session.selectList("member.selectAllReview", userId);
+	}
+
+	@Override
+	public int insertMember(Member member) {
+		return session.insert("member.insertMember", member);
+	}
+
+	@Override
+	public int insertLocation(String userId) {
+		return session.insert("member.insertLocation", userId);
 	}
 }
