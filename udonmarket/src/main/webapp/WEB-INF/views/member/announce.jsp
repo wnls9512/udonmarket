@@ -129,7 +129,6 @@ html { font-size: 16px; }
 									<th>제목</th>
 									<th>작성자</th>
 									<th>작성일</th>
-									<th>첨부파일</th> <!-- 첨푸파일 있을 경우, /resources/images/file.png 표시 -->
 									<th>조회수</th>
 								</tr>
 							</table>

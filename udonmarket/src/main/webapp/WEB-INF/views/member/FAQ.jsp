@@ -119,8 +119,8 @@ html { font-size: 16px; }
 	            <hr />
 				<div style="text-align: center; ">
 					<h5 style="font-weight: bold;
-						  		color: #575757;">관심 주제 목록</h5> 		
-				     <p style="color: #575757;">관심 주제를 추가해보세요</p>
+						  		color: #575757;">자주 묻는 질문</h5> 		
+				    
 				</div>
 				<hr />			
 	              <!-- 탭 리스트 -->
@@ -145,7 +145,6 @@ html { font-size: 16px; }
 									<th>제목</th>
 									<th>작성자</th>
 									<th>작성일</th>
-									<th>첨부파일</th> <!-- 첨푸파일 있을 경우, /resources/images/file.png 표시 -->
 									<th>조회수</th>
 								</tr>
 							</table>
@@ -159,7 +158,6 @@ html { font-size: 16px; }
 									<th>제목</th>
 									<th>작성자</th>
 									<th>작성일</th>
-									<th>첨부파일</th> <!-- 첨푸파일 있을 경우, /resources/images/file.png 표시 -->
 									<th>조회수</th>
 									
 								</tr>
@@ -173,7 +171,6 @@ html { font-size: 16px; }
 									<th>제목</th>
 									<th>작성자</th>
 									<th>작성일</th>
-									<th>첨부파일</th> <!-- 첨푸파일 있을 경우, /resources/images/file.png 표시 -->
 									<th>조회수</th>
 								</tr>
 							</table>
