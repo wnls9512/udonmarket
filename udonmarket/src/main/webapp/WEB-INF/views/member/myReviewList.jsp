@@ -107,159 +107,61 @@ margin: 5px 10px;
 							<div>
 							<table>
 								<tbody>
-									<tr>
-										<td>
-										<ul class="unordered-list">
-											<li>
-							                   <h4 style="display: inline-block;">1234명</h4>														
-											</li>
-								        </ul>
-										</td>
-										<td>
-											<p class="custom1">친절하고 매너가 좋아요</p>
-										</td>
-									</tr>
-									<tr>
-										<td>
-										<ul class="unordered-list">
-											<li>
-							                   <h4 style="display: inline-block;">1233명</h4>														
-											</li>
-								        </ul>
-										</td>
-										<td>
-											<p class="custom1">응답이 빨라요</p>
-										</td>
-									</tr>
-									<tr>
-										<td>
-										<ul class="unordered-list">
-											<li>
-							                   <h4 style="display: inline-block;">122명</h4>														
-											</li>
-								        </ul>
-										</td>
-										<td>
-											<p class="custom1">시간 약속을 잘 지켜요</p>
-										</td>
-									</tr>
-									<tr>
-										<td>
-										<ul class="unordered-list">
-											<li>
-							                   <h4 style="display: inline-block;">121명</h4>														
-											</li>
-								        </ul>
-										</td>
-										<td>
-											<p class="custom1">상품 설명이 자세해요</p>
-										</td>
-									</tr>
-									<tr>
-										<td>
-										<ul class="unordered-list">
-											<li>
-							                   <h4 style="display: inline-block;">12명</h4>														
-											</li>
-								        </ul>
-										</td>
-										<td>
-											<p class="custom1">좋은 상품을 저렴하게 판매해요</p>
-										</td>
-									</tr>
+								<c:if test="${ not empty evaList}">
+									<c:forEach items="${evaList}" var="eva" begin="0" end="4" step="1">
+									<!-- 비매너 평가는 본인에게만 보이게 처리 할 것 -->
+									<c:if test="${ eva.kind eq true }">
+										<tr>
+											<td>
+											<ul class="unordered-list">
+												<li>
+								                   <h4 style="display: inline-block;">${eva.count }명</h4>														
+												</li>
+									        </ul>
+											</td>
+											<td>
+												<p class="custom1">${eva.content}</p>
+											</td>
+										</tr>
+									</c:if>									
+									</c:forEach>
+								</c:if>
+								<c:if test="${ empty evaList }">
+									<tr><td>받은 매너 평가가 아직 없어요</tr></td>
+								</c:if>
 								</tbody>
 							</table>
 							<hr />	
 							<div style="text-align: center; margin-bottom: 15px;">
 								 <h5 style="font-weight: bold;
-									  		color: #575757;"><a href="#">받은 거래 후기(12)</a></h5>
+									  		color: #575757;"><a href="#">받은 거래 후기(${totalReview})</a></h5>
 							</div>
 							<div>
 								<table class="table table-hover">
 									<tbody>
-										<!-- 후기 시작 -->	
-										<tr><td>
-											<div class="row">
-												<div class="col-md">
-													<svg width="2em" height="2em" viewBox="0 0 16 16" class="bi bi-person-circle" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-													  <path d="M13.468 12.37C12.758 11.226 11.195 10 8 10s-4.757 1.225-5.468 2.37A6.987 6.987 0 0 0 8 15a6.987 6.987 0 0 0 5.468-2.63z"/>
-													  <path fill-rule="evenodd" d="M8 9a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
-													  <path fill-rule="evenodd" d="M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1zM0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8z"/>
-													</svg>
-													<h4 class="mb-20" style="display: inline-block;">익명 사용자</h4> 
-													<p style="display: inline-block; color: #575757;"> 수원시 영통구 망포동</p>		
-													<p class="text-left">잘 받았습니다 너무 귀엽네요 시간 약속 지켜주셔서 감사드립니다 </p>
+									<c:if test="${ not empty reviewList}">
+										<c:forEach items="${reviewList}" var="review" begin="0" end="4" step="1">
+											<tr><td>
+												<div class="row">
+													<div class="col-md">
+														<svg width="2em" height="2em" viewBox="0 0 16 16" class="bi bi-person-circle" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+														  <path d="M13.468 12.37C12.758 11.226 11.195 10 8 10s-4.757 1.225-5.468 2.37A6.987 6.987 0 0 0 8 15a6.987 6.987 0 0 0 5.468-2.63z"/>
+														  <path fill-rule="evenodd" d="M8 9a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+														  <path fill-rule="evenodd" d="M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1zM0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8z"/>
+														</svg>
+														<h4 class="mb-20" style="display: inline-block;">${ review.sender }</h4> 
+														<!-- <p style="display: inline-block; color: #575757;"> 수원시 영통구 망포동</p>	 -->	
+														<p class="text-left"> ${ review.content } </p>
+													</div>
 												</div>
-											</div>
-										</td></tr>
-										<!-- 후기 끝 -->	
-										<!-- 후기 시작 -->	
-										<tr><td>
-											<div class="row">
-												<div class="col-md">
-													<svg width="2em" height="2em" viewBox="0 0 16 16" class="bi bi-person-circle" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-													  <path d="M13.468 12.37C12.758 11.226 11.195 10 8 10s-4.757 1.225-5.468 2.37A6.987 6.987 0 0 0 8 15a6.987 6.987 0 0 0 5.468-2.63z"/>
-													  <path fill-rule="evenodd" d="M8 9a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
-													  <path fill-rule="evenodd" d="M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1zM0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8z"/>
-													</svg>
-													<h4 class="mb-20" style="display: inline-block;">익명 사용자</h4> 
-													<p style="display: inline-block; color: #575757;"> 수원시 영통구 망포동</p>		
-													<p class="text-left">잘 받았습니다 너무 귀엽네요 시간 약속 지켜주셔서 감사드립니다 </p>
-												</div>
-											</div>
-										</td></tr>
-										<!-- 후기 끝 -->	
-										<!-- 후기 시작 -->	
-										<tr><td>
-											<div class="row">
-												<div class="col-md">
-													<svg width="2em" height="2em" viewBox="0 0 16 16" class="bi bi-person-circle" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-													  <path d="M13.468 12.37C12.758 11.226 11.195 10 8 10s-4.757 1.225-5.468 2.37A6.987 6.987 0 0 0 8 15a6.987 6.987 0 0 0 5.468-2.63z"/>
-													  <path fill-rule="evenodd" d="M8 9a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
-													  <path fill-rule="evenodd" d="M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1zM0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8z"/>
-													</svg>
-													<h4 class="mb-20" style="display: inline-block;">익명 사용자</h4> 
-													<p style="display: inline-block; color: #575757;"> 수원시 영통구 망포동</p>		
-													<p class="text-left">잘 받았습니다 너무 귀엽네요 시간 약속 지켜주셔서 감사드립니다 </p>
-												</div>
-											</div>
-										</td></tr>
-										<!-- 후기 끝 -->	
-										<!-- 후기 시작 -->	
-										<tr><td>
-											<div class="row">
-												<div class="col-md">
-													<svg width="2em" height="2em" viewBox="0 0 16 16" class="bi bi-person-circle" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-													  <path d="M13.468 12.37C12.758 11.226 11.195 10 8 10s-4.757 1.225-5.468 2.37A6.987 6.987 0 0 0 8 15a6.987 6.987 0 0 0 5.468-2.63z"/>
-													  <path fill-rule="evenodd" d="M8 9a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
-													  <path fill-rule="evenodd" d="M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1zM0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8z"/>
-													</svg>
-													<h4 class="mb-20" style="display: inline-block;">익명 사용자</h4> 
-													<p style="display: inline-block; color: #575757;"> 수원시 영통구 망포동</p>		
-													<p class="text-left">잘 받았습니다 너무 귀엽네요 시간 약속 지켜주셔서 감사드립니다 </p>
-												</div>
-											</div>
-										</td></tr>
-										<!-- 후기 끝 -->	
-										<!-- 후기 시작 -->	
-										<tr><td>
-											<div class="row">
-												<div class="col-md">
-													<svg width="2em" height="2em" viewBox="0 0 16 16" class="bi bi-person-circle" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-													  <path d="M13.468 12.37C12.758 11.226 11.195 10 8 10s-4.757 1.225-5.468 2.37A6.987 6.987 0 0 0 8 15a6.987 6.987 0 0 0 5.468-2.63z"/>
-													  <path fill-rule="evenodd" d="M8 9a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
-													  <path fill-rule="evenodd" d="M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1zM0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8z"/>
-													</svg>
-													<h4 class="mb-20" style="display: inline-block;">익명 사용자</h4> 
-													<p style="display: inline-block; color: #575757;"> 수원시 영통구 망포동</p>		
-													<p class="text-left">잘 받았습니다 너무 귀엽네요 시간 약속 지켜주셔서 감사드립니다 </p>
-												</div>
-											</div>
-										</td></tr>
-										<!-- 후기 끝 -->	
+											</td></tr>
+										</c:forEach>
+									</c:if>
+									<c:if test="${ empty reviewList}">
+										<tr><td> 받은 거래 후기가 아직 없어요 </td></tr>
+									</c:if>
 									</tbody>
-								</table>
-							
+								</table>							
 							</div>
 						</div>
 				        </nav>

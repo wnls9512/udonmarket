@@ -8,9 +8,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.kh.udon.member.model.dao.MemberDao;
+import com.kh.udon.member.model.vo.Evaluate;
 import com.kh.udon.member.model.vo.Keyword;
 import com.kh.udon.member.model.vo.Location;
 import com.kh.udon.member.model.vo.Member;
+import com.kh.udon.member.model.vo.Review;
 
 @Service
 public class MemberServiceImpl implements MemberService
@@ -76,6 +78,21 @@ public class MemberServiceImpl implements MemberService
 	@Override
 	public int selectKeyword(Map<String, Object> key) {
 		return memberDao.selectKeyword(key);
+	}
+
+	@Override
+	public List<Evaluate> selectAllEva(String userId) {
+		return memberDao.selectAllEva(userId);
+	}
+
+	@Override
+	public int selectTotalReview(String userId) {
+		return memberDao.selectTotalReview(userId);
+	}
+
+	@Override
+	public List<Review> selectAllReview(String userId) {
+		return memberDao.selectAllReview(userId);
 	}
 
 }
