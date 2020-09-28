@@ -184,12 +184,14 @@ create table wish
 create table review
 (
     review_code number,
-    seller varchar2(50) not null,
-    buyer varchar2(50) not null,
+    sender varchar2(50) not null,
+    recipient varchar2(50) not null,
     content varchar2(500) not null,
+    direct char(1) not null,
     constraint pk_review primary key(review_code),
     constraint fk_review_seller foreign key(seller) references member(user_id),
-    constraint fk_review_buyer foreign key(buyer) references member(user_id)
+    constraint fk_review_buyer foreign key(buyer) references member(user_id),
+    constraint ck_review_direct check (direct in('S', 'B'))
 );
 
 create table score
@@ -270,7 +272,11 @@ create table evaluation
 (
     eva_code number,
     content varchar2(100) not null,
-    constraint pk_evaluation primary key(eva_code)
+    kind number not null,
+    member char(1) not null,
+    constraint pk_evaluation primary key(eva_code),
+    constraint ck_evaluation_kind check(kind in(1, 0)),
+    constraint ck_evaluation_member check(member in('S', 'B', 'C'))
 );
 
 create table notification
@@ -342,6 +348,9 @@ create sequence seq_report;
 --========================================
 insert into category values(seq_category.nextval, null, '상품'); -- 1
 insert into category values(seq_category.nextval, null, '게시판'); -- 2
+insert into category values(seq_category.nextval, null, '관리자'); -- 21
+insert into category values(seq_category.nextval, 21, '공지사항');
+insert into category values(seq_category.nextval, 21, '자주 묻는 질문');
 insert into category values(seq_category.nextval, 1, '디지털/가전');
 insert into category values(seq_category.nextval, 1, '가구/인테리어');
 insert into category values(seq_category.nextval, 1, '유아동/유아도서');
@@ -371,6 +380,8 @@ insert into hashtag values(7, '식물');
 insert into hashtag values(8, '임신/출산/육아');
 insert into hashtag values(9, '집꾸미기');
 
+insert into member values('test', '1234', 'test@naver.com', null, null, null, null, 1, sysdate, 'N');
+
 insert into board values(SEQ_BOARD_NO.nextval, 'test', 17, '테스트입니다', '안녕하세요 반갑습니다', sysdate, null, 0);
 insert into board values(SEQ_BOARD_NO.nextval, 'test', 18, '질문입니다', '질문질문', sysdate, null, 0);
 insert into board values(SEQ_BOARD_NO.nextval, 'test', 19, '분실됐습니다', '찾아주세요', sysdate, null, 0);
@@ -378,3 +389,34 @@ insert into board values(SEQ_BOARD_NO.nextval, 'test', 20, '사건입니다', '�
 insert into board values(SEQ_BOARD_NO.nextval, 'test', 17, '장문 테스트', '안녕 오늘도 같은 자리 버스 창가에 기대 앉은 네게 인사를 해 역시 넌 받아 주지를 않네 인기 많고 잘생긴 넌 내게만 그렇게 쌀쌀하게 굴더라', sysdate, null, 0);
 insert into board values(SEQ_BOARD_NO.nextval, 'test', 17, '더 긴 장문 테스트', '중앙방역대책본부는 24일 0시 기준으로 국내 코로나바이러스 감염증(코로나19) 신규 확진자가 125명 늘어 누적 2만3341명이라고 밝혔다. 신규 확진자 수는 전날 110명에 이어 이틀 연속 세 자릿수를 나타냈다. 앞서 국내 신규 확진자는 지난달 14일부터 이달 19일까지 37일 연속 세 자릿수를 기록했었다.', sysdate, null, 0);
 
+insert into coupon values(seq_coupon.nextval, 'test', '강남구 11월 판매왕', to_date(to_char(sysdate + 7, 'yyyy-mm-dd'), 'yyyy-mm-dd'), 0);
+
+insert into evaluation values(seq_evaluation.nextval, '제가 있는 곳 까지 와서 거래했어요', 1, 'S');
+insert into evaluation values(seq_evaluation.nextval, '무료로 나눠주셨어요', 1, 'B');
+insert into evaluation values(seq_evaluation.nextval, '상품상태가 설명한 것과 같아요', 1, 'B');
+insert into evaluation values(seq_evaluation.nextval, '상품설명이 자세해요', 1, 'B');
+insert into evaluation values(seq_evaluation.nextval, '좋은 상품을 저렴하게 판매해요', 1, 'B');
+insert into evaluation values(seq_evaluation.nextval, '시간약속을 잘 지켜요', 1, 'C');
+insert into evaluation values(seq_evaluation.nextval, '응답이 빨라요', 1, 'C');
+insert into evaluation values(seq_evaluation.nextval, '친절하고 매너가 좋아요', 1, 'C');
+insert into evaluation values(seq_evaluation.nextval, '단순 변심으로 환불을 요구해요', 0, 'S');
+insert into evaluation values(seq_evaluation.nextval, '무리하게 가격을 깎아요', 0, 'S');
+insert into evaluation values(seq_evaluation.nextval, '불친절해요', 0, 'S');
+insert into evaluation values(seq_evaluation.nextval, '예약만 해놓고 거래 시간을 명확하게 알려주지 않아요', 0, 'S');
+insert into evaluation values(seq_evaluation.nextval, '상품 가치없는 물건을 팔아요', 0, 'B');
+insert into evaluation values(seq_evaluation.nextval, '상품 상태가 설명과 달라요', 0, 'B');
+insert into evaluation values(seq_evaluation.nextval, '상품 설명에 중요한 정보가 누락됐어요', 0, 'B');
+insert into evaluation values(seq_evaluation.nextval, '구매 가격보다 비싼 가격으로 판매해요', 0, 'B');
+insert into evaluation values(seq_evaluation.nextval, '이 분과 다시는 거래하고 싶지 않아요', 0, 'C');
+insert into evaluation values(seq_evaluation.nextval, '너무 늦은 시간이나 새벽에 연락해요', 0, 'C');
+insert into evaluation values(seq_evaluation.nextval, '반말을 사용해요', 0, 'C');
+insert into evaluation values(seq_evaluation.nextval, '시간약속을 안 지켜요', 0, 'C');
+insert into evaluation values(seq_evaluation.nextval, '차에서 내리지도 않고 창문만 열고 거래하려고 해요', 0, 'C');
+insert into evaluation values(seq_evaluation.nextval, '무조건 택배거래만 하려고 해요', 0, 'C');
+insert into evaluation values(seq_evaluation.nextval, '질문해도 답이 없어요', 0, 'C');
+insert into evaluation values(seq_evaluation.nextval, '거래 시간과 장소를 정한 후 연락이 안돼요', 0, 'C');
+insert into evaluation values(seq_evaluation.nextval, '약속 장소에 나타나지 않았어요', 0, 'C');
+insert into evaluation values(seq_evaluation.nextval, '거래 시간과 장소를 정한 후 거래 직전 취소했어요', 0, 'C');
+--==========================================================================================
+select * from category;
+select * from evaluation;

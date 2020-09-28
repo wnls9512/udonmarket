@@ -5,7 +5,7 @@ import java.io.Serializable;
 import lombok.Data;
 
 @Data
-public class ProductCategory implements Serializable
+public class CategoryVO implements Serializable
 {
     private int categoryCode;
     private int categoryParent;

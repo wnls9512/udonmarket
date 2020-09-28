@@ -35,7 +35,7 @@
         <div class="container">
             <div class="row align-items-center">
                 <div class="col-lg-6 col-md-6">
-                    <div class="login_part_text text-center" style="background-image:none; border: 1px solid #ff3368; width:100%; padding: 50px 70px;">
+                    <div class="login_part_text text-center" style="background-image:none; border: 1px solid #ff3368; width:88%; padding: 50px 70px;">
                         <div class="login_part_text_iner">
 	                        	<!-- upload image start -->
 	                        	<main class="main_full">
@@ -63,38 +63,42 @@
 	                    </div>
 	                </div>
 	                <div class="col-lg-6 col-md-6">
-	                    <div class="login_part_form">
+	                    <div class="login_part_form" style="padding: 70px 0;">
 	                        <div class="login_part_form_iner">
                                 <div class="col-md-12 form-group p_star" style="margin-top: 10%;">
-                                    <input type="text" name="first_name" placeholder="글 제목"
+                                    <input type="text" name="title" placeholder="글 제목"
 											onfocus="this.placeholder = ''" onblur="this.placeholder = '글 제목'" required
 											class="single-input-primary">
                                 </div>
                                 <div class="col-md-12 form-group p_star">
-                                	<button data-toggle="modal" data-target="#categoryModal" class="btn btn-primary genric-btn default-border" type="button" style="width: 100%; color: #007bff;">카테고리 선택 &nbsp;&nbsp;&nbsp;&nbsp; ></button>
+                                	<button data-toggle="modal" data-target="#categoryModal" class="btn btn-primary genric-btn default-border" 
+                                			id="category" data-code="" type="button" style="width: 100%; color: #007bff;">카테고리 선택 &nbsp;&nbsp;&nbsp;&nbsp; ></button>
+                              		<input type="hidden" name="category" value=""/>
                                 </div>
                                 <div class="col-md-12 form-group">
                                     <div class="creat_account d-flex align-items-center">
-										<input type="text" name="first_name" placeholder="가격 입력"
+										<input type="number" name="price" placeholder="가격 입력"
 											onfocus="this.placeholder = ''" onblur="this.placeholder = '가격 입력'" required
 											class="single-input-primary" style="width:68%;">
 										<div class="primary-switch">
 											<input type="checkbox" id="primary-switch" checked>
 											<label for="primary-switch"></label>
 										</div>
+										<input type="hidden" name="offer" />
 										<p style="margin-left: 6%; width: 30%; color: darkgray; font-size:14px;">가격제안 받기</p>
                                     </div>
                                 </div>
                                 <div class="col-md-12 form-group p_star">
 									<textarea class="single-textarea" placeholder="부개1동에 올릴 게시글 내용을 작성해주세요.(가품 및 판매금지품목은 게시가 제한될 수 있어요.)" 
-											  onfocus="this.placeholder = ''" style="height: 240px;"
+											  onfocus="this.placeholder = ''" style="height: 240px;" name="content"
 											  onblur="this.placeholder = '부개1동에 올릴 게시글 내용을 작성해주세요.(가품 및 판매금지품목은 게시가 제한될 수 있어요.)'" required></textarea>
                                 </div>
                                 <div class="col-md-12 form-group">
                                     <div class="creat_account d-flex align-items-center">
-	                                	<button type="button" class="genric-btn default-border btn btn-primary" data-toggle="modal" data-target="#couponModal" style="width: 68%; color: #007bff;">쿠폰 조회</button>
+	                                	<button type="button" class="genric-btn default-border btn btn-primary" data-toggle="modal" data-target="#couponModal" 
+	                                			style="width: 68%; color: #007bff;">쿠폰 조회</button>
 	                   					<div class="confirm-switch">
-											<input type="checkbox" id="primary-switch" checked>
+											<input type="checkbox" id="confirm-switch" disabled>
 											<label for="confirm-switch"></label>
 										</div>
 										<p style="margin-left: 6%; width: 27%; color: darkgray; font-size:14px;">쿠폰 적용</p>
@@ -126,10 +130,12 @@
 		<div class="button-group-area mt-40">
 			<c:forEach items="${category }" var="c" varStatus="status">
 			<c:if test="${status.count % 2 == 0}">
-			<a href="#" class="genric-btn primary radius" style="width: 100%;" data-code="${c.categoryCode }">${c.categoryName }</a>
+			<a href="javascript:void(0);" class="genric-btn primary radius category" style="width: 100%;" 
+			   data-code="${c.categoryCode }" data-name="${c.categoryName }">${c.categoryName }</a>
 			</c:if>
 			<c:if test="${status.count % 2 == 1}">
-			<a href="#" class="genric-btn success radius" style="width: 100%;" data-code="${c.categoryCode }">${c.categoryName }</a>
+			<a href="javascript:void(0);" class="genric-btn success radius category" style="width: 100%;" 
+			   data-code="${c.categoryCode }" data-name="${c.categoryName }">${c.categoryName }</a>
 			</c:if>
 			</c:forEach>
 		</div>
@@ -156,8 +162,8 @@
 	      <!-- Coupon Table START -->
 	      <div class="mb-5 mb-lg-0" style="float:none; margin:0 auto;">
 	        <div class="bg-white p-5 rounded-lg shadow">
-	          <h1 class="h6 text-uppercase font-weight-bold mb-4">강남구 11월 판매왕</h1>
-	          <h2 class="h1 font-weight-bold">3<span class="text-small font-weight-normal ml-2">개</span></h2>
+	          <h1 class="h6 text-uppercase font-weight-bold mb-4">${coupon.couponName }</h1>
+	          <h2 class="h1 font-weight-bold">${coupon.amount }<span class="text-small font-weight-normal ml-2">개</span></h2>
 	
 	          <div class="custom-separator my-4 mx-auto bg-primary"></div>
 	
@@ -165,7 +171,8 @@
 	            <li class="mb-3">
 	              <i class="fa fa-check mr-2 text-primary"></i> 쿠폰 적용된 상품은 전국에 노출됩니다.</li>
 	            <li class="mb-3">
-	              <i class="fa fa-check mr-2 text-primary"></i> 유효기간은 <span class="text-small font-weight-normal ml-2">2020/11/30</span>까지 입니다.</li>
+	              <i class="fa fa-check mr-2 text-primary"></i> 유효기간은 <span class="text-small font-weight-normal ml-2">
+	              		<fmt:formatDate value="${coupon.expireDate }" pattern="yyyy년 MM월 dd일"/></span>까지 입니다.</li>
 	            <li class="mb-3 text-muted">
 	              <i class="fa fa-times mr-2"></i>해당 쿠폰은 타인 양도 불가합니다.
 	            </li>
@@ -176,7 +183,8 @@
 	              <i class="fa fa-times mr-2"></i>쿠폰 적용 후 취소는 불가합니다.
 	            </li>
 	          </ul>
-	          <a href="#" class="btn btn-primary btn-block p-2 shadow rounded-pill">적용</a>
+	          <a href="javascript:void(0);" class="btn btn-primary btn-block p-2 shadow rounded-pill coupon">적용</a>
+	          <input type="hidden" name="coupon" value=""/>
 	        </div>
 	      </div>
 	      <!-- Coupon Table END -->
@@ -191,7 +199,7 @@
 
  
 <script>
-/* ================ file upload start ================*/
+/* ================ file upload START ================*/
 
 var btnUpload = $("#upload_file"),
 	btnOuter = $(".button_outer");
@@ -266,7 +274,7 @@ function showUploadedFile(uploadResultArr)
 		originPath = originPath.replace(new RegExp(/\\/g), "/");
 
 		str += "<a href='${pageContext.request.contextPath}/product/display?fileName=" + originPath + "'>";
-		str += "<img src='${pageContext.request.contextPath}/product/display?fileName=" + fileCallPath + "'></a>";
+		str += "<img src='${pageContext.request.contextPath}/product/display?fileName=" + fileCallPath + "' style='margin-bottom: 2%;'></a>";
 
 
 		
@@ -319,8 +327,91 @@ $(document).ready(function() {
 		}
 	});
 });
-/* ================ file upload end ================*/
+/* ================ file upload END ================*/
 
+
+/* ================ submit form START ================*/
+$(function()
+{
+	// 카테고리
+	function selectCategory(code, name)
+	{
+		$("#category").html(name);
+		$("[name=category]").val(code);
+	}
+
+	$(".category").on("click", function()
+	{
+		var code = $(this).data('code');
+		var name = $(this).data('name');
+		
+		selectCategory(code, name);
+		$("#categoryModal").hide();
+		$(".modal-backdrop").hide();
+	});
+
+	// 쿠폰
+	$(".coupon").on("click", function()
+	{
+		$("#couponModal").hide();
+		$(".modal-backdrop").hide();
+
+		$("#confirm-switch").removeAttr("disabled");
+		$("#confirm-switch").prop("checked", true);
+		$("[name=coupon]").val(1);
+	});
+
+	$("#confirm-switch").on("change", function()
+	{
+		if($(this).is(":checked"))
+			$("[name=coupon]").val(1);
+		else
+			$("[name=coupon]").val(0);
+	});
+	
+	// 가격제안
+	$("#primary-switch").on("change", function()
+	{
+		if($(this).is(":checked"))
+			$("[name=offer]").val(1);
+		else
+			$("[name=offer]").val(0);
+	});
+	
+	
+ 	$("#uploadBtn").on("click", function()
+	{
+		var formData = new FormData();
+
+		formData.append("seller", 'test');
+		formData.append("title", $("[name=title]").val());
+		formData.append("category", $("[name=category]").val());
+		formData.append("content", $("[name=content]").val());
+		formData.append("price", $("[name=price]").val());
+		formData.append("coupon", $("[name=coupon]").val());
+		formData.append("offer", $("[name=offer]").val());
+		
+	});  
+
+	$.ajax
+	({
+		url: '${pageContext.request.contextPath}/product/register',
+		processData: false,
+		contentType: false,
+		data: formData,
+		type: 'POST',
+		dataType: 'json',
+		success: function(result)
+		{
+			console.log(result);
+
+			showUploadedFile(result);
+
+			$(".btn_upload").html("Upload Image " + result.length + " / 5");
+		}	
+	});
+});
+/* ================ submit form END ================*/
 
 </script>
 
