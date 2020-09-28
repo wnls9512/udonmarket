@@ -184,12 +184,14 @@ create table wish
 create table review
 (
     review_code number,
-    seller varchar2(50) not null,
-    buyer varchar2(50) not null,
+    sender varchar2(50) not null,
+    recipient varchar2(50) not null,
     content varchar2(500) not null,
+    direct char(1) not null,
     constraint pk_review primary key(review_code),
     constraint fk_review_seller foreign key(seller) references member(user_id),
-    constraint fk_review_buyer foreign key(buyer) references member(user_id)
+    constraint fk_review_buyer foreign key(buyer) references member(user_id),
+    constraint ck_review_direct check (direct in('S', 'B'))
 );
 
 create table score
