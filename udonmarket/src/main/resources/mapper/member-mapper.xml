@@ -107,8 +107,42 @@
 </select>
 <resultMap type="member" id="memberMap">
 
-
 </resultMap>
 
+<!-- 매너 평가 조회하기 -->
+<select id="selectAllEva" resultType="evaluate">
+	select 
+	    * 
+	from 
+	    evaluate E, evaluation EE
+	where 
+	    E.eva_code = EE.eva_code
+	and
+	    user_id = #{userId}
+	order by
+	    count desc
+</select>
+
+<!-- 거래 후기 총 개수 -->
+<select id="selectTotalReview" resultType="_int">
+	select 
+		count(*)
+	from 
+		review 
+	where 
+		recipient = #{userId} 
+</select>
+
+<!-- 거래 후기 조회하기 -->
+<select id="selectAllReview" resultType="review">
+	select 
+		* 
+	from 
+		review 
+	where 
+		recipient = #{userId}
+	order by
+		review_code desc
+</select>
 
 </mapper>

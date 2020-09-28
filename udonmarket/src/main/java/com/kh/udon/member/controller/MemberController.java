@@ -22,8 +22,10 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.kh.udon.member.model.service.MemberService;
+import com.kh.udon.member.model.vo.Evaluate;
 import com.kh.udon.member.model.vo.Keyword;
 import com.kh.udon.member.model.vo.Member;
+import com.kh.udon.member.model.vo.Review;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -329,7 +331,8 @@ public class MemberController {
     	return "redirect:/member/keywordNoti";
     }
     
-  //키워드 중복검사
+
+    //키워드 중복검사
     @GetMapping("/checkKeywordDuplicate")
     @ResponseBody
     public Map<String, Object> checkKeywordDuplicate(@RequestParam("userId") String userId,
@@ -350,5 +353,34 @@ public class MemberController {
 		map.put("isUsable", isUsable);
 		map.put("userId", userId);
     	return map;
+    }
+    
+    //받은 거래 후기/매너 평가
+    @RequestMapping("/myReviewList")
+    public Model myReviewList(HttpSession session,
+    						  Model model){
+    	
+    	//test id로 테스트
+    	String userId = "test";
+    	//세션에 담긴 로그인 중 인 유저 아이디
+//    	String userId = ((Member)session.getAttribute("loginMember")).getUserId();
+
+    	//매너 평가
+    	List<Evaluate> evaList = service.selectAllEva(userId);
+    	log.debug("list = {}", evaList);
+    	
+    	//거래 후기
+    	//1. 거래 후기 총 개수
+    	int totalReview = service.selectTotalReview(userId);
+    	log.debug("totalReview = {}", totalReview);
+    	
+    	//2. 거래 후기 - userId가 수신자 인 것만
+    	List<Review> reviewList = service.selectAllReview(userId);
+    	log.debug("reviewList = {}", reviewList);
+    	
+    	model.addAttribute("evaList", evaList);
+    	model.addAttribute("totalReview", totalReview);
+    	model.addAttribute("reviewList", reviewList);
+    	return model;
     }
 }

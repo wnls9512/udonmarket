@@ -6,10 +6,6 @@
 
 <fmt:requestEncoding value="utf-8"/>
 
-<!-- kakao map api&library -->
-<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=a40619c082a3c1c995f8bec611d38389&libraries=services,clusterer,drawing"></script>
-<script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-
 <jsp:include page="/WEB-INF/views/common/header.jsp">
 	<jsp:param value="마이페이지" name="pageTitle"/>
 </jsp:include>
