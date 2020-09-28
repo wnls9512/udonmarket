@@ -35,7 +35,7 @@
         <div class="container">
             <div class="row align-items-center">
                 <div class="col-lg-6 col-md-6">
-                    <div class="login_part_text text-center" style="background-image:none; border: 1px solid #ff3368; width:100%; padding: 50px 70px;">
+                    <div class="login_part_text text-center" style="background-image:none; border: 1px solid #ff3368; width:88%; padding: 50px 70px;">
                         <div class="login_part_text_iner">
 	                        	<!-- upload image start -->
 	                        	<main class="main_full">
@@ -63,7 +63,7 @@
 	                    </div>
 	                </div>
 	                <div class="col-lg-6 col-md-6">
-	                    <div class="login_part_form">
+	                    <div class="login_part_form" style="padding: 70px 0;">
 	                        <div class="login_part_form_iner">
                                 <div class="col-md-12 form-group p_star" style="margin-top: 10%;">
                                     <input type="text" name="title" placeholder="글 제목"
@@ -274,7 +274,7 @@ function showUploadedFile(uploadResultArr)
 		originPath = originPath.replace(new RegExp(/\\/g), "/");
 
 		str += "<a href='${pageContext.request.contextPath}/product/display?fileName=" + originPath + "'>";
-		str += "<img src='${pageContext.request.contextPath}/product/display?fileName=" + fileCallPath + "'></a>";
+		str += "<img src='${pageContext.request.contextPath}/product/display?fileName=" + fileCallPath + "' style='margin-bottom: 2%;'></a>";
 
 
 		
@@ -376,12 +376,10 @@ $(function()
 			$("[name=offer]").val(1);
 		else
 			$("[name=offer]").val(0);
-
-		alert($("[name=offer]").val());
 	});
 	
 	
-/* 	$("#uploadBtn").on("click", function()
+ 	$("#uploadBtn").on("click", function()
 	{
 		var formData = new FormData();
 
@@ -391,9 +389,27 @@ $(function()
 		formData.append("content", $("[name=content]").val());
 		formData.append("price", $("[name=price]").val());
 		formData.append("coupon", $("[name=coupon]").val());
-		formData.append("offer", ?);
+		formData.append("offer", $("[name=offer]").val());
 		
-	});  */
+	});  
+
+	$.ajax
+	({
+		url: '${pageContext.request.contextPath}/product/register',
+		processData: false,
+		contentType: false,
+		data: formData,
+		type: 'POST',
+		dataType: 'json',
+		success: function(result)
+		{
+			console.log(result);
+
+			showUploadedFile(result);
+
+			$(".btn_upload").html("Upload Image " + result.length + " / 5");
+		}	
+	});
 });
 /* ================ submit form END ================*/
 
