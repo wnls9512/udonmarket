@@ -18,8 +18,8 @@ public class MemberDaoImpl implements MemberDao
     private SqlSessionTemplate session;
 
 	@Override
-	public int updateLocation(Location loc) {
-		return session.update("member.updateLocation", loc);
+	public int updateLocation(Map<String, Object> map) {
+		return session.update("member.updateLocation", map);
 	}
 
 	@Override
@@ -63,8 +63,13 @@ public class MemberDaoImpl implements MemberDao
 	}
 
 	@Override
-	public int insertLocation(Location location) {
-		return session.insert("member.insertLocation", location);
+	public int updateAddr(Map<String, Object> map) {
+		return session.update("member.updateAddr", map);
+	}
+
+	@Override
+	public int selectKeyword(Map<String, Object> key) {
+		return session.selectOne("member.selectKeyword", key);
 	}
 
 	

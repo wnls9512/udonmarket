@@ -23,7 +23,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.kh.udon.member.model.service.MemberService;
 import com.kh.udon.member.model.vo.Keyword;
-import com.kh.udon.member.model.vo.Location;
 import com.kh.udon.member.model.vo.Member;
 
 import lombok.extern.slf4j.Slf4j;
@@ -172,52 +171,61 @@ public class MemberController {
 		return model;
 	}
 
-	// 현재 위치로 location 테이블 update
-	// 현재 위치(주소)로 member 테이블 update
-	@PostMapping("/updateAddress")
-	public String updateAddress(RedirectAttributes redirectAttr, HttpSession session, @RequestParam("addr") String addr,
-			@RequestParam("lat") float latitude, @RequestParam("lon") float longitude) {
-
-		// 세션에 담긴 로그인 중 인 유저 아이디
+	//현재 위치로 location 테이블 update
+    //현재 위치(주소)로 member 테이블 update
+    @PostMapping("/updateAddress")
+    public String updateAddress(RedirectAttributes redirectAttr,
+    							HttpSession session,
+    							@RequestParam("addr") String addr,
+    							@RequestParam("lat") float latitude,
+    							@RequestParam("lon") float longitude){
+    	
+    	//세션에 담긴 로그인 중 인 유저 아이디
 //    	String userId = ((Member)session.getAttribute("loginMember")).getUserId();
-		// test id로 테스트
-		String userId = "test";
-
-		// 업무로직
-		String msg = "변경 성공!";
-		Location loc = new Location(userId, latitude, longitude);
-		try {
-			int result = service.updateLocation(loc);
-			redirectAttr.addFlashAttribute("msg", msg);
+    	//test id로 테스트
+    	String userId = "test";
+    	
+    	Map<String, Object> map = new HashMap<>();
+    	map.put("userId", userId);
+    	map.put("address", addr);
+    	map.put("latitude", latitude);
+    	map.put("longitude", longitude);
+    	
+    	//업무로직
+    	String msg = "변경 성공!";
+    	try {
+    		int result = service.updateAddrAndLoc(map);
+    		redirectAttr.addFlashAttribute("msg", msg);			
 		} catch (Exception e) {
 			log.error("location 수정 실패 오류", e);
 			redirectAttr.addFlashAttribute("msg", "변경 실패");
-
+			
 //			throw e; //에러페이지
 		}
+    	
+    	return "redirect:/member/settingsArea";
+    }
 
-		return "redirect:/member/settingsArea";
-	}
+    @PostMapping("/updateRadius")
+    @ResponseBody
+    public Map<String, Object> updateRadius(HttpSession session,
+    						  @RequestParam("radius") int radius) {
 
-	@PostMapping("/updateRadius")
-	@ResponseBody
-	public Map<String, Object> updateRadius(HttpSession session, @RequestParam("radius") int radius) {
-
-		// test id로 테스트
-		String userId = "test";
-		// 세션에 담긴 로그인 중 인 유저 아이디
+    	//test id로 테스트
+    	String userId = "test";
+    	//세션에 담긴 로그인 중 인 유저 아이디
 //    	String userId = ((Member)session.getAttribute("loginMember")).getUserId();
 
-		log.debug(String.valueOf(radius));
-
-		Map<String, Object> map = new HashMap<>();
-		map.put("userId", userId);
-		map.put("radius", radius);
-
-		int result = service.updateRadius(map);
-
-		return map;
-	}
+    	log.debug(String.valueOf(radius));
+    	
+    	Map<String, Object> map = new HashMap<>();
+    	map.put("userId", userId);
+    	map.put("radius", radius);
+    	
+    	int result = service.updateRadius(map);
+    	
+    	return map;
+    }
 
 	// 자주 묻는 질문
 	@RequestMapping("/FAQ")
@@ -270,50 +278,77 @@ public class MemberController {
 		return mav;
 	}
 
-	// 나의 키워드 추가
-	@RequestMapping(value = "/insertKeyword", method = RequestMethod.POST)
-	@ResponseBody
-	public Map<String, Object> insertKeyword(HttpSession session, @RequestParam("userId") String userId,
-			@RequestParam("keyword") String keyword) {
-
-		// test id로 테스트
-		userId = "test";
-		// 세션에 담긴 로그인 중 인 유저 아이디
+	//나의 키워드 추가
+    @RequestMapping(value = "/insertKeyword",
+    			method = RequestMethod.POST)
+    public String insertKeyword(HttpSession session,
+    						   RedirectAttributes redirectAttr,
+    						   @RequestParam("userId") String userId,
+    						   @RequestParam("keyword") String keyword){
+    	
+    	//test id로 테스트
+    	userId = "test";
+    	//세션에 담긴 로그인 중 인 유저 아이디
 //    	String userId = ((Member)session.getAttribute("loginMember")).getUserId();
+    	
+    	Map<String, Object> map = new HashMap<>();
+    	map.put("userId", userId);
+    	map.put("keyword", keyword);
 
-		Map<String, Object> map = new HashMap<>();
-		map.put("userId", userId);
-		map.put("keyword", keyword);
-		System.out.println(map);
-
-		int result = service.insertKeyword(map);
-
-		return map;
-	}
-
-	// 키워드 삭제
-	@RequestMapping(value = "/deleteKeyword")
-	public String deleteKeyword(RedirectAttributes redirectAttr, @RequestParam("key") int keyCode) {
-
-		System.out.println(keyCode);
-		String msg = "삭제 성공!";
-		try {
-			int result = service.deleteKeyword(keyCode);
-			redirectAttr.addFlashAttribute("msg", msg);
-		} catch (Exception e) {
-			log.error("keyword 삭제 실패 오류", e);
-			redirectAttr.addFlashAttribute("msg", "삭제 실패");
-
+    	String msg = "등록 성공!";
+    	try {
+    		int result = service.insertKeyword(map);
+    	} catch (Exception e) {
+    		log.error("keyword 등록 실패 오류", e);
+			msg = "등록 실패";
+			
 //			throw e; //에러페이지
 		}
-
-		return "redirect:/member/keywordNoti";
-	}
-
-	// 받은 거래 후기
-	@RequestMapping("/myReviewList")
-	public String myReviewList() {
-		return "member/myReviewList";
-	}
-
+    		
+    	redirectAttr.addFlashAttribute("msg", msg);
+    	return "redirect:/member/keywordNoti";
+    }
+    
+  //키워드 삭제
+    @RequestMapping(value = "/deleteKeyword")
+    public String deleteKeyword(RedirectAttributes redirectAttr,
+    							@RequestParam("key") int keyCode){
+    	  
+//    	System.out.println(keyCode);
+    	String msg = "삭제 성공!";
+    	try {
+    		int result = service.deleteKeyword(keyCode);  		
+		} catch (Exception e) {
+			log.error("keyword 삭제 실패 오류", e);
+			msg = "삭제 실패";
+			
+//			throw e; //에러페이지
+		}
+    	
+    	redirectAttr.addFlashAttribute("msg", msg);	
+    	return "redirect:/member/keywordNoti";
+    }
+    
+  //키워드 중복검사
+    @GetMapping("/checkKeywordDuplicate")
+    @ResponseBody
+    public Map<String, Object> checkKeywordDuplicate(@RequestParam("userId") String userId,
+    												 @RequestParam("keyword") String keyword){
+    	
+    	//test id로 테스트
+    	userId = "test";
+    	
+    	Map<String, Object> key = new HashMap<>();
+    	key.put("userId", userId);
+    	key.put("keyword", keyword);
+    	
+    	int result = service.selectKeyword(key);
+    	//같은키워드가 0개여야 새로 추가 가능한 키워드 임
+    	boolean isUsable = (result == 0); 
+    	
+    	Map<String, Object> map = new HashMap<>();
+		map.put("isUsable", isUsable);
+		map.put("userId", userId);
+    	return map;
+    }
 }

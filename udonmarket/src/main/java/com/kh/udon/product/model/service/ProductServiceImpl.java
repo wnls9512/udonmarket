@@ -6,7 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.kh.udon.product.model.dao.ProductDao;
-import com.kh.udon.product.model.vo.ProductCategory;
+import com.kh.udon.product.model.vo.CategoryVO;
+import com.kh.udon.product.model.vo.CouponDTO;
 
 @Service
 public class ProductServiceImpl implements ProductService
@@ -15,7 +16,7 @@ public class ProductServiceImpl implements ProductService
     private ProductDao dao;
 
     @Override
-    public List<ProductCategory> selectAllCategory()
+    public List<CategoryVO> selectAllCategory()
     {
         return dao.selectAllCategory();
     }
@@ -36,6 +37,12 @@ public class ProductServiceImpl implements ProductService
     public int selectCategoryCount(String categoryCode)
     {
         return dao.selectCategoryCount(categoryCode);
+    }
+
+    @Override
+    public CouponDTO selectCoupon(String userId)
+    {
+        return dao.selectCoupon(userId);
     }
     
     

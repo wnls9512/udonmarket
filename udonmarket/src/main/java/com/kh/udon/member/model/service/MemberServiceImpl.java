@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.kh.udon.member.model.dao.MemberDao;
 import com.kh.udon.member.model.vo.Keyword;
@@ -20,11 +21,6 @@ public class MemberServiceImpl implements MemberService
     @Autowired
     private MemberDao memberDao;
     
-	@Override
-	public int updateLocation(Location loc) {
-		return memberDao.updateLocation(loc);
-	}
-
 	@Override
 	public int insertKeyword(Map<String, Object> map) {
 		return memberDao.insertKeyword(map);
@@ -66,6 +62,24 @@ public class MemberServiceImpl implements MemberService
 		return memberDao.updateRadius(map);
 	}
 
+	@Transactional(rollbackFor = { Exception.class })
+	@Override
+	public int updateAddrAndLoc(Map<String, Object> map) {
+		int result = 0;
+		
+		result = memberDao.updateLocation(map);		
+		if(result > 0) { 
+			result = memberDao.updateAddr(map);
+		}else {
+//			throw new MemberException("주소 변경 오류!");
+		}
+		
+		return result;
+	}
 
+	@Override
+	public int selectKeyword(Map<String, Object> key) {
+		return memberDao.selectKeyword(key);
+	}
 
 }

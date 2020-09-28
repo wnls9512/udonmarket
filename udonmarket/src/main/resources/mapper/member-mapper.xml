@@ -13,6 +13,16 @@
 		user_id = #{userId}
 </update>
 
+<!-- Member주소 업데이트 -->
+<update id="updateAddr">
+	update 
+		member 
+	set 
+		address = #{address} 
+	where 
+		user_id = #{userId}
+</update>
+
 <!-- 지역 범위 가져오기 -->
 <select id="selectRadius" resultType="_int">
 	select 
@@ -22,6 +32,7 @@
 	where user_id = #{userId}
 </select>
 
+<!-- 지역 범위 수정 -->
 <update id="updateRadius">
 	update
 		location
@@ -30,6 +41,18 @@
 	where 
 		user_id = #{userId}
 </update>
+
+<!-- 키워드 중복 검사용 -->
+<select id="selectKeyword" resultType="_int">
+	select 
+		count(*) 
+	from 
+		keyword 
+	where 
+		user_id = #{userId} 
+	and 
+		key_content = #{keyword}
+</select>
 
 <!-- 키워드 추가 -->
 <insert id="insertKeyword">

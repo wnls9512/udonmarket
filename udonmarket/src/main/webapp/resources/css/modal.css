@@ -6,3 +6,23 @@
 .modal.fixed-left .modal-dialog-aside{ margin-left:auto;  transform: translateX(100%); }
 .modal.fixed-right .modal-dialog-aside{ margin-right:auto; transform: translateX(-100%); }
 .modal.show .modal-dialog-aside{ transform: translateX(0);  }
+
+
+/* coupon modal */
+.rounded-lg {
+  border-radius: 1rem !important;
+}
+
+.text-small {
+  font-size: 0.9rem !important;
+}
+
+.custom-separator {
+  width: 5rem;
+  height: 6px;
+  border-radius: 1rem;
+}
+
+.text-uppercase {
+  letter-spacing: 0.2em;
+}

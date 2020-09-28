@@ -10,7 +10,7 @@ import com.kh.udon.member.model.vo.Member;
 public interface MemberDao
 {
 
-	int updateLocation(Location loc);
+	int updateLocation(Map<String, Object> map);
 
 	int insertKeyword(Map<String, Object> map);
 
@@ -28,6 +28,8 @@ public interface MemberDao
 
 	int updateRadius(Map<String, Object> map);
 
-	int insertLocation(Location location);
+	int updateAddr(Map<String, Object> map);
+
+	int selectKeyword(Map<String, Object> key);
 
 }
