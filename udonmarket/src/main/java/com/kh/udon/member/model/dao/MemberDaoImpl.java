@@ -7,9 +7,11 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.kh.udon.member.model.vo.Evaluate;
 import com.kh.udon.member.model.vo.Keyword;
 import com.kh.udon.member.model.vo.Location;
 import com.kh.udon.member.model.vo.Member;
+import com.kh.udon.member.model.vo.Review;
 
 @Repository
 public class MemberDaoImpl implements MemberDao
@@ -70,6 +72,21 @@ public class MemberDaoImpl implements MemberDao
 	@Override
 	public int selectKeyword(Map<String, Object> key) {
 		return session.selectOne("member.selectKeyword", key);
+	}
+
+	@Override
+	public List<Evaluate> selectAllEva(String userId) {
+		return session.selectList("member.selectAllEva", userId);
+	}
+
+	@Override
+	public int selectTotalReview(String userId) {
+		return session.selectOne("member.selectTotalReview", userId);
+	}
+
+	@Override
+	public List<Review> selectAllReview(String userId) {
+		return session.selectList("member.selectAllReview", userId);
 	}
 
 	
