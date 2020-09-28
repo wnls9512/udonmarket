@@ -350,7 +350,7 @@ public class MemberController
     	//매너 평가
     	List<Evaluate> evaList = service.selectAllEva(userId);
     	log.debug("list = {}", evaList);
-  
+    	
     	//거래 후기
     	//1. 거래 후기 총 개수
     	int totalReview = service.selectTotalReview(userId);
