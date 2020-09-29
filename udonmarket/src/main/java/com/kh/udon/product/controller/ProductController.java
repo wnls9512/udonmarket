@@ -26,7 +26,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.kh.udon.product.model.service.ProductService;
-import com.kh.udon.product.model.vo.ProductCategory;
+import com.kh.udon.product.model.vo.CategoryVO;
+import com.kh.udon.product.model.vo.CouponDTO;
 import com.kh.udon.product.model.vo.ProductPhotoDTO;
 
 import lombok.extern.slf4j.Slf4j;
@@ -48,13 +49,10 @@ public class ProductController
          *      1. 카테고리 목록
          *      2. 카테고리 목록별 갯수
          *      3. 전체 상품 갯수
-         *      
-         *      
-         *      
-         *      4. 상품 리스트
+         *      (4. 상품 리스트)
          */
         
-        List<ProductCategory> category = service.selectAllCategory();
+        List<CategoryVO> category = service.selectAllCategory();
         List<Integer> categoryCount = service.selectAllCategoryCount();
         int totalCount = service.selectTotalCount();
         
@@ -77,15 +75,12 @@ public class ProductController
          *      1. 카테고리 목록
          *      2. 카테고리 목록별 갯수
          *      3. 전체 상품 갯수
-         *      
-         *      
-         *      
-         *      4. 선택된 카테고리 상품 리스트
+         *      (4. 선택된 카테고리 상품 리스트)
          */
         
         log.debug("categoryCode = {}", categoryCode);
         
-        List<ProductCategory> category = service.selectAllCategory();
+        List<CategoryVO> category = service.selectAllCategory();
         List<Integer> categoryCount = service.selectAllCategoryCount();
         int totalCount = service.selectCategoryCount(categoryCode);
         
@@ -100,10 +95,13 @@ public class ProductController
     
     // 상품 등록 화면
     @GetMapping("/register")
-    public void register(Model model) 
+    public void register(@RequestParam String userId, Model model) 
     {
-        List<ProductCategory> category = service.selectAllCategory();
+        CouponDTO coupon = service.selectCoupon(userId);
+        List<CategoryVO> category = service.selectAllCategory();
+        
         model.addAttribute("category", category);
+        model.addAttribute("coupon", coupon);
     }
     
     // 상품 등록
