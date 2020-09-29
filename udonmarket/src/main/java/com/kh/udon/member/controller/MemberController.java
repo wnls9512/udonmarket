@@ -133,33 +133,32 @@ public class MemberController {
 	}
 
 	@RequestMapping("/mypage")
-	public String mypage() {
-		return "member/mypage";
-	}
+    public String mypage()
+    {
+        return "member/mypage";
+    }
 
-	// 프로필 수정
+    //프로필 수정
 	@RequestMapping("/editprofile")
-	public String editProfile() {
+	public String editProfile() 
+	{
 		return "member/editProfile";
 	}
-
-	// 관심목록
-	@RequestMapping("/wishList")
-	public String wishList() {
-		return "member/wishList";
-	}
-
-	// 판매내역
-	@RequestMapping("/salesList")
-	public String salseList() {
-		return "member/salesList";
-	}
-
-	// 구매내역
-	@RequestMapping("/buyList")
-	public String buyList() {
-		return "member/buyList";
-	}
+	
+    //관심목록
+    @RequestMapping("/wishList")
+    public Model wishList(Model model){
+    	//세션에 담긴 로그인 중 인 유저 아이디
+    	//String userId = ((Member)session.getAttribute("loginMember")).getUserId();
+    	//test id로 테스트 (세션에 담긴 로그인 중인 아이디)
+    	String userId = "test";
+    	
+    	List<ProductVO> list = service.selectAllWishPro(userId);
+    	log.debug("ProductWishList = {}", list);
+    	
+    	model.addAttribute("list", list);  	
+        return model;
+    }
     
     //판매내역
     @RequestMapping("/salesList")
@@ -194,22 +193,23 @@ public class MemberController {
     
     //내 동네 설정 페이지 띄우기
     @RequestMapping("/settingsArea")
-    public Model settingsArea(Model model, HttpSession session) {
+    public Model settingsArea(Model model,
+    						 HttpSession session) {
     	
     	//세션에 담긴 로그인 중 인 유저 아이디
-		//    	String userId = ((Member)session.getAttribute("loginMember")).getUserId();
-		// test id로 테스트 (세션에 담긴 로그인 중인 아이디)
-		String userId = "test";
-		log.debug("loginMemberId = {} ", userId);
-
-		int radius = service.selectRadius(userId);
-		log.debug("radius = {}", String.valueOf(radius));
-		model.addAttribute("radius", radius);
-
-		return model;
-	}
-
-	//현재 위치로 location 테이블 update
+//    	String userId = ((Member)session.getAttribute("loginMember")).getUserId();
+    	//test id로 테스트 (세션에 담긴 로그인 중인 아이디)
+    	String userId = "test";
+    	log.debug("loginMemberId = {} ", userId);
+    	
+    	int radius = service.selectRadius(userId);
+    	log.debug("radius = {}",String.valueOf(radius));
+    	model.addAttribute("radius", radius);
+    	
+    	return model;
+    }
+    
+    //현재 위치로 location 테이블 update
     //현재 위치(주소)로 member 테이블 update
     @PostMapping("/updateAddress")
     public String updateAddress(RedirectAttributes redirectAttr,
@@ -243,7 +243,6 @@ public class MemberController {
     	
     	return "redirect:/member/settingsArea";
     }
-
     
     //거리 범위 수정
     @PostMapping("/updateRadius")
@@ -266,59 +265,66 @@ public class MemberController {
     	
     	return map;
     }
+    
+    //자주 묻는 질문
+    @RequestMapping("/FAQ")
+    public String FAQ()
+    {
+    	return "member/FAQ";
+    }
+    
+    //공지 사항
+    @RequestMapping("/announce")
+    public String announce()
+    {
+    	return "member/announce";
+    }
 
-	// 자주 묻는 질문
-	@RequestMapping("/FAQ")
-	public String FAQ() {
-		return "member/FAQ";
-	}
+    //관심 주제 목록
+    @RequestMapping("/interList")
+    public String interList()
+    {
+    	return "member/interList";
+    }
+    
+    //동네생활 댓글
+    @RequestMapping("/myComment")
+    public String mycomment()
+    {
+    	return "member/myComment";
+    }
 
-	// 공지 사항
-	@RequestMapping("/announce")
-	public String announce() {
-		return "member/announce";
-	}
-
-	// 관심 주제 목록
-	@RequestMapping("/interList")
-	public String interList() {
-		return "member/interList";
-	}
-
-	// 동네생활 댓글
-	@RequestMapping("/myComment")
-	public String mycomment() {
-		return "member/myComment";
-	}
-
-	// 동네생활 게시글
-	@RequestMapping("/myPost")
-	public String mypost() {
-		return "member/myPost";
-	}
-
-	// 나의 키워드 알림 설정
-	@RequestMapping(value = "/keywordNoti", method = RequestMethod.GET)
-	public ModelAndView keywordNoti(HttpSession session, ModelAndView mav) {
-
-		// test id로 테스트
-		String userId = "test";
-		// 세션에 담긴 로그인 중 인 유저 아이디
+    //동네생활 게시글
+    @RequestMapping("/myPost")
+    public String mypost()
+    {
+    	return "member/myPost";
+    }
+    
+    //나의 키워드 알림 설정
+    @RequestMapping(value = "/keywordNoti",
+    				method = RequestMethod.GET)
+    public ModelAndView keywordNoti(HttpSession session,
+    								ModelAndView mav){
+    	
+    	//test id로 테스트
+    	String userId = "test";
+    	//세션에 담긴 로그인 중 인 유저 아이디
 //    	String userId = ((Member)session.getAttribute("loginMember")).getUserId();
-
-		List<Keyword> list = service.selectKeywordList(userId);
-		log.debug("list = {}", list);
-
-		// 전체 키워드 수 구하기
-		int totalKeywordContents = service.selectTotalKeywordContent(userId);
-		log.debug("totalKeywordContents ={}", String.valueOf(totalKeywordContents));
-
-		mav.addObject("totalKeywordContents", totalKeywordContents);
-		mav.addObject("list", list);
-		return mav;
-	}
-
-	//나의 키워드 추가
+    	
+    	List<Keyword> list = service.selectKeywordList(userId);
+    	log.debug("list = {}", list);
+    	
+    	//전체 키워드 수 구하기
+    	int totalKeywordContents = service.selectTotalKeywordContent(userId);
+    	log.debug("totalKeywordContents ={}", String.valueOf(totalKeywordContents));
+    	
+    	mav.addObject("totalKeywordContents", totalKeywordContents);
+    	mav.addObject("list", list);
+    	return mav;
+    }
+    
+    //나의 키워드 추가
     @RequestMapping(value = "/insertKeyword",
     			method = RequestMethod.POST)
     public String insertKeyword(HttpSession session,
@@ -349,7 +355,7 @@ public class MemberController {
     	return "redirect:/member/keywordNoti";
     }
     
-  //키워드 삭제
+    //키워드 삭제
     @RequestMapping(value = "/deleteKeyword")
     public String deleteKeyword(RedirectAttributes redirectAttr,
     							@RequestParam("key") int keyCode){
@@ -369,7 +375,6 @@ public class MemberController {
     	return "redirect:/member/keywordNoti";
     }
     
-
     //키워드 중복검사
     @GetMapping("/checkKeywordDuplicate")
     @ResponseBody
