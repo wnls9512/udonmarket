@@ -33,21 +33,12 @@
     <!--================ Register Area =================-->
     <section class="login_part padding_top">
         <div class="container">
-           	<form>
-            <div class="row align-items-center">
-                <div class="col-lg-6 col-md-6">
-                    <div class="login_part_text text-center" style="background-image:none; border: 1px solid #ff3368; width:88%; padding: 0;">
-                        <div class="login_part_text_iner">
-	                        	<!-- upload image start -->
-	                        	<main class="main_full">
-									<div class="container uploadResult">
-										<div class="panel" style="margin-top: 0;">
-											<input type="file" class="my-pond" name="filepond"/>
-										</div>
-										<div class="error_msg"></div>
-									</div>
-								</main>
-								<!-- upload image end -->
+           	<form action="" method="post" enctype="multipart/form-data">
+	            <div class="row align-items-center">
+	                <div class="col-lg-6 col-md-6">
+	                    <div class="login_part_text text-center" style="background-image:none; border: 1px solid #ff3368; width:88%; padding: 0;">
+	                        <div class="login_part_text_iner">
+								<input type="file" name="files" class="files">
 	                        </div>
 	                    </div>
 	                </div>
@@ -103,9 +94,9 @@
 	                    </div>
 	                </div>
 	            </div>
-	            </form>
-	        </div>
-    </section>
+            </form>
+        </div>
+   </section>
     
 <!-- ====== Category Modal ======  -->
 <div id="categoryModal" class="modal fixed-left fade" tabindex="-1" role="dialog">
@@ -190,150 +181,6 @@
 
  
 <script>
-/* ================ file upload START ================*/
-var btnUpload = $("#upload_file"),
-	btnOuter = $(".button_outer");
-
-// 썸네일 생성 및 불러오기
-$(function()
-{
-	var cloneObj = $(".btn_upload").clone()
-	
-	btnUpload.on("change", function(e)
-	{
-		var formData = new FormData();
-		var inputFile = $("input[name='uploadFile']");
-		var files = inputFile[0].files;
-
-		// add filedata to formdata
-		for(var i = 0; i < files.length; i++)
-		{
-			formData.append("uploadFile", files[i]);
-		}
-
-		$.ajax
-		({
-			url: '${pageContext.request.contextPath}/product/createThumbnail',
-			processData: false,
-			contentType: false,
-			data: formData,
-			type: 'POST',
-			dataType: 'json',
-			success: function(result)
-			{
-
-				showUploadedFile(result);
-
-				$(".btn_upload").html(cloneObj.html());
-			}	
-		});
-	});
-});
-
-var btnUpload = $("#upload_file"),
-btnOuter = $(".button_outer");
-
-// 이미지 판단
-//btnUpload.on("change", function(e)
-btnUpload.on("change", function(e)
-{
-	var ext = btnUpload.val().split('.').pop().toLowerCase();
-	
-	if($.inArray(ext, ['png','jpg','jpeg']) == -1) 
-	{
-		$(".error_msg").text("해당 종류의 파일은 업로드할 수 없습니다.");
-	} 
-	else 
-	{
-		// process bar
-		$(".error_msg").text("");
-		btnOuter.addClass("file_uploading");
-		setTimeout(function()
-		{
-			btnOuter.removeClass("file_uploading");
-		},3000);
-	}
-});
-
-// show thumbnail
-function showUploadedFile(uploadResultArr)
-{
-	var str = "";
-	
-	$(uploadResultArr).each(function(i, obj)
-	{
-		var fileCallPath = encodeURIComponent(obj.uploadPath + "/s_" + obj.uuid + "_" + obj.fileName);
-		var originPath = obj.uploadPath + "\\" + obj.uuid + "_" + obj.fileName;
-		originPath = originPath.replace(new RegExp(/\\/g), "/");
-
-		str += "<a href='${pageContext.request.contextPath}/product/display?fileName=" + originPath + "'>";
-		str += "<img src='${pageContext.request.contextPath}/product/display?fileName=" + fileCallPath + 
-			   "' style='margin-bottom: 2%;'></a>" + "<span data-file=\'" + fileCallPath + "\'> x </span>";
-
-
-		
-		$("#preview" + i).append(str);
-
-		str = "";
-	});
-
-
-	$.each ($("[id^=preview]"), function (i, el) 
-	{
-		$("#preview" + i).hide();
-		
-		if($("#preview" + i).find($("img")).length)
-		{
-			setTimeout(function()
-			{
-				$("#preview" + i).show();
-			},3500);
-		}
-	});
-}
-
-// remove thumbnail
-$("[id^=preview]").on("click", "span", function(e)
-{
-	alert("");
-	var targetFile = $(this).data("file");
-
-	$.ajax
-	({
-		url: '${pageContext.request.contextPath}/product/deleteFile',
-		data: {fileName: targetFile},
-		dataType: 'text',
-		type: 'POST',
-		success: function(result)
-		{
-			alert(result);
-		}
-	});
-});
-
-// show original image
-$(document).ready(function() {
-	$('.popup-gallery').magnificPopup({
-		delegate: 'a',
-		type: 'image',
-		tLoading: 'Loading image #%curr%...',
-		mainClass: 'mfp-img-mobile',
-		gallery: {
-			enabled: true,
-			navigateByImgClick: true,
-			preload: [0,1] // Will preload 0 - before current, and 1 after the current image
-		},
-		image: {
-			tError: '<a href="%url%">The image #%curr%</a> could not be loaded.',
-			titleSrc: function(item) {
-				return item.el.attr('title') + '<small>by Marsel Van Oosten</small>';
-			}
-		}
-	});
-});
-/* ================ file upload END ================*/
-
-
 /* ================ submit form START ================*/
 $(function()
 {

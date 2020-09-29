@@ -37,10 +37,7 @@
 	<!-- notification css -->
     <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/notification.css">
     <script src="${pageContext.request.contextPath }/resources/js/notification.js"></script>
-    <!-- upload file -->
-    <script src="https://unpkg.com/file-upload-with-preview@4.0.2/dist/file-upload-with-preview.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="https://unpkg.com/file-upload-with-preview@4.0.2/dist/file-upload-with-preview.min.css">
-	<script>
+<script>
 <%-- RedirectAttribute에 등록된 msg값 존재 여부 확인 후 출력 --%>
 <c:if test="${not empty msg }">
 	alert('${ msg }');
