@@ -65,7 +65,7 @@ public class MemberController {
 		log.debug("rawPassword@controller = {}", rawPassword);
 		log.debug("encryptPassword@controller = {}", encryptPassword);
 
-		int result = service.insertMemberLoc(member);
+		int result = service.insertMemberLocAuth(member);
 		
 		
 		log.debug("result@controller = {}", result);

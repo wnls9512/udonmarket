@@ -101,9 +101,11 @@
 <insert id="insertLocation">
 	insert into location
 	values (#{userId}, '37.4969519', '127.0261588','3')
-
 </insert>
-
+<insert id="insertAuthority">
+	insert into authority
+	values (default, #{userId})
+</insert>
 <!-- 로그인 -->
 <select id="selectOneMember" resultMap="memberMap">
 	select *

@@ -36,7 +36,7 @@ public interface MemberService
 
 	List<Review> selectAllReview(String userId);
 
-	int insertMemberLoc(Member member);
+	int insertMemberLocAuth(Member member);
 
 	List<ProductVO> selectAllSalesPro(String userId);
 

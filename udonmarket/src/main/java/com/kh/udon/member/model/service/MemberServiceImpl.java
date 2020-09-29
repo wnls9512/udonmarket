@@ -96,7 +96,7 @@ public class MemberServiceImpl implements MemberService
 
 	@Transactional(rollbackFor = { Exception.class })
 	@Override
-	public int insertMemberLoc(Member member) {
+	public int insertMemberLocAuth(Member member) {
 		
 		int result = 0;
 		
@@ -108,7 +108,8 @@ public class MemberServiceImpl implements MemberService
 		if(result > 0) {
 			result = memberDao.insertLocation(member.getUserId());
 			log.debug("result = {}", result);
-
+			result = memberDao.insertAuthority(member.getUserId());
+			log.debug("result = {}", result);
 		}
 		
 		return result;
