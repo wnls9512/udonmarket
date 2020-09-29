@@ -33,29 +33,18 @@
     <!--================ Register Area =================-->
     <section class="login_part padding_top">
         <div class="container">
+           	<form>
             <div class="row align-items-center">
                 <div class="col-lg-6 col-md-6">
-                    <div class="login_part_text text-center" style="background-image:none; border: 1px solid #ff3368; width:88%; padding: 50px 70px;">
+                    <div class="login_part_text text-center" style="background-image:none; border: 1px solid #ff3368; width:88%; padding: 0;">
                         <div class="login_part_text_iner">
 	                        	<!-- upload image start -->
 	                        	<main class="main_full">
 									<div class="container uploadResult">
 										<div class="panel" style="margin-top: 0;">
-											<div class="button_outer">
-												<div class="btn_upload">
-													<input type="file" id="upload_file" name="uploadFile" multiple>
-													Upload Image 0 / 5
-												</div>
-												<div class="processing_bar"></div>
-												<div class="success_box"></div>
-											</div>
+											<input type="file" class="my-pond" name="filepond"/>
 										</div>
 										<div class="error_msg"></div>
-										<div class="preview popup-gallery" id="preview0"></div>
-										<div class="preview popup-gallery" id="preview1"></div>
-										<div class="preview popup-gallery" id="preview2"></div>
-										<div class="preview popup-gallery" id="preview3"></div>
-										<div class="preview popup-gallery" id="preview4"></div>
 									</div>
 								</main>
 								<!-- upload image end -->
@@ -65,6 +54,7 @@
 	                <div class="col-lg-6 col-md-6">
 	                    <div class="login_part_form" style="padding: 70px 0;">
 	                        <div class="login_part_form_iner">
+	                        
                                 <div class="col-md-12 form-group p_star" style="margin-top: 10%;">
                                     <input type="text" name="title" placeholder="글 제목"
 											onfocus="this.placeholder = ''" onblur="this.placeholder = '글 제목'" required
@@ -84,7 +74,7 @@
 											<input type="checkbox" id="primary-switch" checked>
 											<label for="primary-switch"></label>
 										</div>
-										<input type="hidden" name="offer" />
+										<input type="hidden" name="offer" value="1"/>
 										<p style="margin-left: 6%; width: 30%; color: darkgray; font-size:14px;">가격제안 받기</p>
                                     </div>
                                 </div>
@@ -113,6 +103,7 @@
 	                    </div>
 	                </div>
 	            </div>
+	            </form>
 	        </div>
     </section>
     
@@ -184,7 +175,7 @@
 	            </li>
 	          </ul>
 	          <a href="javascript:void(0);" class="btn btn-primary btn-block p-2 shadow rounded-pill coupon">적용</a>
-	          <input type="hidden" name="coupon" value=""/>
+	          <input type="hidden" name="coupon" value="0"/>
 	        </div>
 	      </div>
 	      <!-- Coupon Table END -->
@@ -200,20 +191,19 @@
  
 <script>
 /* ================ file upload START ================*/
-
 var btnUpload = $("#upload_file"),
 	btnOuter = $(".button_outer");
 
 // 썸네일 생성 및 불러오기
 $(function()
 {
+	var cloneObj = $(".btn_upload").clone()
+	
 	btnUpload.on("change", function(e)
 	{
 		var formData = new FormData();
 		var inputFile = $("input[name='uploadFile']");
 		var files = inputFile[0].files;
-
-		console.log(files);
 
 		// add filedata to formdata
 		for(var i = 0; i < files.length; i++)
@@ -231,18 +221,20 @@ $(function()
 			dataType: 'json',
 			success: function(result)
 			{
-				console.log(result);
 
 				showUploadedFile(result);
 
-				$(".btn_upload").html("Upload Image " + result.length + " / 5");
+				$(".btn_upload").html(cloneObj.html());
 			}	
 		});
 	});
 });
 
+var btnUpload = $("#upload_file"),
+btnOuter = $(".button_outer");
 
 // 이미지 판단
+//btnUpload.on("change", function(e)
 btnUpload.on("change", function(e)
 {
 	var ext = btnUpload.val().split('.').pop().toLowerCase();
@@ -305,8 +297,6 @@ $("[id^=preview]").on("click", "span", function(e)
 {
 	alert("");
 	var targetFile = $(this).data("file");
-
-	console.log(targetFile);
 
 	$.ajax
 	({
@@ -391,40 +381,6 @@ $(function()
 		else
 			$("[name=offer]").val(0);
 	});
-	
-	// form 생성 & 제출
- 	$("#uploadBtn").on("click", function()
-	{
-		var formData = new FormData();
-
-		formData.append("seller", 'test');
-		formData.append("title", $("[name=title]").val());
-		formData.append("category", $("[name=category]").val());
-		formData.append("content", $("[name=content]").val());
-		formData.append("price", $("[name=price]").val());
-		formData.append("coupon", $("[name=coupon]").val() == 1 ? true : false);
-		formData.append("offer", $("[name=offer]").val() == 1 ? true : false);
-		
-		$.ajax
-		({
-			url: '${pageContext.request.contextPath}/product/register',
-			processData: false,
-			contentType: false,
-			data: formData,
-			type: 'POST',
-			dataType: 'json',
-			success: function(result)
-			{
-				alert("성공!");
-			},
-			error: function()
-			{
-				alert("실패");
-			}	
-		});
-	});  
-
-
 });
 /* ================ submit form END ================*/
 

@@ -30,7 +30,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.kh.udon.product.model.service.ProductService;
 import com.kh.udon.product.model.vo.CategoryVO;
 import com.kh.udon.product.model.vo.CouponDTO;
-import com.kh.udon.product.model.vo.ProductPhotoDTO;
+import com.kh.udon.product.model.vo.ProductPhotoVO;
 import com.kh.udon.product.model.vo.ProductVO;
 
 import lombok.extern.slf4j.Slf4j;
@@ -110,9 +110,9 @@ public class ProductController
     // 썸네일 생성
     @PostMapping(value = "/createThumbnail", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
-    public ResponseEntity<List<ProductPhotoDTO>> createThumbnail(MultipartFile[] uploadFile)
+    public ResponseEntity<List<ProductPhotoVO>> createThumbnail(MultipartFile[] uploadFile)
     {
-        List<ProductPhotoDTO> list = new ArrayList<ProductPhotoDTO>();
+        List<ProductPhotoVO> list = new ArrayList<ProductPhotoVO>();
         String uploadFolder = "C:\\upload";
         
         String uploadFolderPath = getFolder();
@@ -125,7 +125,7 @@ public class ProductController
         // save files
         for(MultipartFile multipartFile : uploadFile)
         {
-            ProductPhotoDTO photoDTO = new ProductPhotoDTO();
+            ProductPhotoVO photoDTO = new ProductPhotoVO();
             String uploadFileName = multipartFile.getOriginalFilename();
             
             // IE has file path
@@ -160,7 +160,7 @@ public class ProductController
             }
         }
         
-        return new ResponseEntity<List<ProductPhotoDTO>>(list, HttpStatus.OK);
+        return new ResponseEntity<List<ProductPhotoVO>>(list, HttpStatus.OK);
     }
     
     // 폴더 생성 메소드
