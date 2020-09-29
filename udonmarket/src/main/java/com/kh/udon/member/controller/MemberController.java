@@ -1,5 +1,6 @@
 package com.kh.udon.member.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,6 +27,7 @@ import com.kh.udon.member.model.vo.Evaluate;
 import com.kh.udon.member.model.vo.Keyword;
 import com.kh.udon.member.model.vo.Member;
 import com.kh.udon.member.model.vo.Review;
+import com.kh.udon.product.model.vo.ProductVO;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -112,23 +114,48 @@ public class MemberController
 	
     //관심목록
     @RequestMapping("/wishList")
-    public String wishList()
-    {
-        return "member/wishList";
+    public Model wishList(Model model){
+    	//세션에 담긴 로그인 중 인 유저 아이디
+    	//String userId = ((Member)session.getAttribute("loginMember")).getUserId();
+    	//test id로 테스트 (세션에 담긴 로그인 중인 아이디)
+    	String userId = "test";
+    	
+    	List<ProductVO> list = service.selectAllWishPro(userId);
+    	log.debug("ProductWishList = {}", list);
+    	
+    	model.addAttribute("list", list);  	
+        return model;
     }
     
     //판매내역
     @RequestMapping("/salesList")
-    public String salseList()
-    {
-        return "member/salesList";
+    public Model salseList(Model model){
+    	//세션에 담긴 로그인 중 인 유저 아이디
+    	//String userId = ((Member)session.getAttribute("loginMember")).getUserId();
+    	//test id로 테스트 (세션에 담긴 로그인 중인 아이디)
+    	String userId = "test";
+    	
+    	List<ProductVO> list = service.selectAllSalesPro(userId);
+    	log.debug("ProductSalesList = {}", list);
+    	
+    	model.addAttribute("list", list);
+        return model;
     }
     
     //구매내역
     @RequestMapping("/buyList")
-    public String buyList()
-    {
-        return "member/buyList";
+    public Model buyList(Model model){
+    	//세션에 담긴 로그인 중 인 유저 아이디
+    	//String userId = ((Member)session.getAttribute("loginMember")).getUserId();
+    	//test id로 테스트 (세션에 담긴 로그인 중인 아이디)
+    	String userId = "test";
+    	
+    	List<ProductVO> list = service.selectAllBuyPro(userId);
+    	log.debug("ProductBuyList = {}", list);
+    	
+    	model.addAttribute("list", list);
+    	
+        return model;
     }
     
     //내 동네 설정 페이지 띄우기
@@ -184,6 +211,7 @@ public class MemberController
     	return "redirect:/member/settingsArea";
     }
     
+    //거리 범위 수정
     @PostMapping("/updateRadius")
     @ResponseBody
     public Map<String, Object> updateRadius(HttpSession session,
@@ -360,9 +388,22 @@ public class MemberController
     	List<Review> reviewList = service.selectAllReview(userId);
     	log.debug("reviewList = {}", reviewList);
     	
+    	//판매자/구매자 구분
+    	List<Review> seller = new ArrayList<>(); 
+    	List<Review> buyer = new ArrayList<>(); 
+    	for(Review r : reviewList) {
+    		if(r.getDirect().equals("S")) {
+    			buyer.add(r);
+    		}else {
+    			seller.add(r);    			
+    		}
+    	}
+    	
     	model.addAttribute("evaList", evaList);
     	model.addAttribute("totalReview", totalReview);
     	model.addAttribute("reviewList", reviewList);
+    	model.addAttribute("reviewSeller", seller);
+    	model.addAttribute("reviewBuyer", buyer);
     	return model;
     }
     
