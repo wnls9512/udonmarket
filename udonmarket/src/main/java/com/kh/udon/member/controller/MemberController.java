@@ -1,5 +1,6 @@
 package com.kh.udon.member.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -360,9 +361,22 @@ public class MemberController
     	List<Review> reviewList = service.selectAllReview(userId);
     	log.debug("reviewList = {}", reviewList);
     	
+    	//판매자/구매자 구분
+    	List<Review> seller = new ArrayList<>(); 
+    	List<Review> buyer = new ArrayList<>(); 
+    	for(Review r : reviewList) {
+    		if(r.getDirect().equals("S")) {
+    			buyer.add(r);
+    		}else {
+    			seller.add(r);    			
+    		}
+    	}
+    	
     	model.addAttribute("evaList", evaList);
     	model.addAttribute("totalReview", totalReview);
     	model.addAttribute("reviewList", reviewList);
+    	model.addAttribute("reviewSeller", seller);
+    	model.addAttribute("reviewBuyer", buyer);
     	return model;
     }
     
