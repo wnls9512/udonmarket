@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.kh.udon.product.model.vo.CategoryVO;
 import com.kh.udon.product.model.vo.CouponDTO;
+import com.kh.udon.product.model.vo.ProductVO;
 
 public interface ProductDao
 {
@@ -17,5 +18,7 @@ public interface ProductDao
     int selectCategoryCount(String categoryCode);
 
     CouponDTO selectCoupon(String userId);
+    
+    int insert(ProductVO product);
 
 }

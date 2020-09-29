@@ -22,5 +22,4 @@ public class ProductVO implements Serializable
     boolean coupon;
     boolean offer;
     
-    private List<ProductPhotoVO> attachList;
 }

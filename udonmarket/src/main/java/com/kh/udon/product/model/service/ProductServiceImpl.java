@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.kh.udon.product.model.dao.ProductDao;
 import com.kh.udon.product.model.vo.CategoryVO;
 import com.kh.udon.product.model.vo.CouponDTO;
+import com.kh.udon.product.model.vo.ProductVO;
 
 @Service
 public class ProductServiceImpl implements ProductService
@@ -43,6 +44,12 @@ public class ProductServiceImpl implements ProductService
     public CouponDTO selectCoupon(String userId)
     {
         return dao.selectCoupon(userId);
+    }
+
+    @Override
+    public int insert(ProductVO product)
+    {
+        return dao.insert(product);
     }
     
     

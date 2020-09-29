@@ -22,4 +22,9 @@
 		select coupon_name, expire_date, count(coupon_name) amount from coupon 
 		where user_id = #{userId} and usage_status = 0 group by(coupon_name, expire_date)
 	</select>
+	
+	<insert id="insert">
+		insert into product values
+		(seq_product.nextval, #{seller}, null, #{title}, #{category}, #{content}, #{price}, sysdate, #{openStatus}, 'S', #{coupon}, #{offer})
+	</insert>
 </mapper>

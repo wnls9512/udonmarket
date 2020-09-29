@@ -33,7 +33,7 @@
     <!--================ Register Area =================-->
     <section class="login_part padding_top">
         <div class="container">
-           	<form action="" method="post" enctype="multipart/form-data">
+           	<form action="${pageContext.request.contextPath }/product/register" method="post" enctype="multipart/form-data">
 	            <div class="row align-items-center">
 	                <div class="col-lg-6 col-md-6">
 	                    <div class="login_part_text text-center" style="background-image:none; border: 1px solid #ff3368; width:88%; padding: 0;">
@@ -45,7 +45,7 @@
 	                <div class="col-lg-6 col-md-6">
 	                    <div class="login_part_form" style="padding: 70px 0;">
 	                        <div class="login_part_form_iner">
-	                        
+	                        	<input type="hidden" name="seller" id="seller" value="test"/>
                                 <div class="col-md-12 form-group p_star" style="margin-top: 10%;">
                                     <input type="text" name="title" placeholder="글 제목"
 											onfocus="this.placeholder = ''" onblur="this.placeholder = '글 제목'" required
@@ -86,7 +86,7 @@
                                     </div>
                                 </div>
                                 <div class="col-md-12 form-group p_star">
-	                                <button type="button" value="submit" class="btn_3" id="uploadBtn">
+	                                <button type="submit" value="submit" class="btn_3" id="uploadBtn">
 	                                    	완료
 	                                </button>
                            		 </div>

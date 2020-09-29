@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import com.kh.udon.product.model.vo.CategoryVO;
 import com.kh.udon.product.model.vo.CouponDTO;
+import com.kh.udon.product.model.vo.ProductVO;
 
 @Repository
 public class ProductDaoImpl implements ProductDao
@@ -43,6 +44,12 @@ public class ProductDaoImpl implements ProductDao
     public CouponDTO selectCoupon(String userId)
     {
         return session.selectOne("product.selectCoupon", userId);
+    }
+
+    @Override
+    public int insert(ProductVO product)
+    {
+        return session.insert("product.insert", product);
     }
     
     

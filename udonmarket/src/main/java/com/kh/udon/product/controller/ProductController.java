@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.kh.udon.product.model.service.ProductService;
 import com.kh.udon.product.model.vo.CategoryVO;
@@ -94,26 +95,17 @@ public class ProductController
         model.addAttribute("coupon", coupon);
     }
     
-    // 폴더 생성 메소드
-    private String getFolder()
-    {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        Date date = new Date();
-        String str = sdf.format(date);
-        
-        return str.replace("-", File.separator);
-    }
-    
     // 게시글 등록
     @PostMapping("/register")
-    @ResponseBody
-    public ResponseEntity<Integer> register(ProductVO product)
+    public String register(ProductVO product, RedirectAttributes rttr)
     {
-        ResponseEntity<Integer> result = new ResponseEntity<Integer>(1, HttpStatus.OK);
-        
         log.debug("product = {}", product);
         
-        return result;
+        int result = service.insert(product);
+        
+        rttr.addFlashAttribute("msg", result > 0 ? "상품 등록 성공 💛" : "상품 등록 실패 🤔");
+        
+        return "redirect:/product/productListView";
     }
     
     
