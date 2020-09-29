@@ -96,7 +96,7 @@
 <!-- 회원가입 -->
 <insert id="insertMember">
 	insert into member
-	values(#{userId},#{password},#{email},#{nickName},#{address},null,null,default,default,default)
+	values(#{userId},#{password},#{email},#{nickName},null,null,null,default,default,default)
 </insert>
 <insert id="insertLocation">
 	insert into location

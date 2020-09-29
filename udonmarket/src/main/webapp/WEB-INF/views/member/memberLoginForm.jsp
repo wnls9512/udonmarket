@@ -3,6 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
 <fmt:requestEncoding value="utf-8"/>
 
@@ -51,9 +52,9 @@
                         <div class="login_part_form_iner">
                             <h3>Welcome Back ! <br>
                                 Please Sign in now</h3>
-                            <form class="row contact_form" action="${pageContext.request.contextPath }/member/login" method="post" novalidate="novalidate">
+                            <form:form class="row contact_form" action="${pageContext.request.contextPath }/member/login" method="POST" novalidate="novalidate">
                                 <div class="col-md-12 form-group p_star">
-                                    <input type="text" class="form-control" id="userId" name="name" placeholder="아이디">
+                                    <input type="text" class="form-control" id="userId" name="userId" placeholder="아이디">
                                 </div>
                                 <div class="col-md-12 form-group p_star">
                                     <input type="password" class="form-control" id="password" name="password" placeholder="비밀번호">
@@ -66,7 +67,7 @@
                                     <button type="submit" value="submit" class="btn_3">로그인</button>
                                     <a class="lost_pass" href="#">forget password?</a>
                                 </div>
-                            </form>
+                            </form:form>
                         </div>
                     </div>
                 </div>

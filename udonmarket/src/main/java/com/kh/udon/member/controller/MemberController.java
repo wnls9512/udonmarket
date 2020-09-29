@@ -88,9 +88,10 @@ public class MemberController {
 		String location = "/";
 
 		// 로그인 성공
-		 if(member != null && bcryptPasswordEncoder.matches(password,member.getPassword())) { //세션처리 model.addAttribute("loginMember", member);
+		 if(member != null && bcryptPasswordEncoder.matches(password,member.getPassword())) { 
+			//세션처리 model.addAttribute("loginMember", member);
 		 
-		  //세션에서 next값 가져오기 
+			 //세션에서 next값 가져오기 
 	      String next = (String)session.getAttribute("next");
 		  location = next != null ? next : location; session.removeAttribute("next"); }
 		  //로그인 실패 

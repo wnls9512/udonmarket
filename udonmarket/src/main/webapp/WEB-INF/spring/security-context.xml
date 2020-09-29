@@ -12,25 +12,40 @@
 		  id="bcryptPasswordEncoder"/>
 		  
 <!-- 	사용자 요청 url 관련 설정 -->
-<!-- 	<http auto-config="true"> -->
-<!-- 		<intercept-url pattern="/**" access="hasRole('USER')"/> -->
-<!-- 	</http> -->
+<!-- 	intercept-url : 위에는 특별한 설정, 아래는 일반적인 설정배치 -->
+	<http auto-config="true">
+		<intercept-url pattern="/" access="permitAll"/>
+		<intercept-url pattern="/index.jsp" access="permitAll"/>
+		<intercept-url pattern="/resources/**" access="permitAll"/>
+		<intercept-url pattern="/member/**" access="permitAll"/>		
+		<intercept-url pattern="/**" access="hasRole('USER')"/>
+		
+<!-- 		login-processing-url : 로그인폼 제출 url  핸들러메소드 필요없음.-->
+		<form-login
+			login-page="/member/loginForm"
+			login-processing-url="/member/login"
+			username-parameter="userId"
+			password-parameter="password"
+		/>
+		
+<!-- 		logout0url: 로그아웃 처리 url. 핸들러메소드 필요없음. -->
+		<logout
+			logout-url="/member/logout"
+			logout-success-url="/"
+		/>
+		
+		<csrf disabled="true"/>
+	</http>
 	
 <!-- 	사용자 인증 -->
-
-<!-- 	<authentication-manager> -->
-<!-- 		<authentication-provider> -->
-<!-- 			<password-encoder  ref="bcryptPasswordEncoder"/> -->
+	<authentication-manager>
+		<authentication-provider>
+			<password-encoder ref="bcryptPasswordEncoder"/>
 <!-- 			 1. in-memory 사용자 인증 -->
-<!-- 					<user-service> -->
-<!-- 						<user name="test" password="" authorities="ROLE_USER"/> -->
-<!-- 						<user name="admin" password="" authorities="ROLE_USER, ROLE_ADMIN"/> -->
-						
-					
-<!-- 					</user-service> -->
-		
-<!-- 		</authentication-provider> -->
-	
-<!-- 	</authentication-manager> -->
-
+					<user-service>
+						<user name="test" password="$2a$10$.VCSov4CIdjFuEC9b1sr6exI/oweXSOFsSJyvyYYsZSLcnDkYQi9W" authorities="ROLE_USER"/>
+						<user name="admin" password="$2a$10$.VCSov4CIdjFuEC9b1sr6exI/oweXSOFsSJyvyYYsZSLcnDkYQi9W" authorities="ROLE_USER, ROLE_ADMIN"/>
+					</user-service>
+		</authentication-provider>
+	</authentication-manager>
 </beans:beans>

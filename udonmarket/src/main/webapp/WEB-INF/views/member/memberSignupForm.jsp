@@ -82,7 +82,7 @@
 				        	<tr>
 				        		<td>
 				        			<div class="signup-container">
-				        				<input type="text" name="nickname" id="nickname" class="nav-link px-4 rounded-pill" placeholder="별명 입력" required style="width: 22rem;"/>
+				        				<input type="text" name="nickName" id="nickName" class="nav-link px-4 rounded-pill" placeholder="별명 입력" required style="width: 22rem;"/>
 				        			</div>
 				        		</td>
 				        	</tr>
