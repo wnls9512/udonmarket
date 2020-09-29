@@ -1,25 +1,20 @@
 package com.kh.udon.product.controller;
 
-import java.io.File;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.kh.udon.product.model.service.ProductService;
 import com.kh.udon.product.model.vo.CategoryVO;
 import com.kh.udon.product.model.vo.CouponDTO;
+import com.kh.udon.product.model.vo.ProductDTO;
 import com.kh.udon.product.model.vo.ProductVO;
 
 import lombok.extern.slf4j.Slf4j;
@@ -40,20 +35,23 @@ public class ProductController
          *      1. 카테고리 목록
          *      2. 카테고리 목록별 갯수
          *      3. 전체 상품 갯수
-         *      (4. 상품 리스트)
+         *      4. 상품 리스트
          */
         
         List<CategoryVO> category = service.selectAllCategory();
         List<Integer> categoryCount = service.selectAllCategoryCount();
         int totalCount = service.selectTotalCount();
+        List<ProductDTO> products = service.selectAll();
         
         log.debug("category = {}", category);
         log.debug("categoryCount = {}", categoryCount);
         log.debug("totalCount = {}", totalCount);
+        log.debug("products = {}", products);
         
         model.addAttribute("category", category);
         model.addAttribute("categoryCount", categoryCount);
         model.addAttribute("totalCount", totalCount);
+        model.addAttribute("products", products);
         
         return "product/productListView";
     }

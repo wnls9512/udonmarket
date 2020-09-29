@@ -9,7 +9,7 @@ import lombok.Data;
 @Data
 public class ProductVO implements Serializable
 {
-    int p_code;
+    int pCode;
     String seller;
     String buyer;
     String title;

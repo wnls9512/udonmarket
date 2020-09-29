@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="product">
+	<select id="selectAll" resultType="productDTO">
+		select * from product where open_status = 1 and trade_status = 'S' order by reg_date
+	</select>
+
 	<select id="selectAllCategory" resultType="categoryVO">
 		select * from category where category_parent = 1 order by category_code
 	</select>

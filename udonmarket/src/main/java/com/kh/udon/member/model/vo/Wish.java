@@ -19,6 +19,5 @@ public class Wish extends ProductVO implements Serializable {
 
 	private String wishCode;
 	private String userId;
-	private String pCode;
 	
 }

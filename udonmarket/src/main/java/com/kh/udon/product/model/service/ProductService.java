@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.kh.udon.product.model.vo.CategoryVO;
 import com.kh.udon.product.model.vo.CouponDTO;
+import com.kh.udon.product.model.vo.ProductDTO;
 import com.kh.udon.product.model.vo.ProductVO;
 
 public interface ProductService
@@ -20,5 +21,7 @@ public interface ProductService
     CouponDTO selectCoupon(String userId);
 
     int insert(ProductVO product);
+
+    List<ProductDTO> selectAll();
 
 }

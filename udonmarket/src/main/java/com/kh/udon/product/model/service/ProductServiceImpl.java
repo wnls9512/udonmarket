@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.kh.udon.product.model.dao.ProductDao;
 import com.kh.udon.product.model.vo.CategoryVO;
 import com.kh.udon.product.model.vo.CouponDTO;
+import com.kh.udon.product.model.vo.ProductDTO;
 import com.kh.udon.product.model.vo.ProductVO;
 
 @Service
@@ -50,6 +51,19 @@ public class ProductServiceImpl implements ProductService
     public int insert(ProductVO product)
     {
         return dao.insert(product);
+    }
+
+    @Override
+    public List<ProductDTO> selectAll()
+    {
+        List<ProductDTO> select = dao.selectAll();
+        
+        for(ProductDTO p : select)
+        {
+            
+        }
+        
+        return dao.selectAll();
     }
     
     
