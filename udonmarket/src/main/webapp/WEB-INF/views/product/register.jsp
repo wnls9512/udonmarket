@@ -33,38 +33,19 @@
     <!--================ Register Area =================-->
     <section class="login_part padding_top">
         <div class="container">
-            <div class="row align-items-center">
-                <div class="col-lg-6 col-md-6">
-                    <div class="login_part_text text-center" style="background-image:none; border: 1px solid #ff3368; width:88%; padding: 50px 70px;">
-                        <div class="login_part_text_iner">
-	                        	<!-- upload image start -->
-	                        	<main class="main_full">
-									<div class="container">
-										<div class="panel" style="margin-top: 0;">
-											<div class="button_outer">
-												<div class="btn_upload">
-													<input type="file" id="upload_file" name="uploadFile" multiple>
-													Upload Image 0 / 5
-												</div>
-												<div class="processing_bar"></div>
-												<div class="success_box"></div>
-											</div>
-										</div>
-										<div class="error_msg"></div>
-										<div class="preview popup-gallery" id="preview0"></div>
-										<div class="preview popup-gallery" id="preview1"></div>
-										<div class="preview popup-gallery" id="preview2"></div>
-										<div class="preview popup-gallery" id="preview3"></div>
-										<div class="preview popup-gallery" id="preview4"></div>
-									</div>
-								</main>
-								<!-- upload image end -->
+           	<form action="" method="post" enctype="multipart/form-data">
+	            <div class="row align-items-center">
+	                <div class="col-lg-6 col-md-6">
+	                    <div class="login_part_text text-center" style="background-image:none; border: 1px solid #ff3368; width:88%; padding: 0;">
+	                        <div class="login_part_text_iner">
+								<input type="file" name="files" class="files">
 	                        </div>
 	                    </div>
 	                </div>
 	                <div class="col-lg-6 col-md-6">
 	                    <div class="login_part_form" style="padding: 70px 0;">
 	                        <div class="login_part_form_iner">
+	                        
                                 <div class="col-md-12 form-group p_star" style="margin-top: 10%;">
                                     <input type="text" name="title" placeholder="글 제목"
 											onfocus="this.placeholder = ''" onblur="this.placeholder = '글 제목'" required
@@ -84,7 +65,7 @@
 											<input type="checkbox" id="primary-switch" checked>
 											<label for="primary-switch"></label>
 										</div>
-										<input type="hidden" name="offer" />
+										<input type="hidden" name="offer" value="1"/>
 										<p style="margin-left: 6%; width: 30%; color: darkgray; font-size:14px;">가격제안 받기</p>
                                     </div>
                                 </div>
@@ -113,8 +94,9 @@
 	                    </div>
 	                </div>
 	            </div>
-	        </div>
-    </section>
+            </form>
+        </div>
+   </section>
     
 <!-- ====== Category Modal ======  -->
 <div id="categoryModal" class="modal fixed-left fade" tabindex="-1" role="dialog">
@@ -184,7 +166,7 @@
 	            </li>
 	          </ul>
 	          <a href="javascript:void(0);" class="btn btn-primary btn-block p-2 shadow rounded-pill coupon">적용</a>
-	          <input type="hidden" name="coupon" value=""/>
+	          <input type="hidden" name="coupon" value="0"/>
 	        </div>
 	      </div>
 	      <!-- Coupon Table END -->
@@ -199,137 +181,6 @@
 
  
 <script>
-/* ================ file upload START ================*/
-
-var btnUpload = $("#upload_file"),
-	btnOuter = $(".button_outer");
-
-$(function()
-{
-	btnUpload.on("change", function(e)
-	{
-		var formData = new FormData();
-		var inputFile = $("input[name='uploadFile']");
-		var files = inputFile[0].files;
-
-		console.log(files);
-
-		// add filedata to formdata
-		for(var i = 0; i < files.length; i++)
-		{
-			formData.append("uploadFile", files[i]);
-		}
-
-		$.ajax
-		({
-			url: '${pageContext.request.contextPath}/product/register',
-			processData: false,
-			contentType: false,
-			data: formData,
-			type: 'POST',
-			dataType: 'json',
-			success: function(result)
-			{
-				console.log(result);
-
-				showUploadedFile(result);
-
-				$(".btn_upload").html("Upload Image " + result.length + " / 5");
-			}	
-		});
-	});
-});
-
-
-	
-btnUpload.on("change", function(e)
-{
-	var ext = btnUpload.val().split('.').pop().toLowerCase();
-	
-	if($.inArray(ext, ['png','jpg','jpeg']) == -1) 
-	{
-		$(".error_msg").text("해당 종류의 파일은 업로드할 수 없습니다.");
-	} 
-	else 
-	{
-		// process bar
-		$(".error_msg").text("");
-		btnOuter.addClass("file_uploading");
-		setTimeout(function()
-		{
-			btnOuter.removeClass("file_uploading");
-		},3000);
-	}
-});
-
-// show thumbnail
-function showUploadedFile(uploadResultArr)
-{
-	var str = "";
-	
-	$(uploadResultArr).each(function(i, obj)
-	{
-		var fileCallPath = encodeURIComponent(obj.uploadPath + "/s_" + obj.uuid + "_" + obj.fileName);
-		var originPath = obj.uploadPath + "\\" + obj.uuid + "_" + obj.fileName;
-		originPath = originPath.replace(new RegExp(/\\/g), "/");
-
-		str += "<a href='${pageContext.request.contextPath}/product/display?fileName=" + originPath + "'>";
-		str += "<img src='${pageContext.request.contextPath}/product/display?fileName=" + fileCallPath + "' style='margin-bottom: 2%;'></a>";
-
-
-		
-		$("#preview" + i).append(str);
-
-		str = "";
-	});
-
-
-	$.each ($("[id^=preview]"), function (i, el) 
-	{
-		$("#preview" + i).hide();
-		
-		if($("#preview" + i).find($("img")).length)
-		{
-			setTimeout(function()
-			{
-				$("#preview" + i).show();
-			},3500);
-		}
-	});
-}
-
-// remove thumbnail
-$(".file_remove").on("click", function(e)
-{
-	$("#uploaded_view").removeClass("show");
-	$("#uploaded_view").find("img").remove();
-	btnOuter.removeClass("file_uploading");
-	btnOuter.removeClass("file_uploaded");
-});
-
-// show original image
-$(document).ready(function() {
-	$('.popup-gallery').magnificPopup({
-		delegate: 'a',
-		type: 'image',
-		tLoading: 'Loading image #%curr%...',
-		mainClass: 'mfp-img-mobile',
-		gallery: {
-			enabled: true,
-			navigateByImgClick: true,
-			preload: [0,1] // Will preload 0 - before current, and 1 after the current image
-		},
-		image: {
-			tError: '<a href="%url%">The image #%curr%</a> could not be loaded.',
-			titleSrc: function(item) {
-				return item.el.attr('title') + '<small>by Marsel Van Oosten</small>';
-			}
-		}
-	});
-});
-/* ================ file upload END ================*/
-
-
 /* ================ submit form START ================*/
 $(function()
 {
@@ -376,39 +227,6 @@ $(function()
 			$("[name=offer]").val(1);
 		else
 			$("[name=offer]").val(0);
-	});
-	
-	
- 	$("#uploadBtn").on("click", function()
-	{
-		var formData = new FormData();
-
-		formData.append("seller", 'test');
-		formData.append("title", $("[name=title]").val());
-		formData.append("category", $("[name=category]").val());
-		formData.append("content", $("[name=content]").val());
-		formData.append("price", $("[name=price]").val());
-		formData.append("coupon", $("[name=coupon]").val());
-		formData.append("offer", $("[name=offer]").val());
-		
-	});  
-
-	$.ajax
-	({
-		url: '${pageContext.request.contextPath}/product/register',
-		processData: false,
-		contentType: false,
-		data: formData,
-		type: 'POST',
-		dataType: 'json',
-		success: function(result)
-		{
-			console.log(result);
-
-			showUploadedFile(result);
-
-			$(".btn_upload").html("Upload Image " + result.length + " / 5");
-		}	
 	});
 });
 /* ================ submit form END ================*/

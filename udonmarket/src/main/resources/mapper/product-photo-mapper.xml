@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="productPhoto">
+
+	<insert id="insert">
+		insert into product_photo(uuid, uploadpath, filename, p_code)
+		values(#{uuid}, #{uplaodPath}, #{fileName}, #{fileType}, #{pCode})
+	</insert>
+	
+	<delete id="delete">
+		delete from product_photo where uuid = #{uuid}
+	</delete>
+	
+	<select id="fineByPcode" resultType="productPhotoVO">
+		select * from product_photo where p_code = #{pCode}
+	</select>
+
+</mapper>

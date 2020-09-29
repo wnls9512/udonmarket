@@ -8,6 +8,7 @@ import com.kh.udon.member.model.vo.Keyword;
 import com.kh.udon.member.model.vo.Location;
 import com.kh.udon.member.model.vo.Member;
 import com.kh.udon.member.model.vo.Review;
+import com.kh.udon.product.model.vo.ProductVO;
 
 public interface MemberService
 {
@@ -35,6 +36,14 @@ public interface MemberService
 
 	List<Review> selectAllReview(String userId);
 
+<<<<<<< HEAD
 	int insertMemberLoc(Member member);
 
+=======
+	List<ProductVO> selectAllSalesPro(String userId);
+
+	List<ProductVO> selectAllBuyPro(String userId);
+
+	List<ProductVO> selectAllWishPro(String userId);
+>>>>>>> refs/remotes/origin/master
 }

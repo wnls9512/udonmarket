@@ -13,6 +13,7 @@ import com.kh.udon.member.model.vo.Keyword;
 import com.kh.udon.member.model.vo.Location;
 import com.kh.udon.member.model.vo.Member;
 import com.kh.udon.member.model.vo.Review;
+import com.kh.udon.product.model.vo.ProductVO;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -111,6 +112,20 @@ public class MemberServiceImpl implements MemberService
 		}
 		
 		return result;
+	}
+	@Override
+	public List<ProductVO> selectAllSalesPro(String userId) {
+		return memberDao.selectAllSalesPro(userId);
+	}
+
+	@Override
+	public List<ProductVO> selectAllBuyPro(String userId) {
+		return memberDao.selectAllBuyPro(userId);
+	}
+
+	@Override
+	public List<ProductVO> selectAllWishPro(String userId) {
+		return memberDao.selectAllWishPro(userId);
 	}
 
 }

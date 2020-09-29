@@ -420,5 +420,4 @@ insert into evaluation values(seq_evaluation.nextval, '거래 시간과 장소�
 insert into evaluation values(seq_evaluation.nextval, '약속 장소에 나타나지 않았어요', 0, 'C');
 insert into evaluation values(seq_evaluation.nextval, '거래 시간과 장소를 정한 후 거래 직전 취소했어요', 0, 'C');
 --==========================================================================================
-select * from category;
-select * from evaluation;
+select * from product_photo;

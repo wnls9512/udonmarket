@@ -3,6 +3,8 @@ package com.kh.udon.product.controller;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.nio.file.Files;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -28,7 +30,8 @@ import org.springframework.web.multipart.MultipartFile;
 import com.kh.udon.product.model.service.ProductService;
 import com.kh.udon.product.model.vo.CategoryVO;
 import com.kh.udon.product.model.vo.CouponDTO;
-import com.kh.udon.product.model.vo.ProductPhotoDTO;
+import com.kh.udon.product.model.vo.ProductPhotoVO;
+import com.kh.udon.product.model.vo.ProductVO;
 
 import lombok.extern.slf4j.Slf4j;
 import net.coobird.thumbnailator.Thumbnailator;
@@ -104,12 +107,12 @@ public class ProductController
         model.addAttribute("coupon", coupon);
     }
     
-    // 상품 등록
-    @PostMapping(value = "/register", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    // 썸네일 생성
+    @PostMapping(value = "/createThumbnail", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
-    public ResponseEntity<List<ProductPhotoDTO>> register(MultipartFile[] uploadFile)
+    public ResponseEntity<List<ProductPhotoVO>> createThumbnail(MultipartFile[] uploadFile)
     {
-        List<ProductPhotoDTO> list = new ArrayList<ProductPhotoDTO>();
+        List<ProductPhotoVO> list = new ArrayList<ProductPhotoVO>();
         String uploadFolder = "C:\\upload";
         
         String uploadFolderPath = getFolder();
@@ -122,7 +125,7 @@ public class ProductController
         // save files
         for(MultipartFile multipartFile : uploadFile)
         {
-            ProductPhotoDTO photoDTO = new ProductPhotoDTO();
+            ProductPhotoVO photoDTO = new ProductPhotoVO();
             String uploadFileName = multipartFile.getOriginalFilename();
             
             // IE has file path
@@ -157,7 +160,7 @@ public class ProductController
             }
         }
         
-        return new ResponseEntity<List<ProductPhotoDTO>>(list, HttpStatus.OK);
+        return new ResponseEntity<List<ProductPhotoVO>>(list, HttpStatus.OK);
     }
     
     // 폴더 생성 메소드
@@ -215,6 +218,51 @@ public class ProductController
         return result;
     }
     
+    // 게시글 등록
+    @PostMapping("/register")
+    @ResponseBody
+    public ResponseEntity<Integer> register(ProductVO product)
+    {
+        ResponseEntity<Integer> result = new ResponseEntity<Integer>(1, HttpStatus.OK);
+        
+        log.debug("product = {}", product);
+        
+        return result;
+    }
+    
+    // 썸네일 삭제
+    @PostMapping("/deleteFile")
+    @ResponseBody
+    public ResponseEntity<String> deleteFile(String fileName)
+    {
+        log.debug("deleteFile = {}", fileName);
+        
+        File file;
+        
+        try
+        {
+            file = new File("c:\\upload\\" + URLDecoder.decode(fileName, "UTF-8"));
+            
+            file.delete();
+            
+            String largeFileName = file.getAbsolutePath().replace("s_", "");
+            
+            log.debug("largeFileName = {}", largeFileName);
+            
+            file = new File(largeFileName);
+            
+            file.delete();
+        }
+        catch (UnsupportedEncodingException e)
+        {
+            e.printStackTrace();
+            return new ResponseEntity<String>(HttpStatus.NOT_FOUND);
+        }
+        
+        return new ResponseEntity<String>("deleted", HttpStatus.OK);
+    }
+    
+    // 게시글 상세보기
     @RequestMapping("/productDetailView")
     public String productDetail()
     {

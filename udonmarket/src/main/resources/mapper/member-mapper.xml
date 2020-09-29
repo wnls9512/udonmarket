@@ -150,4 +150,40 @@
 		review_code desc
 </select>
 
+<!-- 판매 내역 조회하기 -->
+<select id="selectAllSalesPro" resultType="productVO">
+	select 
+		* 
+	from 
+		product 
+	where 
+		seller = #{userId} 
+	order by 
+		reg_date desc
+</select>
+
+<!-- 구매 내역 조회하기 -->
+<select id="selectAllBuyPro" resultType="productVO">
+	select 
+		* 
+	from 
+		product 
+	where 
+		buyer = #{userId} 
+	order by 
+		reg_date desc
+</select>
+
+<!-- 관심 목록 조회하기 -->
+<select id="selectAllWishPro" resultType="wish">
+	select 
+		* 
+	from 
+		wish 
+	where 
+		user_id = #{userId} 
+	order by 
+		wish_code desc
+</select>
+
 </mapper>

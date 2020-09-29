@@ -2,6 +2,7 @@ package com.kh.udon.product.model.vo;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 import lombok.Data;
 
@@ -20,4 +21,6 @@ public class ProductVO implements Serializable
     String tradeStatus;
     boolean coupon;
     boolean offer;
+    
+    private List<ProductPhotoVO> attachList;
 }
