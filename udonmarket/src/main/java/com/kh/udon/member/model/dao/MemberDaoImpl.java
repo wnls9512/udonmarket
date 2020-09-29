@@ -86,7 +86,6 @@ public class MemberDaoImpl implements MemberDao
 	}
 
 	@Override
-<<<<<<< HEAD
 	public int insertMember(Member member) {
 		return session.insert("member.insertMember", member);
 	}
@@ -95,7 +94,6 @@ public class MemberDaoImpl implements MemberDao
 	public int insertLocation(String userId) {
 		return session.insert("member.insertLocation", userId);
 	}
-=======
 	public List<ProductVO> selectAllSalesPro(String userId) {
 		return session.selectList("member.selectAllSalesPro", userId);
 	}
@@ -108,8 +106,5 @@ public class MemberDaoImpl implements MemberDao
 	@Override
 	public List<ProductVO> selectAllWishPro(String userId) {
 		return session.selectList("member.selectAllWishPro", userId);
-	}
-
-	
->>>>>>> refs/remotes/origin/master
+	}	
 }

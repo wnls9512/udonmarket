@@ -36,14 +36,11 @@ public interface MemberService
 
 	List<Review> selectAllReview(String userId);
 
-<<<<<<< HEAD
 	int insertMemberLoc(Member member);
 
-=======
 	List<ProductVO> selectAllSalesPro(String userId);
 
 	List<ProductVO> selectAllBuyPro(String userId);
 
 	List<ProductVO> selectAllWishPro(String userId);
->>>>>>> refs/remotes/origin/master
 }
