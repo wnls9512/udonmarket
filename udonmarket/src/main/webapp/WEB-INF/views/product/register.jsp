@@ -39,7 +39,7 @@
                         <div class="login_part_text_iner">
 	                        	<!-- upload image start -->
 	                        	<main class="main_full">
-									<div class="container">
+									<div class="container uploadResult">
 										<div class="panel" style="margin-top: 0;">
 											<div class="button_outer">
 												<div class="btn_upload">
@@ -204,6 +204,7 @@
 var btnUpload = $("#upload_file"),
 	btnOuter = $(".button_outer");
 
+// 썸네일 생성 및 불러오기
 $(function()
 {
 	btnUpload.on("change", function(e)
@@ -241,7 +242,7 @@ $(function()
 });
 
 
-	
+// 이미지 판단
 btnUpload.on("change", function(e)
 {
 	var ext = btnUpload.val().split('.').pop().toLowerCase();
@@ -274,7 +275,8 @@ function showUploadedFile(uploadResultArr)
 		originPath = originPath.replace(new RegExp(/\\/g), "/");
 
 		str += "<a href='${pageContext.request.contextPath}/product/display?fileName=" + originPath + "'>";
-		str += "<img src='${pageContext.request.contextPath}/product/display?fileName=" + fileCallPath + "' style='margin-bottom: 2%;'></a>";
+		str += "<img src='${pageContext.request.contextPath}/product/display?fileName=" + fileCallPath + 
+			   "' style='margin-bottom: 2%;'></a>" + "<span data-file=\'" + fileCallPath + "\'> x </span>";
 
 
 		
@@ -299,12 +301,24 @@ function showUploadedFile(uploadResultArr)
 }
 
 // remove thumbnail
-$(".file_remove").on("click", function(e)
+$("[id^=preview]").on("click", "span", function(e)
 {
-	$("#uploaded_view").removeClass("show");
-	$("#uploaded_view").find("img").remove();
-	btnOuter.removeClass("file_uploading");
-	btnOuter.removeClass("file_uploaded");
+	alert("");
+	var targetFile = $(this).data("file");
+
+	console.log(targetFile);
+
+	$.ajax
+	({
+		url: '${pageContext.request.contextPath}/product/deleteFile',
+		data: {fileName: targetFile},
+		dataType: 'text',
+		type: 'POST',
+		success: function(result)
+		{
+			alert(result);
+		}
+	});
 });
 
 // show original image
@@ -378,7 +392,7 @@ $(function()
 			$("[name=offer]").val(0);
 	});
 	
-	
+	// form 생성 & 제출
  	$("#uploadBtn").on("click", function()
 	{
 		var formData = new FormData();

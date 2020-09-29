@@ -3,6 +3,8 @@ package com.kh.udon.product.controller;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.nio.file.Files;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -228,6 +230,39 @@ public class ProductController
         return result;
     }
     
+    // 썸네일 삭제
+    @PostMapping("/deleteFile")
+    @ResponseBody
+    public ResponseEntity<String> deleteFile(String fileName)
+    {
+        log.debug("deleteFile = {}", fileName);
+        
+        File file;
+        
+        try
+        {
+            file = new File("c:\\upload\\" + URLDecoder.decode(fileName, "UTF-8"));
+            
+            file.delete();
+            
+            String largeFileName = file.getAbsolutePath().replace("s_", "");
+            
+            log.debug("largeFileName = {}", largeFileName);
+            
+            file = new File(largeFileName);
+            
+            file.delete();
+        }
+        catch (UnsupportedEncodingException e)
+        {
+            e.printStackTrace();
+            return new ResponseEntity<String>(HttpStatus.NOT_FOUND);
+        }
+        
+        return new ResponseEntity<String>("deleted", HttpStatus.OK);
+    }
+    
+    // 게시글 상세보기
     @RequestMapping("/productDetailView")
     public String productDetail()
     {
