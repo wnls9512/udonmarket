@@ -83,7 +83,9 @@
                                 </li>
 								<!--관리자메뉴 -->
 								<sec:authorize access="hasRole('ADMIN')">
-                               	<li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath }/admin/memberList">회원관리</a></li>
+                               	<li class="nav-item">
+                               		<a class="nav-link" href="${pageContext.request.contextPath }/admin/memberList">회원관리</a>
+                               	</li>
                                	</sec:authorize>
                             </ul>
                         </div>
