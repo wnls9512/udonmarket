@@ -11,6 +11,7 @@
   
   
   <typeAliases>
+	<typeAlias type="org.springframework.security.core.authority.SimpleGrantedAuthority" alias="simpleGrantedAuthority"/>
 	<package name="com.kh.udon"/>
   </typeAliases>
   	

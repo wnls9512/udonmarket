@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans:beans 
-	xmlns="http://www.springframework.org/schema/security"
+<beans:beans xmlns="http://www.springframework.org/schema/security"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:beans="http://www.springframework.org/schema/beans"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-		http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-4.2.xsd">
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-4.2.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
 
 
 	<!-- 암호화 처리 -->
@@ -19,33 +20,38 @@
 		<intercept-url pattern="/resources/**" access="permitAll"/>
 		<intercept-url pattern="/member/**" access="permitAll"/>		
 		<intercept-url pattern="/**" access="hasRole('USER')"/>
+
 		
 <!-- 		login-processing-url : 로그인폼 제출 url  핸들러메소드 필요없음.-->
+<!-- 			authentication-failure-forward-url : 인증 성공 후 처리과정 작성 쿠키관련 처리-->
+<!-- 			authentication-success-forward-url : 인증 실패 후 처리과정 작성 (사용자 피드백 작성)-->
 		<form-login
 			login-page="/member/loginForm"
 			login-processing-url="/member/login"
 			username-parameter="userId"
 			password-parameter="password"
+			authentication-failure-forward-url="/member/memberLoginFailure"
 		/>
 		
-<!-- 		logout0url: 로그아웃 처리 url. 핸들러메소드 필요없음. -->
+<!-- 		logout-url: 로그아웃 처리 url. 핸들러메소드 필요없음. -->
 		<logout
 			logout-url="/member/logout"
 			logout-success-url="/"
 		/>
 		
-		<csrf disabled="true"/>
+<!-- 		모든 POST 요청에 csrf 토큰값 인증사용 -->
+		
+<!-- 		<csrf disabled="true"/> -->
 	</http>
 	
 <!-- 	사용자 인증 -->
 	<authentication-manager>
-		<authentication-provider>
-			<password-encoder ref="bcryptPasswordEncoder"/>
-<!-- 			 1. in-memory 사용자 인증 -->
-					<user-service>
-						<user name="test" password="$2a$10$.VCSov4CIdjFuEC9b1sr6exI/oweXSOFsSJyvyYYsZSLcnDkYQi9W" authorities="ROLE_USER"/>
-						<user name="admin" password="$2a$10$.VCSov4CIdjFuEC9b1sr6exI/oweXSOFsSJyvyYYsZSLcnDkYQi9W" authorities="ROLE_USER, ROLE_ADMIN"/>
-					</user-service>
-		</authentication-provider>
+<!-- 		2.UserDetails 구현체를 통해 DB에서 인증하기 -->
+			<authentication-provider user-service-ref="securityService">
+				<password-encoder ref="bcryptPasswordEncoder"/>	
+			</authentication-provider>
 	</authentication-manager>
+	
+<!-- 	Service, DAO 빈 관리용 -->
+	<context:component-scan base-package="com.kh.security"/>
 </beans:beans>

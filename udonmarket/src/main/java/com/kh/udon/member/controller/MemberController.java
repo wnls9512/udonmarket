@@ -77,7 +77,7 @@ public class MemberController {
 		return "redirect:/";
 	}
 
-	@RequestMapping("/login")
+	@RequestMapping(value="/login" ,method=RequestMethod.POST)
 	public String memberLogin(@RequestParam String userId, @RequestParam String password, Model model,
 			RedirectAttributes redirectAttr, HttpSession session) {
 
@@ -101,10 +101,10 @@ public class MemberController {
 		return "redirect:" + location;
 	}
 
-	@PostMapping("/memberLoginFailure.do")
+	@PostMapping("/memberLoginFailure")
 	public String memberLoginFailure(RedirectAttributes redirectAttr) {
 		redirectAttr.addFlashAttribute("msg", "아이디 또는 비밀번호가 일치하지 않습니다.");
-		return "redirect:/member/memberLoginForm";
+		return "redirect:/member/loginForm";
 	}
 
 	@RequestMapping("/logout")

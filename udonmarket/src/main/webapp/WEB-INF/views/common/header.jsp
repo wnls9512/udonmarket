@@ -81,6 +81,10 @@
 										<a class="dropdown-item" href="/">동네사건사고</a>
                                     </div>
                                 </li>
+								<!--관리자메뉴 -->
+								<sec:authorize access="hasRole('ADMIN')">
+                               	<li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath }/admin/memberList">회원관리</a></li>
+                               	</sec:authorize>
                             </ul>
                         </div>
                         <div class="hearer_icon d-flex">
