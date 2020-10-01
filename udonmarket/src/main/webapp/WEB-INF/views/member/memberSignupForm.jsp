@@ -47,39 +47,42 @@
 	                <div class="p-4 rounded shadow-sm bg-light">
 				        <!-- Vertical Menu-->
 				        <nav class="nav flex-column bg-white shadow-sm rounded p-3">
-				        	<table>
+				        	<table class="mx-auto">
 				        	<tr>
 				        		<td>
-					        		<div class="signup-container">
+					        		<div id="userId-container">
 				        				<input type="text" name="userId" id="userId" class="nav-link px-4 rounded-pill" placeholder="아이디 입력" required style="width: 22rem;"/>
+				        				<span class="guide ok">이 아이디는 사용 가능합니다.</span>		   
+										<span class="guide error">이 아이디는 사용할 수 없습니다.</span>		   
+										<input type="hidden" id="idValid" value="0" />
 				        			</div>
 				        		</td>
 				        	</tr>
 				        	<tr>
 				        		<td>
 				        			<div class="signup-container">
-				        				<input type="password" name="password" id="userId" class="nav-link px-4 rounded-pill" placeholder="비밀번호 입력" required style="width: 22rem;"/>
+				        				<input type="password" name="password" id="password_" class="nav-link px-4 rounded-pill" placeholder="비밀번호 입력" required style="width: 22rem;"/>
 				        			</div>
 				        		</td>
 				        	</tr>
 				        	<tr>
 				        		<td>
 				        			<div class="signup-container">
-				        				<input type="email" name="email" id="email" class="nav-link px-4 rounded-pill" placeholder="이메일 입력" required style="width: 22rem;"/>
+				        				<input type="password" id="password2" class="nav-link px-4 rounded-pill" placeholder="비밀번호 확인" required style="width: 22rem;"/>
 				        			</div>
 				        		</td>
 				        	</tr>
 				        	<tr>
 				        		<td>
 				        			<div class="signup-container">
-				        				<input type="text" name="nickname" id="nickname" class="nav-link px-4 rounded-pill" placeholder="별명 입력" required style="width: 22rem;"/>
+				        				<input type="email" name="email" id="email" class="nav-link px-4 rounded-pill" placeholder="이메일 입력(abc@xyz.com)" required style="width: 22rem;"/>
 				        			</div>
 				        		</td>
 				        	</tr>
 				        	<tr>
 				        		<td>
 				        			<div class="signup-container">
-				        				<input type="text" name="address" id="address" class="nav-link px-4 rounded-pill" placeholder="주소 입력" required style="width: 22rem;"/>
+				        				<input type="text" name="nickName" id="nickName" class="nav-link px-4 rounded-pill" placeholder="별명 입력" required style="width: 22rem;"/>
 				        			</div>
 				        		</td>
 				        	</tr>
@@ -95,7 +98,72 @@
 	    </form>
 	    </div>
 	</div>
-    
+<script>
+$("#userId").keyup(function(){
+
+	//중복 검사후 아이디 재작성하는 경우
+	if(/^\w{4,}$/.test($(this).val()) == false){
+		$(".guide").hide();
+		$("#idValid").val(0);
+		return;
+	}
+
+	$.ajax({
+		url : "${ pageContext.request.contextPath }/member/checkIdDuplicate",
+		data : {
+			userId : $(this).val()
+		},
+		dataType : "json",
+		success : function(data){
+			console.log(data);
+
+			if(data.isUsable == true){
+				$(".guide.error").hide();
+				$(".guide.ok").show();
+				$("#idValid").val(1);
+			}
+			else {
+				$(".guide.error").show();
+				$(".guide.ok").hide();
+				$("#idValid").val(0);
+			}
+		},
+		error : function(xhr, status, err){
+			console.log("처리실패", xhr, status, err);
+		}
+	});
+
+	
+});
+	
+$("#password2").blur(function(){
+	var $p1 = $("#password_"), $p2 = $("#password2");
+	if($p1.val() != $p2.val()){
+		alert("패스워드가 일치하지 않습니다.");
+		$p1.focus();
+	}
+});
+
+$("#memberSignupFrm").submit(function(){
+
+	//html5 추가된 속성 pattern을 활용해 정규식 검사도 가능하지만,
+	//구체적인 피드백제공하지는 못한다.
+	var $userId = $("#userId");
+	if(/^\w{4,}$/.test($userId.val()) == false){
+		alert("아이디는 최소 4자리이상이어야 합니다.");
+		$memberId.focus();
+		return false;
+	}
+
+	//중복검사여부
+	var $idValid = $("#idValid");
+	if($idValid.val() == 0){
+		alert("아이디 중복검사 해주세요.");
+		return false;
+	} 
+	return true;
+});
+</script>
    
 
 

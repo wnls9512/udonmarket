@@ -18,4 +18,5 @@ public class Location implements Serializable {
 	private String userId;
 	private float latitude;
 	private float longitude;
+	private int radius;
 }
