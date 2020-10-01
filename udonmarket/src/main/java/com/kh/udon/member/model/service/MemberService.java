@@ -20,8 +20,6 @@ public interface MemberService
 
 	int deleteKeyword(int keyCode);
 
-	int insertMember(Member member);
-
 	Member selectOneMember(String userId);
 
 	int selectRadius(String userId);
@@ -37,6 +35,8 @@ public interface MemberService
 	int selectTotalReview(String userId);
 
 	List<Review> selectAllReview(String userId);
+
+	int insertMemberLocAuth(Member member);
 
 	List<ProductVO> selectAllSalesPro(String userId);
 

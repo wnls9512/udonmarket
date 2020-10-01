@@ -33,73 +33,107 @@ import lombok.extern.slf4j.Slf4j;
 
 @Controller
 @RequestMapping("/member")
-@SessionAttributes(value= { "loginMember" })
+@SessionAttributes(value = { "loginMember" })
 @Slf4j
-public class MemberController
-{
-    @Autowired
-    private MemberService service;
-    
-    @Autowired
-    private BCryptPasswordEncoder bcryptPasswordEncoder;    
-   
-    //로그인
-    @RequestMapping("/loginForm")
-    public String memberLoginForm()
-    {
-        return "member/memberLoginForm";
-    }
-    
-    // 회원가입
-    @RequestMapping(value="/signupForm", method=RequestMethod.GET)
-    public String memberSignup()
-    {
-        return "member/memberSignupForm";
-    }
-    
-    @RequestMapping(value = "/signupForm" , method=RequestMethod.POST)
-    public String memberSignup(Member member, RedirectAttributes redirectAttr)
-    {
-    	
-    	int result = service.insertMember(member);
-    	
-    	String msg = (result >0) ? "회원가입 성공 ! " : "회원가입 실패 !";
-    	log.debug("msg@Controller = "+ msg);
-    	redirectAttr.addFlashAttribute("msg", msg);
-        return "redirect:/";
-    }
-    
-    @RequestMapping("/login")
-    public String memberLogin(@RequestParam String userId, @RequestParam String password, Model model, RedirectAttributes redirectAttr, HttpSession session) {
-    	
-    	
-    	Member member = service.selectOneMember(userId);
-    	
-    	
-    	//로그인 성공
-    	if(member !=null && bcryptPasswordEncoder.matches(password, member.getPassword())) {
-    		//세션 처리
-    		model.addAttribute("loginMember", member);
-    	}
-    	//로그인 실패
-    	else {
-    		redirectAttr.addFlashAttribute("msg", "아이디 또는 비밀번호가 일치하지 않습니다. ");
+public class MemberController {
+	@Autowired
+	private MemberService service;
 
-    	}
-    	
-    	return "redirect:/";
-    }
-    
-    @RequestMapping("/logout")
-    public String memberLogout(SessionStatus sessionStatus) {
-    	if(sessionStatus.isComplete() == false) {
-    		sessionStatus.setComplete();
-    	}
-    	
-    	return "redirect:/";
-    }
-    
-    @RequestMapping("/mypage")
+	@Autowired
+	private BCryptPasswordEncoder bcryptPasswordEncoder;
+
+	// 로그인
+	@RequestMapping("/loginForm")
+	public String memberLoginForm() {
+		return "member/memberLoginForm";
+	}
+
+	// 회원가입
+	@RequestMapping(value = "/signupForm", method = RequestMethod.GET)
+	public String memberSignup() {
+		return "member/memberSignupForm";
+	}
+
+	@RequestMapping(value = "/signupForm", method = RequestMethod.POST)
+	public String memberSignup(Member member, RedirectAttributes redirectAttr) {
+		log.debug("member@controller = {}", member);
+
+		String rawPassword = member.getPassword();
+		String encryptPassword = bcryptPasswordEncoder.encode(rawPassword);
+		member.setPassword(encryptPassword);
+
+		log.debug("rawPassword@controller = {}", rawPassword);
+		log.debug("encryptPassword@controller = {}", encryptPassword);
+
+		int result = service.insertMemberLocAuth(member);
+		
+		
+		log.debug("result@controller = {}", result);
+
+		String msg = (result > 0) ? "회원가입성공!" : "회원가입성공!";
+		log.debug("msg@controller = " + msg);
+		redirectAttr.addFlashAttribute("msg", msg);
+
+		return "redirect:/";
+	}
+
+	@RequestMapping(value="/login" ,method=RequestMethod.POST)
+	public String memberLogin(@RequestParam String userId, @RequestParam String password, Model model,
+			RedirectAttributes redirectAttr, HttpSession session) {
+
+		log.debug("userId = {}, password = {}", userId, password);
+		Member member = service.selectOneMember(userId);
+		log.debug("member = {}", member);
+
+		String location = "/";
+
+		// 로그인 성공
+		 if(member != null && bcryptPasswordEncoder.matches(password,member.getPassword())) { 
+			//세션처리 model.addAttribute("loginMember", member);
+		 
+			 //세션에서 next값 가져오기 
+	      String next = (String)session.getAttribute("next");
+		  location = next != null ? next : location; session.removeAttribute("next"); }
+		  //로그인 실패 
+		  else { 
+			  redirectAttr.addFlashAttribute("msg", "아이디 또는 비밀번호가 틀렸습니다.");
+		  }
+		return "redirect:" + location;
+	}
+
+	@PostMapping("/memberLoginFailure")
+	public String memberLoginFailure(RedirectAttributes redirectAttr) {
+		redirectAttr.addFlashAttribute("msg", "아이디 또는 비밀번호가 일치하지 않습니다.");
+		return "redirect:/member/loginForm";
+	}
+
+	@RequestMapping("/logout")
+	public String memberLogout(SessionStatus sessionStatus) {
+		if (sessionStatus.isComplete() == false) {
+			sessionStatus.setComplete();
+		}
+
+		return "redirect:/";
+	}
+	
+	@GetMapping("/checkIdDuplicate")
+	public ModelAndView checkIdDuplicate(ModelAndView mav,
+										  @RequestParam("userId") String userId) {
+		
+		//1. 업무로직 : 중복체크
+		Member member = service.selectOneMember(userId);
+		boolean isUsable = member == null;
+		
+		//2. model에 속성등록
+		mav.addObject("isUsable", isUsable);
+		
+		//3. viewName : jsonView빈 지정
+		mav.setViewName("jsonView");// /WEB-INF/views/jsonView.jsp
+		
+		return mav;
+	}
+
+	@RequestMapping("/mypage")
     public String mypage()
     {
         return "member/mypage";
@@ -406,5 +440,4 @@ public class MemberController
     	model.addAttribute("reviewBuyer", buyer);
     	return model;
     }
-    
 }
