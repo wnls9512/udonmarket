@@ -15,7 +15,10 @@ import com.kh.udon.member.model.vo.Member;
 import com.kh.udon.member.model.vo.Review;
 import com.kh.udon.product.model.vo.ProductVO;
 
+import lombok.extern.slf4j.Slf4j;
+
 @Service
+@Slf4j
 public class MemberServiceImpl implements MemberService
 {
     @Autowired
@@ -39,11 +42,6 @@ public class MemberServiceImpl implements MemberService
 	@Override
 	public int deleteKeyword(int keyCode) {
 		return memberDao.deleteKeyword(keyCode);
-	}
-
-	@Override
-	public int insertMember(Member member) {
-		return memberDao.insertMember(member);
 	}
 
 	@Override
@@ -96,6 +94,26 @@ public class MemberServiceImpl implements MemberService
 		return memberDao.selectAllReview(userId);
 	}
 
+	@Transactional(rollbackFor = { Exception.class })
+	@Override
+	public int insertMemberLocAuth(Member member) {
+		
+		int result = 0;
+		
+		result = memberDao.insertMember(member);
+		log.debug("result = {}", result);
+		log.debug("member = {}", member);
+
+		
+		if(result > 0) {
+			result = memberDao.insertLocation(member.getUserId());
+			log.debug("result = {}", result);
+			result = memberDao.insertAuthority(member.getUserId());
+			log.debug("result = {}", result);
+		}
+		
+		return result;
+	}
 	@Override
 	public List<ProductVO> selectAllSalesPro(String userId) {
 		return memberDao.selectAllSalesPro(userId);

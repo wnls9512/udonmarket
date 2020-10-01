@@ -3,6 +3,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
 <fmt:requestEncoding value="utf-8"/>
 
@@ -103,12 +105,19 @@ html { font-size: 16px; }
 	        <div class="bg-white shadow rounded overflow-hidden">
 	            <div class="px-4 pt-0 pb-4 cover">
 	                <div class="media align-items-end profile-head">
-	                    <div class="profile mr-3"><img src="https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=80" alt="..." width="130" class="rounded mb-2 img-thumbnail">
+	                    <div class="profile mr-3">
+	                    	<!-- LoggdeInUser 정보 가져오기  -->
+	                        <sec:authentication property="principal" var="loggedInUser" />
+	                    	<img src="${pageContext.request.contextPath }/resources/img/member/${loggedInUser.renamedFileName == null 
+	                    															 ? loggedInUser.originalFileName:loggedInUser.renamedFileName}" 
+	                    		 alt="..." 
+	                    		 width="130" 
+	                    		 class="rounded mb-2 img-thumbnail">
 	                    	<a href="${pageContext.request.contextPath }/member/mypage" class="btn btn-outline-dark btn-sm btn-block">Mypage</a>
 	                    </div>
 	                    <div class="media-body mb-5 text-white">
-	                        <h4 class="mt-0 mb-0" style="color:white;">Mark Williams</h4>
-	                        <p class="small mb-4" style="color:white;"> <i class="fas fa-map-marker-alt mr-2"></i>New York</p>
+	                        <h4 class="mt-0 mb-0" style="color:white;">${loggedInUser.nickName}</h4>
+	                        <p class="small mb-4" style="color:white;"> <i class="fas fa-map-marker-alt mr-2"></i>${loggedInUser.address}</p>
 	                    </div>
 	                </div>
 	            </div>
@@ -155,16 +164,18 @@ html { font-size: 16px; }
 								<div id="map" style="width:100%; 
 													 height:350px;
 													 margin:15px 0;"></div>
-								<form id="changeAddr">
+								<form:form id="changeAddr">
 									<!-- 위치 바꾸기 (현재 위치로) -->
+									<sec:authentication property="principal.username" var="loggedInUserId" />
+									<input type="hidden" name="userId" value="${loggedInUserId }"/>
 									<input type="hidden" name="addr"/>
 									<input type="hidden" name="lat"/>
-									<input type="hidden" name="lon"/>
+									<input type="hidden" name="lon"/>																
 									<input type="button" 
 										   id="btn-changeAddr"
 										   class="btn btn-outline-primary btn-sm" 
 										   value="현재 위치로 동네 설정하기" />								
-								</form>
+								</form:form>
 							</div>
 							<hr />
 							<!-- 지역범위 설정하기 -->						
@@ -215,8 +226,14 @@ html { font-size: 16px; }
 			$.ajax({
 				url : "${pageContext.request.contextPath}/member/updateRadius",
 				method : "POST",
-				data : {radius : $level}, 
+				data : {
+					userId : $("[name=userId]").val(),
+					radius : $level
+				}, 
 				dataType : "json",
+				beforeSend : function(xhr){   /*데이터를 전송하기 전에 헤더에 csrf값을 설정한다*/
+                    xhr.setRequestHeader("${_csrf.headerName}", "${_csrf.token}");
+                },
 				success : function(data){
 					alert("지역 범위를 재설정했어요");										
 				},
@@ -316,12 +333,14 @@ html { font-size: 16px; }
 	$(function(){
 		$("#btn-changeAddr").click(function(){
 			if(!confirm('현재 위치로 동네를 변경하시겠습니까?')) return;
+ 			let $userId = $("[name=userId]").val();
 			let $addr = $("[name=addr]").val();
 			let $lat = $("[name=lat]").val();
 			let $lon = $("[name=lon]").val();
-//			console.log($addr);
-//			console.log($lat);
-//			console.log($lon);
+			console.log($userId);
+			console.log($addr);
+			console.log($lat);
+			console.log($lon);
 
 		 	$("#changeAddr").attr("action", "${ pageContext.request.contextPath }/member/updateAddress")
 			.attr("method", "POST")

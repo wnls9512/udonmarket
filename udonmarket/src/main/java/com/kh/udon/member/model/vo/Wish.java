@@ -14,7 +14,7 @@ import lombok.ToString;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
+@ToString(callSuper = true)
 public class Wish extends ProductVO implements Serializable {
 
 	private String wishCode;

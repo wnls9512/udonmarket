@@ -33,73 +33,108 @@ import lombok.extern.slf4j.Slf4j;
 
 @Controller
 @RequestMapping("/member")
-@SessionAttributes(value= { "loginMember" })
+@SessionAttributes(value = { "loginMember" })
 @Slf4j
-public class MemberController
-{
-    @Autowired
-    private MemberService service;
-    
-    @Autowired
-    private BCryptPasswordEncoder bcryptPasswordEncoder;    
-   
-    //로그인
-    @RequestMapping("/loginForm")
-    public String memberLoginForm()
-    {
-        return "member/memberLoginForm";
-    }
-    
-    // 회원가입
-    @RequestMapping(value="/signupForm", method=RequestMethod.GET)
-    public String memberSignup()
-    {
-        return "member/memberSignupForm";
-    }
-    
-    @RequestMapping(value = "/signupForm" , method=RequestMethod.POST)
-    public String memberSignup(Member member, RedirectAttributes redirectAttr)
-    {
-    	
-    	int result = service.insertMember(member);
-    	
-    	String msg = (result >0) ? "회원가입 성공 ! " : "회원가입 실패 !";
-    	log.debug("msg@Controller = "+ msg);
-    	redirectAttr.addFlashAttribute("msg", msg);
-        return "redirect:/";
-    }
-    
-    @RequestMapping("/login")
-    public String memberLogin(@RequestParam String userId, @RequestParam String password, Model model, RedirectAttributes redirectAttr, HttpSession session) {
-    	
-    	
-    	Member member = service.selectOneMember(userId);
-    	
-    	
-    	//로그인 성공
-    	if(member !=null && bcryptPasswordEncoder.matches(password, member.getPassword())) {
-    		//세션 처리
-    		model.addAttribute("loginMember", member);
-    	}
-    	//로그인 실패
-    	else {
-    		redirectAttr.addFlashAttribute("msg", "아이디 또는 비밀번호가 일치하지 않습니다. ");
+public class MemberController {
+	@Autowired
+	private MemberService service;
 
-    	}
-    	
-    	return "redirect:/";
-    }
-    
-    @RequestMapping("/logout")
-    public String memberLogout(SessionStatus sessionStatus) {
-    	if(sessionStatus.isComplete() == false) {
-    		sessionStatus.setComplete();
-    	}
-    	
-    	return "redirect:/";
-    }
-    
-    @RequestMapping("/mypage")
+	@Autowired
+	private BCryptPasswordEncoder bcryptPasswordEncoder;
+
+	// 로그인
+	@RequestMapping("/loginForm")
+	public String memberLoginForm() {
+		return "member/memberLoginForm";
+	}
+
+	// 회원가입
+	@RequestMapping(value = "/signupForm", method = RequestMethod.GET)
+	public String memberSignup() {
+		return "member/memberSignupForm";
+	}
+
+	@RequestMapping(value = "/signupForm", method = RequestMethod.POST)
+	public String memberSignup(Member member, RedirectAttributes redirectAttr) {
+		log.debug("member@controller = {}", member);
+
+		String rawPassword = member.getPassword();
+		String encryptPassword = bcryptPasswordEncoder.encode(rawPassword);
+		member.setPassword(encryptPassword);
+
+		log.debug("rawPassword@controller = {}", rawPassword);
+		log.debug("encryptPassword@controller = {}", encryptPassword);
+
+		int result = service.insertMemberLocAuth(member);
+		
+		
+		log.debug("result@controller = {}", result);
+
+		String msg = (result > 0) ? "회원가입성공!" : "회원가입성공!";
+		log.debug("msg@controller = " + msg);
+		redirectAttr.addFlashAttribute("msg", msg);
+
+		return "redirect:/";
+	}
+
+	@RequestMapping(value="/login" ,method=RequestMethod.POST)
+	public String memberLogin(@RequestParam String userId, @RequestParam String password, Model model,
+			RedirectAttributes redirectAttr, HttpSession session) {
+
+		log.debug("userId = {}, password = {}", userId, password);
+		Member member = service.selectOneMember(userId);
+		log.debug("member = {}", member);
+
+		String location = "/";
+
+		// 로그인 성공
+		 if(member != null && bcryptPasswordEncoder.matches(password,member.getPassword())) { 
+			//세션처리 
+			model.addAttribute("loginMember", member);
+		 
+			//세션에서 next값 가져오기 
+		    String next = (String)session.getAttribute("next");
+			location = next != null ? next : location; session.removeAttribute("next"); }
+		  //로그인 실패 
+		  else { 
+			  redirectAttr.addFlashAttribute("msg", "아이디 또는 비밀번호가 틀렸습니다.");
+		  }
+		return "redirect:" + location;
+	}
+
+	@PostMapping("/memberLoginFailure")
+	public String memberLoginFailure(RedirectAttributes redirectAttr) {
+		redirectAttr.addFlashAttribute("msg", "아이디 또는 비밀번호가 일치하지 않습니다.");
+		return "redirect:/member/loginForm";
+	}
+
+	@RequestMapping("/logout")
+	public String memberLogout(SessionStatus sessionStatus) {
+		if (sessionStatus.isComplete() == false) {
+			sessionStatus.setComplete();
+		}
+
+		return "redirect:/";
+	}
+	
+	@GetMapping("/checkIdDuplicate")
+	public ModelAndView checkIdDuplicate(ModelAndView mav,
+										  @RequestParam("userId") String userId) {
+		
+		//1. 업무로직 : 중복체크
+		Member member = service.selectOneMember(userId);
+		boolean isUsable = member == null;
+		
+		//2. model에 속성등록
+		mav.addObject("isUsable", isUsable);
+		
+		//3. viewName : jsonView빈 지정
+		mav.setViewName("jsonView");// /WEB-INF/views/jsonView.jsp
+		
+		return mav;
+	}
+
+	@RequestMapping("/mypage")
     public String mypage()
     {
         return "member/mypage";
@@ -160,13 +195,9 @@ public class MemberController
     
     //내 동네 설정 페이지 띄우기
     @RequestMapping("/settingsArea")
-    public Model settingsArea(Model model,
-    						 HttpSession session) {
+    public Model settingsArea(@RequestParam("userId") String userId,
+    					      Model model) {
     	
-    	//세션에 담긴 로그인 중 인 유저 아이디
-//    	String userId = ((Member)session.getAttribute("loginMember")).getUserId();
-    	//test id로 테스트 (세션에 담긴 로그인 중인 아이디)
-    	String userId = "test";
     	log.debug("loginMemberId = {} ", userId);
     	
     	int radius = service.selectRadius(userId);
@@ -180,15 +211,12 @@ public class MemberController
     //현재 위치(주소)로 member 테이블 update
     @PostMapping("/updateAddress")
     public String updateAddress(RedirectAttributes redirectAttr,
-    							HttpSession session,
+    							@RequestParam("userId") String userId,
     							@RequestParam("addr") String addr,
     							@RequestParam("lat") float latitude,
     							@RequestParam("lon") float longitude){
     	
-    	//세션에 담긴 로그인 중 인 유저 아이디
-//    	String userId = ((Member)session.getAttribute("loginMember")).getUserId();
-    	//test id로 테스트
-    	String userId = "test";
+    	log.debug("userId = {}", userId);
     	
     	Map<String, Object> map = new HashMap<>();
     	map.put("userId", userId);
@@ -214,15 +242,12 @@ public class MemberController
     //거리 범위 수정
     @PostMapping("/updateRadius")
     @ResponseBody
-    public Map<String, Object> updateRadius(HttpSession session,
-    						  @RequestParam("radius") int radius) {
+    public Map<String, Object> updateRadius(@RequestParam("userId") String userId,
+    						  				@RequestParam("radius") int radius) {
 
-    	//test id로 테스트
-    	String userId = "test";
-    	//세션에 담긴 로그인 중 인 유저 아이디
-//    	String userId = ((Member)session.getAttribute("loginMember")).getUserId();
-
-    	log.debug(String.valueOf(radius));
+    	
+    	log.debug("userId = {}", userId);
+    	log.debug("radius = {}", String.valueOf(radius));
     	
     	Map<String, Object> map = new HashMap<>();
     	map.put("userId", userId);
@@ -271,13 +296,10 @@ public class MemberController
     //나의 키워드 알림 설정
     @RequestMapping(value = "/keywordNoti",
     				method = RequestMethod.GET)
-    public ModelAndView keywordNoti(HttpSession session,
+    public ModelAndView keywordNoti(@RequestParam("userId") String userId,
     								ModelAndView mav){
-    	
-    	//test id로 테스트
-    	String userId = "test";
-    	//세션에 담긴 로그인 중 인 유저 아이디
-//    	String userId = ((Member)session.getAttribute("loginMember")).getUserId();
+
+    	log.debug("userId = {}", userId);
     	
     	List<Keyword> list = service.selectKeywordList(userId);
     	log.debug("list = {}", list);
@@ -294,15 +316,9 @@ public class MemberController
     //나의 키워드 추가
     @RequestMapping(value = "/insertKeyword",
     			method = RequestMethod.POST)
-    public String insertKeyword(HttpSession session,
-    						   RedirectAttributes redirectAttr,
-    						   @RequestParam("userId") String userId,
-    						   @RequestParam("keyword") String keyword){
-    	
-    	//test id로 테스트
-    	userId = "test";
-    	//세션에 담긴 로그인 중 인 유저 아이디
-//    	String userId = ((Member)session.getAttribute("loginMember")).getUserId();
+    public String insertKeyword(RedirectAttributes redirectAttr,
+    						    @RequestParam("userId") String userId,
+    						    @RequestParam("keyword") String keyword){
     	
     	Map<String, Object> map = new HashMap<>();
     	map.put("userId", userId);
@@ -367,14 +383,11 @@ public class MemberController
     
     //받은 거래 후기/매너 평가
     @RequestMapping("/myReviewList")
-    public Model myReviewList(HttpSession session,
+    public Model myReviewList(@RequestParam("userId") String userId,
     						  Model model){
     	
-    	//test id로 테스트
-    	String userId = "test";
-    	//세션에 담긴 로그인 중 인 유저 아이디
-//    	String userId = ((Member)session.getAttribute("loginMember")).getUserId();
-
+    	log.debug("userId = {}", userId);
+    	
     	//매너 평가
     	List<Evaluate> evaList = service.selectAllEva(userId);
     	log.debug("list = {}", evaList);
@@ -392,11 +405,8 @@ public class MemberController
     	List<Review> seller = new ArrayList<>(); 
     	List<Review> buyer = new ArrayList<>(); 
     	for(Review r : reviewList) {
-    		if(r.getDirect().equals("S")) {
-    			buyer.add(r);
-    		}else {
-    			seller.add(r);    			
-    		}
+    		if(r.getDirect().equals("S")) buyer.add(r);
+    		else seller.add(r);    			
     	}
     	
     	model.addAttribute("evaList", evaList);
@@ -406,5 +416,4 @@ public class MemberController
     	model.addAttribute("reviewBuyer", buyer);
     	return model;
     }
-    
 }

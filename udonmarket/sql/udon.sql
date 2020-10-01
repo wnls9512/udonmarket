@@ -338,6 +338,8 @@ create sequence seq_notification;
 create sequence seq_keyword;
 create sequence seq_reason_report;
 create sequence seq_report;
+create sequence seq_member;
+create sequence seq_location;
 
 
 
