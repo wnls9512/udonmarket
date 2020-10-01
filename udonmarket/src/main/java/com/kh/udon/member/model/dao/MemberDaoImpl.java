@@ -104,6 +104,5 @@ public class MemberDaoImpl implements MemberDao
 	public List<ProductVO> selectAllWishPro(String userId) {
 		return session.selectList("member.selectAllWishPro", userId);
 	}
-
 	
 }

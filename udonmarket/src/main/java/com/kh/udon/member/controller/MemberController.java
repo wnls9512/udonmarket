@@ -392,11 +392,8 @@ public class MemberController
     	List<Review> seller = new ArrayList<>(); 
     	List<Review> buyer = new ArrayList<>(); 
     	for(Review r : reviewList) {
-    		if(r.getDirect().equals("S")) {
-    			buyer.add(r);
-    		}else {
-    			seller.add(r);    			
-    		}
+    		if(r.getDirect().equals("S")) buyer.add(r);
+    		else seller.add(r);    			
     	}
     	
     	model.addAttribute("evaList", evaList);
