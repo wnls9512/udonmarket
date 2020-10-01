@@ -44,15 +44,14 @@ drop sequence seq_report;
 --========================================
 --          TABLE & SEQUENCE
 --========================================
-
 create table member
 (
     user_id varchar2(50),
     password varchar2(50) not null,
     email varchar2(50),
-    nickname varchar2(50),
+    nickname varchar2(50) default '닉네임',
     address varchar2(100),
-    original_filename varchar2(50),
+    original_filename varchar2(50) default 'default_profile.jpg',
     renamed_filename varchar2(50),
     enabled number default 1 not null,
     reg_date date default sysdate,
@@ -230,11 +229,10 @@ create table reply
 
 create table authority
 (
-    auth varchar2(5) default 'USER',
+    auth varchar2(5) default 'ROLE_USER',
     user_id varchar2(50),
     constraint pk_authority primary key(auth, user_id),
-    constraint fk_authority_user_id foreign key(user_id) references member(user_id),
-    constraint ck_authority_auth check(auth in('USER','ADMIN'))
+    constraint fk_authority_user_id foreign key(user_id) references member(user_id)
 );
 
 create table evaluate
@@ -418,4 +416,5 @@ insert into evaluation values(seq_evaluation.nextval, '거래 시간과 장소�
 insert into evaluation values(seq_evaluation.nextval, '약속 장소에 나타나지 않았어요', 0, 'C');
 insert into evaluation values(seq_evaluation.nextval, '거래 시간과 장소를 정한 후 거래 직전 취소했어요', 0, 'C');
 --==========================================================================================
-select * from product_photo;
+select * from product where open_status = 1 and trade_status = 'S' order by reg_date;
+commit;
