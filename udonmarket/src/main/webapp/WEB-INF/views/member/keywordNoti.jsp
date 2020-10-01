@@ -3,7 +3,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
-
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <fmt:requestEncoding value="utf-8"/>
 
 <jsp:include page="/WEB-INF/views/common/header.jsp">
@@ -43,12 +44,19 @@ html { font-size: 16px; }
 	        <div class="bg-white shadow rounded overflow-hidden">
 	            <div class="px-4 pt-0 pb-4 cover">
 	                <div class="media align-items-end profile-head">
-	                    <div class="profile mr-3"><img src="https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=80" alt="..." width="130" class="rounded mb-2 img-thumbnail">
+	                    <div class="profile mr-3">
+	                    	<!-- LoggdeInUser 정보 가져오기  -->
+	                        <sec:authentication property="principal" var="loggedInUser" />
+	                    	<img src="${pageContext.request.contextPath }/resources/img/member/${loggedInUser.renamedFileName == null 
+	                    															 ? loggedInUser.originalFileName:loggedInUser.renamedFileName}" 
+	                    		 alt="..." 
+	                    		 width="130" 
+	                    		 class="rounded mb-2 img-thumbnail">
 	                    	<a href="${pageContext.request.contextPath }/member/mypage" class="btn btn-outline-dark btn-sm btn-block">Mypage</a>
 	                    </div>
 	                    <div class="media-body mb-5 text-white">
-	                        <h4 class="mt-0 mb-0" style="color:white;">Mark Williams</h4>
-	                        <p class="small mb-4" style="color:white;"> <i class="fas fa-map-marker-alt mr-2"></i>New York</p>
+	                        <h4 class="mt-0 mb-0" style="color:white;">${loggedInUser.nickName}</h4>
+	                        <p class="small mb-4" style="color:white;"> <i class="fas fa-map-marker-alt mr-2"></i>${loggedInUser.address}</p>
 	                    </div>
 	                </div>
 	            </div>
@@ -96,7 +104,7 @@ html { font-size: 16px; }
 								 <a href="#" style="color: #007bff;">혹시 키워드 알림이 오지 않나요?</a>
 							</div>
 							<br />
-							<form action="" class="insertKeyword">
+							<form:form class="insertKeyword">
 								<div class="input-group mb-3">
 								  <input type="text" 
 								  		 name="keyword"
@@ -105,7 +113,7 @@ html { font-size: 16px; }
 								  		 aria-label="Recipient's username" 
 								  		 aria-describedby="basic-addon2">
 								  <!-- value = 로그인 중인 유저 아이디 -->
-								  <input type="hidden" name="userId" value="" />
+								  <input type="hidden" name="userId" value="${loggedInUser.userId}" />
 								  <div class="input-group-append">
 							      <input type="button" 
 							      		 id="btn-insert"
@@ -114,8 +122,7 @@ html { font-size: 16px; }
 								  </div>
 								</div>
 								<span class="guide error">이미 추가된 키워드예요 🤔 </span>
-								<input type="hidden" id="idValid" value="0" />
-							</form>
+							</form:form>
 							<br />
 							<p>등록된 키워드  <mark style="color: red; background: white;">${totalKeywordContents}</mark>/ 30</p>
 							<div>
@@ -150,7 +157,6 @@ $(function(){
 
 	 	if($(this).val() == ''){
 	 		$(".guide.error").hide();
-			$("#idValid").val(0);
 			$("#btn-insert").attr('disabled', true);
 			return;
 		} 
@@ -167,12 +173,10 @@ $(function(){
 
 				if(data.isUsable == true){
 					$(".guide.error").hide();
-					$("#idValid").val(1);
 					$("#btn-insert").attr('disabled', false);
 				}
 				else{
 					$(".guide.error").show();
-					$("#idValid").val(0);
 					$("#btn-insert").attr('disabled', true);
 				}
 					

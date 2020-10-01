@@ -179,13 +179,14 @@
 <!-- 관심 목록 조회하기 -->
 <select id="selectAllWishPro" resultType="wish">
 	select 
-		* 
+		*
 	from 
-		wish 
+		wish W, product P
 	where 
-		user_id = #{userId} 
+		W.p_code = P.p_code
+	and 
+		W.user_id = 'test'
 	order by 
 		wish_code desc
 </select>
-
 </mapper>
