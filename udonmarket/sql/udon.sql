@@ -117,6 +117,7 @@ create table product
     trade_status char(1) default 'S' not null,
     coupon number default 1 not null,
     offer number default 1 not null,
+    delete_yn char(1) default 'y' not null,
     constraint pk_product primary key(p_code),
     constraint fk_product_seller foreign key(seller) references member(user_id),
     constraint fk_product_buyer foreign key(buyer) references member(user_id),
@@ -124,9 +125,9 @@ create table product
     constraint ck_product_open_status check(open_status in (1,0)),
     constraint ck_product_trade_status check(trade_status in('S','R','C')),
     constraint ck_product_coupon check(coupon in(1,0)),
-    constraint ck_product_offer check(offer in(1,0))
+    constraint ck_product_offer check(offer in(1,0)),
+    constraint ck_product_delete_yn check(delete_yn in('Y', 'N')
 );
-
 create table product_photo
 (
     uuid varchar2(100),
