@@ -178,7 +178,8 @@ create table wish
     p_code number not null,
     constraint pk_wish primary key(wish_code),
     constraint fk_user_id foreign key(user_id) references member(user_id),
-    constraint fk_wish_p_code foreign key(p_code) references product(p_code)
+    constraint fk_wish_p_code foreign key(p_code) references product(p_code),
+    constraint uq_wish_id_pcode unique(user_id, p_code)
 );
 
 create table review
@@ -419,3 +420,10 @@ insert into evaluation values(seq_evaluation.nextval, '거래 시간과 장소�
 insert into evaluation values(seq_evaluation.nextval, '약속 장소에 나타나지 않았어요', 0, 'C');
 insert into evaluation values(seq_evaluation.nextval, '거래 시간과 장소를 정한 후 거래 직전 취소했어요', 0, 'C');
 --==========================================================================================
+select count(p.category) from category c left join product p on(c.category_code = p.category) 
+		group by c.category_code order by c.category_code;
+    
+select * from wish;
+select * from category;
+select count(p.category) from category c left join product p on(c.category_code = p.category) 
+where c.category_parent = 1 group by c.category_code order by c.category_code;
