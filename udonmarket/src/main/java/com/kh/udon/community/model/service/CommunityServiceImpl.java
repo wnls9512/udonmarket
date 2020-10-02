@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.kh.udon.community.model.dao.CommunityDao;
 import com.kh.udon.community.model.vo.Community;
+import com.kh.udon.community.model.vo.Search;
 
 @Service
 public class CommunityServiceImpl implements CommunityService
@@ -15,8 +16,8 @@ public class CommunityServiceImpl implements CommunityService
     private CommunityDao dao;
     
     @Override
-	public List<Community> selectCommunityList() {
-		return dao.selectCommunityList();
+	public List<Community> selectCommunityList(Search search) {
+		return dao.selectCommunityList(search);
 	}
     
     @Override
