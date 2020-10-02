@@ -49,6 +49,7 @@ public class ProductController
         log.debug("categoryCount = {}", categoryCount);
         log.debug("totalCount = {}", totalCount);
         log.debug("products = {}", products);
+        
         model.addAttribute("category", category);
         model.addAttribute("categoryCount", categoryCount);
         model.addAttribute("totalCount", totalCount);

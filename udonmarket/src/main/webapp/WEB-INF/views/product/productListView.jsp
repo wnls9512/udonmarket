@@ -68,16 +68,6 @@
                                     <p><span>${totalCount }</span> 개의 상품</p>
                                 </div>
                                 <div class="single_product_menu d-flex">
-                                    <h5>정렬 : </h5>
-                                    <select>
-                                        <option data-display="최신순">최신순</option>
-                                        <option value="1">가격 ↑</option>
-                                        <option value="1">가격 ↓</option>
-                                        <option value="2">거리순 ↑</option>
-                                        <option value="2">거리순 ↓</option>
-                                    </select>
-                                </div>
-                                <div class="single_product_menu d-flex">
                                     <div class="input-group">
                                         <input type="text" class="form-control" placeholder="검색"
                                             aria-describedby="inputGroupPrepend">
@@ -201,6 +191,7 @@
 	
 	
 <script>
+// 관심 목록 추가
 function addToWish(userId, pCode)
 {
 	$.ajax
