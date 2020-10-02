@@ -26,11 +26,6 @@ public class MemberDaoImpl implements MemberDao
 	}
 
 	@Override
-	public int insertKeyword(Map<String, Object> map) {
-		return session.update("member.insertKeyword", map);
-	}
-
-	@Override
 	public List<Keyword> selectKeywordList(String userId) {
 		return session.selectList("member.selectKeywordList", userId);
 	}
@@ -112,6 +107,11 @@ public class MemberDaoImpl implements MemberDao
 	@Override
 	public List<ProductVO> selectAllWishPro(String userId) {
 		return session.selectList("member.selectAllWishPro", userId);
+	}
+
+	@Override
+	public int insertKeyword(Keyword key) {
+		return session.insert("member.insertKeyword", key);
 	}
 
 }

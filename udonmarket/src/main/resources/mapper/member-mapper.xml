@@ -61,8 +61,14 @@
 	values(
 		seq_keyword.nextval,
 		#{userId},
-		#{keyword}
+		#{keyContent}
 	)
+	<selectKey keyProperty="keyCode" resultType="_int" order="AFTER">
+		select
+        	seq_keyword.currval
+    	from 
+        	dual
+	</selectKey>
 </insert>
 
 <!-- 키워드 가져와서 view단 뿌리기 용 -->

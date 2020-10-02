@@ -108,16 +108,16 @@ html { font-size: 16px; }
 	                    <div class="profile mr-3">
 	                    	<!-- LoggdeInUser 정보 가져오기  -->
 	                        <sec:authentication property="principal" var="loggedInUser" />
-	                    	<img src="${pageContext.request.contextPath }/resources/img/member/${loggedInUser.renamedFileName == null 
-	                    															 ? loggedInUser.originalFileName:loggedInUser.renamedFileName}" 
+	                    	<img src="${pageContext.request.contextPath }/resources/img/member/${member.renamedFileName == null 
+	                    															 ? member.originalFileName:member.renamedFileName}" 
 	                    		 alt="..." 
 	                    		 width="130" 
 	                    		 class="rounded mb-2 img-thumbnail">
-	                    	<a href="${pageContext.request.contextPath }/member/mypage" class="btn btn-outline-dark btn-sm btn-block">Mypage</a>
+	                    	<a href="${pageContext.request.contextPath }/member/mypage?userId=${member.userId}" class="btn btn-outline-dark btn-sm btn-block">Mypage</a>
 	                    </div>
 	                    <div class="media-body mb-5 text-white">
-	                        <h4 class="mt-0 mb-0" style="color:white;">${loggedInUser.nickName}</h4>
-	                        <p class="small mb-4" style="color:white;"> <i class="fas fa-map-marker-alt mr-2"></i>${loggedInUser.address}</p>
+	                        <h4 class="mt-0 mb-0" style="color:white;">${member.nickName}</h4>
+	                        <p class="small mb-4" id="addr" style="color:white;"> <i class="fas fa-map-marker-alt mr-2"></i>${member.address}</p>
 	                    </div>
 	                </div>
 	            </div>
@@ -125,21 +125,21 @@ html { font-size: 16px; }
 	                <ul class="list-inline mb-0">
 	                    <li class="list-inline-item">            
 	                       <h6 class="font-weight-bold mb-0 d-block">	                       	
-	                       	<a href="${pageContext.request.contextPath }/member/salesList">
+	                       	<a href="${pageContext.request.contextPath }/member/salesList?userId=${member.userId}">
 	                       		<i class="fas fa-receipt fa-2x" ></i> <br /> 판매목록
 	                       	</a>
 	                       </h6>
 	                    </li>
 	                    <li class="list-inline-item">
 	                    	<h6 class="font-weight-bold mb-0 d-block">	                       	
-	                       	<a href="${pageContext.request.contextPath }/member/buyList">
+	                       	<a href="${pageContext.request.contextPath }/member/buyList?userId=${member.userId}">
 	                       		<i class="fas fa-shopping-bag fa-2x" ></i> <br /> 구매목록
 	                       	</a>
 	                       </h6>
 	                    </li>
 	                    <li class="list-inline-item">
 	                    	<h6 class="font-weight-bold mb-0 d-block">	                       	
-	                       	<a href="${pageContext.request.contextPath }/member/wishList">
+	                       	<a href="${pageContext.request.contextPath }/member/wishList?userId=${member.userId}">
 	                       		<i class="fas fa-heart fa-2x" ></i> <br /> 관심목록
 	                       	</a>
 	                       </h6>
@@ -163,19 +163,18 @@ html { font-size: 16px; }
 							    <!-- 지도 -->								
 								<div id="map" style="width:100%; 
 													 height:350px;
-													 margin:15px 0;"></div>
-								<form:form id="changeAddr">
-									<!-- 위치 바꾸기 (현재 위치로) -->
-									<sec:authentication property="principal.username" var="loggedInUserId" />
-									<input type="hidden" name="userId" value="${loggedInUserId }"/>
-									<input type="hidden" name="addr"/>
-									<input type="hidden" name="lat"/>
-									<input type="hidden" name="lon"/>																
-									<input type="button" 
-										   id="btn-changeAddr"
-										   class="btn btn-outline-primary btn-sm" 
-										   value="현재 위치로 동네 설정하기" />								
-								</form:form>
+													 margin:15px 0;">
+								</div>								
+								<!-- 위치 바꾸기 (현재 위치로) -->
+								<sec:authentication property="principal.username" var="loggedInUserId" />
+								<input type="hidden" name="userId" value="${loggedInUserId }"/>
+								<input type="hidden" name="addr"/>
+								<input type="hidden" name="lat"/>
+								<input type="hidden" name="lon"/>																
+								<input type="button" 
+									   id="btn-changeAddr"
+									   class="btn btn-outline-primary btn-sm" 
+									   value="현재 위치로 동네 설정하기" />																
 							</div>
 							<hr />
 							<!-- 지역범위 설정하기 -->						
@@ -209,145 +208,156 @@ html { font-size: 16px; }
 
 <script>
 
-	//지도 관련
-	$(function(){
+//지도 관련
+$(function(){
 
-		//사용자 설정 값 가져와서 넣기
-		local(${radius});
-//		console.log(${radius});
+	//사용자 설정 값 가져와서 넣기
+	local(${radius});
+//	console.log(${radius});
 
-		//지역 범위 설정 지도에 보여주기
-		$("[name=cp_item]").change(function(){
-			var $level = $("[name=cp_item]:checked").val();
-//			console.log("$level : " + $level);
-			local($level);
+	//지역 범위 설정 지도에 보여주기
+	$("[name=cp_item]").change(function(){
+		var $level = $("[name=cp_item]:checked").val();
+//		console.log("$level : " + $level);
+		local($level);
 
-			//범위 설정 update 하기
-			$.ajax({
-				url : "${pageContext.request.contextPath}/member/updateRadius",
-				method : "POST",
-				data : {
-					userId : $("[name=userId]").val(),
-					radius : $level
-				}, 
-				dataType : "json",
-				beforeSend : function(xhr){   /*데이터를 전송하기 전에 헤더에 csrf값을 설정한다*/
-                    xhr.setRequestHeader("${_csrf.headerName}", "${_csrf.token}");
-                },
-				success : function(data){
-					alert("지역 범위를 재설정했어요");										
-				},
-				error : function(xhr, status, err){
-					console.log("처리 실패", xhr, status, err);
-				}
-			});
-			
-		});	
-
-		function local(level){
-			//지도를 표시할 div 
-			var mapContainer = document.getElementById('map');
-		 	
-			var	mapOption = { 
-				    center: new kakao.maps.LatLng(37.4969519, 127.0261588), // 지도의 중심좌표
-				    level: level // 지도의 확대 레벨 
-				}; 
-			
-			// 지도 생성
-			var map = new kakao.maps.Map(mapContainer, mapOption); 
-
-			// 주소-좌표 변환 객체 생성
-			var geocoder = new kakao.maps.services.Geocoder();
-			
-			//HTML5의 geolocation으로 사용할 수 있는지 확인
-			if (navigator.geolocation) {
-			
-				// GeoLocation을 이용해서 위도경도 얻어오기
-				navigator.geolocation.getCurrentPosition(function(position) {
-				    
-				    var lat = position.coords.latitude; // 위도
-				    var lon = position.coords.longitude; // 경도	
-
-				    //위도 경도로 주소 가져오기
-					var address;
-				    geocoder.coord2RegionCode(lon, lat, function(result, status){
-					    
-				    	if (status === kakao.maps.services.Status.OK) {
-				        	address = result[0].address_name;
-				       	}
-				    $("[name=addr]").val(address);
-				    $("[name=lat]").val(lat);
-				    $("[name=lon]").val(lon);
-				       	
-					var locPosition = new kakao.maps.LatLng(lat, lon); // 마커가 표시될 위치를 geolocation으로 얻어온 좌표로 생성합니다
-					var message = '<div style="padding:5px; font-size: 12px;"> 현재 위치 : '+ address +' </div>'; // 인포윈도우에 표시될 내용입니다
-
-					//현재위치 알려주기
-					var myLocal = document.getElementById("myLocal");
-
-					var dong = address.split(" ");
-						dong = dong[dong.length-1];
-					myLocal.innerHTML = "현재 위치가 <strong>[" + dong +"]</strong> 입니다.";
-				    
-				    // 마커와 인포윈도우를 표시
-				    displayMarker(locPosition, message);		    
-				    });		    
-				});
-			
-			} else { // HTML5의 GeoLocation을 사용할 수 없을때 마커 표시 위치와 인포윈도우 내용 설정
-			
-				var locPosition = new kakao.maps.LatLng(33.450701, 126.570667),    
-				    message = 'geolocation을 사용할수 없습니다';
-				    
-				displayMarker(locPosition, message);
+		//범위 설정 update 하기
+		$.ajax({
+			url : "${pageContext.request.contextPath}/member/updateRadius",
+			method : "POST",
+			data : {
+				userId : $("[name=userId]").val(),
+				radius : $level
+			}, 
+			dataType : "json",
+			beforeSend : function(xhr){   /*데이터를 전송하기 전에 헤더에 csrf값을 설정한다*/
+                   xhr.setRequestHeader("${_csrf.headerName}", "${_csrf.token}");
+               },
+			success : function(data){
+				alert("🍲 지역 범위를 재설정했어요 🍲");										
+			},
+			error : function(xhr, status, err){
+				console.log("처리 실패", xhr, status, err);
 			}
-			
-			//지도에 마커와 인포윈도우를 표시하는 함수
-			function displayMarker(locPosition, message) {
-				
-				//마커 생성
-				var marker = new kakao.maps.Marker({  
-				    map: map, 
-				    position: locPosition
-				}); 
-				
-				var iwContent = message, // 인포윈도우에 표시할 내용
-				    iwRemoveable = true;
-				
-				// 인포윈도우 생성
-				var infowindow = new kakao.maps.InfoWindow({
-				    content : iwContent,
-				    removable : iwRemoveable
-				});
-			
-				// 인포윈도우를 마커위에 표시
-				infowindow.open(map, marker);
-				
-				// 지도 중심좌표를 접속위치로 변경
-				map.setCenter(locPosition);      
-			}
-		}
+		});
+		
 	});	
 
-	//위치 변경 버튼 클릭
-	$(function(){
-		$("#btn-changeAddr").click(function(){
-			if(!confirm('현재 위치로 동네를 변경하시겠습니까?')) return;
- 			let $userId = $("[name=userId]").val();
-			let $addr = $("[name=addr]").val();
-			let $lat = $("[name=lat]").val();
-			let $lon = $("[name=lon]").val();
-			console.log($userId);
-			console.log($addr);
-			console.log($lat);
-			console.log($lon);
+	function local(level){
+		//지도를 표시할 div 
+		var mapContainer = document.getElementById('map');
+	 	
+		var	mapOption = { 
+			    center: new kakao.maps.LatLng(37.4969519, 127.0261588), // 지도의 중심좌표
+			    level: level // 지도의 확대 레벨 
+			}; 
+		
+		// 지도 생성
+		var map = new kakao.maps.Map(mapContainer, mapOption); 
 
-		 	$("#changeAddr").attr("action", "${ pageContext.request.contextPath }/member/updateAddress")
-			.attr("method", "POST")
-			.submit(); 			
+		// 주소-좌표 변환 객체 생성
+		var geocoder = new kakao.maps.services.Geocoder();
+		
+		//HTML5의 geolocation으로 사용할 수 있는지 확인
+		if (navigator.geolocation) {
+		
+			// GeoLocation을 이용해서 위도경도 얻어오기
+			navigator.geolocation.getCurrentPosition(function(position) {
+			    
+			    var lat = position.coords.latitude; // 위도
+			    var lon = position.coords.longitude; // 경도	
+
+			    //위도 경도로 주소 가져오기
+				var address;
+			    geocoder.coord2RegionCode(lon, lat, function(result, status){
+				    
+			    	if (status === kakao.maps.services.Status.OK) {
+			        	address = result[0].address_name;
+			       	}
+			    $("[name=addr]").val(address);
+			    $("[name=lat]").val(lat);
+			    $("[name=lon]").val(lon);
+			       	
+				var locPosition = new kakao.maps.LatLng(lat, lon); // 마커가 표시될 위치를 geolocation으로 얻어온 좌표로 생성합니다
+				var message = '<div style="padding:5px; font-size: 12px;"> 현재 위치 : '+ address +' </div>'; // 인포윈도우에 표시될 내용입니다
+
+				//현재위치 알려주기
+				var myLocal = document.getElementById("myLocal");
+
+				var dong = address.split(" ");
+					dong = dong[dong.length-1];
+				myLocal.innerHTML = "현재 위치가 <strong>[" + dong +"]</strong> 입니다.";
+			    
+			    // 마커와 인포윈도우를 표시
+			    displayMarker(locPosition, message);		    
+			    });		    
+			});
+		
+		} else { // HTML5의 GeoLocation을 사용할 수 없을때 마커 표시 위치와 인포윈도우 내용 설정
+		
+			var locPosition = new kakao.maps.LatLng(33.450701, 126.570667),    
+			    message = 'geolocation을 사용할수 없습니다';
+			    
+			displayMarker(locPosition, message);
+		}
+		
+		//지도에 마커와 인포윈도우를 표시하는 함수
+		function displayMarker(locPosition, message) {
+			
+			//마커 생성
+			var marker = new kakao.maps.Marker({  
+			    map: map, 
+			    position: locPosition
+			}); 
+			
+			var iwContent = message, // 인포윈도우에 표시할 내용
+			    iwRemoveable = true;
+			
+			// 인포윈도우 생성
+			var infowindow = new kakao.maps.InfoWindow({
+			    content : iwContent,
+			    removable : iwRemoveable
+			});
+		
+			// 인포윈도우를 마커위에 표시
+			infowindow.open(map, marker);
+			
+			// 지도 중심좌표를 접속위치로 변경
+			map.setCenter(locPosition);      
+		}
+	}
+});	
+
+//위치 변경 버튼 클릭
+$(function(){
+	$("#btn-changeAddr").click(function(){
+		if(!confirm('현재 위치로 동네를 변경하시겠습니까?')) return;
+
+		$.ajax({
+			url : "${pageContext.request.contextPath}/member/updateAddress",
+			method : "POST",
+			data : {
+				userId : $("[name=userId]").val(),
+				addr : $("[name=addr]").val(),
+				lat : $("[name=lat]").val(),
+				lon : $("[name=lon]").val()
+			},
+			dataType : "json",
+			beforeSend : function(xhr){   /*데이터를 전송하기 전에 헤더에 csrf값을 설정한다*/
+                   xhr.setRequestHeader("${_csrf.headerName}", "${_csrf.token}");
+               },
+			success : function(data){
+				alert("🍲 현재 위치로 동네를 재설정했어요 🍲");
+				$("#addr").html(data.address);									
+			},
+			error : function(xhr, status, err){
+				console.log("처리 실패", xhr, status, err);
+			}
+
 		});
-	});
 
+	});
+});
 </script>
 
 
