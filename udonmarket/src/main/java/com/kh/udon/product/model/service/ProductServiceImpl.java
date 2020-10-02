@@ -56,13 +56,6 @@ public class ProductServiceImpl implements ProductService
     @Override
     public List<ProductDTO> selectAll()
     {
-        List<ProductDTO> select = dao.selectAll();
-        
-        for(ProductDTO p : select)
-        {
-            
-        }
-        
         return dao.selectAll();
     }
     

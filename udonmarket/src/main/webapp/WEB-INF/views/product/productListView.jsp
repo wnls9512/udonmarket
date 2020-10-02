@@ -95,9 +95,10 @@
                                 	 onclick="location.href='${pageContext.request.contextPath }/product/productDetailView?pCode=${p.getPCode() }';">
                                 <div class="single_product_text">
                                     <h4>${p.title }</h4>
-                                    <span style="color: gray;">부천시 원미구 · 2 days ago</span>
+                                    <span style="color: gray;">${p.address } · <c:if test="${p.regDate != 0 }">${p.regDate } days ago</c:if>
+                                    										   <c:if test="${p.regDate == 0 }">today</c:if></span>
                                     <h3><fmt:formatNumber type="number" maxFractionDigits="3" value="${p.price}" />원</h3>
-                                    <span class="float-right" style="color: gray;"><i class="far fa-heart"></i> 8  <i class="far fa-comments"></i> 2<br /></span>
+                                    <span class="float-right" style="color: gray;"><i class="far fa-heart"></i> ${p.wish }  <i class="far fa-comments"></i> ${p.chat }<br /></span>
                                     <a href="#" class="add_cart">
                                     	+ add to favorite<i class="ti-heart"></i>
                                    	</a>

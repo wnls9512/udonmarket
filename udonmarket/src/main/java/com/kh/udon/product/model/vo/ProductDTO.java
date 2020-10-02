@@ -9,9 +9,10 @@ import lombok.Data;
 public class ProductDTO implements Serializable
 {
     int pCode;
+    String seller;
     String title;
     int price;
-    Date regDate;
+    int regDate;
     String address;
     int wish;
     int chat;
