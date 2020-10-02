@@ -23,7 +23,7 @@
 	<!-- 카테고리별 상품수 -->
 	<select id="selectAllCategoryCount" resultType="_int">
 		select count(p.category) from category c left join product p on(c.category_code = p.category) 
-		group by c.category_code order by 1
+		group by c.category_code order by c.category_code
 	</select>
 	
 	<!-- 특정 카테고리 상품수 -->
