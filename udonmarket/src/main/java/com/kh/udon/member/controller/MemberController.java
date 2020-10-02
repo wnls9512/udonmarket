@@ -135,9 +135,12 @@ public class MemberController {
 	}
 
 	@RequestMapping("/mypage")
-    public String mypage()
-    {
-        return "member/mypage";
+    public Model mypage(@RequestParam("userId") String userId,
+    					Model model){
+		
+		Member member = service.selectOneMember(userId);
+		model.addAttribute("member", member);
+        return model;
     }
 
     //프로필 수정
@@ -149,45 +152,50 @@ public class MemberController {
 	
     //관심목록
     @RequestMapping("/wishList")
-    public Model wishList(Model model){
-    	//세션에 담긴 로그인 중 인 유저 아이디
-    	//String userId = ((Member)session.getAttribute("loginMember")).getUserId();
-    	//test id로 테스트 (세션에 담긴 로그인 중인 아이디)
-    	String userId = "test";
+    public Model wishList(@RequestParam("userId") String userId,
+    					  Model model){
+    	
+    	log.debug("loginMemberId = {} ", userId);
+    	Member member = service.selectOneMember(userId);
     	
     	List<ProductVO> list = service.selectAllWishPro(userId);
     	log.debug("ProductWishList = {}", list);
     	
+    	model.addAttribute("member", member);
     	model.addAttribute("list", list);  	
+    	
         return model;
     }
     
     //판매내역
     @RequestMapping("/salesList")
-    public Model salseList(Model model){
-    	//세션에 담긴 로그인 중 인 유저 아이디
-    	//String userId = ((Member)session.getAttribute("loginMember")).getUserId();
-    	//test id로 테스트 (세션에 담긴 로그인 중인 아이디)
-    	String userId = "test";
+    public Model salseList(@RequestParam("userId") String userId,
+    					   Model model){
+
+    	log.debug("loginMemberId = {} ", userId);
+    	Member member = service.selectOneMember(userId);
     	
     	List<ProductVO> list = service.selectAllSalesPro(userId);
     	log.debug("ProductSalesList = {}", list);
     	
+    	model.addAttribute("member", member);
     	model.addAttribute("list", list);
+    	
         return model;
     }
     
     //구매내역
     @RequestMapping("/buyList")
-    public Model buyList(Model model){
-    	//세션에 담긴 로그인 중 인 유저 아이디
-    	//String userId = ((Member)session.getAttribute("loginMember")).getUserId();
-    	//test id로 테스트 (세션에 담긴 로그인 중인 아이디)
-    	String userId = "test";
+    public Model buyList(@RequestParam("userId") String userId,
+    					 Model model){
+    	
+    	log.debug("loginMemberId = {} ", userId);
+    	Member member = service.selectOneMember(userId);
     	
     	List<ProductVO> list = service.selectAllBuyPro(userId);
     	log.debug("ProductBuyList = {}", list);
     	
+    	model.addAttribute("member", member);
     	model.addAttribute("list", list);
     	
         return model;
@@ -199,9 +207,12 @@ public class MemberController {
     					      Model model) {
     	
     	log.debug("loginMemberId = {} ", userId);
+    	Member member = service.selectOneMember(userId);
     	
     	int radius = service.selectRadius(userId);
     	log.debug("radius = {}",String.valueOf(radius));
+    	
+    	model.addAttribute("member", member);
     	model.addAttribute("radius", radius);
     	
     	return model;
@@ -210,11 +221,12 @@ public class MemberController {
     //현재 위치로 location 테이블 update
     //현재 위치(주소)로 member 테이블 update
     @PostMapping("/updateAddress")
-    public String updateAddress(RedirectAttributes redirectAttr,
-    							@RequestParam("userId") String userId,
-    							@RequestParam("addr") String addr,
-    							@RequestParam("lat") float latitude,
-    							@RequestParam("lon") float longitude){
+    @ResponseBody
+    public Map<String, Object> updateAddress(RedirectAttributes redirectAttr,
+			    							@RequestParam("userId") String userId,
+			    							@RequestParam("addr") String addr,
+			    							@RequestParam("lat") float latitude,
+			    							@RequestParam("lon") float longitude){
     	
     	log.debug("userId = {}", userId);
     	
@@ -224,19 +236,9 @@ public class MemberController {
     	map.put("latitude", latitude);
     	map.put("longitude", longitude);
     	
-    	//업무로직
-    	String msg = "변경 성공!";
-    	try {
-    		int result = service.updateAddrAndLoc(map);
-    		redirectAttr.addFlashAttribute("msg", msg);			
-		} catch (Exception e) {
-			log.error("location 수정 실패 오류", e);
-			redirectAttr.addFlashAttribute("msg", "변경 실패");
-			
-//			throw e; //에러페이지
-		}
+    	int result = service.updateAddrAndLoc(map);
     	
-    	return "redirect:/member/settingsArea";
+    	return map;
     }
     
     //거리 범위 수정
@@ -300,6 +302,7 @@ public class MemberController {
     								ModelAndView mav){
 
     	log.debug("userId = {}", userId);
+    	Member member = service.selectOneMember(userId);
     	
     	List<Keyword> list = service.selectKeywordList(userId);
     	log.debug("list = {}", list);
@@ -308,6 +311,7 @@ public class MemberController {
     	int totalKeywordContents = service.selectTotalKeywordContent(userId);
     	log.debug("totalKeywordContents ={}", String.valueOf(totalKeywordContents));
     	
+    	mav.addObject("member", member);
     	mav.addObject("totalKeywordContents", totalKeywordContents);
     	mav.addObject("list", list);
     	return mav;
@@ -315,47 +319,34 @@ public class MemberController {
     
     //나의 키워드 추가
     @RequestMapping(value = "/insertKeyword",
-    			method = RequestMethod.POST)
-    public String insertKeyword(RedirectAttributes redirectAttr,
-    						    @RequestParam("userId") String userId,
-    						    @RequestParam("keyword") String keyword){
+    				method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> insertKeyword(@RequestParam("userId") String userId,
+			    						     @RequestParam("keyword") String keyword){
     	
+    	Keyword key = new Keyword(0, userId, keyword);
+   
+    	int keyCode = service.insertKeyword(key);
+
     	Map<String, Object> map = new HashMap<>();
     	map.put("userId", userId);
     	map.put("keyword", keyword);
-
-    	String msg = "등록 성공!";
-    	try {
-    		int result = service.insertKeyword(map);
-    	} catch (Exception e) {
-    		log.error("keyword 등록 실패 오류", e);
-			msg = "등록 실패";
-			
-//			throw e; //에러페이지
-		}
-    		
-    	redirectAttr.addFlashAttribute("msg", msg);
-    	return "redirect:/member/keywordNoti";
+    	map.put("keyCode", keyCode);
+    	
+    	return map;
     }
     
     //키워드 삭제
     @RequestMapping(value = "/deleteKeyword")
-    public String deleteKeyword(RedirectAttributes redirectAttr,
-    							@RequestParam("key") int keyCode){
+    @ResponseBody
+    public Map<String, Object> deleteKeyword(@RequestParam("key") int keyCode){
     	  
-//    	System.out.println(keyCode);
-    	String msg = "삭제 성공!";
-    	try {
-    		int result = service.deleteKeyword(keyCode);  		
-		} catch (Exception e) {
-			log.error("keyword 삭제 실패 오류", e);
-			msg = "삭제 실패";
-			
-//			throw e; //에러페이지
-		}
+    	int result = service.deleteKeyword(keyCode);  		
+
+    	Map<String, Object> map = new HashMap<>();
+    	map.put("key", keyCode);
     	
-    	redirectAttr.addFlashAttribute("msg", msg);	
-    	return "redirect:/member/keywordNoti";
+    	return map;
     }
     
     //키워드 중복검사
@@ -363,10 +354,7 @@ public class MemberController {
     @ResponseBody
     public Map<String, Object> checkKeywordDuplicate(@RequestParam("userId") String userId,
     												 @RequestParam("keyword") String keyword){
-    	
-    	//test id로 테스트
-    	userId = "test";
-    	
+    	   	
     	Map<String, Object> key = new HashMap<>();
     	key.put("userId", userId);
     	key.put("keyword", keyword);
@@ -387,6 +375,7 @@ public class MemberController {
     						  Model model){
     	
     	log.debug("userId = {}", userId);
+    	Member member = service.selectOneMember(userId);
     	
     	//매너 평가
     	List<Evaluate> evaList = service.selectAllEva(userId);
@@ -409,6 +398,7 @@ public class MemberController {
     		else seller.add(r);    			
     	}
     	
+    	model.addAttribute("member", member);
     	model.addAttribute("evaList", evaList);
     	model.addAttribute("totalReview", totalReview);
     	model.addAttribute("reviewList", reviewList);

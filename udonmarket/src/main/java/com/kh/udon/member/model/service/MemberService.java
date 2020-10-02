@@ -12,8 +12,6 @@ import com.kh.udon.product.model.vo.ProductVO;
 
 public interface MemberService
 {
-	int insertKeyword(Map<String, Object> map);
-
 	List<Keyword> selectKeywordList(String userId);
 
 	int selectTotalKeywordContent(String userId);
@@ -43,4 +41,7 @@ public interface MemberService
 	List<ProductVO> selectAllBuyPro(String userId);
 
 	List<ProductVO> selectAllWishPro(String userId);
+
+	int insertKeyword(Keyword key);
+
 }

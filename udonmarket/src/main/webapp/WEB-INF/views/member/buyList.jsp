@@ -48,16 +48,16 @@ html { font-size: 16px; }
 	                    <div class="profile mr-3">
 	                    	<!-- LoggdeInUser 정보 가져오기  -->
 	                        <sec:authentication property="principal" var="loggedInUser" />
-	                    	<img src="${pageContext.request.contextPath }/resources/img/member/${loggedInUser.renamedFileName == null 
-	                    															 ? loggedInUser.originalFileName:loggedInUser.renamedFileName}" 
+	                    	<img src="${pageContext.request.contextPath }/resources/img/member/${member.renamedFileName == null 
+	                    															 ? member.originalFileName:member.renamedFileName}" 
 	                    		 alt="..." 
 	                    		 width="130" 
 	                    		 class="rounded mb-2 img-thumbnail">
-	                    	<a href="${pageContext.request.contextPath }/member/mypage" class="btn btn-outline-dark btn-sm btn-block">Mypage</a>
+	                    	<a href="${pageContext.request.contextPath }/member/mypage?userId=${member.userId}" class="btn btn-outline-dark btn-sm btn-block">Mypage</a>
 	                    </div>
 	                    <div class="media-body mb-5 text-white">
 	                        <h4 class="mt-0 mb-0" style="color:white;">${loggedInUser.nickName}</h4>
-	                        <p class="small mb-4" style="color:white;"> <i class="fas fa-map-marker-alt mr-2"></i>${loggedInUser.address}</p>
+	                        <p class="small mb-4" style="color:white;"> <i class="fas fa-map-marker-alt mr-2"></i>${member.address}</p>
 
 	                    </div>
 	                </div>
@@ -66,7 +66,7 @@ html { font-size: 16px; }
 	                <ul class="list-inline mb-0">
 	                    <li class="list-inline-item">            
 	                       <h6 class="font-weight-bold mb-0 d-block">	                       	
-	                       	<a href="${pageContext.request.contextPath }/member/salesList">
+	                       	<a href="${pageContext.request.contextPath }/member/salesList?userId=${member.userId}">
 	                       		<i class="fas fa-receipt fa-2x" ></i> <br /> 판매목록
 	                       	</a>
 	                       </h6>
@@ -80,7 +80,7 @@ html { font-size: 16px; }
 	                    </li>
 	                    <li class="list-inline-item">
 	                    	<h6 class="font-weight-bold mb-0 d-block">	                       	
-	                       	<a href="${pageContext.request.contextPath }/member/wishList">
+	                       	<a href="${pageContext.request.contextPath }/member/wishList?userId=${member.userId}">
 	                       		<i class="fas fa-heart fa-2x" ></i> <br /> 관심목록
 	                       	</a>
 	                       </h6>
