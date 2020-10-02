@@ -199,9 +199,12 @@ public class MemberController {
     					      Model model) {
     	
     	log.debug("loginMemberId = {} ", userId);
+    	Member member = service.selectOneMember(userId);
     	
     	int radius = service.selectRadius(userId);
     	log.debug("radius = {}",String.valueOf(radius));
+    	
+    	model.addAttribute("member", member);
     	model.addAttribute("radius", radius);
     	
     	return model;
@@ -210,11 +213,12 @@ public class MemberController {
     //현재 위치로 location 테이블 update
     //현재 위치(주소)로 member 테이블 update
     @PostMapping("/updateAddress")
-    public String updateAddress(RedirectAttributes redirectAttr,
-    							@RequestParam("userId") String userId,
-    							@RequestParam("addr") String addr,
-    							@RequestParam("lat") float latitude,
-    							@RequestParam("lon") float longitude){
+    @ResponseBody
+    public Map<String, Object> updateAddress(RedirectAttributes redirectAttr,
+			    							@RequestParam("userId") String userId,
+			    							@RequestParam("addr") String addr,
+			    							@RequestParam("lat") float latitude,
+			    							@RequestParam("lon") float longitude){
     	
     	log.debug("userId = {}", userId);
     	
@@ -224,19 +228,9 @@ public class MemberController {
     	map.put("latitude", latitude);
     	map.put("longitude", longitude);
     	
-    	//업무로직
-    	String msg = "변경 성공!";
-    	try {
-    		int result = service.updateAddrAndLoc(map);
-    		redirectAttr.addFlashAttribute("msg", msg);			
-		} catch (Exception e) {
-			log.error("location 수정 실패 오류", e);
-			redirectAttr.addFlashAttribute("msg", "변경 실패");
-			
-//			throw e; //에러페이지
-		}
+    	int result = service.updateAddrAndLoc(map);
     	
-    	return "redirect:/member/settingsArea";
+    	return map;
     }
     
     //거리 범위 수정
