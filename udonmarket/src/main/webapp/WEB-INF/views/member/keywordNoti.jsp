@@ -113,7 +113,7 @@ html { font-size: 16px; }
 								  		 aria-label="Recipient's username" 
 								  		 aria-describedby="basic-addon2">
 								  <!-- value = 로그인 중인 유저 아이디 -->
-								  <input type="hidden" name="userId" value="${loggedInUser.userId}" />
+								  <input type="hidden" name="userId" value="${member.userId}" />
 								  <div class="input-group-append">
 							      <input type="button" 
 							      		 id="btn-insert"
@@ -125,16 +125,17 @@ html { font-size: 16px; }
 							</form:form>
 							<br />
 							<p>등록된 키워드  <mark style="color: red; background: white;">${totalKeywordContents}</mark>/ 30</p>
+							<input type="hidden" id="totalKeywordContents" value="${totalKeywordContents}" />
 							<div>
 								<c:if test="${ not empty list }">
 									<c:forEach items="${ list }" var="key">
-										<h5 id="keywordList" style="display: inline-block;">
-											<span class="btn btn-outline-primary btn-sm">${key.keyContent}
+										<div id="keywordList" style="display: inline-block;">
+											<span id="keyCode${key.keyCode}" class="btn btn-outline-primary btn-sm">${key.keyContent}
 											<button type="button" 
 													onclick="deleteKey('${ key.keyCode }', '${key.keyContent}')"
 													style="background: none; border: none;">x</button>
 											</span>
-										</h5>							
+										</div>							
 									</c:forEach>
 								</c:if>
 								<c:if test="${ empty list }"></c:if>
@@ -152,6 +153,12 @@ $(function(){
 	$("#idValid").val(0);
 	$("#btn-insert").attr('disabled', true);
 
+	//키워드 30개 이상 추가 막기
+	if( $("#totalKeywordContents").val() >= 30 ){
+		$("[name=keyword]").attr("readonly", true);
+		$("[name=keyword]").attr("placeholder", '키워드는 최대 30개까지 설정할 수 있어요');
+	}
+
 	//키워드 중복 검사
 	$("[name=keyword]").keyup(function(){
 
@@ -160,6 +167,7 @@ $(function(){
 			$("#btn-insert").attr('disabled', true);
 			return;
 		} 
+
 		
 		$.ajax({
 			url : "${pageContext.request.contextPath}/member/checkKeywordDuplicate",
@@ -207,6 +215,13 @@ function deleteKey(keyCode, keyword){
         },
 		success : function(data){
 				alert("🍜 키워드 알림 [" + keyword + "] 을/를 삭제했어요 🍜 ");
+
+				//요소 삭제
+				let $key = "#keyCode" + data.key;
+				$($key).remove();
+
+				//총 키워드 개수 처리
+				$("#totalKeywordContents").html(${totalKeywordContents} - 1);
 		},
 		error : function(xhr, status, err){
 			 console.log("처리 실패", xhr, status, err)
@@ -238,8 +253,9 @@ $("#btn-insert").click(function(){
 
 				let $span = $("<span class='btn btn-outline-primary btn-sm'>"+ data.keyword +"</span>");
 				$span.append('<button type="button" onclick="deleteKey(' + data.keyCode +')" style="background: none; border: none;">x</button>');
-				
 				$("#keywordList").append($span); 
+
+				$("#totalKeywordContents").html(${totalKeywordContents} + 1);
 				
 		},
 		error : function(xhr, status, err){
