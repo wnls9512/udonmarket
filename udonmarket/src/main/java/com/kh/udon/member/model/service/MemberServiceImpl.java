@@ -25,11 +25,6 @@ public class MemberServiceImpl implements MemberService
     private MemberDao memberDao;
 
 	@Override
-	public int insertKeyword(Map<String, Object> map) {
-		return memberDao.insertKeyword(map);
-	}
-
-	@Override
 	public List<Keyword> selectKeywordList(String userId) {
 		return memberDao.selectKeywordList(userId);
 	}
@@ -127,6 +122,11 @@ public class MemberServiceImpl implements MemberService
 	@Override
 	public List<ProductVO> selectAllWishPro(String userId) {
 		return memberDao.selectAllWishPro(userId);
+	}
+
+	@Override
+	public int insertKeyword(Keyword key) {
+		return memberDao.insertKeyword(key);
 	}
 
 }

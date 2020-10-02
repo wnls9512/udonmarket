@@ -99,8 +99,9 @@
 	                        </sec:authorize>
 	                        
 	                        <sec:authorize access="isAuthenticated()">
-                            <a href="${pageContext.request.contextPath }/member/mypage"><i class="ti-user"></i></a>
-                            
+	                        <sec:authentication property="principal.username" var="loggedInUserId" />
+                            <a href="${pageContext.request.contextPath }/member/mypage?userId=${loggedInUserId}"><i class="ti-user"></i></a>
+                       
                             <form:form method="POST" action="${pageContext.request.contextPath }/member/logout">
                             	<button type="submit"><i class="ti-power-off"></i></button>
                             </form:form> 
