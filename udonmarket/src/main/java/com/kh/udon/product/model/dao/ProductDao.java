@@ -24,4 +24,6 @@ public interface ProductDao
 
     List<ProductDTO> selectAll();
 
+    List<ProductDTO> selectCategoryProducts(String categoryCode);
+
 }

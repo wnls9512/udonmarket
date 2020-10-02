@@ -58,6 +58,12 @@ public class ProductServiceImpl implements ProductService
     {
         return dao.selectAll();
     }
+
+    @Override
+    public List<ProductDTO> selectCategoryProducts(String categoryCode)
+    {
+        return dao.selectCategoryProducts(categoryCode);
+    }
     
     
 }

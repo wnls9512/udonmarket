@@ -24,4 +24,6 @@ public interface ProductService
 
     List<ProductDTO> selectAll();
 
+    List<ProductDTO> selectCategoryProducts(String categoryCode);
+
 }

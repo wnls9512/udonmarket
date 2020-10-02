@@ -64,7 +64,7 @@ public class ProductController
          *      1. 카테고리 목록
          *      2. 카테고리 목록별 갯수
          *      3. 전체 상품 갯수
-         *      (4. 선택된 카테고리 상품 리스트)
+         *      4. 선택된 카테고리 상품 리스트
          */
         
         log.debug("categoryCode = {}", categoryCode);
@@ -72,12 +72,17 @@ public class ProductController
         List<CategoryVO> category = service.selectAllCategory();
         List<Integer> categoryCount = service.selectAllCategoryCount();
         int totalCount = service.selectCategoryCount(categoryCode);
+        List<ProductDTO> products = service.selectCategoryProducts(categoryCode);
         
+        log.debug("category = {}", category);
+        log.debug("categoryCount = {}", categoryCount);
         log.debug("totalCount = {}", totalCount);
+        log.debug("products = {}", products);
         
         model.addAttribute("category", category);
         model.addAttribute("categoryCount", categoryCount);
         model.addAttribute("totalCount", totalCount);
+        model.addAttribute("products", products);
         
         return "product/productListView";
     }
