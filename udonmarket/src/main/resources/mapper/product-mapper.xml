@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="product">
+
+
+
 	<!-- 전체 리스트 -->
 	<select id="selectAll" resultType="productDTO">
 		select p.p_code, p.seller, p.title, p.price, trunc(sysdate - p.reg_date) reg_date, substr(m.address, instr(m.address, ' ', 1, 1), instr(m.address, ' ', 1, 2)) address, wc.wish, cc.chat
@@ -51,4 +54,13 @@
 		insert into product values
 		(seq_product.nextval, #{seller}, null, #{title}, #{category}, #{content}, #{price}, sysdate, #{openStatus}, 'S', #{coupon}, #{offer}, default)
 	</insert>
+	
+	<!-- 관심 목록 등록 -->
+	<insert id="addToWish">
+		insert into wish values
+		(seq_wish.nextval, #{userId}, #{pCode})
+	</insert>
+	
+	
+	
 </mapper>

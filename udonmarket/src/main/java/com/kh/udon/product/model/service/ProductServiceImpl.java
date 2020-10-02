@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.kh.udon.member.model.vo.Wish;
 import com.kh.udon.product.model.dao.ProductDao;
 import com.kh.udon.product.model.vo.CategoryVO;
 import com.kh.udon.product.model.vo.CouponDTO;
@@ -64,6 +65,13 @@ public class ProductServiceImpl implements ProductService
     {
         return dao.selectCategoryProducts(categoryCode);
     }
+
+    @Override
+    public int addToWish(Wish wish)
+    {
+        return dao.addToWish(wish);
+    }
+
     
     
 }

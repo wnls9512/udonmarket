@@ -3,12 +3,15 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
 <fmt:requestEncoding value="utf-8"/>
 
 <jsp:include page="/WEB-INF/views/common/header.jsp">
 	<jsp:param value="중고거래" name="pageTitle"/>
 </jsp:include>
+
+<sec:authentication property="principal.username" var="userId"/>
 
     <!--================Home Banner Area =================-->
     <!-- breadcrumb start-->
@@ -88,18 +91,18 @@
                         </div>
                     </div>
                     <div class="row align-items-center latest_product_inner">
-						<c:forEach items="${products }" var="p">
+						<c:forEach items="${products}" var="p">
                         <div class="col-lg-4 col-sm-6">
                             <div class="single_product_item">
-                                <img src="${pageContext.request.contextPath }/resources/img/product/product_1.png" alt=""
-                                	 onclick="location.href='${pageContext.request.contextPath }/product/productDetailView?pCode=${p.getPCode() }';">
+                                <img src="${pageContext.request.contextPath}/resources/img/product/product_1.png" alt=""
+                                	 onclick="location.href='${pageContext.request.contextPath}/product/productDetailView?pCode=${p.PCode}';">
                                 <div class="single_product_text">
-                                    <h4>${p.title }</h4>
-                                    <span style="color: gray;">${p.address } · <c:if test="${p.regDate != 0 }">${p.regDate } days ago</c:if>
-                                    										   <c:if test="${p.regDate == 0 }">today</c:if></span>
+                                    <h4>${p.title}</h4>
+                                    <span style="color: gray;">${p.address} · <c:if test="${p.regDate != 0}">${p.regDate} days ago</c:if>
+                                    										   <c:if test="${p.regDate == 0}">today</c:if></span>
                                     <h3><fmt:formatNumber type="number" maxFractionDigits="3" value="${p.price}" />원</h3>
-                                    <span class="float-right" style="color: gray;"><i class="far fa-heart"></i> ${p.wish }  <i class="far fa-comments"></i> ${p.chat }<br /></span>
-                                    <a href="#" class="add_cart">
+                                    <span class="float-right" style="color: gray;"><i class="far fa-heart"></i> ${p.wish}  <i class="far fa-comments"></i> ${p.chat }<br /></span>
+        	                            <a href="javascript:addToWish('${userId}', '${p.PCode}')" class="add_cart">
                                     	+ add to favorite<i class="ti-heart"></i>
                                    	</a>
                                 </div>
@@ -196,6 +199,35 @@
 
 <jsp:include page="/WEB-INF/views/common/footer.jsp"/>
 	
+	
+<script>
+function addToWish(userId, pCode)
+{
+	$.ajax
+	({
+		url: "${pageContext.request.contextPath}/product/addToWish",
+		method: "POST",
+		data: 
+		{
+			userId: userId,
+			pCode: pCode
+		}, 
+		dataType: "text",
+		beforeSend: function(xhr)
+		{
+            xhr.setRequestHeader("${_csrf.headerName}", "${_csrf.token}");
+        },
+			success: function(result)
+		{
+			alert(result);										
+		},
+		error: function(xhr, status, err)
+		{
+			alert("이미 관심목록에 추가되있어요 💘");
+		}
+	});
+}
+</script>
 	
 	
 	

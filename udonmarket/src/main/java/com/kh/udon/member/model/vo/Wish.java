@@ -17,7 +17,8 @@ import lombok.ToString;
 @ToString(callSuper = true)
 public class Wish extends ProductVO implements Serializable {
 
-	private String wishCode;
+	private int wishCode;
 	private String userId;
+	private int pCode;
 	
 }

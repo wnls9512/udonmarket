@@ -2,6 +2,7 @@ package com.kh.udon.product.model.service;
 
 import java.util.List;
 
+import com.kh.udon.member.model.vo.Wish;
 import com.kh.udon.product.model.vo.CategoryVO;
 import com.kh.udon.product.model.vo.CouponDTO;
 import com.kh.udon.product.model.vo.ProductDTO;
@@ -25,5 +26,8 @@ public interface ProductService
     List<ProductDTO> selectAll();
 
     List<ProductDTO> selectCategoryProducts(String categoryCode);
+
+    int addToWish(Wish wish);
+
 
 }

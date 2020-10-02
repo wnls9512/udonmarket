@@ -9,8 +9,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.kh.udon.member.model.vo.Wish;
 import com.kh.udon.product.model.service.ProductService;
 import com.kh.udon.product.model.vo.CategoryVO;
 import com.kh.udon.product.model.vo.CouponDTO;
@@ -47,7 +49,6 @@ public class ProductController
         log.debug("categoryCount = {}", categoryCount);
         log.debug("totalCount = {}", totalCount);
         log.debug("products = {}", products);
-        
         model.addAttribute("category", category);
         model.addAttribute("categoryCount", categoryCount);
         model.addAttribute("totalCount", totalCount);
@@ -114,8 +115,21 @@ public class ProductController
     
     // 게시글 상세보기
     @RequestMapping("/productDetailView")
-    public String productDetail()
+    public String productDetail(int pCode)
     {
+        log.debug("pCode = {}", pCode);
         return "product/productDetailView";
+    }
+    
+    // 관심목록 추가
+    @PostMapping(value = "/addToWish", produces = "application/text; charset=utf8")
+    @ResponseBody
+    public String addToWish(Wish wish)
+    {
+        log.debug("wish = {}", wish);
+
+        int result = service.addToWish(wish);
+        
+        return result > 0 ? "관심목록에 추가했어요 💗" : "관심목록 추가에 실패했어요 💦";
     }
 }
