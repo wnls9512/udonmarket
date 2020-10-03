@@ -3,6 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
 <fmt:requestEncoding value="utf-8"/>
 
@@ -53,12 +54,19 @@ margin: 5px 10px;
 	        <div class="bg-white shadow rounded overflow-hidden">
 	            <div class="px-4 pt-0 pb-4 cover">
 	                <div class="media align-items-end profile-head">
-	                    <div class="profile mr-3"><img src="https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=80" alt="..." width="130" class="rounded mb-2 img-thumbnail">
-	                    	<a href="${pageContext.request.contextPath }/member/mypage" class="btn btn-outline-dark btn-sm btn-block">Mypage</a>
+	                    <div class="profile mr-3">
+	                    	<!-- LoggdeInUser 정보 가져오기  -->
+	                        <sec:authentication property="principal" var="loggedInUser" />
+	                    	<img src="${pageContext.request.contextPath }/resources/img/member/${member.renamedFileName == null 
+	                    															 ? member.originalFileName:member.renamedFileName}" 
+	                    		 alt="..." 
+	                    		 width="130" 
+	                    		 class="rounded mb-2 img-thumbnail">
+	                    	<a href="${pageContext.request.contextPath }/member/mypage?userId=${member.userId}" class="btn btn-outline-dark btn-sm btn-block">Mypage</a>
 	                    </div>
 	                    <div class="media-body mb-5 text-white">
-	                        <h4 class="mt-0 mb-0" style="color:white;">Mark Williams</h4>
-	                        <p class="small mb-4" style="color:white;"> <i class="fas fa-map-marker-alt mr-2"></i>New York</p>
+	                        <h4 class="mt-0 mb-0" style="color:white;">${member.nickName}</h4>
+	                        <p class="small mb-4" style="color:white;"> <i class="fas fa-map-marker-alt mr-2"></i>${member.address}</p>
 	                    </div>
 	                </div>
 	            </div>
@@ -66,21 +74,21 @@ margin: 5px 10px;
 	                <ul class="list-inline mb-0">
 	                    <li class="list-inline-item">            
 	                       <h6 class="font-weight-bold mb-0 d-block">	                       	
-	                       	<a href="${pageContext.request.contextPath }/member/salesList">
+	                       	<a href="${pageContext.request.contextPath }/member/salesList?userId=${member.userId}">
 	                       		<i class="fas fa-receipt fa-2x" ></i> <br /> 판매목록
 	                       	</a>
 	                       </h6>
 	                    </li>
 	                    <li class="list-inline-item">
 	                    	<h6 class="font-weight-bold mb-0 d-block">	                       	
-	                       	<a href="${pageContext.request.contextPath }/member/buyList">
+	                       	<a href="${pageContext.request.contextPath }/member/buyList?userId=${member.userId}">
 	                       		<i class="fas fa-shopping-bag fa-2x" ></i> <br /> 구매목록
 	                       	</a>
 	                       </h6>
 	                    </li>
 	                    <li class="list-inline-item">
 	                    	<h6 class="font-weight-bold mb-0 d-block">	                       	
-	                       	<a href="${pageContext.request.contextPath }/member/wishList">
+	                       	<a href="${pageContext.request.contextPath }/member/wishList?userId=${member.userId}">
 	                       		<i class="fas fa-heart fa-2x" ></i> <br /> 관심목록
 	                       	</a>
 	                       </h6>
@@ -277,11 +285,53 @@ margin: 5px 10px;
 			  </div>
 			  <!-- 판매자 후기 -->
 			  <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
-				...
+				<table class="table table-hover">
+					<tbody>
+					<c:if test="${ not empty reviewSeller}">
+						<c:forEach items="${reviewSeller}" var="s">
+							<tr><td>
+								<div class="row">
+									<div class="col-md">
+										<i class="far fa-user-circle"></i>
+										<h5 class="mb-20" style="display: inline-block;">${ s.sender }</h5> 
+										<!-- <p style="display: inline-block; color: #575757;"> 수원시 영통구 망포동</p>	 -->	
+										<br />
+										<span class="text-left"> ${ s.content } </span>
+									</div>
+								</div>
+							</td></tr>
+						</c:forEach>
+					</c:if>
+					<c:if test="${ empty reviewSeller}">
+						<tr><td> 판매자 후기가 없어요 </td></tr>
+					</c:if>
+					</tbody>
+				</table>	
 			  </div>
 			  <!-- 구매자 후기 -->
 			  <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
-			  ...
+			  		<table class="table table-hover">
+					<tbody>
+					<c:if test="${ not empty reviewBuyer}">
+						<c:forEach items="${reviewBuyer}" var="b">
+							<tr><td>
+								<div class="row">
+									<div class="col-md">
+										<i class="far fa-user-circle"></i>
+										<h5 class="mb-20" style="display: inline-block;">${ b.sender }</h5> 
+										<!-- <p style="display: inline-block; color: #575757;"> 수원시 영통구 망포동</p>	 -->	
+										<br />
+										<span class="text-left"> ${ b.content } </span>
+									</div>
+								</div>
+							</td></tr>
+						</c:forEach>
+					</c:if>
+					<c:if test="${ empty reviewBuyer}">
+						<tr><td> 구매자 후기가 없어요 </td></tr>
+					</c:if>
+					</tbody>
+				</table>
 			  </div>
 			</div>
       	</div>

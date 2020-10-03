@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.kh.udon.community.model.vo.Community;
+import com.kh.udon.community.model.vo.Search;
 
 
 @Repository
@@ -17,9 +18,9 @@ public class CommunityDaoImpl implements CommunityDao
     private SqlSessionTemplate session;
     
     @Override
-	public List<Community> selectCommunityList() {
+	public List<Community> selectCommunityList(Search search) {
 //		RowBounds rowBounds = new RowBounds();
-		return session.selectList("community.selectCommunityList");
+		return session.selectList("community.selectCommunityList", search);
 	}
     
     @Override

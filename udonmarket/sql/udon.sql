@@ -44,15 +44,14 @@ drop sequence seq_report;
 --========================================
 --          TABLE & SEQUENCE
 --========================================
-
 create table member
 (
     user_id varchar2(50),
     password varchar2(50) not null,
     email varchar2(50),
-    nickname varchar2(50),
+    nickname varchar2(50) default '닉네임',
     address varchar2(100),
-    original_filename varchar2(50),
+    original_filename varchar2(50) default 'default_profile.jpg',
     renamed_filename varchar2(50),
     enabled number default 1 not null,
     reg_date date default sysdate,
@@ -118,6 +117,7 @@ create table product
     trade_status char(1) default 'S' not null,
     coupon number default 1 not null,
     offer number default 1 not null,
+    delete_yn char(1) default 'y' not null,
     constraint pk_product primary key(p_code),
     constraint fk_product_seller foreign key(seller) references member(user_id),
     constraint fk_product_buyer foreign key(buyer) references member(user_id),
@@ -125,9 +125,9 @@ create table product
     constraint ck_product_open_status check(open_status in (1,0)),
     constraint ck_product_trade_status check(trade_status in('S','R','C')),
     constraint ck_product_coupon check(coupon in(1,0)),
-    constraint ck_product_offer check(offer in(1,0))
+    constraint ck_product_offer check(offer in(1,0)),
+    constraint ck_product_delete_yn check(delete_yn in('Y', 'N')
 );
-
 create table product_photo
 (
     uuid varchar2(100),
@@ -178,7 +178,8 @@ create table wish
     p_code number not null,
     constraint pk_wish primary key(wish_code),
     constraint fk_user_id foreign key(user_id) references member(user_id),
-    constraint fk_wish_p_code foreign key(p_code) references product(p_code)
+    constraint fk_wish_p_code foreign key(p_code) references product(p_code),
+    constraint uq_wish_id_pcode unique(user_id, p_code)
 );
 
 create table review
@@ -230,11 +231,10 @@ create table reply
 
 create table authority
 (
-    auth varchar2(5) default 'USER',
+    auth varchar2(5) default 'ROLE_USER',
     user_id varchar2(50),
     constraint pk_authority primary key(auth, user_id),
-    constraint fk_authority_user_id foreign key(user_id) references member(user_id),
-    constraint ck_authority_auth check(auth in('USER','ADMIN'))
+    constraint fk_authority_user_id foreign key(user_id) references member(user_id)
 );
 
 create table evaluate
@@ -340,6 +340,8 @@ create sequence seq_notification;
 create sequence seq_keyword;
 create sequence seq_reason_report;
 create sequence seq_report;
+create sequence seq_member;
+create sequence seq_location;
 
 
 
@@ -418,5 +420,10 @@ insert into evaluation values(seq_evaluation.nextval, '거래 시간과 장소�
 insert into evaluation values(seq_evaluation.nextval, '약속 장소에 나타나지 않았어요', 0, 'C');
 insert into evaluation values(seq_evaluation.nextval, '거래 시간과 장소를 정한 후 거래 직전 취소했어요', 0, 'C');
 --==========================================================================================
+select count(p.category) from category c left join product p on(c.category_code = p.category) 
+		group by c.category_code order by c.category_code;
+    
+select * from wish;
 select * from category;
-select * from evaluation;
+select count(p.category) from category c left join product p on(c.category_code = p.category) 
+where c.category_parent = 1 group by c.category_code order by c.category_code;

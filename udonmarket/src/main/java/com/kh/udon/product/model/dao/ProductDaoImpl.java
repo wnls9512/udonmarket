@@ -6,8 +6,11 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.kh.udon.member.model.vo.Wish;
 import com.kh.udon.product.model.vo.CategoryVO;
 import com.kh.udon.product.model.vo.CouponDTO;
+import com.kh.udon.product.model.vo.ProductDTO;
+import com.kh.udon.product.model.vo.ProductVO;
 
 @Repository
 public class ProductDaoImpl implements ProductDao
@@ -44,6 +47,31 @@ public class ProductDaoImpl implements ProductDao
     {
         return session.selectOne("product.selectCoupon", userId);
     }
+
+    @Override
+    public int insert(ProductVO product)
+    {
+        return session.insert("product.insert", product);
+    }
+
+    @Override
+    public List<ProductDTO> selectAll()
+    {
+        return session.selectList("product.selectAll");
+    }
+
+    @Override
+    public List<ProductDTO> selectCategoryProducts(String categoryCode)
+    {
+        return session.selectList("product.selectCategoryProducts", categoryCode);
+    }
+
+    @Override
+    public int addToWish(Wish wish)
+    {
+        return session.insert("product.addToWish", wish);
+    }
+
     
     
     

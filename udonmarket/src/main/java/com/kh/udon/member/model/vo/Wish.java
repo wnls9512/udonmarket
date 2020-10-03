@@ -2,6 +2,8 @@ package com.kh.udon.member.model.vo;
 
 import java.io.Serializable;
 
+import com.kh.udon.product.model.vo.ProductVO;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,13 +12,13 @@ import lombok.ToString;
 
 @Getter
 @Setter
-@ToString
-@AllArgsConstructor
 @NoArgsConstructor
-public class Location implements Serializable {
+@AllArgsConstructor
+@ToString(callSuper = true)
+public class Wish extends ProductVO implements Serializable {
 
+	private int wishCode;
 	private String userId;
-	private float latitude;
-	private float longitude;
-	private int radius;
+	private int pCode;
+	
 }

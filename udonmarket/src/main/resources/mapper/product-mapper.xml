@@ -1,25 +1,66 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="product">
-	<select id="selectAllCategory" resultType="categoryVO">
-		select * from category where category_parent = 1 order by category_code
+
+
+
+	<!-- 전체 리스트 -->
+	<select id="selectAll" resultType="productDTO">
+		select p.p_code, p.seller, p.title, p.price, trunc(sysdate - p.reg_date) reg_date, substr(m.address, instr(m.address, ' ', 1, 1), instr(m.address, ' ', 1, 2)) address, wc.wish, cc.chat
+		from product p left join member m on(p.seller = m.user_id)
+		               left join (select a.p_code p_code, count(b.p_code) wish from product a left outer join wish b on(a.p_code = b.p_code) group by a.p_code) wc on(wc.p_code = p.p_code)
+		               left join (select a.p_code p_code, count(b.p_code) chat from product a left outer join chat_room b on(a.p_code = b.p_code) group by a.p_code) cc on(cc.p_code = p.p_code)
+		where p.open_status = 1 and p.trade_status = 'S' order by reg_date
 	</select>
 	
-	<select id="selectAllCategoryCount" resultType="_int">
-		select count(*)-1 count from category c left join product p on(c.category_code = p.category)
-		group by c.category_code order by 1
+	<!-- 카테고리 리스트 -->
+	<select id="selectCategoryProducts" resultType="productDTO">
+		select p.p_code, p.seller, p.title, p.price, trunc(sysdate - p.reg_date) reg_date, substr(m.address, instr(m.address, ' ', 1, 1), instr(m.address, ' ', 1, 2)) address, wc.wish, cc.chat
+		from product p left join member m on(p.seller = m.user_id)
+		               left join (select a.p_code p_code, count(b.p_code) wish from product a left outer join wish b on(a.p_code = b.p_code) group by a.p_code) wc on(wc.p_code = p.p_code)
+		               left join (select a.p_code p_code, count(b.p_code) chat from product a left outer join chat_room b on(a.p_code = b.p_code) group by a.p_code) cc on(cc.p_code = p.p_code)
+		where p.open_status = 1 and p.trade_status = 'S' and p.category = #{categoryCode} order by reg_date	
 	</select>
-	
+
+	<!-- 전체 상품수 -->
 	<select id="selectTotalCount" resultType="_int">
 		select count(*) from product
 	</select>
 	
+	<!-- 카테고리 -->
+	<select id="selectAllCategory" resultType="categoryVO">
+		select * from category where category_parent = 1 order by category_code
+	</select>
+	
+	<!-- 카테고리별 상품수 -->
+	<select id="selectAllCategoryCount" resultType="_int">
+		select count(p.category) from category c left join product p on(c.category_code = p.category) 
+		where c.category_parent = 1 group by c.category_code order by c.category_code
+	</select>
+	
+	<!-- 특정 카테고리 상품수 -->
 	<select id="selectCategoryCount" resultType="_int">
 		select count(*) from product where category = #{categoryCode}
 	</select>
 	
+	<!-- 쿠폰 조회 -->
 	<select id="selectCoupon" resultType="couponDTO">
 		select coupon_name, expire_date, count(coupon_name) amount from coupon 
 		where user_id = #{userId} and usage_status = 0 group by(coupon_name, expire_date)
 	</select>
+	
+	<!-- 상품 등록 -->
+	<insert id="insert">
+		insert into product values
+		(seq_product.nextval, #{seller}, null, #{title}, #{category}, #{content}, #{price}, sysdate, #{openStatus}, 'S', #{coupon}, #{offer}, default)
+	</insert>
+	
+	<!-- 관심 목록 등록 -->
+	<insert id="addToWish">
+		insert into wish values
+		(seq_wish.nextval, #{userId}, #{pCode})
+	</insert>
+	
+	
+	
 </mapper>

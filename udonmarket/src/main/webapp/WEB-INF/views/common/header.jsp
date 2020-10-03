@@ -3,6 +3,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -37,7 +39,6 @@
 	<!-- notification css -->
     <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/notification.css">
     <script src="${pageContext.request.contextPath }/resources/js/notification.js"></script>
-    
 <script>
 <%-- RedirectAttribute에 등록된 msg값 존재 여부 확인 후 출력 --%>
 <c:if test="${not empty msg }">
@@ -80,24 +81,33 @@
 										<a class="dropdown-item" href="/">동네사건사고</a>
                                     </div>
                                 </li>
+								<!--관리자메뉴 -->
+								<sec:authorize access="hasRole('ADMIN')">
+                               	<li class="nav-item">
+                               		<a class="nav-link" href="${pageContext.request.contextPath }/admin/memberList">회원관리</a>
+                               	</li>
+                               	</sec:authorize>
                             </ul>
                         </div>
                         <div class="hearer_icon d-flex">
                             <a id="search_1" href="javascript:void(0)"><i class="ti-search"></i></a>
                             <a href="#" id="bell"><i class="ti-bell"></i></a>
                             <a href="${pageContext.request.contextPath }/chat/chatListView"><i class="ti-comments-smiley"></i></a>
-                            <a href="${pageContext.request.contextPath }/member/mypage"><i class="ti-user"></i></a>
                             
-                            <c:if test="${empty loginMember }">
-	                            <a href="${pageContext.request.contextPath }/member/loginForm"><i class="ti-power-off"></i></a>
-                            </c:if>
-                            <c:if test="${not empty loginMember }">
-                            	<span>${ loginMember.userId}</span>님, 반갑습니다. 
-                            	<a href="${pageContext.request.contextPath }/member/logout">로그아웃<i class="ti-power-off"></i></a>
-                            </c:if>
-                            
-                        </div>
-                        
+                            <sec:authorize access="isAnonymous()">
+	                        	<a href="${pageContext.request.contextPath }/member/loginForm"><i class="ti-power-off"></i></a>
+	                        </sec:authorize>
+	                        
+	                        <sec:authorize access="isAuthenticated()">
+	                        <sec:authentication property="principal.username" var="loggedInUserId" />
+                            <a href="${pageContext.request.contextPath }/member/mypage?userId=${loggedInUserId}"><i class="ti-user"></i></a>
+                       
+                            <form:form method="POST" action="${pageContext.request.contextPath }/member/logout">
+                            	<button type="submit"><i class="ti-power-off"></i></button>
+                            </form:form> 
+	                        </sec:authorize>
+							
+                        </div>                        
                         <div class="notifications" id="box">
 					        <h2>Notifications - <span>2</span></h2>
 					        <div class="notifications-item"> <img src="https://i.imgur.com/uIgDDDd.jpg" alt="img">
@@ -113,9 +123,7 @@
 					            </div>
 					        </div>
 					    </div>
-                        
-                        
-                        
+ 
                     </nav>
                 </div>
             </div>

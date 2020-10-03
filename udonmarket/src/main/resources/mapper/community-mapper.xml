@@ -3,7 +3,26 @@
 <mapper namespace="community">
 
 	<select id="selectCommunityList" resultType="community">
-		select * from board order by b_code desc
+		select 
+			*
+		from 
+			board
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+
+			<if test="searchType=='board_title' and keyword != null and keyword != '' ">
+
+				AND board_title like CONCAT('%' || #{keyword}, '%')
+
+			</if>
+
+			<if test="searchType=='board_content' and keyword != null and keyword != '' ">
+
+				AND board_content like CONCAT('%' || #{keyword}, '%')
+
+			</if>
+
+		</trim> 
+		order by b_code desc
 	</select>
 	
 	<select id="selectOneCommunityCollection" resultMap="communityCollectionMap">

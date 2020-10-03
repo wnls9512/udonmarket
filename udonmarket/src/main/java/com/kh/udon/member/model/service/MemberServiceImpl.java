@@ -13,18 +13,20 @@ import com.kh.udon.member.model.vo.Keyword;
 import com.kh.udon.member.model.vo.Location;
 import com.kh.udon.member.model.vo.Member;
 import com.kh.udon.member.model.vo.Review;
+<<<<<<< HEAD
 import com.kh.udon.member.model.vo.announce;
+=======
+import com.kh.udon.product.model.vo.ProductVO;
+
+import lombok.extern.slf4j.Slf4j;
+>>>>>>> branch 'master' of https://github.com/oheunju/udonmarket.git
 
 @Service
+@Slf4j
 public class MemberServiceImpl implements MemberService
 {
     @Autowired
     private MemberDao memberDao;
-
-	@Override
-	public int insertKeyword(Map<String, Object> map) {
-		return memberDao.insertKeyword(map);
-	}
 
 	@Override
 	public List<Keyword> selectKeywordList(String userId) {
@@ -39,11 +41,6 @@ public class MemberServiceImpl implements MemberService
 	@Override
 	public int deleteKeyword(int keyCode) {
 		return memberDao.deleteKeyword(keyCode);
-	}
-
-	@Override
-	public int insertMember(Member member) {
-		return memberDao.insertMember(member);
 	}
 
 	@Override
@@ -96,9 +93,50 @@ public class MemberServiceImpl implements MemberService
 		return memberDao.selectAllReview(userId);
 	}
 
+<<<<<<< HEAD
 	@Override
 	public List<announce> selectAnnounceList(int limit, int offset) {
 		return memberDao.selectAnnounceList(limit, offset);
+=======
+	@Transactional(rollbackFor = { Exception.class })
+	@Override
+	public int insertMemberLocAuth(Member member) {
+		
+		int result = 0;
+		
+		result = memberDao.insertMember(member);
+		log.debug("result = {}", result);
+		log.debug("member = {}", member);
+
+		
+		if(result > 0) {
+			result = memberDao.insertLocation(member.getUserId());
+			log.debug("result = {}", result);
+			result = memberDao.insertAuthority(member.getUserId());
+			log.debug("result = {}", result);
+		}
+		
+		return result;
+	}
+	@Override
+	public List<ProductVO> selectAllSalesPro(String userId) {
+		return memberDao.selectAllSalesPro(userId);
+	}
+
+	@Override
+	public List<ProductVO> selectAllBuyPro(String userId) {
+		return memberDao.selectAllBuyPro(userId);
+	}
+
+	@Override
+	public List<ProductVO> selectAllWishPro(String userId) {
+		return memberDao.selectAllWishPro(userId);
+	}
+
+	@Override
+	public int insertKeyword(Keyword key) {
+		return memberDao.insertKeyword(key);
+>>>>>>> branch 'master' of https://github.com/oheunju/udonmarket.git
 	}
 
 }

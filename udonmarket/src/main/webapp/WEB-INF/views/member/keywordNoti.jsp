@@ -3,7 +3,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
-
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <fmt:requestEncoding value="utf-8"/>
 
 <jsp:include page="/WEB-INF/views/common/header.jsp">
@@ -43,12 +44,19 @@ html { font-size: 16px; }
 	        <div class="bg-white shadow rounded overflow-hidden">
 	            <div class="px-4 pt-0 pb-4 cover">
 	                <div class="media align-items-end profile-head">
-	                    <div class="profile mr-3"><img src="https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=80" alt="..." width="130" class="rounded mb-2 img-thumbnail">
-	                    	<a href="${pageContext.request.contextPath }/member/mypage" class="btn btn-outline-dark btn-sm btn-block">Mypage</a>
+	                    <div class="profile mr-3">
+	                    	<!-- LoggdeInUser 정보 가져오기  -->
+	                        <sec:authentication property="principal" var="loggedInUser" />
+	                    	<img src="${pageContext.request.contextPath }/resources/img/member/${member.renamedFileName == null 
+	                    															 ? member.originalFileName:member.renamedFileName}" 
+	                    		 alt="..." 
+	                    		 width="130" 
+	                    		 class="rounded mb-2 img-thumbnail">
+	                    	<a href="${pageContext.request.contextPath }/member/mypage?userId=${member.userId}" class="btn btn-outline-dark btn-sm btn-block">Mypage</a>
 	                    </div>
 	                    <div class="media-body mb-5 text-white">
-	                        <h4 class="mt-0 mb-0" style="color:white;">Mark Williams</h4>
-	                        <p class="small mb-4" style="color:white;"> <i class="fas fa-map-marker-alt mr-2"></i>New York</p>
+	                        <h4 class="mt-0 mb-0" style="color:white;">${member.nickName}</h4>
+	                        <p class="small mb-4" style="color:white;"> <i class="fas fa-map-marker-alt mr-2"></i>${member.address}</p>
 	                    </div>
 	                </div>
 	            </div>
@@ -56,21 +64,21 @@ html { font-size: 16px; }
 	                <ul class="list-inline mb-0">
 	                    <li class="list-inline-item">            
 	                       <h6 class="font-weight-bold mb-0 d-block">	                       	
-	                       	<a href="${pageContext.request.contextPath }/member/salesList">
+	                       	<a href="${pageContext.request.contextPath }/member/salesList?userId=${member.userId}">
 	                       		<i class="fas fa-receipt fa-2x" ></i> <br /> 판매목록
 	                       	</a>
 	                       </h6>
 	                    </li>
 	                    <li class="list-inline-item">
 	                    	<h6 class="font-weight-bold mb-0 d-block">	                       	
-	                       	<a href="${pageContext.request.contextPath }/member/buyList">
+	                       	<a href="${pageContext.request.contextPath }/member/buyList?userId=${member.userId}">
 	                       		<i class="fas fa-shopping-bag fa-2x" ></i> <br /> 구매목록
 	                       	</a>
 	                       </h6>
 	                    </li>
 	                    <li class="list-inline-item">
 	                    	<h6 class="font-weight-bold mb-0 d-block">	                       	
-	                       	<a href="${pageContext.request.contextPath }/member/wishList">
+	                       	<a href="${pageContext.request.contextPath }/member/wishList?userId=${member.userId}">
 	                       		<i class="fas fa-heart fa-2x" ></i> <br /> 관심목록
 	                       	</a>
 	                       </h6>
@@ -96,7 +104,7 @@ html { font-size: 16px; }
 								 <a href="#" style="color: #007bff;">혹시 키워드 알림이 오지 않나요?</a>
 							</div>
 							<br />
-							<form action="" class="insertKeyword">
+							<form:form class="insertKeyword">
 								<div class="input-group mb-3">
 								  <input type="text" 
 								  		 name="keyword"
@@ -105,7 +113,7 @@ html { font-size: 16px; }
 								  		 aria-label="Recipient's username" 
 								  		 aria-describedby="basic-addon2">
 								  <!-- value = 로그인 중인 유저 아이디 -->
-								  <input type="hidden" name="userId" value="" />
+								  <input type="hidden" name="userId" value="${member.userId}" />
 								  <div class="input-group-append">
 							      <input type="button" 
 							      		 id="btn-insert"
@@ -114,20 +122,20 @@ html { font-size: 16px; }
 								  </div>
 								</div>
 								<span class="guide error">이미 추가된 키워드예요 🤔 </span>
-								<input type="hidden" id="idValid" value="0" />
-							</form>
+							</form:form>
 							<br />
 							<p>등록된 키워드  <mark style="color: red; background: white;">${totalKeywordContents}</mark>/ 30</p>
+							<input type="hidden" id="totalKeywordContents" value="${totalKeywordContents}" />
 							<div>
 								<c:if test="${ not empty list }">
 									<c:forEach items="${ list }" var="key">
-										<h5 id="keywordList" style="display: inline-block;">
-											<span class="btn btn-outline-primary btn-sm">${key.keyContent}
+										<div id="keywordList" style="display: inline-block;">
+											<span id="keyCode${key.keyCode}" class="btn btn-outline-primary btn-sm">${key.keyContent}
 											<button type="button" 
-													onclick="deleteKey('${ key.keyCode }')"
+													onclick="deleteKey('${ key.keyCode }', '${key.keyContent}')"
 													style="background: none; border: none;">x</button>
 											</span>
-										</h5>							
+										</div>							
 									</c:forEach>
 								</c:if>
 								<c:if test="${ empty list }"></c:if>
@@ -145,15 +153,21 @@ $(function(){
 	$("#idValid").val(0);
 	$("#btn-insert").attr('disabled', true);
 
+	//키워드 30개 이상 추가 막기
+	if( $("#totalKeywordContents").val() >= 30 ){
+		$("[name=keyword]").attr("readonly", true);
+		$("[name=keyword]").attr("placeholder", '키워드는 최대 30개까지 설정할 수 있어요');
+	}
+
 	//키워드 중복 검사
 	$("[name=keyword]").keyup(function(){
 
 	 	if($(this).val() == ''){
 	 		$(".guide.error").hide();
-			$("#idValid").val(0);
 			$("#btn-insert").attr('disabled', true);
 			return;
 		} 
+
 		
 		$.ajax({
 			url : "${pageContext.request.contextPath}/member/checkKeywordDuplicate",
@@ -167,12 +181,10 @@ $(function(){
 
 				if(data.isUsable == true){
 					$(".guide.error").hide();
-					$("#idValid").val(1);
 					$("#btn-insert").attr('disabled', false);
 				}
 				else{
 					$(".guide.error").show();
-					$("#idValid").val(0);
 					$("#btn-insert").attr('disabled', true);
 				}
 					
@@ -187,16 +199,70 @@ $(function(){
 	
 });
 
-function deleteKey(key){
-	if(!confirm('정말 삭제할까요?')) return;
-	location.href = "${ pageContext.request.contextPath }/member/deleteKeyword?key=" + key;
+function deleteKey(keyCode, keyword){
+	
+	if(!confirm('🍜 [' + keyword + '] 을/를 정말 삭제할까요? 🍜')) return;
+
+	$.ajax({
+		url : "${pageContext.request.contextPath}/member/deleteKeyword",
+		method : "POST",
+		data : {
+			key : keyCode
+		},
+		dataType : "json",
+		beforeSend : function(xhr){   /*데이터를 전송하기 전에 헤더에 csrf값을 설정한다*/
+            xhr.setRequestHeader("${_csrf.headerName}", "${_csrf.token}");
+        },
+		success : function(data){
+				alert("🍜 키워드 알림 [" + keyword + "] 을/를 삭제했어요 🍜 ");
+
+				//요소 삭제
+				let $key = "#keyCode" + data.key;
+				$($key).remove();
+
+				//총 키워드 개수 처리
+				$("#totalKeywordContents").html(${totalKeywordContents} - 1);
+		},
+		error : function(xhr, status, err){
+			 console.log("처리 실패", xhr, status, err)
+		}
+
+	});
+	
 }
 
 $("#btn-insert").click(function(){
 
-	$(".insertKeyword").attr("action", "${ pageContext.request.contextPath }/member/insertKeyword")
-	.attr("method", "POST")
-	.submit();	
+	var $userId = $("[name=userId]");
+	var $keyword = $("[name=keyword]");
+
+	$.ajax({
+		url : "${pageContext.request.contextPath}/member/insertKeyword",
+		method : "POST",
+		data : {
+			userId : $userId.val(),
+			keyword : $keyword.val()
+		},
+		dataType : "json",
+		beforeSend : function(xhr){   /*데이터를 전송하기 전에 헤더에 csrf값을 설정한다*/
+            xhr.setRequestHeader("${_csrf.headerName}", "${_csrf.token}");
+        },
+		success : function(data){
+				alert("🍜 키워드 알림에 추가했어요 🍜 ");
+				$keyword.val(''); //초기화
+
+				let $span = $("<span class='btn btn-outline-primary btn-sm'>"+ data.keyword +"</span>");
+				$span.append('<button type="button" onclick="deleteKey(' + data.keyCode +')" style="background: none; border: none;">x</button>');
+				$("#keywordList").append($span); 
+
+				$("#totalKeywordContents").html(${totalKeywordContents} + 1);
+				
+		},
+		error : function(xhr, status, err){
+			 console.log("처리 실패", xhr, status, err)
+		}
+
+	});
 	
 });
 </script>

@@ -3,12 +3,15 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
 <fmt:requestEncoding value="utf-8"/>
 
 <jsp:include page="/WEB-INF/views/common/header.jsp">
 	<jsp:param value="중고거래" name="pageTitle"/>
 </jsp:include>
+
+<sec:authentication property="principal.username" var="userId"/>
 
     <!--================Home Banner Area =================-->
     <!-- breadcrumb start-->
@@ -55,10 +58,6 @@
                                 </ul>
                             </div>
                         </aside>
-
-
-
-
                     </div>
                 </div>
                 <div class="col-lg-9">
@@ -67,16 +66,6 @@
                             <div class="product_top_bar d-flex justify-content-between align-items-center">
                                 <div class="single_product_menu">
                                     <p><span>${totalCount }</span> 개의 상품</p>
-                                </div>
-                                <div class="single_product_menu d-flex">
-                                    <h5>정렬 : </h5>
-                                    <select>
-                                        <option data-display="최신순">최신순</option>
-                                        <option value="1">가격 ↑</option>
-                                        <option value="1">가격 ↓</option>
-                                        <option value="2">거리순 ↑</option>
-                                        <option value="2">거리순 ↓</option>
-                                    </select>
                                 </div>
                                 <div class="single_product_menu d-flex">
                                     <div class="input-group">
@@ -91,130 +80,54 @@
                             </div>
                         </div>
                     </div>
-
                     <div class="row align-items-center latest_product_inner">
+						<c:forEach items="${products}" var="p">
                         <div class="col-lg-4 col-sm-6">
                             <div class="single_product_item">
-                                <img src="${pageContext.request.contextPath }/resources/img/product/product_1.png" alt=""
-                                	 onclick="location.href='${pageContext.request.contextPath }/product/productDetailView';">
+                                <img src="${pageContext.request.contextPath}/resources/img/product/product_1.png" alt=""
+                                	 onclick="location.href='${pageContext.request.contextPath}/product/productDetailView?pCode=${p.PCode}';">
                                 <div class="single_product_text">
-                                    <h4>Quartz Belt Watch</h4>
-                                    <h3>$150.00</h3>
-                                    <a href="#" class="add_cart">
+                                    <h4>${p.title}</h4>
+                                    <span style="color: gray;">${p.address} · <c:if test="${p.regDate != 0}">${p.regDate} days ago</c:if>
+                                    										   <c:if test="${p.regDate == 0}">today</c:if></span>
+                                    <h3><fmt:formatNumber type="number" maxFractionDigits="3" value="${p.price}" />원</h3>
+                                    <span class="float-right" style="color: gray;"><i class="far fa-heart"></i> ${p.wish}  <i class="far fa-comments"></i> ${p.chat }<br /></span>
+        	                            <a href="javascript:addToWish('${userId}', '${p.PCode}')" class="add_cart">
                                     	+ add to favorite<i class="ti-heart"></i>
                                    	</a>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-4 col-sm-6">
-                            <div class="single_product_item">
-                                <img src="${pageContext.request.contextPath }/resources/img/product/product_2.png" alt="">
-                                <div class="single_product_text">
-                                    <h4>Quartz Belt Watch</h4>
-                                    <h3>$150.00</h3>
-                                    <a href="#" class="add_cart">+ add to favorite<i class="ti-heart"></i></a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-4 col-sm-6">
-                            <div class="single_product_item">
-                                <img src="${pageContext.request.contextPath }/resources/img/product/product_3.png" alt="">
-                                <div class="single_product_text">
-                                    <h4>Quartz Belt Watch</h4>
-                                    <h3>$150.00</h3>
-                                    <a href="#" class="add_cart">+ add to favorite<i class="ti-heart"></i></a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-4 col-sm-6">
-                            <div class="single_product_item">
-                                <img src="${pageContext.request.contextPath }/resources/img/product/product_4.png" alt="">
-                                <div class="single_product_text">
-                                    <h4>Quartz Belt Watch</h4>
-                                    <h3>$150.00</h3>
-                                    <a href="#" class="add_cart">+ add to favorite<i class="ti-heart"></i></a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-4 col-sm-6">
-                            <div class="single_product_item">
-                                <img src="${pageContext.request.contextPath }/resources/img/product/product_5.png" alt="">
-                                <div class="single_product_text">
-                                    <h4>Quartz Belt Watch</h4>
-                                    <h3>$150.00</h3>
-                                    <a href="#" class="add_cart">+ add to favorite<i class="ti-heart"></i></a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-4 col-sm-6">
-                            <div class="single_product_item">
-                                <img src="${pageContext.request.contextPath }/resources/img/product/product_6.png" alt="">
-                                <div class="single_product_text">
-                                    <h4>Quartz Belt Watch</h4>
-                                    <h3>$150.00</h3>
-                                    <a href="#" class="add_cart">+ add to favorite<i class="ti-heart"></i></a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-4 col-sm-6">
-                            <div class="single_product_item">
-                                <img src="${pageContext.request.contextPath }/resources/img/product/product_7.png" alt="">
-                                <div class="single_product_text">
-                                    <h4>Quartz Belt Watch</h4>
-                                    <h3>$150.00</h3>
-                                    <a href="#" class="add_cart">+ add to favorite<i class="ti-heart"></i></a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-4 col-sm-6">
-                            <div class="single_product_item">
-                                <img src="${pageContext.request.contextPath }/resources/img/product/product_8.png" alt="">
-                                <div class="single_product_text">
-                                    <h4>Quartz Belt Watch</h4>
-                                    <h3>$150.00</h3>
-                                    <a href="#" class="add_cart">+ add to favorite<i class="ti-heart"></i></a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-4 col-sm-6">
-                            <div class="single_product_item">
-                                <img src="${pageContext.request.contextPath }/resources/img/product/product_2.png" alt="">
-                                <div class="single_product_text">
-                                    <h4>Quartz Belt Watch</h4>
-                                    <h3>$150.00</h3>
-                                    <a href="#" class="add_cart">+ add to favorite<i class="ti-heart"></i></a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-12">
-                            <div class="pageination">
-                                <nav aria-label="Page navigation example">
-                                    <ul class="pagination justify-content-center">
-                                        <li class="page-item">
-                                            <a class="page-link" href="#" aria-label="Previous">
-                                                <i class="ti-angle-double-left"></i>
-                                            </a>
-                                        </li>
-                                        <li class="page-item"><a class="page-link" href="#">1</a></li>
-                                        <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                        <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                        <li class="page-item"><a class="page-link" href="#">4</a></li>
-                                        <li class="page-item"><a class="page-link" href="#">5</a></li>
-                                        <li class="page-item"><a class="page-link" href="#">6</a></li>
-                                        <li class="page-item">
-                                            <a class="page-link" href="#" aria-label="Next">
-                                                <i class="ti-angle-double-right"></i>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </nav>
-                            </div>
+                    	</c:forEach>
+					</div>
+                    <div class="col-lg-12">
+                        <div class="pageination">
+                            <nav aria-label="Page navigation example">
+                                <ul class="pagination justify-content-center">
+                                    <li class="page-item">
+                                        <a class="page-link" href="#" aria-label="Previous">
+                                            <i class="ti-angle-double-left"></i>
+                                        </a>
+                                    </li>
+                                    <li class="page-item"><a class="page-link" href="#">1</a></li>
+                                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                    <li class="page-item"><a class="page-link" href="#">4</a></li>
+                                    <li class="page-item"><a class="page-link" href="#">5</a></li>
+                                    <li class="page-item"><a class="page-link" href="#">6</a></li>
+                                    <li class="page-item">
+                                        <a class="page-link" href="#" aria-label="Next">
+                                            <i class="ti-angle-double-right"></i>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </nav>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </section>
+	</section>
     <!--================End Category Product Area =================-->
 
     <!-- product_list part start-->
@@ -230,6 +143,7 @@
             <div class="row align-items-center justify-content-between">
                 <div class="col-lg-12">
                     <div class="best_product_slider owl-carousel">
+                    
                         <div class="single_product_item">
                             <img src="${pageContext.request.contextPath }/resources/img/product/product_1.png" alt="">
                             <div class="single_product_text">
@@ -237,6 +151,7 @@
                                 <h3>$150.00</h3>
                             </div>
                         </div>
+                        
                         <div class="single_product_item">
                             <img src="${pageContext.request.contextPath }/resources/img/product/product_2.png" alt="">
                             <div class="single_product_text">
@@ -274,6 +189,36 @@
 
 <jsp:include page="/WEB-INF/views/common/footer.jsp"/>
 	
+	
+<script>
+// 관심 목록 추가
+function addToWish(userId, pCode)
+{
+	$.ajax
+	({
+		url: "${pageContext.request.contextPath}/product/addToWish",
+		method: "POST",
+		data: 
+		{
+			userId: userId,
+			pCode: pCode
+		}, 
+		dataType: "text",
+		beforeSend: function(xhr)
+		{
+            xhr.setRequestHeader("${_csrf.headerName}", "${_csrf.token}");
+        },
+			success: function(result)
+		{
+			alert(result);										
+		},
+		error: function(xhr, status, err)
+		{
+			alert("이미 관심목록에 추가되있어요 💘");
+		}
+	});
+}
+</script>
 	
 	
 	

@@ -13,7 +13,11 @@ import com.kh.udon.member.model.vo.Keyword;
 import com.kh.udon.member.model.vo.Location;
 import com.kh.udon.member.model.vo.Member;
 import com.kh.udon.member.model.vo.Review;
+<<<<<<< HEAD
 import com.kh.udon.member.model.vo.announce;
+=======
+import com.kh.udon.product.model.vo.ProductVO;
+>>>>>>> branch 'master' of https://github.com/oheunju/udonmarket.git
 
 @Repository
 public class MemberDaoImpl implements MemberDao
@@ -24,11 +28,6 @@ public class MemberDaoImpl implements MemberDao
 	@Override
 	public int updateLocation(Map<String, Object> map) {
 		return session.update("member.updateLocation", map);
-	}
-
-	@Override
-	public int insertKeyword(Map<String, Object> map) {
-		return session.update("member.insertKeyword", map);
 	}
 
 	@Override
@@ -44,11 +43,6 @@ public class MemberDaoImpl implements MemberDao
 	@Override
 	public int deleteKeyword(int keyCode) {
 		return session.delete("member.deleteKeyword", keyCode);
-	}
-
-	@Override
-	public int insertMember(Member member) {
-		return session.insert("member.insertMember", member);
 	}
 
 	@Override
@@ -92,10 +86,45 @@ public class MemberDaoImpl implements MemberDao
 	}
 
 	@Override
+<<<<<<< HEAD
 	public List<announce> selectAnnounceList(int limit, int offset) {
 		RowBounds rowBounds = new RowBounds(offset, limit);
 		return session.selectList("member.selectAnnounceList", null , rowBounds );
 	}
 
+=======
+	public int insertMember(Member member) {
+		return session.insert("member.insertMember", member);
+	}
+
+	@Override
+	public int insertLocation(String userId) {
+		return session.insert("member.insertLocation", userId);
+	}
+>>>>>>> branch 'master' of https://github.com/oheunju/udonmarket.git
 	
+	@Override
+	public int insertAuthority(String userId) {
+		return session.insert("member.insertAuthority", userId);
+	}
+	
+	public List<ProductVO> selectAllSalesPro(String userId) {
+		return session.selectList("member.selectAllSalesPro", userId);
+	}
+
+	@Override
+	public List<ProductVO> selectAllBuyPro(String userId) {
+		return session.selectList("member.selectAllBuyPro", userId);
+	}
+
+	@Override
+	public List<ProductVO> selectAllWishPro(String userId) {
+		return session.selectList("member.selectAllWishPro", userId);
+	}
+
+	@Override
+	public int insertKeyword(Keyword key) {
+		return session.insert("member.insertKeyword", key);
+	}
+
 }

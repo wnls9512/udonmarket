@@ -61,8 +61,14 @@
 	values(
 		seq_keyword.nextval,
 		#{userId},
-		#{keyword}
+		#{keyContent}
 	)
+	<selectKey keyProperty="keyCode" resultType="_int" order="AFTER">
+		select
+        	seq_keyword.currval
+    	from 
+        	dual
+	</selectKey>
 </insert>
 
 <!-- 키워드 가져와서 view단 뿌리기 용 -->
@@ -93,12 +99,20 @@
 		key_code = #{keyCode}
 </delete>
 
+<!-- 회원가입 -->
 <insert id="insertMember">
 	insert into member
-	values(#{userId},#{password},#{email},#{nickName},#{address},null,null,default,default,default)
-
+	values(#{userId},#{password},#{email},#{nickName},null,null,null,default,default,default)
 </insert>
-
+<insert id="insertLocation">
+	insert into location
+	values (#{userId}, '37.4969519', '127.0261588','3')
+</insert>
+<insert id="insertAuthority">
+	insert into authority
+	values (default, #{userId})
+</insert>
+<!-- 로그인 -->
 <select id="selectOneMember" resultMap="memberMap">
 	select *
 	from member
@@ -144,6 +158,7 @@
 		review_code desc
 </select>
 
+<<<<<<< HEAD
 <!-- 공지사항 조회 -->
 <select id="selectAnnounceList" resultMap="announceMap">
 	select
@@ -157,4 +172,43 @@
 
 </resultMap>
 
+=======
+<!-- 판매 내역 조회하기 -->
+<select id="selectAllSalesPro" resultType="productVO">
+	select 
+		* 
+	from 
+		product 
+	where 
+		seller = #{userId} 
+	order by 
+		reg_date desc
+</select>
+
+<!-- 구매 내역 조회하기 -->
+<select id="selectAllBuyPro" resultType="productVO">
+	select 
+		* 
+	from 
+		product 
+	where 
+		buyer = #{userId} 
+	order by 
+		reg_date desc
+</select>
+
+<!-- 관심 목록 조회하기 -->
+<select id="selectAllWishPro" resultType="wish">
+	select 
+		*
+	from 
+		wish W, product P
+	where 
+		W.p_code = P.p_code
+	and 
+		W.user_id = 'test'
+	order by 
+		wish_code desc
+</select>
+>>>>>>> branch 'master' of https://github.com/oheunju/udonmarket.git
 </mapper>
