@@ -1,6 +1,7 @@
 package com.kh.udon.product.model.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -71,6 +72,19 @@ public class ProductDaoImpl implements ProductDao
     {
         return session.insert("product.addToWish", wish);
     }
+
+    @Override
+    public List<ProductDTO> search(Map<String, Object> map)
+    {
+        return session.selectList("product.search", map);
+    }
+
+    @Override
+    public int selectSearchCount(Map<String, Object> map)
+    {
+        return session.selectOne("product.selectSearchCount", map);
+    }
+
 
     
     

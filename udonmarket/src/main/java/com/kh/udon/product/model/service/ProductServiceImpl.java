@@ -1,6 +1,7 @@
 package com.kh.udon.product.model.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -72,6 +73,20 @@ public class ProductServiceImpl implements ProductService
         return dao.addToWish(wish);
     }
 
+    @Override
+    public List<ProductDTO> search(Map<String, Object> map)
+    {
+        return dao.search(map);
+    }
+
+    @Override
+    public int selectSearchCount(Map<String, Object> map)
+    {
+        return dao.selectSearchCount(map);
+    }
+
+
+    
     
     
 }

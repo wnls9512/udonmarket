@@ -1,6 +1,7 @@
 package com.kh.udon.product.model.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import com.kh.udon.member.model.vo.Wish;
 import com.kh.udon.product.model.vo.CategoryVO;
@@ -28,6 +29,11 @@ public interface ProductDao
     List<ProductDTO> selectCategoryProducts(String categoryCode);
 
     int addToWish(Wish wish);
+
+    List<ProductDTO> search(Map<String, Object> map);
+
+    int selectSearchCount(Map<String, Object> map);
+
 
 
 }

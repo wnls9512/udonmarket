@@ -50,8 +50,15 @@
                                 <ul class="list">
                                 	<c:forEach items="${category }" var="c" varStatus="status">
                                     <li>
+                                    	<c:if test="${selectedCategory == c.categoryCode}">
+                                        <a href="${pageContext.request.contextPath }/product/categoryList?category=${c.categoryCode }"
+                                           style="color: red;">
+                                        			${c.categoryName }</a>
+                                    	</c:if>
+                                    	<c:if test="${selectedCategory != c.categoryCode}">
                                         <a href="${pageContext.request.contextPath }/product/categoryList?category=${c.categoryCode }">
                                         			${c.categoryName }</a>
+                                    	</c:if>
                                         <span>(${categoryCount[status.index] })</span>
                                     </li>
                                     </c:forEach>
@@ -70,7 +77,8 @@
                                 <div class="single_product_menu d-flex">
                                     <div class="input-group">
                                         <input type="text" class="form-control" placeholder="검색"
-                                            aria-describedby="inputGroupPrepend">
+                                               onkeyup="javascript:if (event.keyCode == 13) search(this.value);" 
+                                               aria-describedby="inputGroupPrepend">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text" id="inputGroupPrepend"><i
                                                     class="ti-search"></i></span>
@@ -218,6 +226,15 @@ function addToWish(userId, pCode)
 		}
 	});
 }
+
+// 검색
+function search(keyword) 
+{
+	location.href = "${pageContext.request.contextPath}/product/search?keyword=" +
+					keyword + "&category=" + ${selectedCategory};
+}
+
+
 </script>
 	
 	
