@@ -8,6 +8,7 @@ import com.kh.udon.member.model.vo.Keyword;
 import com.kh.udon.member.model.vo.Location;
 import com.kh.udon.member.model.vo.Member;
 import com.kh.udon.member.model.vo.Review;
+import com.kh.udon.member.model.vo.announce;
 
 public interface MemberService
 {
@@ -36,4 +37,6 @@ public interface MemberService
 	int selectTotalReview(String userId);
 
 	List<Review> selectAllReview(String userId);
+
+	List<announce> selectAnnounceList(int limit, int offset);
 }

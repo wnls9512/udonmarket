@@ -3,6 +3,7 @@ package com.kh.udon.member.model.dao;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -12,6 +13,7 @@ import com.kh.udon.member.model.vo.Keyword;
 import com.kh.udon.member.model.vo.Location;
 import com.kh.udon.member.model.vo.Member;
 import com.kh.udon.member.model.vo.Review;
+import com.kh.udon.member.model.vo.announce;
 
 @Repository
 public class MemberDaoImpl implements MemberDao
@@ -87,6 +89,12 @@ public class MemberDaoImpl implements MemberDao
 	@Override
 	public List<Review> selectAllReview(String userId) {
 		return session.selectList("member.selectAllReview", userId);
+	}
+
+	@Override
+	public List<announce> selectAnnounceList(int limit, int offset) {
+		RowBounds rowBounds = new RowBounds(offset, limit);
+		return session.selectList("member.selectAnnounceList", null , rowBounds );
 	}
 
 	

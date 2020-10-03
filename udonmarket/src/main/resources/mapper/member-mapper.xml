@@ -144,4 +144,17 @@
 		review_code desc
 </select>
 
+<!-- 공지사항 조회 -->
+<select id="selectAnnounceList" resultMap="announceMap">
+	select
+		B.*
+	from 
+		board B
+	order by
+		no desc
+</select>
+<resultMap type="announce" id="announceMap">
+
+</resultMap>
+
 </mapper>

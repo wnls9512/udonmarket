@@ -13,6 +13,7 @@ import com.kh.udon.member.model.vo.Keyword;
 import com.kh.udon.member.model.vo.Location;
 import com.kh.udon.member.model.vo.Member;
 import com.kh.udon.member.model.vo.Review;
+import com.kh.udon.member.model.vo.announce;
 
 @Service
 public class MemberServiceImpl implements MemberService
@@ -93,6 +94,11 @@ public class MemberServiceImpl implements MemberService
 	@Override
 	public List<Review> selectAllReview(String userId) {
 		return memberDao.selectAllReview(userId);
+	}
+
+	@Override
+	public List<announce> selectAnnounceList(int limit, int offset) {
+		return memberDao.selectAnnounceList(limit, offset);
 	}
 
 }

@@ -129,7 +129,6 @@ html { font-size: 16px; }
 									<th>제목</th>
 									<th>작성자</th>
 									<th>작성일</th>
-									<th>조회수</th>
 								</tr>
 							</table>
 							</div>		

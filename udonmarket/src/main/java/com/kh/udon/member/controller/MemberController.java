@@ -26,6 +26,7 @@ import com.kh.udon.member.model.vo.Evaluate;
 import com.kh.udon.member.model.vo.Keyword;
 import com.kh.udon.member.model.vo.Member;
 import com.kh.udon.member.model.vo.Review;
+import com.kh.udon.member.model.vo.announce;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -214,9 +215,21 @@ public class MemberController
     
     //공지 사항
     @RequestMapping("/announce")
-    public String announce()
+    public ModelAndView announce(ModelAndView mav,
+    							@RequestParam(defaultValue="1")int cPage)
     {
-    	return "member/announce";
+    	//1.사용자 입력값
+    	final int limit = 10;
+    	int offset = (cPage -1) * limit;
+    	
+    	//2.업무로직
+    	List<announce> list = service.selectAnnounceList(limit,offset);
+    	log.debug("list = {}",list);
+    	
+    	//3.view단처리
+    	mav.addObject("list",list);
+    	mav.setViewName("member/announce");
+    	return mav;
     }
 
     //관심 주제 목록
