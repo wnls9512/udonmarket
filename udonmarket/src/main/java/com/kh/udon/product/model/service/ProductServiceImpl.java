@@ -1,6 +1,7 @@
 package com.kh.udon.product.model.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -9,7 +10,7 @@ import com.kh.udon.member.model.vo.Wish;
 import com.kh.udon.product.model.dao.ProductDao;
 import com.kh.udon.product.model.vo.CategoryVO;
 import com.kh.udon.product.model.vo.CouponDTO;
-import com.kh.udon.product.model.vo.ProductDTO;
+import com.kh.udon.product.model.vo.ProductListDTO;
 import com.kh.udon.product.model.vo.ProductVO;
 
 @Service
@@ -55,13 +56,13 @@ public class ProductServiceImpl implements ProductService
     }
 
     @Override
-    public List<ProductDTO> selectAll()
+    public List<ProductListDTO> selectAll()
     {
         return dao.selectAll();
     }
 
     @Override
-    public List<ProductDTO> selectCategoryProducts(String categoryCode)
+    public List<ProductListDTO> selectCategoryProducts(String categoryCode)
     {
         return dao.selectCategoryProducts(categoryCode);
     }
@@ -72,6 +73,26 @@ public class ProductServiceImpl implements ProductService
         return dao.addToWish(wish);
     }
 
+    @Override
+    public List<ProductListDTO> search(Map<String, Object> map)
+    {
+        return dao.search(map);
+    }
+
+    @Override
+    public int selectSearchCount(Map<String, Object> map)
+    {
+        return dao.selectSearchCount(map);
+    }
+
+    @Override
+    public ProductListDTO selectOneByPCode(int pCode)
+    {
+        return dao.selectOneByPCode(pCode);
+    }
+
+    
+    
     
     
 }

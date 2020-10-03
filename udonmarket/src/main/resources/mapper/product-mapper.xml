@@ -5,7 +5,7 @@
 
 
 	<!-- 전체 리스트 -->
-	<select id="selectAll" resultType="productDTO">
+	<select id="selectAll" resultType="productListDTO">
 		select p.p_code, p.seller, p.title, p.price, trunc(sysdate - p.reg_date) reg_date, substr(m.address, instr(m.address, ' ', 1, 1), instr(m.address, ' ', 1, 2)) address, wc.wish, cc.chat
 		from product p left join member m on(p.seller = m.user_id)
 		               left join (select a.p_code p_code, count(b.p_code) wish from product a left outer join wish b on(a.p_code = b.p_code) group by a.p_code) wc on(wc.p_code = p.p_code)
@@ -14,7 +14,7 @@
 	</select>
 	
 	<!-- 카테고리 리스트 -->
-	<select id="selectCategoryProducts" resultType="productDTO">
+	<select id="selectCategoryProducts" resultType="productListDTO">
 		select p.p_code, p.seller, p.title, p.price, trunc(sysdate - p.reg_date) reg_date, substr(m.address, instr(m.address, ' ', 1, 1), instr(m.address, ' ', 1, 2)) address, wc.wish, cc.chat
 		from product p left join member m on(p.seller = m.user_id)
 		               left join (select a.p_code p_code, count(b.p_code) wish from product a left outer join wish b on(a.p_code = b.p_code) group by a.p_code) wc on(wc.p_code = p.p_code)
@@ -22,9 +22,42 @@
 		where p.open_status = 1 and p.trade_status = 'S' and p.category = #{categoryCode} order by reg_date	
 	</select>
 
+	<!-- 검색결과 리스트 -->
+	<select id="search" resultType="productListDTO">
+		select p.p_code, p.seller, p.title, p.price, trunc(sysdate - p.reg_date) reg_date, substr(m.address, instr(m.address, ' ', 1, 1), instr(m.address, ' ', 1, 2)) address, wc.wish, cc.chat
+		from product p left join member m on(p.seller = m.user_id)
+		               left join (select a.p_code p_code, count(b.p_code) wish from product a left outer join wish b on(a.p_code = b.p_code) group by a.p_code) wc on(wc.p_code = p.p_code)
+		               left join (select a.p_code p_code, count(b.p_code) chat from product a left outer join chat_room b on(a.p_code = b.p_code) group by a.p_code) cc on(cc.p_code = p.p_code)
+		<where>
+			(p.title like '%'||#{keyword}||'%' or p.content like '%'||#{keyword}||'%')
+			and p.open_status = 1 and p.trade_status = 'S'
+		<if test="category != 0 ">
+			and p.category = #{category}
+		</if>
+		</where>
+		order by reg_date
+	</select>
+	
 	<!-- 전체 상품수 -->
 	<select id="selectTotalCount" resultType="_int">
 		select count(*) from product
+	</select>
+	
+	<!-- 특정 카테고리 상품수 -->
+	<select id="selectCategoryCount" resultType="_int">
+		select count(*) from product where category = #{categoryCode}
+	</select>
+	
+	<!-- 검색 상품수 -->
+	<select id="selectSearchCount" resultType="_int">
+		select count(*) from product 
+		<where>
+			(title like '%'||#{keyword}||'%' or content like '%'||#{keyword}||'%')
+			and open_status = 1 and trade_status = 'S'
+		<if test="category != 0 ">
+			and category = #{category}
+		</if>
+		</where>
 	</select>
 	
 	<!-- 카테고리 -->
@@ -38,10 +71,6 @@
 		where c.category_parent = 1 group by c.category_code order by c.category_code
 	</select>
 	
-	<!-- 특정 카테고리 상품수 -->
-	<select id="selectCategoryCount" resultType="_int">
-		select count(*) from product where category = #{categoryCode}
-	</select>
 	
 	<!-- 쿠폰 조회 -->
 	<select id="selectCoupon" resultType="couponDTO">
@@ -60,6 +89,15 @@
 		insert into wish values
 		(seq_wish.nextval, #{userId}, #{pCode})
 	</insert>
+	
+	<!-- 상품 조회 -->
+	<select id="selectOneByPCode" resultType="productListDTO">
+		select p.p_code, p.seller, p.title, p.content, p.price, trunc(sysdate - p.reg_date) reg_date, substr(m.address, instr(m.address, ' ', 1, 1), instr(m.address, ' ', 1, 2)) address, wc.wish, cc.chat
+		from product p left join member m on(p.seller = m.user_id)
+		               left join (select a.p_code p_code, count(b.p_code) wish from product a left outer join wish b on(a.p_code = b.p_code) group by a.p_code) wc on(wc.p_code = p.p_code)
+		               left join (select a.p_code p_code, count(b.p_code) chat from product a left outer join chat_room b on(a.p_code = b.p_code) group by a.p_code) cc on(cc.p_code = p.p_code)
+		where p.p_code = #{pCode}
+	</select>
 	
 	
 	

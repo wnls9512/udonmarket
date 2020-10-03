@@ -1,6 +1,7 @@
 package com.kh.udon.product.model.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +10,7 @@ import org.springframework.stereotype.Repository;
 import com.kh.udon.member.model.vo.Wish;
 import com.kh.udon.product.model.vo.CategoryVO;
 import com.kh.udon.product.model.vo.CouponDTO;
-import com.kh.udon.product.model.vo.ProductDTO;
+import com.kh.udon.product.model.vo.ProductListDTO;
 import com.kh.udon.product.model.vo.ProductVO;
 
 @Repository
@@ -55,13 +56,13 @@ public class ProductDaoImpl implements ProductDao
     }
 
     @Override
-    public List<ProductDTO> selectAll()
+    public List<ProductListDTO> selectAll()
     {
         return session.selectList("product.selectAll");
     }
 
     @Override
-    public List<ProductDTO> selectCategoryProducts(String categoryCode)
+    public List<ProductListDTO> selectCategoryProducts(String categoryCode)
     {
         return session.selectList("product.selectCategoryProducts", categoryCode);
     }
@@ -71,6 +72,25 @@ public class ProductDaoImpl implements ProductDao
     {
         return session.insert("product.addToWish", wish);
     }
+
+    @Override
+    public List<ProductListDTO> search(Map<String, Object> map)
+    {
+        return session.selectList("product.search", map);
+    }
+
+    @Override
+    public int selectSearchCount(Map<String, Object> map)
+    {
+        return session.selectOne("product.selectSearchCount", map);
+    }
+
+    @Override
+    public ProductListDTO selectOneByPCode(int pCode)
+    {
+        return session.selectOne("product.selectOneByPCode", pCode);
+    }
+
 
     
     
