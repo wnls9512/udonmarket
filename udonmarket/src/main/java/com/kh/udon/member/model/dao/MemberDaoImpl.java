@@ -12,6 +12,7 @@ import com.kh.udon.member.model.vo.Keyword;
 import com.kh.udon.member.model.vo.Location;
 import com.kh.udon.member.model.vo.Member;
 import com.kh.udon.member.model.vo.Review;
+import com.kh.udon.member.model.vo.Wish;
 import com.kh.udon.product.model.vo.ProductVO;
 
 @Repository
@@ -105,13 +106,23 @@ public class MemberDaoImpl implements MemberDao
 	}
 
 	@Override
-	public List<ProductVO> selectAllWishPro(String userId) {
+	public List<Wish> selectAllWishPro(String userId) {
 		return session.selectList("member.selectAllWishPro", userId);
 	}
 
 	@Override
 	public int insertKeyword(Keyword key) {
 		return session.insert("member.insertKeyword", key);
+	}
+
+	@Override
+	public int deleteWish(int wishCode) {
+		return session.delete("member.deleteWish", wishCode);
+	}
+
+	@Override
+	public int insertWish(Map<String, Object> map) {
+		return session.insert("member.insertWish", map);
 	}
 
 }
