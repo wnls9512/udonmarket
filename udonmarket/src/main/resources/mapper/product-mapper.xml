@@ -5,7 +5,7 @@
 
 
 	<!-- 전체 리스트 -->
-	<select id="selectAll" resultType="productDTO">
+	<select id="selectAll" resultType="productListDTO">
 		select p.p_code, p.seller, p.title, p.price, trunc(sysdate - p.reg_date) reg_date, substr(m.address, instr(m.address, ' ', 1, 1), instr(m.address, ' ', 1, 2)) address, wc.wish, cc.chat
 		from product p left join member m on(p.seller = m.user_id)
 		               left join (select a.p_code p_code, count(b.p_code) wish from product a left outer join wish b on(a.p_code = b.p_code) group by a.p_code) wc on(wc.p_code = p.p_code)
@@ -14,7 +14,7 @@
 	</select>
 	
 	<!-- 카테고리 리스트 -->
-	<select id="selectCategoryProducts" resultType="productDTO">
+	<select id="selectCategoryProducts" resultType="productListDTO">
 		select p.p_code, p.seller, p.title, p.price, trunc(sysdate - p.reg_date) reg_date, substr(m.address, instr(m.address, ' ', 1, 1), instr(m.address, ' ', 1, 2)) address, wc.wish, cc.chat
 		from product p left join member m on(p.seller = m.user_id)
 		               left join (select a.p_code p_code, count(b.p_code) wish from product a left outer join wish b on(a.p_code = b.p_code) group by a.p_code) wc on(wc.p_code = p.p_code)
@@ -23,7 +23,7 @@
 	</select>
 
 	<!-- 검색결과 리스트 -->
-	<select id="search" resultType="productDTO">
+	<select id="search" resultType="productListDTO">
 		select p.p_code, p.seller, p.title, p.price, trunc(sysdate - p.reg_date) reg_date, substr(m.address, instr(m.address, ' ', 1, 1), instr(m.address, ' ', 1, 2)) address, wc.wish, cc.chat
 		from product p left join member m on(p.seller = m.user_id)
 		               left join (select a.p_code p_code, count(b.p_code) wish from product a left outer join wish b on(a.p_code = b.p_code) group by a.p_code) wc on(wc.p_code = p.p_code)
@@ -90,6 +90,14 @@
 		(seq_wish.nextval, #{userId}, #{pCode})
 	</insert>
 	
+	<!-- 상품 조회 -->
+	<select id="selectOneByPCode" resultType="productListDTO">
+		select p.p_code, p.seller, p.title, p.content, p.price, trunc(sysdate - p.reg_date) reg_date, substr(m.address, instr(m.address, ' ', 1, 1), instr(m.address, ' ', 1, 2)) address, wc.wish, cc.chat
+		from product p left join member m on(p.seller = m.user_id)
+		               left join (select a.p_code p_code, count(b.p_code) wish from product a left outer join wish b on(a.p_code = b.p_code) group by a.p_code) wc on(wc.p_code = p.p_code)
+		               left join (select a.p_code p_code, count(b.p_code) chat from product a left outer join chat_room b on(a.p_code = b.p_code) group by a.p_code) cc on(cc.p_code = p.p_code)
+		where p.p_code = #{pCode}
+	</select>
 	
 	
 	

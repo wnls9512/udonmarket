@@ -6,7 +6,7 @@ import java.util.Map;
 import com.kh.udon.member.model.vo.Wish;
 import com.kh.udon.product.model.vo.CategoryVO;
 import com.kh.udon.product.model.vo.CouponDTO;
-import com.kh.udon.product.model.vo.ProductDTO;
+import com.kh.udon.product.model.vo.ProductListDTO;
 import com.kh.udon.product.model.vo.ProductVO;
 
 public interface ProductDao
@@ -24,15 +24,17 @@ public interface ProductDao
     
     int insert(ProductVO product);
 
-    List<ProductDTO> selectAll();
+    List<ProductListDTO> selectAll();
 
-    List<ProductDTO> selectCategoryProducts(String categoryCode);
+    List<ProductListDTO> selectCategoryProducts(String categoryCode);
 
     int addToWish(Wish wish);
 
-    List<ProductDTO> search(Map<String, Object> map);
+    List<ProductListDTO> search(Map<String, Object> map);
 
     int selectSearchCount(Map<String, Object> map);
+
+    ProductListDTO selectOneByPCode(int pCode);
 
 
 

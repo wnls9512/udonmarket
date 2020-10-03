@@ -19,7 +19,7 @@
                     <div class="breadcrumb_iner">
                         <div class="breadcrumb_iner_item">
                             <h2>게시글 제목</h2>
-							<h3>가구/인테리어</h3>
+							<h3>카테고리</h3>
                         </div>
                     </div>
                 </div>
@@ -59,16 +59,16 @@
                 <img src="${pageContext.request.contextPath}/resources/img/product/single-product/review-1.png" alt="" />
               </div>
               <div class="media-body">
-                <h4>Blake Ruiz</h4>
-                <span>강남구 논현동</span>
+                <h4>닉네임</h4>
+                <span>${product.address }</span>
               </div>
               <div>
               	거래온도
               </div>
             </div>
             <br/>
-            <h3>Faded SkyBlu Denim Jeans</h3>
-            <h2>$149.99</h2>
+            <h3>${product.title }</h3>
+            <h2>${product.price }원</h2>
             <ul class="list">
               <li>
                 <a class="active" href="#">
@@ -79,9 +79,11 @@
               </li>
             </ul>
             <p>
-              First replenish living. Creepeth image image. Creeping can't, won't called.
-              Two fruitful let days signs sea together all land fly subdue
+            ${product.content }
             </p>
+            <div class="card_area d-flex justify-content-between" style="border: none;">
+            	<span style="color: gray;"><i class="far fa-heart"></i> ${product.wish}  <i class="far fa-comments"></i> ${product.chat }<br /></span>
+            </div>
             <div class="card_area d-flex justify-content-between align-items-center">
               <a href="#" class="btn_3">채팅으로 거래하기</a>
               <a href="#">가격제안 불가</a>

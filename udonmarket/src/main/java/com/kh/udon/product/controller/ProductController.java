@@ -18,7 +18,7 @@ import com.kh.udon.member.model.vo.Wish;
 import com.kh.udon.product.model.service.ProductService;
 import com.kh.udon.product.model.vo.CategoryVO;
 import com.kh.udon.product.model.vo.CouponDTO;
-import com.kh.udon.product.model.vo.ProductDTO;
+import com.kh.udon.product.model.vo.ProductListDTO;
 import com.kh.udon.product.model.vo.ProductVO;
 
 import lombok.extern.slf4j.Slf4j;
@@ -45,7 +45,7 @@ public class ProductController
         List<CategoryVO> category = service.selectAllCategory();
         List<Integer> categoryCount = service.selectAllCategoryCount();
         int totalCount = service.selectTotalCount();
-        List<ProductDTO> products = service.selectAll();
+        List<ProductListDTO> products = service.selectAll();
         
         model.addAttribute("category", category);
         model.addAttribute("categoryCount", categoryCount);
@@ -72,7 +72,7 @@ public class ProductController
         List<CategoryVO> category = service.selectAllCategory();
         List<Integer> categoryCount = service.selectAllCategoryCount();
         int totalCount = service.selectCategoryCount(categoryCode);
-        List<ProductDTO> products = service.selectCategoryProducts(categoryCode);
+        List<ProductListDTO> products = service.selectCategoryProducts(categoryCode);
         
         model.addAttribute("category", category);
         model.addAttribute("categoryCount", categoryCount);
@@ -100,7 +100,7 @@ public class ProductController
         List<CategoryVO> categoryList = service.selectAllCategory();
         List<Integer> categoryCount = service.selectAllCategoryCount();
         int totalCount = service.selectSearchCount(map);
-        List<ProductDTO> products = service.search(map);
+        List<ProductListDTO> products = service.search(map);
         
         model.addAttribute("category", categoryList);
         model.addAttribute("categoryCount", categoryCount);
@@ -135,8 +135,12 @@ public class ProductController
     
     // 게시글 상세보기
     @RequestMapping("/productDetailView")
-    public String productDetail(int pCode)
+    public String productDetail(int pCode, Model model)
     {
+        ProductListDTO product = service.selectOneByPCode(pCode);
+        
+        model.addAttribute("product", product);
+        
         return "product/productDetailView";
     }
     
