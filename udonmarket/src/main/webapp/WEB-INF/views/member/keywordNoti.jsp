@@ -259,7 +259,7 @@ $("#btn-insert").click(function(){
 				
 		},
 		error : function(xhr, status, err){
-			 console.log("처리 실패", xhr, status, err)
+			 console.log("처리 실패", xhr, status, err);
 		}
 
 	});

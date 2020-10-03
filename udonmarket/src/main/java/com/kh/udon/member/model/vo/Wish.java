@@ -18,7 +18,9 @@ import lombok.ToString;
 public class Wish extends ProductVO implements Serializable {
 
 	private int wishCode;
-	private String userId;
+	private String userId; //사용자 아이디
+	private String sellerAddr; //판매자 주소
 	private int pCode;
+	private int totalWish; //하트 개수
 	
 }

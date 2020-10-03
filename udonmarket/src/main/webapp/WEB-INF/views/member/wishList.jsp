@@ -99,54 +99,37 @@ html { font-size: 16px; }
 						    </tr>
 						  </thead>
 						  <tbody>
-						    <tr>
-						      <th scope="row">
-						      	<a href="#">
-						      		<img src="/udon/resources/img/product/product/feature-product/f-p-1.jpg" 
-						      			 class="img-fluid" alt="product"
-						      			 style="max-height: 200px;">
-						      	</a>
-						       </th>
-						      <td colspan="3">
-						      	<p style="font-size: 1rem;">아이패드 프로 3세대 64기가 애플펜슬 1세대 포함</p>
-						      	<p style="color: #545454; font-size: 0.9rem;">서울시 강남구 역삼동</p>
-						      	<p style="font-weight: bold;">580,000원</p>
-						      	<br />
-						      	<a href="#"><i class="far fa-heart"></i> 8</a> 
-						      </td>
-						    </tr>
-						    <tr>
-						      <th scope="row">
-						      	<a href="#">
-						      		<img src="/udon/resources/img/product/product/feature-product/f-p-3.jpg" 
-						      			 class="img-fluid" alt="product"
-						      			 style="max-height: 200px;">
-						      	</a>
-						       </th>
-						      <td colspan="3">
-						      	<p style="font-size: 1rem;">애플워치 3세대</p>
-						      	<p style="color: #545454; font-size: 0.9rem;">서울시 강남구 역삼동</p>
-						      	<p style="font-weight: bold;">160,000원</p>
-						      	<br />
-						      	<a href="#"><i class="far fa-heart"></i> 8</a> 
-						      </td>
-						    </tr>
-						    <tr>
-						      <th scope="row">
-						      	<a href="#">
-						      		<img src="/udon/resources/img/product/product/feature-product/f-p-2.jpg" 
-						      			 class="img-fluid" alt="product"
-						      			 style="max-height: 200px;">
-						      	</a>
-						       </th>
-						      <td colspan="3">
-						      	<p style="font-size: 1rem;">질스튜어트가방</p>
-						      	<p style="color: #545454; font-size: 0.9rem;">서울시 강남구 역삼동</p>
-						      	<p style="font-weight: bold;">60,000원</p>
-						      	<br />
-						      	<a href="#"><i class="far fa-heart"></i> 8</a> 
-						      </td>
-						    </tr>
+						  
+						  <c:if test="${not empty list }">
+							  <c:forEach items="${list }" var="wish">
+							    <tr>
+							      <th scope="row">
+							      <!-- 상품 상세 페이지로 이동하게 설정할 것  p_code -->
+							      	<a href="#">
+							      		<!-- 첫번째 상품 이미지로 가져오기 -->
+							      		<img src="/udon/resources/img/product/product/feature-product/f-p-1.jpg" 
+							      			 class="img-fluid" alt="product"
+							      			 style="max-height: 200px;">
+							      	</a>
+							       </th>
+							      <td colspan="3">
+							      	<p style="font-size: 1rem;">${wish.title}</p>
+							      	<p style="color: #545454; font-size: 0.9rem;">${wish.sellerAddr}</p>
+							      	<p style="font-weight: bold;"><fmt:formatNumber value="${wish.price }" groupingUsed="true"/>원</p>
+							      	<br />
+							      	<input id="toggle-heart${wish.wishCode}" name="toggle-heart" type="checkbox"/>
+									<label id="toggle-heart${wish.wishCode}-label" for="toggle-heart">❤</label> 
+							      	${wish.totalWish}
+							      	<input type="hidden" name="wishCode" value="${wish.wishCode}" />
+							      	<input type="hidden" name="pCode" value="${wish.PCode}" />
+							      	<input type="hidden" name="userId" value="${member.userId}" />
+							      </td>
+							    </tr>
+							  </c:forEach>
+						  </c:if>
+						  <c:if test="${empty list }">
+						  	<tr><td colspan="4">아직 관심을 누른 중고거래가 없어요.</td></tr>
+						  </c:if>
 						  </tbody>
 						</table>
 				        </nav>
@@ -156,6 +139,88 @@ html { font-size: 16px; }
 	    </div>
 	</div>
 
+<script>
+
+$(function(){
+	
+	$("[for=toggle-heart]").click(function(){
+		
+		let $heartId = $(this).prev().attr('id');
+		let $heartLabel = $heartId + "-label";
+		let $wishCode = $(this).next().val();
+		console.log($wishCode);
+		
+		//insertWish
+		if($(this).prev().is(":checked")){
+
+ 			$.ajax({
+				url : "${pageContext.request.contextPath}/member/insertWish",
+				method : "POST",
+				data : {
+						userId : $("[name=userId]").val(),
+						wishCode : $wishCode,
+						pCode : $("[name=pCode]").val()
+				},
+				beforeSend : function(xhr){
+		            xhr.setRequestHeader("${_csrf.headerName}", "${_csrf.token}");
+		        },
+				success : function(data){
+					$("#" + $heartLabel).css("color", "#e2264d");
+					$("#" + $heartId).attr("checked", false);
+					
+				},
+				error : function(xhr, status, err){
+					console.log("처리 실패", xhr, status, err);
+				}
+			}); 
+			
+		}
+		//deleteWish
+		else {
+			$.ajax({
+				url : "${pageContext.request.contextPath}/member/deleteWish",
+				method : "POST",
+				data : {
+						wishCode : $wishCode
+				},
+				beforeSend : function(xhr){
+		            xhr.setRequestHeader("${_csrf.headerName}", "${_csrf.token}");
+		        },
+				success : function(data){
+					$("#" + $heartLabel).css("color", "#aab8c2");
+					$("#" + $heartId).prop("checked", true);
+				},
+				error : function(xhr, status, err){
+					console.log("처리 실패", xhr, status, err);
+				}
+			}); 
+			
+		}
+
+	});	
+});
+
+
+</script>
+<style>
+[name=toggle-heart] {
+  position: absolute;
+  left: -100vw;
+}
+[for='toggle-heart'] {
+  color: #e2264d;
+}
+[name=toggle-heart]:checked + label {
+  color: #e2264d;
+} 
+[for='toggle-heart'] {
+  font-size: 1.5em;
+  cursor: pointer;
+}
+[for='toggle-heart'] { 
+  align-self: center; 
+}
+</style>
 <jsp:include page="/WEB-INF/views/common/footer.jsp"/>
 	
 	
