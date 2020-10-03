@@ -21,6 +21,24 @@ $(function(){
 	
 });
 
+$(document).on('click', '#btnSearch', function(e){
+
+		e.preventDefault();
+
+		var url = "${pageContext.request.contextPath}/community/communityListView";
+
+		url = url + "?searchType=" + $('#searchType').val();
+
+		url = url + "&keyword=" + $('#keyword').val();
+
+		location.href = url;
+
+		console.log(url);
+
+	});	
+
+
+
 
 
 
@@ -152,20 +170,27 @@ $(function(){
                         <aside class="single_sidebar_widget search_widget">
                         	
                         
-                            <form action="#">
+                            
                                 <div class="form-group">
                                     <div class="input-group mb-3">
-                                        <input type="text" class="form-control" placeholder='키워드를 검색해주세요'
-                                            onfocus="this.placeholder = ''"
-                                            onblur="this.placeholder = 'Search Keyword'">
+                                    <select class="form-control form-control-sm" name="searchType" id="searchType">
+
+										<option value="board_title">제목</option>
+					
+										<option value="board_content">본문</option>
+										
+									</select>
+                                        <input type="text" class="form-control" placeholder='키워드 검색'
+                                            id="keyword"
+                                            name="keyword">
                                         <div class="input-group-append">
-                                            <button class="btn" type="button"><i class="ti-search"></i></button>
+                                            <button class="btn" type="button" name="btnSearch" id="btnSearch"><i class="ti-search"></i></button>
                                         </div>
                                     </div>
                                 </div>
-                                <button class="button rounded-0 primary-bg text-white w-100 btn_1"
-                                    type="submit">검색하기</button>
-                            </form>
+                                <!-- <button class="button rounded-0 primary-bg text-white w-100 btn_1"
+                                   name="btnSearch" id="btnSearch">검색하기</button> -->
+                            
                         </aside>
 
                         <aside class="single_sidebar_widget post_category_widget">

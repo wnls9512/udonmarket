@@ -14,6 +14,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.kh.udon.community.model.service.CommunityService;
 import com.kh.udon.community.model.vo.Community;
+import com.kh.udon.community.model.vo.Search;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -33,15 +34,23 @@ public class CommunityController
     
     @RequestMapping("/communityListView")
 	public String CommunityList(/* @RequestParam int categoryCode, */
-    						Model model) {
-//							  @RequestParam(defaultValue = "1", 
+    						Model model
+    						, @RequestParam(required = false, defaultValue = "board_title") String searchType
+    						, @RequestParam(required = false) String keyword) {
+//							, @RequestParam(defaultValue = "1", 
 //								value = "cPage") int cPage) {
 				//1.사용자 입력값 
 //				final int limit = 10;
 //				int offset = (cPage - 1) * limit;
+    	
+		    	Search search = new Search();
+		
+				search.setSearchType(searchType);
+		
+				search.setKeyword(keyword);
 				
 				//2. 업무로직
-				List<Community> list = service.selectCommunityList();
+				List<Community> list = service.selectCommunityList(search);
 //				Community community = service.selectCategory(categoryCode);
 				log.debug("list = {}", list);
 //				log.debug("Community = {}", community);
@@ -59,10 +68,18 @@ public class CommunityController
     
     @RequestMapping("/communityDetailView")
     public String communityDetail(@RequestParam int bCode,
-			  Model model) {
+			  Model model, 
+			  @RequestParam(required = false, defaultValue = "board_title") String searchType
+				, @RequestParam(required = false) String keyword) {
 		
+    	Search search = new Search();
+		
+		search.setSearchType(searchType);
+
+		search.setKeyword(keyword);
+    	
     			Community community = service.selectOneCommunityCollection(bCode);
-    			List<Community> list = service.selectCommunityList();
+    			List<Community> list = service.selectCommunityList(search);
     			log.debug("Community = {}", community);
 				log.debug("list = {}", list);
 
