@@ -27,6 +27,7 @@ import com.kh.udon.member.model.vo.Evaluate;
 import com.kh.udon.member.model.vo.Keyword;
 import com.kh.udon.member.model.vo.Member;
 import com.kh.udon.member.model.vo.Review;
+import com.kh.udon.member.model.vo.Wish;
 import com.kh.udon.product.model.vo.ProductVO;
 
 import lombok.extern.slf4j.Slf4j;
@@ -158,13 +159,48 @@ public class MemberController {
     	log.debug("loginMemberId = {} ", userId);
     	Member member = service.selectOneMember(userId);
     	
-    	List<ProductVO> list = service.selectAllWishPro(userId);
+    	List<Wish> list = service.selectAllWishPro(userId);
     	log.debug("ProductWishList = {}", list);
     	
     	model.addAttribute("member", member);
     	model.addAttribute("list", list);  	
     	
         return model;
+    }
+    
+    //관심목록 삭제
+    @PostMapping("/deleteWish")
+    @ResponseBody
+    public Map<String, Object> deleteWish(@RequestParam("wishCode") int wishCode){
+    	
+    	log.debug("wishCode = {}", wishCode);
+    	int result = service.deleteWish(wishCode);
+
+    	log.debug("result = {}", result);
+    	Map<String, Object> map = new HashMap<>();
+    	map.put("wishCode", wishCode);
+    	
+    	return map;
+    }
+
+    //관심목록 재추가
+    @PostMapping("/insertWish")
+    @ResponseBody
+    public Map<String, Object> insertWish(@RequestParam("userId") String userId,
+    									  @RequestParam("wishCode") int wishCode,
+    									  @RequestParam("pCode") int pCode){
+    	
+    	log.debug("userId = {}", userId);
+    	log.debug("pCode = {}", pCode);
+    	
+    	Map<String, Object> map = new HashMap<>();
+    	map.put("userId", userId);
+    	map.put("pCode", pCode);
+    	map.put("wishCode", wishCode);
+
+    	int result = service.insertWish(map);
+    	
+    	return map;
     }
     
     //판매내역
