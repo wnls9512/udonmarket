@@ -189,12 +189,14 @@ create table review
     recipient varchar2(50) not null,
     content varchar2(500) not null,
     direct char(1) not null,
+    p_code number not null,
     constraint pk_review primary key(review_code),
     constraint fk_review_seller foreign key(seller) references member(user_id),
     constraint fk_review_buyer foreign key(buyer) references member(user_id),
-    constraint ck_review_direct check (direct in('S', 'B'))
+    constraint ck_review_direct check (direct in('S', 'B')),
+    constraint fk_review_p_code foreign key(p_code) references product(p_code)
 );
-
+delete from review;
 create table score
 (
     user_id varchar2(50),
@@ -420,10 +422,3 @@ insert into evaluation values(seq_evaluation.nextval, '거래 시간과 장소�
 insert into evaluation values(seq_evaluation.nextval, '약속 장소에 나타나지 않았어요', 0, 'C');
 insert into evaluation values(seq_evaluation.nextval, '거래 시간과 장소를 정한 후 거래 직전 취소했어요', 0, 'C');
 --==========================================================================================
-select count(p.category) from category c left join product p on(c.category_code = p.category) 
-		group by c.category_code order by c.category_code;
-    
-select * from wish;
-select * from category;
-select count(p.category) from category c left join product p on(c.category_code = p.category) 
-where c.category_parent = 1 group by c.category_code order by c.category_code;
