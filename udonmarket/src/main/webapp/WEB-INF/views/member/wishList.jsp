@@ -7,7 +7,9 @@
 
 <fmt:requestEncoding value="utf-8"/>
 
-
+<!-- spinner 위해서 추가 -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  
 <jsp:include page="/WEB-INF/views/common/header.jsp">
 	<jsp:param value="마이페이지" name="pageTitle"/>
 </jsp:include>
@@ -137,11 +139,29 @@ html { font-size: 16px; }
 	            </div>
 	        </div>
 	    </div>
+		<!-- loading Modal -->
+		<!-- <div class="modal" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	  		<div class="modal-dialog modal-sm">
+	    		<div class="modal-content">
+	    			<div class="text-center">
+					  <div class="spinner-border text-primary" role="status"></div>
+					</div>
+		    	</div>
+		  	</div>
+		</div> -->
 	</div>
+	
 
 <script>
 
-$(function(){
+$(function(){	
+
+	<!-- loading Modal -->
+	/* $(document).ajaxStart(function(){
+					$("#exampleModal").modal("show");
+			 }).ajaxStop(function(){
+				 	$("#exampleModal").modal('hide');
+	});  */
 	
 	$("[for=toggle-heart]").click(function(){
 		
@@ -167,10 +187,12 @@ $(function(){
 				success : function(data){
 					$("#" + $heartLabel).css("color", "#e2264d");
 					$("#" + $heartId).attr("checked", false);
+					alert("관심목록에 추가했어요 💗");
 					
 				},
 				error : function(xhr, status, err){
 					console.log("처리 실패", xhr, status, err);
+					alert("관심목록 추가에 실패했어요 😥");
 				}
 			}); 
 			
@@ -189,9 +211,11 @@ $(function(){
 				success : function(data){
 					$("#" + $heartLabel).css("color", "#aab8c2");
 					$("#" + $heartId).prop("checked", true);
+					alert("관심목록에서 제거했어요 💗");
 				},
 				error : function(xhr, status, err){
 					console.log("처리 실패", xhr, status, err);
+					alert("관심목록 제거에 실패했어요 😥");
 				}
 			}); 
 			

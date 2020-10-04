@@ -234,10 +234,15 @@ $(function(){
                    xhr.setRequestHeader("${_csrf.headerName}", "${_csrf.token}");
                },
 			success : function(data){
-				alert("🍲 지역 범위를 재설정했어요 🍲");										
+				let local = "근처 동네";			
+				if(data.radius == 3) local = "우리 동네";
+				if(data.radius == 5) local = "이웃 동네";
+
+				alert("지역 범위를 [" + local +  "]로 설정했어요 💗");				
 			},
 			error : function(xhr, status, err){
 				console.log("처리 실패", xhr, status, err);
+				alert("지역범위 재설정에 실패했어요 다시 시도해주세요 💦");
 			}
 		});
 		
@@ -347,11 +352,12 @@ $(function(){
                    xhr.setRequestHeader("${_csrf.headerName}", "${_csrf.token}");
                },
 			success : function(data){
-				alert("🍲 현재 위치로 동네를 재설정했어요 🍲");
+				alert("현재 위치로 동네를 재설정했어요 💗");
 				$("#addr").html(data.address);									
 			},
 			error : function(xhr, status, err){
 				console.log("처리 실패", xhr, status, err);
+				alert("동네 재설정에 실패했어요 다시 시도해주세요 💦");
 			}
 
 		});
