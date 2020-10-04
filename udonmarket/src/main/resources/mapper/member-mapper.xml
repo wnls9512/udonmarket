@@ -158,21 +158,23 @@
 		review_code desc
 </select>
 
-<<<<<<< HEAD
 <!-- 공지사항 조회 -->
 <select id="selectAnnounceList" resultMap="announceMap">
 	select
-		B.*
+		*
 	from 
-		board B
-	order by
-		no desc
+		board
 </select>
-<resultMap type="announce" id="announceMap">
+	<resultMap type="announce" id="announceMap">
+		<id column="b_code" property="bCode"/>
+		<result column="user_id" property="userId"/>
+		<result column="board_title" property="boardTitle"/>
+		<result column="board_content" property="boardContent"/>
+		<result column="reg_date" property="regDate"/>
+		<result column="hashtag_code" property="hashtagCode"/>
+		<result column="like_this" property="likeThis"/>
+	</resultMap>
 
-</resultMap>
-
-=======
 <!-- 판매 내역 조회하기 -->
 <select id="selectAllSalesPro" resultType="productVO">
 	select 
@@ -210,5 +212,4 @@
 	order by 
 		wish_code desc
 </select>
->>>>>>> branch 'master' of https://github.com/oheunju/udonmarket.git
 </mapper>

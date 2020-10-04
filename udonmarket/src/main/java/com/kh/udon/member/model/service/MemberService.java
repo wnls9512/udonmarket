@@ -8,11 +8,8 @@ import com.kh.udon.member.model.vo.Keyword;
 import com.kh.udon.member.model.vo.Location;
 import com.kh.udon.member.model.vo.Member;
 import com.kh.udon.member.model.vo.Review;
-<<<<<<< HEAD
 import com.kh.udon.member.model.vo.announce;
-=======
 import com.kh.udon.product.model.vo.ProductVO;
->>>>>>> branch 'master' of https://github.com/oheunju/udonmarket.git
 
 public interface MemberService
 {
@@ -38,9 +35,8 @@ public interface MemberService
 
 	List<Review> selectAllReview(String userId);
 
-<<<<<<< HEAD
 	List<announce> selectAnnounceList(int limit, int offset);
-=======
+	
 	int insertMemberLocAuth(Member member);
 
 	List<ProductVO> selectAllSalesPro(String userId);
@@ -51,5 +47,4 @@ public interface MemberService
 
 	int insertKeyword(Keyword key);
 
->>>>>>> branch 'master' of https://github.com/oheunju/udonmarket.git
 }

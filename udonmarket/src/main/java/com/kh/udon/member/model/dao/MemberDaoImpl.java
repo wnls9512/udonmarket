@@ -13,11 +13,8 @@ import com.kh.udon.member.model.vo.Keyword;
 import com.kh.udon.member.model.vo.Location;
 import com.kh.udon.member.model.vo.Member;
 import com.kh.udon.member.model.vo.Review;
-<<<<<<< HEAD
 import com.kh.udon.member.model.vo.announce;
-=======
 import com.kh.udon.product.model.vo.ProductVO;
->>>>>>> branch 'master' of https://github.com/oheunju/udonmarket.git
 
 @Repository
 public class MemberDaoImpl implements MemberDao
@@ -86,13 +83,12 @@ public class MemberDaoImpl implements MemberDao
 	}
 
 	@Override
-<<<<<<< HEAD
 	public List<announce> selectAnnounceList(int limit, int offset) {
 		RowBounds rowBounds = new RowBounds(offset, limit);
 		return session.selectList("member.selectAnnounceList", null , rowBounds );
 	}
 
-=======
+	@Override
 	public int insertMember(Member member) {
 		return session.insert("member.insertMember", member);
 	}
@@ -101,7 +97,6 @@ public class MemberDaoImpl implements MemberDao
 	public int insertLocation(String userId) {
 		return session.insert("member.insertLocation", userId);
 	}
->>>>>>> branch 'master' of https://github.com/oheunju/udonmarket.git
 	
 	@Override
 	public int insertAuthority(String userId) {

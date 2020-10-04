@@ -27,11 +27,10 @@ import com.kh.udon.member.model.vo.Evaluate;
 import com.kh.udon.member.model.vo.Keyword;
 import com.kh.udon.member.model.vo.Member;
 import com.kh.udon.member.model.vo.Review;
-<<<<<<< HEAD
 import com.kh.udon.member.model.vo.announce;
-=======
 import com.kh.udon.product.model.vo.ProductVO;
->>>>>>> branch 'master' of https://github.com/oheunju/udonmarket.git
+
+//github.com/oheunju/udonmarket.git
 
 import lombok.extern.slf4j.Slf4j;
 

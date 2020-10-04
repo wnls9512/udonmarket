@@ -130,6 +130,14 @@ html { font-size: 16px; }
 									<th>작성자</th>
 									<th>작성일</th>
 								</tr>
+								<c:forEach items="${list}" var="announce">
+									<tr>
+										<td>${ announce.BCode }</td>
+										<td>${ announce.boardTitle }</td>
+										<td>${ announce.userId }</td>
+										<td><fmt:formatDate value="${ announce.regDate }" type="both"/></td>
+									</tr>
+									</c:forEach>
 							</table>
 							</div>		
 				        </nav>

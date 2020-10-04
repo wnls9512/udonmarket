@@ -13,13 +13,10 @@ import com.kh.udon.member.model.vo.Keyword;
 import com.kh.udon.member.model.vo.Location;
 import com.kh.udon.member.model.vo.Member;
 import com.kh.udon.member.model.vo.Review;
-<<<<<<< HEAD
 import com.kh.udon.member.model.vo.announce;
-=======
 import com.kh.udon.product.model.vo.ProductVO;
 
 import lombok.extern.slf4j.Slf4j;
->>>>>>> branch 'master' of https://github.com/oheunju/udonmarket.git
 
 @Service
 @Slf4j
@@ -93,11 +90,11 @@ public class MemberServiceImpl implements MemberService
 		return memberDao.selectAllReview(userId);
 	}
 
-<<<<<<< HEAD
 	@Override
 	public List<announce> selectAnnounceList(int limit, int offset) {
 		return memberDao.selectAnnounceList(limit, offset);
-=======
+	}
+		
 	@Transactional(rollbackFor = { Exception.class })
 	@Override
 	public int insertMemberLocAuth(Member member) {
@@ -136,7 +133,6 @@ public class MemberServiceImpl implements MemberService
 	@Override
 	public int insertKeyword(Keyword key) {
 		return memberDao.insertKeyword(key);
->>>>>>> branch 'master' of https://github.com/oheunju/udonmarket.git
 	}
 
 }
