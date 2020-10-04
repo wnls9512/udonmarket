@@ -3,13 +3,13 @@ package com.kh.udon.member.model.dao;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.kh.udon.member.model.vo.Evaluate;
 import com.kh.udon.member.model.vo.Keyword;
-import com.kh.udon.member.model.vo.Location;
 import com.kh.udon.member.model.vo.Member;
 import com.kh.udon.member.model.vo.Review;
 import com.kh.udon.member.model.vo.Wish;
@@ -123,6 +123,17 @@ public class MemberDaoImpl implements MemberDao
 	@Override
 	public int insertWish(Map<String, Object> map) {
 		return session.insert("member.insertWish", map);
+	}
+
+	@Override
+	public List<Member> selectMemberList(int limit, int offset) {
+		RowBounds rowBounds = new RowBounds(offset, limit);
+		return session.selectList("member.selectMemberList", null, rowBounds);
+	}
+
+	@Override
+	public int selectMemberTotalContents() {
+		return session.selectOne("member.selectMemberTotalContents");
 	}
 
 }

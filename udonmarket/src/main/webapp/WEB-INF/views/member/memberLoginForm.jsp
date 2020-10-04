@@ -3,6 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"  %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
 <fmt:requestEncoding value="utf-8"/>
@@ -10,6 +11,8 @@
 <jsp:include page="/WEB-INF/views/common/header.jsp">
 	<jsp:param value="로그인" name="pageTitle"/>
 </jsp:include>
+
+
 
     <!--================Home Banner Area =================-->
     <!-- breadcrumb start-->
@@ -47,7 +50,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-6 col-md-6">
+				<div class="col-lg-6 col-md-6">
                     <div class="login_part_form">
                         <div class="login_part_form_iner">
                             <h3>Welcome Back ! <br>
@@ -60,13 +63,13 @@
                                     <input type="password" class="form-control" id="password" name="password" placeholder="비밀번호">
                                 </div>
                                 <div class="col-md-12 form-group">
-                                    <div class="creat_account d-flex align-items-center">
-                                        <input type="checkbox" id="f-option" name="selector">
-                                        <label for="f-option">Remember me</label>
-                                    </div>
                                     <button type="submit" value="submit" class="btn_3">로그인</button>
-                                    <a class="lost_pass" href="#">forget password?</a>
+                                    <a class="lost_pass" href="${pageContext.request.contextPath }/member/memberSearch">아이디 / 비밀번호 찾기</a>
                                 </div>
+<!--                                 <div class="form-group socialimage" id="kakaoBtn"> -->
+<!-- 									<a href="https://kauth.kakao.com/oauth/authorize?client_id=91a359c6f4f2628b3f78a34ef78b9d82&redirect_uri=http://localhost:9090/udon/&response_type=code"> -->
+<%-- 									<img id="kakao_login_image" src="${pageContext.request.contextPath}/img/kakao_login_page.png"/></a> --%>
+<!-- 								</div> -->
                             </form:form>
                         </div>
                     </div>

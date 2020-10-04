@@ -3,6 +3,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"  %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 	
 <%-- 	한글 인코딩 처리 --%>
 <fmt:requestEncoding value="utf-8"/>	
@@ -34,7 +36,37 @@ a{text-decoration: none; color: black;}
         </div>
     </section>
 	
-	<h1 class="text-center mt-5">관리자만 접근 가능한 페이지 입니다. </h1>
+		<!--================ 사이드바 =================-->	
+    <section class="cat_product_area section_padding">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3">
+                    <div class="left_sidebar_area">
+                        <aside class="left_widgets p_filter_widgets">
+                            <div class="l_w_title">
+                                <h3>관리자 메뉴</h3>
+                            </div>
+                            <div class="widgets_inner">
+                                <ul class="list">
+                                    <li><a href="${pageContext.request.contextPath }/admin/memberList">회원 조회 / 등록 / 삭제</a></li>
+									<li><a href="${pageContext.request.contextPath }/admin/memberList">신고 관리(게시글)</a></li>
+									<li><a href="${pageContext.request.contextPath }/admin/memberList">신고 관리(댓글)</a></li>
+									<li><a href="${pageContext.request.contextPath }/admin/memberList">쿠폰 관리</a></li>
+                                </ul>
+                            </div>
+                        </aside>
+                    </div>
+                </div>
+            </div>
+        </div>
+	</section>
+	
+	<section class="cat_product_area section_padding">
+		<form:form id="adminMemberSignupFrm" action="${pageContext.request.contextPath }/member/signupForm" method="post">
+
+		</form:form>
+	</section>
+
 
 		
 	<jsp:include page="/WEB-INF/views/common/footer.jsp"/>

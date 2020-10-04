@@ -112,15 +112,31 @@
 	insert into authority
 	values (default, #{userId})
 </insert>
+
 <!-- 로그인 -->
 <select id="selectOneMember" resultMap="memberMap">
 	select *
 	from member
 	where user_id = #{userId}
 </select>
+
+<!-- 관리자 회원 조회 -->
+<select id="selectMemberList" resultMap="memberMap">
+ 	select *
+ 	from member
+ 	order by regDate desc
+</select>
+
+<select id="selectMemberTotalContents" resultType="_int">
+	select count(*)
+	from member
+</select>
+
 <resultMap type="member" id="memberMap">
 
 </resultMap>
+
+
 
 <!-- 매너 평가 조회하기 -->
 <select id="selectAllEva" resultType="evaluate">

@@ -18,7 +18,8 @@
 		<intercept-url pattern="/" access="permitAll"/>
 		<intercept-url pattern="/index.jsp" access="permitAll"/>
 		<intercept-url pattern="/resources/**" access="permitAll"/>
-		<intercept-url pattern="/member/**" access="permitAll"/>	
+		<intercept-url pattern="/member/mypage" access="isAuthenticated()"/>		
+		<intercept-url pattern="/member/**" access="permitAll"/>
 		<intercept-url pattern="/admin/**" access="hasRole('ADMIN')"/>
 		<intercept-url pattern="/**" access="hasRole('USER')"/>
 
@@ -41,7 +42,6 @@
 		/>
 		
 <!-- 		모든 POST 요청에 csrf 토큰값 인증사용 -->
-		
 <!-- 		<csrf disabled="true"/> -->
 	</http>
 	
