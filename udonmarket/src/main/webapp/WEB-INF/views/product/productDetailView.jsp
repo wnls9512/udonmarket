@@ -3,12 +3,15 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
 <fmt:requestEncoding value="utf-8"/>
 
 <jsp:include page="/WEB-INF/views/common/header.jsp">
 	<jsp:param value="제품 상세보기" name="pageTitle"/>
 </jsp:include>
+
+<sec:authentication property="principal.username" var="userId"/>
 
     <!--================Home Banner Area =================-->
     <!-- breadcrumb start-->
@@ -99,7 +102,7 @@
               <c:if test="${product.offer == 0 }">
               <a href="javascript:void(0);">가격제안 불가</a>
               </c:if>
-              <a href="#" class="like_us"> <i class="ti-heart"></i> </a>
+              <a href="javascript:addToWish('${userId}', '${product.PCode}')" class="like_us"> <i class="ti-heart"></i> </a>
             </div>
           </div>
         </div>
@@ -168,5 +171,35 @@
 <jsp:include page="/WEB-INF/views/common/footer.jsp"/>
 	
 	
+	
+<script>
+//관심 목록 추가
+function addToWish(userId, pCode)
+{
+	$.ajax
+	({
+		url: "${pageContext.request.contextPath}/product/addToWish",
+		method: "POST",
+		data: 
+		{
+			userId: userId,
+			pCode: pCode
+		}, 
+		dataType: "text",
+		beforeSend: function(xhr)
+		{
+            xhr.setRequestHeader("${_csrf.headerName}", "${_csrf.token}");
+        },
+			success: function(result)
+		{
+			alert(result);										
+		},
+		error: function(xhr, status, err)
+		{
+			alert("이미 관심목록에 추가되있어요 💘");
+		}
+	});
+}
+</script>
 	
 	
