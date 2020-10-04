@@ -175,27 +175,51 @@
 </select>
 
 <!-- 판매 내역 조회하기 -->
-<select id="selectAllSalesPro" resultType="productVO">
+<select id="selectAllSalesPro" resultType="wish">
 	select 
-		* 
-	from 
-		product 
+		P.seller,
+        P.p_code,
+        P.title,
+        M.address sellerAddr,
+        trade_status,
+        P.price,
+        (select count(*) from wish where wish.p_code = p.p_code) totalWish,
+        (select review_code from review where sender = P.buyer and review.p_code = P.p_code) reviewCode,
+        P.trade_status,
+        p.open_status
+	from product P
+    	join member M
+        	on P.seller = M.user_id
 	where 
-		seller = #{userId} 
+		P.seller = #{userId}
+	and 
+		P.delete_yn = 'N'
 	order by 
-		reg_date desc
+		P.reg_date desc
 </select>
 
 <!-- 구매 내역 조회하기 -->
-<select id="selectAllBuyPro" resultType="productVO">
+<select id="selectAllBuyPro" resultType="wish">
 	select 
-		* 
-	from 
-		product 
+		P.buyer,
+	    P.p_code,
+	    P.title,
+	    M.address sellerAddr,
+	    trade_status,
+	    P.price,
+	    (select count(*) from wish where wish.p_code = p.p_code) totalWish,
+	    (select review_code from review where sender = P.buyer and review.p_code = P.p_code) reviewCode
+	from product P
+	    join member M
+	        on P.seller = M.user_id
 	where 
-		buyer = #{userId} 
+		P.buyer = #{userId}
+	and 
+		P.delete_yn = 'N'
+	and 
+		open_status = 1
 	order by 
-		reg_date desc
+		P.reg_date desc
 </select>
 
 <!-- 관심 목록 조회하기 -->
@@ -218,10 +242,11 @@
 		W.user_id = #{userId}
 	and 
 		P.delete_yn = 'N'
+	and 
+		open_status = 1
 	order by 
 		wish_code desc
 </select>
-
 
 <!-- 관심 목록에서 삭제하기 -->
 <delete id="deleteWish">

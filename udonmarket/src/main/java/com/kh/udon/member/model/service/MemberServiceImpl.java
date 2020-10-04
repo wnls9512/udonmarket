@@ -111,12 +111,12 @@ public class MemberServiceImpl implements MemberService
 		return result;
 	}
 	@Override
-	public List<ProductVO> selectAllSalesPro(String userId) {
+	public List<Wish> selectAllSalesPro(String userId) {
 		return memberDao.selectAllSalesPro(userId);
 	}
 
 	@Override
-	public List<ProductVO> selectAllBuyPro(String userId) {
+	public List<Wish> selectAllBuyPro(String userId) {
 		return memberDao.selectAllBuyPro(userId);
 	}
 

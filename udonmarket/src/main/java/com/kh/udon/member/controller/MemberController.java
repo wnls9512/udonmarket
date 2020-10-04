@@ -218,11 +218,24 @@ public class MemberController {
     	log.debug("loginMemberId = {} ", userId);
     	Member member = service.selectOneMember(userId);
     	
-    	List<ProductVO> list = service.selectAllSalesPro(userId);
+    	List<Wish> list = service.selectAllSalesPro(userId);
     	log.debug("ProductSalesList = {}", list);
     	
+    	//판매중, 거래완료, 숨김 분류
+    	List<Wish> sale = new ArrayList<>();
+    	List<Wish> complete = new ArrayList<>();
+    	List<Wish> hidden = new ArrayList<>();
+    	
+    	for(Wish w : list) {
+    		if(!w.isOpenStatus()) hidden.add(w);
+    		else if(w.getTradeStatus().equals("C")) complete.add(w);
+    		else sale.add(w);
+    	}
+    	
     	model.addAttribute("member", member);
-    	model.addAttribute("list", list);
+    	model.addAttribute("sale", sale);
+    	model.addAttribute("complete", complete);
+    	model.addAttribute("hidden", hidden);
     	
         return model;
     }
@@ -235,7 +248,7 @@ public class MemberController {
     	log.debug("loginMemberId = {} ", userId);
     	Member member = service.selectOneMember(userId);
     	
-    	List<ProductVO> list = service.selectAllBuyPro(userId);
+    	List<Wish> list = service.selectAllBuyPro(userId);
     	log.debug("ProductBuyList = {}", list);
     	
     	model.addAttribute("member", member);

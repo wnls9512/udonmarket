@@ -37,9 +37,9 @@ public interface MemberService
 
 	int insertMemberLocAuth(Member member);
 
-	List<ProductVO> selectAllSalesPro(String userId);
+	List<Wish> selectAllSalesPro(String userId);
 
-	List<ProductVO> selectAllBuyPro(String userId);
+	List<Wish> selectAllBuyPro(String userId);
 
 	List<Wish> selectAllWishPro(String userId);
 

@@ -96,12 +96,12 @@ public class MemberDaoImpl implements MemberDao
 		return session.insert("member.insertAuthority", userId);
 	}
 	
-	public List<ProductVO> selectAllSalesPro(String userId) {
+	public List<Wish> selectAllSalesPro(String userId) {
 		return session.selectList("member.selectAllSalesPro", userId);
 	}
 
 	@Override
-	public List<ProductVO> selectAllBuyPro(String userId) {
+	public List<Wish> selectAllBuyPro(String userId) {
 		return session.selectList("member.selectAllBuyPro", userId);
 	}
 
