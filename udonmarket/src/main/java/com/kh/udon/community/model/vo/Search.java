@@ -18,5 +18,7 @@ public class Search {
 	private String searchType;
 
 	private String keyword;	
+	
+	private String categoryCode;
 
 }

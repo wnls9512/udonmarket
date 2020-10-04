@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.kh.udon.community.model.vo.Community;
+import com.kh.udon.community.model.vo.Reply;
 import com.kh.udon.community.model.vo.Search;
 
 
@@ -23,6 +24,12 @@ public class CommunityDaoImpl implements CommunityDao
 		return session.selectList("community.selectCommunityList", search);
 	}
     
+	/*
+	 * @Override public List<Community> selectCommunityList(int categoryCode) { //
+	 * RowBounds rowBounds = new RowBounds(); return
+	 * session.selectList("community.selectCommunityList", categoryCode); }
+	 */
+    
     @Override
 	public Community selectOneCommunityCollection(int bCode) {
 		return session.selectOne("community.selectOneCommunityCollection", bCode);
@@ -33,5 +40,44 @@ public class CommunityDaoImpl implements CommunityDao
 //		return session.selectOne("community.selectCategory", categoryCode);
 //	}
     
+    @Override
+
+	public List<Reply> ReplyList(int bCode) throws Exception {
+
+		return session.selectList("communityReply.ReplyList", bCode);
+
+	}
+
+
+
+	@Override
+
+	public int saveReply(Reply reply) throws Exception {
+
+		return session.insert("communityReply.saveReply", reply);
+
+	}
+
+
+
+	@Override
+
+	public int updateReply(Reply reply) throws Exception {
+
+		return session.update("communityReply.updateReply", reply);
+
+	}
+
+
+
+	@Override
+
+	public int deleteReply(int replyCode) throws Exception {
+
+		return session.delete("communityReply.deleteReply", replyCode);
+
+	}
+
+
 
 }
