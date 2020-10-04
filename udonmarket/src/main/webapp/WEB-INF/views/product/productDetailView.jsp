@@ -58,10 +58,12 @@
         <div class="col-lg-5 col-xl-4">
           <div class="s_product_text">
              <div class="media">
-              <div class="d-flex">
-                <img src="${pageContext.request.contextPath}/resources/img/product/single-product/review-1.png" alt="" />
+              <div class="d-flex w-25">
+                <img class="rounded-circle" 
+                	 src="${pageContext.request.contextPath }/resources/img/member/${seller.renamedFilename == null ? seller.originalFilename:seller.renamedFilename}"  
+                	 alt="" />
               </div>
-              <div class="media-body" style="margin: 2%;">
+              <div class="media-body" style="margin: 6%;">
                 <h4>${seller.nickname }</h4>
                 <span>${product.address }</span>
               </div>
@@ -72,7 +74,7 @@
             </div>
             <br/>
             <h3>${product.title }</h3>
-            <h2>${product.price }원</h2>
+            <h2><fmt:formatNumber type="number" maxFractionDigits="3" value="${product.price}" />원</h2>
             <ul class="list">
               <li>
                 <a class="active" href="#">
