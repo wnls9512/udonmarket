@@ -10,8 +10,9 @@ import com.kh.udon.member.model.vo.Wish;
 import com.kh.udon.product.model.dao.ProductDao;
 import com.kh.udon.product.model.vo.CategoryVO;
 import com.kh.udon.product.model.vo.CouponDTO;
-import com.kh.udon.product.model.vo.ProductListDTO;
+import com.kh.udon.product.model.vo.ProductDTO;
 import com.kh.udon.product.model.vo.ProductVO;
+import com.kh.udon.product.model.vo.SellerDTO;
 
 @Service
 public class ProductServiceImpl implements ProductService
@@ -56,13 +57,13 @@ public class ProductServiceImpl implements ProductService
     }
 
     @Override
-    public List<ProductListDTO> selectAll()
+    public List<ProductDTO> selectAll()
     {
         return dao.selectAll();
     }
 
     @Override
-    public List<ProductListDTO> selectCategoryProducts(String categoryCode)
+    public List<ProductDTO> selectCategoryProducts(String categoryCode)
     {
         return dao.selectCategoryProducts(categoryCode);
     }
@@ -74,7 +75,7 @@ public class ProductServiceImpl implements ProductService
     }
 
     @Override
-    public List<ProductListDTO> search(Map<String, Object> map)
+    public List<ProductDTO> search(Map<String, Object> map)
     {
         return dao.search(map);
     }
@@ -86,10 +87,18 @@ public class ProductServiceImpl implements ProductService
     }
 
     @Override
-    public ProductListDTO selectOneByPCode(int pCode)
+    public ProductDTO selectOneByPCode(int pCode)
     {
         return dao.selectOneByPCode(pCode);
     }
+
+    @Override
+    public SellerDTO selectSeller(String id)
+    {
+        return dao.selectSeller(id);
+    }
+
+
 
     
     

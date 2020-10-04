@@ -5,8 +5,9 @@ import java.io.Serializable;
 import lombok.Data;
 
 @Data
-public class ProductListDTO implements Serializable
+public class ProductDTO implements Serializable
 {
+    // list
     int pCode;
     String seller;
     String title;
@@ -17,4 +18,9 @@ public class ProductListDTO implements Serializable
     
     int wish;
     int chat;
+    
+    // detail
+    String category;
+    String tradeStatus;
+    int offer;
 }

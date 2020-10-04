@@ -58,12 +58,13 @@
               <div class="d-flex">
                 <img src="${pageContext.request.contextPath}/resources/img/product/single-product/review-1.png" alt="" />
               </div>
-              <div class="media-body">
-                <h4>닉네임</h4>
+              <div class="media-body" style="margin: 2%;">
+                <h4>${seller.nickname }</h4>
                 <span>${product.address }</span>
               </div>
               <div>
-              	거래온도
+              	거래온도 
+              	${seller.score }
               </div>
             </div>
             <br/>
@@ -72,21 +73,32 @@
             <ul class="list">
               <li>
                 <a class="active" href="#">
-                  <span>카테고리</span> : 가구/인테리어</a>
+                  <span>카테고리</span> : ${product.category }</a>
               </li>
               <li>
-                <a href="#"> <span>상태</span> : 판매중</a>
+                <a href="javascript:void(0);"> <span>상태</span> : 
+                <c:choose>
+                <c:when test="${product.tradeStatus == 'S' }">판매중</c:when>
+                <c:when test="${product.tradeStatus == 'R' }">예약중</c:when>
+                <c:when test="${product.tradeStatus == 'C' }">판매완료</c:when>
+                </c:choose>
+                </a>
               </li>
             </ul>
             <p>
             ${product.content }
             </p>
             <div class="card_area d-flex justify-content-between" style="border: none;">
-            	<span style="color: gray;"><i class="far fa-heart"></i> ${product.wish}  <i class="far fa-comments"></i> ${product.chat }<br /></span>
+            	<span style="color: gray;">관심 ${product.wish} · 채팅 ${product.chat }<br /></span>
             </div>
             <div class="card_area d-flex justify-content-between align-items-center">
               <a href="#" class="btn_3">채팅으로 거래하기</a>
-              <a href="#">가격제안 불가</a>
+              <c:if test="${product.offer == 1 }">
+              <a href="#">가격제안하기</a>
+              </c:if>
+              <c:if test="${product.offer == 0 }">
+              <a href="javascript:void(0);">가격제안 불가</a>
+              </c:if>
               <a href="#" class="like_us"> <i class="ti-heart"></i> </a>
             </div>
           </div>
