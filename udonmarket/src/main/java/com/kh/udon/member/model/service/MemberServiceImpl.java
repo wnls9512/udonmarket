@@ -140,4 +140,20 @@ public class MemberServiceImpl implements MemberService
 		return memberDao.insertWish(map);
 	}
 
+	@Override
+	public List<Member> selectMemberList(int limit, int offset) {
+		return memberDao.selectMemberList(limit, offset);
+	}
+
+	@Override
+	public int selectMemberTotalContents() {
+		return memberDao.selectMemberTotalContents();
+	}
+
+	@Override
+	public int deleteMember(String userId) {
+		log.debug("userId = {}", userId);
+		return memberDao.deleteMember(userId);
+	}
+
 }

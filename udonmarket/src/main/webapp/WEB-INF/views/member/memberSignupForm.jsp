@@ -3,6 +3,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"  %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
 <fmt:requestEncoding value="utf-8"/>
 
@@ -33,7 +35,7 @@
     
    <div id="memberSignup-container" class="row py-5 px-4">
 	    <div class="col-md-5 mx-auto">
-	     <form id="memberSignupFrm" action="signupForm" method="post">
+	     <form:form id="memberSignupFrm" action="signupForm" method="post">
 	        <!-- Profile widget -->
 	        <div class="bg-white shadow rounded overflow-hidden">
 	            <div class="px-4 pt-0 pb-4 cover">
@@ -95,7 +97,7 @@
 	                </div>
 	            </div>
 	        </div>
-	    </form>
+	    </form:form>
 	    </div>
 	</div>
 <script>
