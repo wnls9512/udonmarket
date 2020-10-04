@@ -39,7 +39,14 @@ $(document).on('click', '#btnSearch', function(e){
 
 
 
+$(function(){
 
+	$("a[data-category-code]").click(function(){
+		var categoryCode = $(this).attr("data-category-code");
+		location.href = "${ pageContext.request.contextPath }/community/communityListView?categoryCode=" + categoryCode;
+	});
+	
+});
 
 
 
@@ -197,44 +204,29 @@ $(document).on('click', '#btnSearch', function(e){
                             <h4 class="widget_title">카테고리</h4>
                             <ul class="list cat-list">
                                 <li>
-                                    <a href="communityListView?categoryCode=17" class="d-flex">
+                                    <a data-category-code="17" class="d-flex">
                                         <p>동네생활이야기</p>
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="communityListView?categoryCode=18" class="d-flex">
+                                    <a data-category-code="18" class="d-flex">
                                         <p>우리동네질문</p>
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="communityListView?categoryCode=19" class="d-flex">
+                                    <a data-category-code="19" class="d-flex">
                                         <p>분실/실종센터</p>
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="communityListView?categoryCode=20" class="d-flex">
+                                    <a data-category-code="20" class="d-flex">
                                         <p>동네사건사고</p>
                                     </a>
                                 </li>
                             </ul>
                         </aside>
 
-                        <aside class="single_sidebar_widget popular_post_widget">
-                            <h3 class="widget_title">최근 게시글</h3>
-                           
-                           <c:forEach var="c" items="${ list }"  begin="0" end="3" step="1">
-								<div class="media post_item">
-									<a data-board-no="${ c.BCode }">
-									<img src="${pageContext.request.contextPath}/resources/img/blog/no_img.png" alt="post" style="width: 42px; height: 42px">
-									<div class="media-body">
-										<h3 style="font-weight: bold;">${c.boardTitle}</h3>
-									<p><fmt:formatDate value="${ c.regDate }" type="both"/></p>
-									</a>
-									</div>
-								</div>
-							</c:forEach>
-                           
-                        </aside>
+                        
                         <aside class="single_sidebar_widget tag_cloud_widget">
                             <h4 class="widget_title">태그</h4>
                             <ul class="list">

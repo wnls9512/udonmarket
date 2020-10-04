@@ -3,6 +3,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+
 
 <fmt:requestEncoding value="utf-8"/>
 
@@ -11,6 +13,8 @@
 </jsp:include>
 
 <script>
+
+
 
 $(function(){
 
@@ -36,6 +40,14 @@ $(document).on('click', '#btnSearch', function(e){
 		console.log(url);
 
 	});	
+
+
+$(".replyWriteBtn").on("click", function(){
+  var formObj = $("form[name='replyForm']");
+  formObj.attr("action", "/saveReply");
+  formObj.submit();
+});
+
 
 </script>
 
@@ -175,8 +187,52 @@ $(document).on('click', '#btnSearch', function(e){
                   </div>
                </div>
                
-               <div class="comments-area">
+               <!-- 댓글 -->
+               <%-- <div class="my-3 p-3 bg-white rounded shadow-sm" style="padding-top: 10px">
+
+				<form:form name="form" id="form" role="form" modelAttribute="reply" method="post">
+
+				<form:hidden path="bCode" id="bCode"/>
+
+				<div class="row">
+
+					<div class="col-sm-10">
+
+						<form:textarea path="content" id="content" class="form-control" rows="3" placeholder="댓글을 입력해 주세요"></form:textarea>
+
+					</div>
+
+					<div class="col-sm-2">
+
+						<form:input path="userId" class="form-control" id="userId" value="test"></form:input>
+
+						<button type="button" class="btn btn-sm btn-primary" id="btnReplySave" style="width: 100%; margin-top: 10px"> 저 장 </button>
+
+					</div>
+
+				</div>
+
+				</form:form>
+
+			</div>
+
+			
+
+			
+
+			
+
+			<div class="my-3 p-3 bg-white rounded shadow-sm" style="padding-top: 10px">
+
+				<h6 class="border-bottom pb-2 mb-0">댓글</h6>
+
+				<div id="replyList"></div>
+
+			</div>  --%>
+
+	<div class="comments-area">
                   <h4>댓글 <span style="color: red">3</span></h4>
+				<c:forEach items="${replyList}" var="r">
                   <div class="comment-list">
                      <div class="single-comment justify-content-between d-flex">
                         <div class="user justify-content-between d-flex">
@@ -185,95 +241,45 @@ $(document).on('click', '#btnSearch', function(e){
                            </div>
                            <div class="desc">
                               <p class="comment">
-                                	댓글내용
+                                	${r.content}
                               </p>
                               <div class="d-flex justify-content-between">
                                  <div class="d-flex align-items-center">
                                     <h5>
-                                       <a href="#">닉네임</a>
+                                       <a href="#">${r.userId}</a>
                                     </h5>
-                                    <p class="date"> 2020. 09. 24 </p>
+                                    <p class="date"> <fmt:formatDate value="${r.regDate}" pattern="yyyy-MM-dd" /> </p>
                                       &nbsp;&nbsp; &nbsp;&nbsp;
                                     <a href="#">신고하기</a>
                                  </div>
-                                 <div class="reply-btn">
-                                    <a href="#" class="btn-reply text-uppercase">reply</a>
-                                 </div>
+                                 
                               </div>
                            </div>
                         </div>
-                     </div>
-                  </div>
-                  <div class="comment-list">
-                     <div class="single-comment justify-content-between d-flex">
-                        <div class="user justify-content-between d-flex">
-                           <div class="thumb">
-                              <img src="${pageContext.request.contextPath}/resources/img/comment/comment_1.png" alt="">
-                           </div>
-                           <div class="desc">
-                              <p class="comment">
-                                	댓글내용
-                              </p>
-                              <div class="d-flex justify-content-between">
-                                 <div class="d-flex align-items-center">
-                                    <h5>
-                                       <a href="#">닉네임</a>
-                                    </h5>
-                                    <p class="date"> 2020. 09. 24 </p>
-                                      &nbsp;&nbsp; &nbsp;&nbsp;
-                                    <a href="#">신고하기</a>
-                                 </div>
-                                 <div class="reply-btn">
-                                    <a href="#" class="btn-reply text-uppercase">reply</a>
-                                 </div>
-                              </div>
-                           </div>
                         </div>
                      </div>
+					</c:forEach>   
                   </div>
-                  <div class="comment-list">
-                     <div class="single-comment justify-content-between d-flex">
-                        <div class="user justify-content-between d-flex">
-                           <div class="thumb">
-                              <img src="${pageContext.request.contextPath}/resources/img/comment/comment_1.png" alt="">
-                           </div>
-                           <div class="desc">
-                              <p class="comment">
-                                	댓글내용
-                              </p>
-                              <div class="d-flex justify-content-between">
-                                 <div class="d-flex align-items-center">
-                                    <h5>
-                                       <a href="#">닉네임</a>
-                                    </h5>
-                                    <p class="date"> 2020. 09. 24 </p>
-                                      &nbsp;&nbsp; &nbsp;&nbsp;
-                                    <a href="#">신고하기</a>
-                                 </div>
-                                 <div class="reply-btn">
-                                    <a href="#" class="btn-reply text-uppercase">reply</a>
-                                 </div>
-                              </div>
-                           </div>
-                        </div>
-                     </div>
-                  </div>
-               </div>
-               <div class="comment-form">
-                  <form class="form-contact comment_form" action="#" id="commentForm">
+                  <div class="comment-form">
+                  <form class="form-contact comment_form" id="replyForm" name="replyForm" method="post">
                      <div class="row">
                         <div class="col-12">
                            <div class="form-group">
+                           <input type="hidden" id="bCode" name="bCode" value="${community.BCode}" />
+                           <input type="hidden" id="userId" name="userId" value="test" />
                               <textarea class="form-control w-100" name="comment" id="comment" cols="30" rows="5"
                                  placeholder="댓글 작성 시 타인에 대한 배려와 책임을 담아주세요."></textarea>
                            </div>
                         </div>
                      </div>
                      <div class="form-group mt-3">
-                        <a href="#" class="btn_3 button-contactForm">등록</a>
+                        <button type="button" class="replyWriteBtn">작성</button>
                      </div>
                   </form>
                </div>
+
+               
+               
             </div>
             <div class="col-lg-4">
                     <div class="blog_right_sidebar">
@@ -312,22 +318,22 @@ $(document).on('click', '#btnSearch', function(e){
                             <h4 class="widget_title">카테고리</h4>
                             <ul class="list cat-list">
                                 <li>
-                                    <a href="#" class="d-flex">
+                                    <a href="communityListView?categoryCode=17" class="d-flex">
                                         <p>동네생활이야기</p>
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="#" class="d-flex">
+                                    <a href="communityListView?categoryCode=18" class="d-flex">
                                         <p>우리동네질문</p>
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="#" class="d-flex">
+                                    <a href="communityListView?categoryCode=19" class="d-flex">
                                         <p>분실/실종센터</p>
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="#" class="d-flex">
+                                    <a href="communityListView?categoryCode=20" class="d-flex">
                                         <p>동네사건사고</p>
                                     </a>
                                 </li>

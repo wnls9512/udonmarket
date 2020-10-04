@@ -75,10 +75,10 @@
                                         role="button" aria-haspopup="true" aria-expanded="false">동네생활
                                     </a>
                                     <div class="dropdown-menu" aria-labelledby="navbarDropdown_1">
-                                        <a class="dropdown-item" href="/">동네생활이야기</a>
-                                        <a class="dropdown-item" href="/">우리동네질문</a>
-										<a class="dropdown-item" href="/">분실/실종센터</a>
-										<a class="dropdown-item" href="/">동네사건사고</a>
+                                        <a class="dropdown-item" href="/udon/community/communityListView?categoryCode=17">동네생활이야기</a>
+                                        <a class="dropdown-item" href="/udon/community/communityListView?categoryCode=18">우리동네질문</a>
+										<a class="dropdown-item" href="/udon/community/communityListView?categoryCode=19">분실/실종센터</a>
+										<a class="dropdown-item" href="/udon/community/communityListView?categoryCode=20">동네사건사고</a>
                                     </div>
                                 </li>
 								<!--관리자메뉴 -->
