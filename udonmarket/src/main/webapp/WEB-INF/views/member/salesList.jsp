@@ -102,125 +102,177 @@ a{text-decoration: none; color: black;}
 							  </li>
 							</ul>
 							<div class="tab-content" id="pills-tabContent">
+							  <!-- 판매중 -->
 							  <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
 							  	<table class="table table-hover">
 								  <tbody>
-								    <tr>
-								      <th scope="row">
-								      	<a href="#">
-								      		<img src="/udon/resources/img/product/product/feature-product/f-p-1.jpg" 
-								      			 class="img-fluid" alt="product"
-								      			 style="max-height: 230px;">
-								      	</a>
-								       </th>
-								      <td colspan="3">
-								      	<p style="font-size: 1rem;">아이패드 프로 3세대 64기가 애플펜슬 1세대 포함</p>
-								      	<p style="color: #545454; font-size: 0.9rem;">서울시 강남구 역삼동</p>
-								      	<p style="font-weight: bold;">580,000원</p>
-								      	<p><i class="far fa-heart"></i> 8  <i class="far fa-comments"></i> 2<br />
-								      	<div style="margin:10px 0px;">
-								      	<button type="button" class="btn btn-outline-secondary btn-sm"
-								      			style="margin: 0px 0.15rem;">예약중으로 변경</button>
-								      	<button type="button" class="btn btn-outline-secondary btn-sm"
-								      			style="margin: 0px 0.15rem;">거래완료로 변경</button>
-								      	</div>
-								      </td>
-								      <td>
-								      	<div class="btn-group">
-										  <button type="button" 
-										  		  class="btn btn-outline-link btn-sm dropdown-toggle" 
-										  		  data-toggle="dropdown" 
-										  		  aria-haspopup="true">
-										  </button>
-										  <div class="dropdown-menu dropdown-menu-right">
-										    <button class="dropdown-item" type="button">수정</button>
-										    <button class="dropdown-item" type="button">끌어 올리기</button>
-										    <button class="dropdown-item" type="button">게시물 삭제</button>
-										  </div>
-										</div>
-								      </td>
-								    </tr>
-								    <tr>
-								      <th scope="row">
-								      	<a href="#">
-								      		<img src="/udon/resources/img/product/product/feature-product/f-p-3.jpg" 
-								      			 class="img-fluid" alt="product"
-								      			 style="max-height: 230px;">
-								      	</a>
-								       </th>
-								      <td colspan="3">
-								      	<p style="font-size: 1rem;">애플워치 3세대</p>
-								      	<p style="color: #545454; font-size: 0.9rem;">서울시 강남구 역삼동</p>
-								      	<p style="font-weight: bold;">160,000원</p>
-								      	<br />
-								      	<p><i class="far fa-heart"></i> 8  <i class="far fa-comments"></i> 2<br />
-								      	<div style="margin:10px 0px;">
-								      	<button type="button" class="btn btn-outline-secondary btn-sm"
-								      			style="margin: 0px 1.5px;">예약중으로 변경</button>
-								      	<button type="button" class="btn btn-outline-secondary btn-sm"
-								      			style="margin: 0px 1.5px;">거래완료로 변경</button>
-								      	</div>
-								      </td>
-								      <td>
-								      	<div class="btn-group">
-										  <button type="button" 
-										  		  class="btn btn-outline-link btn-sm dropdown-toggle" 
-										  		  data-toggle="dropdown" 
-										  		  aria-haspopup="true">
-										  </button>
-										  <div class="dropdown-menu dropdown-menu-right">
-										    <button class="dropdown-item" type="button">수정</button>
-										    <button class="dropdown-item" type="button">끌어 올리기</button>
-										    <button class="dropdown-item" type="button">게시물 삭제</button>
-										  </div>
-										</div>
-								      </td>
-								    </tr>
-								    <tr>
-								      <th scope="row">
-								      	<a href="#">
-								      		<img src="/udon/resources/img/product/product/feature-product/f-p-2.jpg" 
-								      			 class="img-fluid" alt="product"
-								      			 style="max-height: 230px;">
-								      	</a>
-								       </th>
-								      <td colspan="3">
-								      	<p style="font-size: 1rem;">질스튜어트가방</p>
-								      	<p style="color: #545454; font-size: 0.9rem;">서울시 강남구 역삼동</p>
-								      	<p style="font-weight: bold;">60,000원</p>
-								      	<br />
-								      	<p><i class="far fa-heart"></i> 8  <i class="far fa-comments"></i> 2<br />
-								      	<div style="margin:10px 0px;">
-								      	<button type="button" class="btn btn-outline-secondary btn-sm"
-								      			style="margin: 0px 1.5px;">예약중으로 변경</button>
-								      	<button type="button" class="btn btn-outline-secondary btn-sm"
-								      			style="margin: 0px 1.5px;">거래완료로 변경</button>
-								      	</div>
-								      </td>
-								      <td>
-								      	<div class="btn-group">
-										  <button type="button" 
-										  		  class="btn btn-outline-link btn-sm dropdown-toggle" 
-										  		  data-toggle="dropdown" 
-										  		  aria-haspopup="true">
-										  </button>
-										  <div class="dropdown-menu dropdown-menu-right">
-										    <button class="dropdown-item" type="button">수정</button>
-										    <button class="dropdown-item" type="button">끌어 올리기</button>
-										    <button class="dropdown-item" type="button">게시물 삭제</button>
-										  </div>
-										</div>
-								      </td>
-								    </tr>
+								  <c:if test="${not empty sale }">
+								  	<c:forEach items="${sale }" var="sale">
+									    <tr>
+									      <th scope="row">
+									      	<!-- 상품 상세 페이지로 이동하게 설정할 것  p_code -->
+									      	<a href="#">
+									      		<!-- 첫번째 상품 이미지로 가져오기 -->
+									      		<img src="/udon/resources/img/product/product/feature-product/f-p-1.jpg" 
+									      			 class="img-fluid" alt="product"
+									      			 style="max-height: 230px;">
+									      	</a>
+									       </th>
+									      <td colspan="3">
+									      	<p style="font-size: 1rem;">${sale.title }</p>
+									      	<p style="color: #545454; font-size: 0.9rem;">${sale.sellerAddr }</p>
+									      	<p style="font-weight: bold;">
+									      		<fmt:formatNumber value="${sale.price }" groupingUsed="true"/>원
+									      	</p>
+									      	<input id="toggle-heart${sale.wishCode}" name="toggle-heart" type="checkbox"/>
+											<label id="toggle-heart${sale.wishCode}-label" for="toggle-heart">❤</label> 
+									      	${sale.totalWish}
+									      	<!-- 열린 채팅방 수 -->
+									      	<i class="far fa-comments"></i> 2<br />
+									      	<div style="margin:10px 0px;">
+									      	<button type="button" class="btn btn-outline-secondary btn-sm"
+									      			style="margin: 0px 0.15rem;">예약중으로 변경</button>
+									      	<button type="button" class="btn btn-outline-secondary btn-sm"
+									      			style="margin: 0px 0.15rem;">거래완료로 변경</button>
+									      	</div>
+									      </td>
+									      <td>
+									      	<div class="btn-group">
+											  <button type="button" 
+											  		  class="btn btn-outline-link btn-sm dropdown-toggle" 
+											  		  data-toggle="dropdown" 
+											  		  aria-haspopup="true">
+											  </button>
+											  <div class="dropdown-menu dropdown-menu-right">
+											    <button class="dropdown-item" type="button">수정</button>
+											    <button class="dropdown-item" type="button">끌어 올리기</button>
+											    <button class="dropdown-item" type="button">게시물 삭제</button>
+											  </div>
+											</div>
+									      </td>
+									    </tr>  
+								  	</c:forEach>
+								  </c:if>
+								  <c:if test="${empty sale }">
+								  	<tr><td>판매중인 게시글이 없어요</td></tr>
+								  </c:if>
+								  </tbody>
+								</table>							  
+							  </div>
+							  <!-- 거래 완료 -->
+							  <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
+							  	<table class="table table-hover">
+								  <tbody>
+								  <c:if test="${not empty complete }">
+								  	<c:forEach items="${complete }" var="c">
+									    <tr>
+									      <th scope="row">
+									      	<!-- 상품 상세 페이지로 이동하게 설정할 것  p_code -->
+									      	<a href="#">
+									      		<!-- 첫번째 상품 이미지로 가져오기 -->
+									      		<img src="/udon/resources/img/product/product/feature-product/f-p-1.jpg" 
+									      			 class="img-fluid" alt="product"
+									      			 style="max-height: 230px;">
+									      	</a>
+									       </th>
+									      <td colspan="3">
+									      	<p style="font-size: 1rem;">${c.title }</p>
+									      	<p style="color: #545454; font-size: 0.9rem;">${c.sellerAddr }</p>
+									      	<p style="font-weight: bold;">
+									      		<fmt:formatNumber value="${c.price }" groupingUsed="true"/>원
+									      	</p>
+									      	<input id="toggle-heart${c.wishCode}" name="toggle-heart" type="checkbox"/>
+											<label id="toggle-heart${c.wishCode}-label" for="toggle-heart">❤</label> 
+									      	${c.totalWish}
+									      	<!-- 열린 채팅방 수 -->
+									      	<i class="far fa-comments"></i> 2<br />
+									      	<div style="margin:10px 0px;">
+									      	<button type="button" class="btn btn-outline-secondary btn-sm"
+									      			style="margin: 0px 0.15rem;">예약중으로 변경</button>
+									      	<button type="button" class="btn btn-outline-secondary btn-sm"
+									      			style="margin: 0px 0.15rem;">거래완료로 변경</button>
+									      	</div>
+									      </td>
+									      <td>
+									      	<div class="btn-group">
+											  <button type="button" 
+											  		  class="btn btn-outline-link btn-sm dropdown-toggle" 
+											  		  data-toggle="dropdown" 
+											  		  aria-haspopup="true">
+											  </button>
+											  <div class="dropdown-menu dropdown-menu-right">
+											    <button class="dropdown-item" type="button">수정</button>
+											    <button class="dropdown-item" type="button">끌어 올리기</button>
+											    <button class="dropdown-item" type="button">게시물 삭제</button>
+											  </div>
+											</div>
+									      </td>
+									    </tr>  
+								  	</c:forEach>
+								  </c:if>
+								  <c:if test="${empty complete }">
+								  	<tr><td>거래 완료 게시글이 없어요</td></tr>
+								  </c:if>
 								  </tbody>
 								</table>
-							  
 							  </div>
-							  <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
-							  ...
-							  </div>
+							  <!-- 숨김 -->
+							  <!-- 로그인한 사용자 == 회원페이지 일때만 보여주기 -->
 							  <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">
-							  ...
+							  	<table class="table table-hover">
+								  <tbody>
+								  <c:if test="${not empty hidden }">
+								  	<c:forEach items="${hidden }" var="h">
+									    <tr>
+									      <th scope="row">
+									      	<!-- 상품 상세 페이지로 이동하게 설정할 것  p_code -->
+									      	<a href="#">
+									      		<!-- 첫번째 상품 이미지로 가져오기 -->
+									      		<img src="/udon/resources/img/product/product/feature-product/f-p-1.jpg" 
+									      			 class="img-fluid" alt="product"
+									      			 style="max-height: 230px;">
+									      	</a>
+									       </th>
+									      <td colspan="3">
+									      	<p style="font-size: 1rem;">${h.title }</p>
+									      	<p style="color: #545454; font-size: 0.9rem;">${h.sellerAddr }</p>
+									      	<p style="font-weight: bold;">
+									      		<fmt:formatNumber value="${h.price }" groupingUsed="true"/>원
+									      	</p>
+									      	<input id="toggle-heart${h.wishCode}" name="toggle-heart" type="checkbox"/>
+											<label id="toggle-heart${h.wishCode}-label" for="toggle-heart">❤</label> 
+									      	${h.totalWish}
+									      	<!-- 열린 채팅방 수 -->
+									      	<i class="far fa-comments"></i> 2<br />
+									      	<div style="margin:10px 0px;">
+									      	<button type="button" class="btn btn-outline-secondary btn-sm"
+									      			style="margin: 0px 0.15rem;">예약중으로 변경</button>
+									      	<button type="button" class="btn btn-outline-secondary btn-sm"
+									      			style="margin: 0px 0.15rem;">거래완료로 변경</button>
+									      	</div>
+									      </td>
+									      <td>
+									      	<div class="btn-group">
+											  <button type="button" 
+											  		  class="btn btn-outline-link btn-sm dropdown-toggle" 
+											  		  data-toggle="dropdown" 
+											  		  aria-haspopup="true">
+											  </button>
+											  <div class="dropdown-menu dropdown-menu-right">
+											    <button class="dropdown-item" type="button">수정</button>
+											    <button class="dropdown-item" type="button">끌어 올리기</button>
+											    <button class="dropdown-item" type="button">게시물 삭제</button>
+											  </div>
+											</div>
+									      </td>
+									    </tr>  
+								  	</c:forEach>
+								  </c:if>
+								  <c:if test="${empty hidden }">
+								  	<tr><td>숨기기한 게시글이 없어요</td></tr>
+								  </c:if>
+								  </tbody>
+								</table>
 							  </div>
 							</div>
 						
@@ -230,7 +282,25 @@ a{text-decoration: none; color: black;}
 	        </div>
 	    </div>
 	</div>
-
+<style>
+[name=toggle-heart] {
+  position: absolute;
+  left: -100vw;
+}
+[for='toggle-heart'] {
+  color: #aab8c2;
+}
+[name=toggle-heart]:checked + label {
+  color: #e2264d;
+} 
+[for='toggle-heart'] {
+  font-size: 1.5em;
+  cursor: pointer;
+}
+[for='toggle-heart'] { 
+  align-self: center; 
+}
+</style>
 <jsp:include page="/WEB-INF/views/common/footer.jsp"/>
 	
 	

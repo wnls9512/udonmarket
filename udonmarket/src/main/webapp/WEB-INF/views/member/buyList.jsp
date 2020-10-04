@@ -56,7 +56,7 @@ html { font-size: 16px; }
 	                    	<a href="${pageContext.request.contextPath }/member/mypage?userId=${member.userId}" class="btn btn-outline-dark btn-sm btn-block">Mypage</a>
 	                    </div>
 	                    <div class="media-body mb-5 text-white">
-	                        <h4 class="mt-0 mb-0" style="color:white;">${loggedInUser.nickName}</h4>
+	                        <h4 class="mt-0 mb-0" style="color:white;">${member.nickName}</h4>
 	                        <p class="small mb-4" style="color:white;"> <i class="fas fa-map-marker-alt mr-2"></i>${member.address}</p>
 
 	                    </div>
@@ -100,74 +100,54 @@ html { font-size: 16px; }
 						    </tr>
 						  </thead>
 						  <tbody>
-						    <tr>
-						      <th scope="row">
-						      	<a href="#">
-						      		<img src="/udon/resources/img/product/product/feature-product/f-p-1.jpg" 
-						      			 class="img-fluid" alt="product"
-						      			 style="max-height: 230px;">
-						      	</a>
-						       </th>
-						      <td colspan="3">
-						      	<p style="font-size: 1rem;">아이패드 프로 3세대 64기가 애플펜슬 1세대 포함</p>
-						      	<p style="color: #545454; font-size: 0.9rem;">서울시 강남구 역삼동</p>						      	
-						      	<p style="font-weight: bold;">
-						      		<span class="badge badge-secondary">거래완료</span>
-						      		580,000원
-						      	</p>
-						      	<p><i class="far fa-heart"></i> 8  <i class="far fa-comments"></i> 2<br />
-						      	<div style="margin:10px 0px;">
-						      	<button type="button" class="btn btn-outline-secondary btn-sm"
-						      			style="margin: 0px 0.15rem;">작성한 후기 보기</button>
-						      	</div>
-						      </td>
-						    </tr>
-						    <tr>
-						      <th scope="row">
-						      	<a href="#">
-						      		<img src="/udon/resources/img/product/product/feature-product/f-p-3.jpg" 
-						      			 class="img-fluid" alt="product"
-						      			 style="max-height: 230px;">
-						      	</a>
-						       </th>
-						      <td colspan="3">
-						      	<p style="font-size: 1rem;">애플워치 3세대</p>
-						      	<p style="color: #545454; font-size: 0.9rem;">서울시 강남구 역삼동</p>
-						      	<p style="font-weight: bold;">
-						      		<span class="badge badge-secondary">거래완료</span>
-						      		160,000원
-						      	</p>
-						      	<br />
-						      	<p><i class="far fa-heart"></i> 8  <i class="far fa-comments"></i> 2<br />
-						      	<div style="margin:10px 0px;">
-						      	<button type="button" class="btn btn-outline-secondary btn-sm"
-						      			style="margin: 0px 1.5px;">작성한 후기 보기</button>
-						      	</div>
-						      </td>
-						    </tr>
-						    <tr>
-						      <th scope="row">
-						      	<a href="#">
-						      		<img src="/udon/resources/img/product/product/feature-product/f-p-2.jpg" 
-						      			 class="img-fluid" alt="product"
-						      			 style="max-height: 230px;">
-						      	</a>
-						       </th>
-						      <td colspan="3">
-						      	<p style="font-size: 1rem;">질스튜어트가방</p>
-						      	<p style="color: #545454; font-size: 0.9rem;">서울시 강남구 역삼동</p>
-						      	<p style="font-weight: bold;">
-						      		<span class="badge badge-secondary">거래완료</span>
-						      		60,000원
-						      	</p>
-						      	<br />
-						      	<p><i class="far fa-heart"></i> 8 <i class="far fa-comments"></i>  2<br />
-						      	<div style="margin:10px 0px;">
-						      	<button type="button" class="btn btn-outline-secondary btn-sm"
-						      			style="margin: 0px 1.5px;">작성한 후기 보기</button>
-						      	</div>
-						      </td>
-						    </tr>
+						  	<c:if test="${not empty list }">
+						  		<c:forEach items="${list }" var="buy">
+								    <tr>
+								      <th scope="row">
+								      <!-- 상품 상세 페이지로 이동하게 설정할 것  p_code -->
+								      	<a href="#">
+								      		<!-- 첫번째 상품 이미지로 가져오기 -->
+								      		<img src="/udon/resources/img/product/product/feature-product/f-p-1.jpg" 
+								      			 class="img-fluid" alt="product"
+								      			 style="max-height: 230px;">
+								      	</a>
+								       </th>
+								      <td colspan="3">
+								      	<p style="font-size: 1rem;">${buy.title }</p>
+								      	<p style="color: #545454; font-size: 0.9rem;">${buy.sellerAddr }</p>						      	
+								      	<p style="font-weight: bold;">
+								      		<span class="badge badge-secondary">거래완료</span>
+								      		<fmt:formatNumber value="${buy.price }" groupingUsed="true"/>원
+								      	</p>
+								      	<input id="toggle-heart${buy.wishCode}" name="toggle-heart" type="checkbox"/>
+										<label id="toggle-heart${buy.wishCode}-label" for="toggle-heart">❤</label> 
+								      	${buy.totalWish}
+								      	<!-- 열린 채팅방 수 -->
+								      	<i class="far fa-comments"></i> 2<br />
+								      	<div style="margin:10px 0px;">
+								      	<!-- 작성 후기가 있다면 후기 보기 페이지로 -->
+								      	<c:if test="${ buy.reviewCode ne 0}">
+									      	<button type="button" class="btn btn-outline-secondary btn-sm"
+									      			style="margin: 0px 0.15rem;"
+									      			onclick="reviewInfo('${buy.reviewCode}')">작성한 후기 보기</button>
+								      	</c:if>
+								      	<!-- 작성 후기 없다면 후기 작성 페이지로 이동 -->
+								      	<c:if test="${ buy.reviewCode eq 0}">
+								      		<button type="button" class="btn btn-outline-secondary btn-sm"
+									      			style="margin: 0px 0.15rem;"
+									      			onclick="insertReview('${buy.PCode}','${member.userId}')">후기 작성하러 가기</button>
+								      	</c:if>
+								      	</div>
+								      </td>
+								    </tr>
+						  		</c:forEach>
+						  	</c:if>
+						  	<c:if test="${empty list }">
+						  		<tr><td colspan="4">
+						  			<p>구매 내역이 없어요</p>
+						  			<p>동네 이웃과 따뜻한 거래를 해보세요</p>
+						  		</td></tr>
+						  	</c:if>
 						  </tbody>
 						</table>
 				        </nav>
@@ -176,7 +156,38 @@ html { font-size: 16px; }
 	        </div>
 	    </div>
 	</div>
+<script>
 
+function reviewInfo(reviewCode){
+	alert("리뷰코드는" + reviewCode);
+	
+}
+
+function insertReview(pCode, userId){
+	alert("상품코드는" + pCode +"사용자 아이디는" + userId);
+	
+}
+
+</script>
+<style>
+[name=toggle-heart] {
+  position: absolute;
+  left: -100vw;
+}
+[for='toggle-heart'] {
+  color: #aab8c2;
+}
+[name=toggle-heart]:checked + label {
+  color: #e2264d;
+} 
+[for='toggle-heart'] {
+  font-size: 1.5em;
+  cursor: pointer;
+}
+[for='toggle-heart'] { 
+  align-self: center; 
+}
+</style>
 <jsp:include page="/WEB-INF/views/common/footer.jsp"/>
 	
 	

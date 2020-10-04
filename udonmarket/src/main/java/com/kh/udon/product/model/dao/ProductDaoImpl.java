@@ -1,6 +1,7 @@
 package com.kh.udon.product.model.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import com.kh.udon.product.model.vo.CategoryVO;
 import com.kh.udon.product.model.vo.CouponDTO;
 import com.kh.udon.product.model.vo.ProductDTO;
 import com.kh.udon.product.model.vo.ProductVO;
+import com.kh.udon.product.model.vo.SellerDTO;
 
 @Repository
 public class ProductDaoImpl implements ProductDao
@@ -71,6 +73,40 @@ public class ProductDaoImpl implements ProductDao
     {
         return session.insert("product.addToWish", wish);
     }
+
+    @Override
+    public List<ProductDTO> search(Map<String, Object> map)
+    {
+        return session.selectList("product.search", map);
+    }
+
+    @Override
+    public int selectSearchCount(Map<String, Object> map)
+    {
+        return session.selectOne("product.selectSearchCount", map);
+    }
+
+    @Override
+    public ProductDTO selectOneByPCode(int pCode)
+    {
+        return session.selectOne("product.selectOneByPCode", pCode);
+    }
+
+    @Override
+    public SellerDTO selectSeller(String id)
+    {
+        return session.selectOne("product.selectSeller", id);
+    }
+
+    @Override
+    public int changeStatus(Map<String, Object> map)
+    {
+        return session.update("product.changeStatus", map);
+    }
+
+
+
+
 
     
     

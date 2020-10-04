@@ -187,10 +187,10 @@ $(function(){
 					$(".guide.error").show();
 					$("#btn-insert").attr('disabled', true);
 				}
-					
+
 			},
 			error : function(xhr, status, err){
-				 console.log("처리 실패", xhr, status, err)
+				 console.log("처리 실패", xhr, status, err);				
 			}
 
 		});
@@ -201,7 +201,7 @@ $(function(){
 
 function deleteKey(keyCode, keyword){
 	
-	if(!confirm('🍜 [' + keyword + '] 을/를 정말 삭제할까요? 🍜')) return;
+	if(!confirm('[' + keyword + '] 을/를 정말 삭제할까요?')) return;
 
 	$.ajax({
 		url : "${pageContext.request.contextPath}/member/deleteKeyword",
@@ -214,7 +214,7 @@ function deleteKey(keyCode, keyword){
             xhr.setRequestHeader("${_csrf.headerName}", "${_csrf.token}");
         },
 		success : function(data){
-				alert("🍜 키워드 알림 [" + keyword + "] 을/를 삭제했어요 🍜 ");
+				alert("키워드 [" + keyword + "] 을/를 삭제했어요 💗");
 
 				//요소 삭제
 				let $key = "#keyCode" + data.key;
@@ -224,7 +224,8 @@ function deleteKey(keyCode, keyword){
 				$("#totalKeywordContents").html(${totalKeywordContents} - 1);
 		},
 		error : function(xhr, status, err){
-			 console.log("처리 실패", xhr, status, err)
+			 console.log("처리 실패", xhr, status, err);
+			 alert("키워드 삭제에 실패했어요 다시 시도해주세요 💦");
 		}
 
 	});
@@ -248,7 +249,7 @@ $("#btn-insert").click(function(){
             xhr.setRequestHeader("${_csrf.headerName}", "${_csrf.token}");
         },
 		success : function(data){
-				alert("🍜 키워드 알림에 추가했어요 🍜 ");
+				alert("키워드를 추가했어요 💗");
 				$keyword.val(''); //초기화
 
 				let $span = $("<span class='btn btn-outline-primary btn-sm'>"+ data.keyword +"</span>");
@@ -259,7 +260,8 @@ $("#btn-insert").click(function(){
 				
 		},
 		error : function(xhr, status, err){
-			 console.log("처리 실패", xhr, status, err)
+			 console.log("처리 실패", xhr, status, err);
+			 alert("키워드 추가에 실패했어요 다시 시도해주세요 💦");
 		}
 
 	});

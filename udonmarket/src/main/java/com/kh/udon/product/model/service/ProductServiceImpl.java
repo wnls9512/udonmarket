@@ -1,6 +1,7 @@
 package com.kh.udon.product.model.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,6 +12,7 @@ import com.kh.udon.product.model.vo.CategoryVO;
 import com.kh.udon.product.model.vo.CouponDTO;
 import com.kh.udon.product.model.vo.ProductDTO;
 import com.kh.udon.product.model.vo.ProductVO;
+import com.kh.udon.product.model.vo.SellerDTO;
 
 @Service
 public class ProductServiceImpl implements ProductService
@@ -72,6 +74,41 @@ public class ProductServiceImpl implements ProductService
         return dao.addToWish(wish);
     }
 
+    @Override
+    public List<ProductDTO> search(Map<String, Object> map)
+    {
+        return dao.search(map);
+    }
+
+    @Override
+    public int selectSearchCount(Map<String, Object> map)
+    {
+        return dao.selectSearchCount(map);
+    }
+
+    @Override
+    public ProductDTO selectOneByPCode(int pCode)
+    {
+        return dao.selectOneByPCode(pCode);
+    }
+
+    @Override
+    public SellerDTO selectSeller(String id)
+    {
+        return dao.selectSeller(id);
+    }
+
+    @Override
+    public int changeStatus(Map<String, Object> map)
+    {
+        return dao.changeStatus(map);
+    }
+
+
+
+
+    
+    
     
     
 }

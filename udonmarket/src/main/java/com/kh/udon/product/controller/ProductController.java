@@ -1,6 +1,8 @@
 package com.kh.udon.product.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -18,6 +20,7 @@ import com.kh.udon.product.model.vo.CategoryVO;
 import com.kh.udon.product.model.vo.CouponDTO;
 import com.kh.udon.product.model.vo.ProductDTO;
 import com.kh.udon.product.model.vo.ProductVO;
+import com.kh.udon.product.model.vo.SellerDTO;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -45,15 +48,11 @@ public class ProductController
         int totalCount = service.selectTotalCount();
         List<ProductDTO> products = service.selectAll();
         
-        log.debug("category = {}", category);
-        log.debug("categoryCount = {}", categoryCount);
-        log.debug("totalCount = {}", totalCount);
-        log.debug("products = {}", products);
-        
         model.addAttribute("category", category);
         model.addAttribute("categoryCount", categoryCount);
         model.addAttribute("totalCount", totalCount);
         model.addAttribute("products", products);
+        model.addAttribute("selectedCategory", 0);
         
         return "product/productListView";
     }
@@ -76,15 +75,39 @@ public class ProductController
         int totalCount = service.selectCategoryCount(categoryCode);
         List<ProductDTO> products = service.selectCategoryProducts(categoryCode);
         
-        log.debug("category = {}", category);
-        log.debug("categoryCount = {}", categoryCount);
-        log.debug("totalCount = {}", totalCount);
-        log.debug("products = {}", products);
-        
         model.addAttribute("category", category);
         model.addAttribute("categoryCount", categoryCount);
         model.addAttribute("totalCount", totalCount);
         model.addAttribute("products", products);
+        model.addAttribute("selectedCategory", categoryCode);
+        
+        return "product/productListView";
+    }
+    
+    // 검색
+    @GetMapping("/search")
+    public String search(String keyword, int category, Model model)
+    {
+        /*
+         *      1. 카테고리 목록
+         *      2. 카테고리 목록별 갯수
+         *      3. 전체 상품 갯수
+         *      4. 선택된 카테고리 상품 리스트
+         */
+        Map<String, Object> map = new HashMap<>();
+        map.put("keyword", keyword);
+        map.put("category", category);
+        
+        List<CategoryVO> categoryList = service.selectAllCategory();
+        List<Integer> categoryCount = service.selectAllCategoryCount();
+        int totalCount = service.selectSearchCount(map);
+        List<ProductDTO> products = service.search(map);
+        
+        model.addAttribute("category", categoryList);
+        model.addAttribute("categoryCount", categoryCount);
+        model.addAttribute("totalCount", totalCount);
+        model.addAttribute("products", products);
+        model.addAttribute("selectedCategory", category);
         
         return "product/productListView";
     }
@@ -104,8 +127,6 @@ public class ProductController
     @PostMapping("/register")
     public String register(ProductVO product, RedirectAttributes rttr)
     {
-        log.debug("product = {}", product);
-        
         int result = service.insert(product);
         
         rttr.addFlashAttribute("msg", result > 0 ? "상품 등록 성공 💛" : "상품 등록 실패 🤔");
@@ -113,12 +134,16 @@ public class ProductController
         return "redirect:/product/productListView";
     }
     
-    
     // 게시글 상세보기
     @RequestMapping("/productDetailView")
-    public String productDetail(int pCode)
+    public String productDetail(int pCode, Model model)
     {
-        log.debug("pCode = {}", pCode);
+        ProductDTO product = service.selectOneByPCode(pCode);
+        SellerDTO seller = service.selectSeller(product.getSeller());
+        
+        model.addAttribute("product", product);
+        model.addAttribute("seller", seller);
+        
         return "product/productDetailView";
     }
     
@@ -127,10 +152,27 @@ public class ProductController
     @ResponseBody
     public String addToWish(Wish wish)
     {
-        log.debug("wish = {}", wish);
-
         int result = service.addToWish(wish);
         
         return result > 0 ? "관심목록에 추가했어요 💗" : "관심목록 추가에 실패했어요 💦";
     }
+    
+    // 상품 상태 변경
+    @PostMapping(value = "/changeStatus", produces = "application/text; charset=utf8")
+    @ResponseBody
+    public String changeStatus(String status, int pCode)
+    {
+        log.debug("status = {}", status);
+        log.debug("pCode = {}", pCode);
+        
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("status", status);
+        map.put("pCode", pCode);
+        
+        
+        int result = service.changeStatus(map);
+        
+        return result > 0 ? "상태가 변경되었어요 🍜" : "상태 변경에 실패했어요 💧";
+    }
+    
 }

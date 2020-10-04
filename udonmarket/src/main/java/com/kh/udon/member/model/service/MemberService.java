@@ -9,6 +9,7 @@ import com.kh.udon.member.model.vo.Location;
 import com.kh.udon.member.model.vo.Member;
 import com.kh.udon.member.model.vo.Review;
 import com.kh.udon.member.model.vo.announce;
+import com.kh.udon.member.model.vo.Wish;
 import com.kh.udon.product.model.vo.ProductVO;
 
 public interface MemberService
@@ -39,12 +40,16 @@ public interface MemberService
 	
 	int insertMemberLocAuth(Member member);
 
-	List<ProductVO> selectAllSalesPro(String userId);
+	List<Wish> selectAllSalesPro(String userId);
 
-	List<ProductVO> selectAllBuyPro(String userId);
+	List<Wish> selectAllBuyPro(String userId);
 
-	List<ProductVO> selectAllWishPro(String userId);
+	List<Wish> selectAllWishPro(String userId);
 
 	int insertKeyword(Keyword key);
+
+	int deleteWish(int wishCode);
+
+	int insertWish(Map<String, Object> map);
 
 }
