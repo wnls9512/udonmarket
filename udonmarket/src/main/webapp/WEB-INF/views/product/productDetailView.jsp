@@ -21,8 +21,8 @@
                 <div class="col-lg-8">
                     <div class="breadcrumb_iner">
                         <div class="breadcrumb_iner_item">
-                            <h2>게시글 제목</h2>
-							<h3>카테고리</h3>
+                            <!-- <h2>게시글 제목</h2>
+							<h3>카테고리</h3> -->
                         </div>
                     </div>
                 </div>
@@ -73,20 +73,34 @@
               </div>
             </div>
             <br/>
-            <h3>${product.title }</h3>
-            <h2><fmt:formatNumber type="number" maxFractionDigits="3" value="${product.price}" />원</h2>
+            <c:if test="${product.seller != userId }">
+            <c:choose>
+            <c:when test="${product.tradeStatus == 'R' }">
+            <h3 class="d-inline" style="color: green;">예약중</h3>
+            </c:when>
+            <c:when test="${product.tradeStatus == 'C' }">
+            <h3 class="d-inline" style="color: gray;">거래완료</h3>
+            </c:when>
+            </c:choose>
+            </c:if>
+            <h3 class="d-inline">
+            ${product.title }
+            </h3>
+            <br/><br/>
+            <h2 class="d-inline"><fmt:formatNumber type="number" maxFractionDigits="3" value="${product.price}" />원</h2>&nbsp;&nbsp;
+            <span style="color: red;">${product.category }</span><br/>
             <ul class="list">
               <li>
-                <a class="active" href="#">
-                  <span>카테고리</span> : ${product.category }</a>
-              </li>
-              <li>
-                <a href="javascript:void(0);"> <span>상태</span> : 
-                <c:choose>
-                <c:when test="${product.tradeStatus == 'S' }">판매중</c:when>
-                <c:when test="${product.tradeStatus == 'R' }">예약중</c:when>
-                <c:when test="${product.tradeStatus == 'C' }">판매완료</c:when>
-                </c:choose>
+                <a href="javascript:void(0);">
+                <c:if test="${product.seller == userId }">
+				<div class="default-select mt-3" id="status_select">
+					<select>
+						<option value="S" <c:if test="${product.tradeStatus == 'S' }">selected</c:if>>판매중</option>
+						<option value="R" <c:if test="${product.tradeStatus == 'R' }">selected</c:if>>예약중</option>
+						<option value="C" <c:if test="${product.tradeStatus == 'C' }">selected</c:if>>거래완료</option>
+					</select>
+				</div>
+                </c:if>
                 </a>
               </li>
             </ul>
@@ -202,6 +216,40 @@ function addToWish(userId, pCode)
 		}
 	});
 }
+
+$(function()
+{
+	// 거래 상태 변경
+	$("#status_select").on("change", function()
+	{
+		var selected = $("#status_select option:selected").val();
+		var pCode = "${product.PCode}";
+
+		$.ajax
+		({
+			url: "${pageContext.request.contextPath}/product/changeStatus",
+			method: "POST",
+			data: 
+			{
+				status: selected,
+				pCode: pCode
+			}, 
+			dataType: "text",
+			beforeSend: function(xhr)
+			{
+	            xhr.setRequestHeader("${_csrf.headerName}", "${_csrf.token}");
+	        },
+				success: function(result)
+			{
+				alert(result);										
+			},
+			error: function(xhr, status, err)
+			{
+				alert("상태 변경에 실패했어요 💧");
+			}
+		});
+	});
+});
 </script>
 	
 	

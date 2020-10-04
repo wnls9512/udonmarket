@@ -422,10 +422,3 @@ insert into evaluation values(seq_evaluation.nextval, '거래 시간과 장소�
 insert into evaluation values(seq_evaluation.nextval, '약속 장소에 나타나지 않았어요', 0, 'C');
 insert into evaluation values(seq_evaluation.nextval, '거래 시간과 장소를 정한 후 거래 직전 취소했어요', 0, 'C');
 --==========================================================================================
-select count(p.category) from category c left join product p on(c.category_code = p.category) 
-		group by c.category_code order by c.category_code;
-    
-select * from product;
-select * from category;
-select count(p.category) from category c left join product p on(c.category_code = p.category) 
-where c.category_parent = 1 group by c.category_code order by c.category_code;

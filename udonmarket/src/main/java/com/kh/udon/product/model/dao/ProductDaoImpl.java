@@ -98,6 +98,13 @@ public class ProductDaoImpl implements ProductDao
         return session.selectOne("product.selectSeller", id);
     }
 
+    @Override
+    public int changeStatus(Map<String, Object> map)
+    {
+        return session.update("product.changeStatus", map);
+    }
+
+
 
 
 

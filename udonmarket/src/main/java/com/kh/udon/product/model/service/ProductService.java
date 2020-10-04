@@ -39,6 +39,8 @@ public interface ProductService
 
     SellerDTO selectSeller(String id);
 
+    int changeStatus(Map<String, Object> map);
+
 
 
 

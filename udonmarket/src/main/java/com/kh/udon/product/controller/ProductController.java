@@ -157,4 +157,22 @@ public class ProductController
         return result > 0 ? "관심목록에 추가했어요 💗" : "관심목록 추가에 실패했어요 💦";
     }
     
+    // 상품 상태 변경
+    @PostMapping(value = "/changeStatus", produces = "application/text; charset=utf8")
+    @ResponseBody
+    public String changeStatus(String status, int pCode)
+    {
+        log.debug("status = {}", status);
+        log.debug("pCode = {}", pCode);
+        
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("status", status);
+        map.put("pCode", pCode);
+        
+        
+        int result = service.changeStatus(map);
+        
+        return result > 0 ? "상태가 변경되었어요 🍜" : "상태 변경에 실패했어요 💧";
+    }
+    
 }

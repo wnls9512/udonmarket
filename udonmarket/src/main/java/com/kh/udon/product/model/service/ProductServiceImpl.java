@@ -98,6 +98,13 @@ public class ProductServiceImpl implements ProductService
         return dao.selectSeller(id);
     }
 
+    @Override
+    public int changeStatus(Map<String, Object> map)
+    {
+        return dao.changeStatus(map);
+    }
+
+
 
 
     
