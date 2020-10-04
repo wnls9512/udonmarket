@@ -102,7 +102,7 @@
 <!-- 회원가입 -->
 <insert id="insertMember">
 	insert into member
-	values(#{userId},#{password},#{email},#{nickName},null,null,null,default,default,default)
+	values(#{userId},#{password},#{email},#{nickName},null,default,null,default,default,default)
 </insert>
 <insert id="insertLocation">
 	insert into location
@@ -124,7 +124,7 @@
 <select id="selectMemberList" resultMap="memberMap">
  	select *
  	from member
- 	order by regDate desc
+ 	order by reg_date desc
 </select>
 
 <select id="selectMemberTotalContents" resultType="_int">
@@ -135,6 +135,12 @@
 <resultMap type="member" id="memberMap">
 
 </resultMap>
+
+<!-- 관리자에서 멤버 삭제하기 -->
+<delete id="deleteMember" parameterType="String" >
+	delete from member
+	where user_id = #{value}
+</delete>
 
 
 

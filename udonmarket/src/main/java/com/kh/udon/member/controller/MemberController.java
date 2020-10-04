@@ -134,14 +134,7 @@ public class MemberController {
 		
 		return mav;
 	}
-	
-	@RequestMapping(value="/")
-	public String kakaoLogin() {
 		
-		return "redirect:/";
-	}
-	
-
 	@RequestMapping("/mypage")
     public Model mypage(@RequestParam("userId") String userId,
     					Model model){

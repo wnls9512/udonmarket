@@ -13,9 +13,11 @@ import com.kh.udon.member.model.vo.Keyword;
 import com.kh.udon.member.model.vo.Member;
 import com.kh.udon.member.model.vo.Review;
 import com.kh.udon.member.model.vo.Wish;
-import com.kh.udon.product.model.vo.ProductVO;
+
+import lombok.extern.slf4j.Slf4j;
 
 @Repository
+@Slf4j
 public class MemberDaoImpl implements MemberDao
 {
     @Autowired
@@ -134,6 +136,12 @@ public class MemberDaoImpl implements MemberDao
 	@Override
 	public int selectMemberTotalContents() {
 		return session.selectOne("member.selectMemberTotalContents");
+	}
+
+	@Override
+	public int deleteMember(String userId) {
+		log.debug("userId = {}", userId);
+		return session.delete("member.deleteMember", userId);
 	}
 
 }

@@ -1,17 +1,16 @@
 package com.kh.udon.admin.controller;
 
-import java.sql.Date;
-import java.text.SimpleDateFormat;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.propertyeditors.CustomDateEditor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.kh.udon.member.model.service.MemberService;
 import com.kh.udon.member.model.vo.Member;
@@ -20,10 +19,14 @@ import lombok.extern.slf4j.Slf4j;
 
 @Controller
 @Slf4j
+@RequestMapping("/admin")
 public class AdminController {
 	
 	@Autowired
 	private MemberService memberService;
+	
+	@Autowired
+	private BCryptPasswordEncoder bcryptPasswordEncoder;
 	
 	/**
 	 * 페이징의 컨텐츠영역에 대한 기능구현을 
@@ -38,7 +41,7 @@ public class AdminController {
 	 * @return
 	 */
 	
-	@GetMapping("/admin/memberList")
+	@GetMapping("/memberList")
 	public ModelAndView memberList(ModelAndView mav,@RequestParam(defaultValue = "1", value = "cPage") int cPage) {
 	
 		
@@ -51,18 +54,51 @@ public class AdminController {
 		//전체 컨텐츠 수
 		int totalContents = memberService.selectMemberTotalContents();
 		
+		mav.addObject("totalContents", totalContents);
+		mav.addObject("list", list);
+		mav.setViewName("admin/memberList");
+		
 		return mav;
 		
 	}
 	
-	/**
-	 * 사용자요청을 command vo에 바인딩할 때 세부설정함.
-	 * @param binder
-	 */
-	@InitBinder
-	public void initBinder(WebDataBinder binder) {
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-		binder.registerCustomEditor(Date.class, 
-									new CustomDateEditor(sdf, true));
+	@RequestMapping(value="/adminMemberEnroll", method = RequestMethod.GET)
+	public String adminMemberEnroll() {
+		
+		return "admin/memberList";
+	}
+	
+	@RequestMapping(value="/adminMemberEnroll", method = RequestMethod.POST)
+	public String adminMemberEnroll(Member member, RedirectAttributes redirectAttr) {
+		log.debug("member@controller = {}", member);
+		
+		String rawPassword = member.getPassword();
+		String encryptPassword = bcryptPasswordEncoder.encode(rawPassword);
+		member.setPassword(encryptPassword);
+		
+		log.debug("rawPassword@controller = {}", rawPassword);
+		log.debug("encryptPassword@controller = {}", encryptPassword);
+		
+		
+		int result = memberService.insertMemberLocAuth(member);
+		
+		log.debug("result@controller = {}", result);
+		
+		String msg = (result > 0) ? "회원가입성공!" : "회원가입실패!";
+		log.debug("msg@controller = " + msg);
+		redirectAttr.addFlashAttribute("msg", msg);
+		
+		
+		return "redirect:/admin/memberList";
+	}
+	
+	@RequestMapping(value="/adminMemberDelete", method = RequestMethod.POST)
+	public String adminMemberDelete(@RequestParam("userId") String userId, RedirectAttributes redirectAttr) {
+		
+		int result = memberService.deleteMember(userId);
+		log.debug("result = {}", result);
+		redirectAttr.addFlashAttribute("msg",result > 0  ? "회원 삭제 성공!" : "회원 삭제 실패");
+		
+		return "redirect:/admin/memberList";
 	}
 }

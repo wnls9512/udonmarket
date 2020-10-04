@@ -53,4 +53,6 @@ public interface MemberService
 
 	int selectMemberTotalContents();
 
+	int deleteMember(String userId);
+
 }

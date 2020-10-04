@@ -60,5 +60,7 @@ public interface MemberDao
 
 	int selectMemberTotalContents();
 
+	int deleteMember(String userId);
+
 
 }

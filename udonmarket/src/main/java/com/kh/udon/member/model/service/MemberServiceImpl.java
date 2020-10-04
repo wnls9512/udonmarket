@@ -150,4 +150,10 @@ public class MemberServiceImpl implements MemberService
 		return memberDao.selectMemberTotalContents();
 	}
 
+	@Override
+	public int deleteMember(String userId) {
+		log.debug("userId = {}", userId);
+		return memberDao.deleteMember(userId);
+	}
+
 }
