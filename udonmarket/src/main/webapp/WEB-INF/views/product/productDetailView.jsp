@@ -140,10 +140,12 @@
             </c:when>
             </c:choose>
             </c:if>
-            <h3 class="d-inline">
+            <h3>
             ${product.title }
-            </h3>&nbsp;&nbsp;
-            <span style="color: red;">${product.category }</span>
+            </h3>
+            <span style="color: gray;">${product.category} · <c:if test="${product.pull }">끌올 &nbsp;</c:if>
+                   										     <c:if test="${product.regDate != 0}">${p.regDate} days ago</c:if>
+                   										     <c:if test="${product.regDate == 0}">today</c:if></span>
             <!-- kebab START -->
             <c:if test="${product.seller ne userId }">
 			<div class="d-inline float-right" id="test">
@@ -160,7 +162,7 @@
 			  <div class="dropdown">
 			    <a data-toggle="dropdown"><i class="fa fa-ellipsis-v fa-2x waves-effect"></i></a>
 			    <div class="dropdown-menu">
-			      <a class="dropdown-item" href="#">끌어 올리기</a>
+			      <a class="dropdown-item" href="javascript:void(0);" data-toggle="modal" data-target="#pullModal">끌어 올리기</a>
 			      <a class="dropdown-item" 
 			      	 href="${pageContext.request.contextPath }/product/updateProduct?pCode=${product.PCode}&categoryName=${product.category }">
 			      	 수정
@@ -269,11 +271,98 @@
         </div>
     </section>
     <!-- product_list part end-->
-	
 
 <jsp:include page="/WEB-INF/views/common/footer.jsp"/>
 	
+<!-- ====== 끌올 Modal START ======  -->
+<div class="modal fade" id="pullModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle"><strong>끌어올리기</strong></h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+	   <div class="row text-center align-items-end">
+	      <!-- 끌올 가능 START -->
+	      <c:if test="${product.timeMillis gt 259200000 }">
+	      <div class="mb-5 mb-lg-0" style="float:none; margin:0 auto;">
+	        <div class="bg-white p-5 rounded-lg shadow">
+	          <h1 class="h6 text-uppercase font-weight-bold mb-4">${coupon.couponName }</h1>
+	          <h2 class="h1 font-weight-bold">${coupon.amount }<span class="text-small font-weight-normal ml-2">개</span></h2>
 	
+	          <div class="custom-separator my-4 mx-auto bg-primary"></div>
+	
+	          <ul class="list-unstyled my-5 text-small text-left">
+	            <li class="mb-3">
+	              <i class="fa fa-check mr-2 text-primary"></i> 쿠폰 적용된 상품은 전국에 노출됩니다.</li>
+	            <li class="mb-3">
+	              <i class="fa fa-check mr-2 text-primary"></i> 유효기간은 <span class="text-small font-weight-normal ml-2">
+	              		<fmt:formatDate value="${coupon.expireDate }" pattern="yyyy년 MM월 dd일"/></span>까지 입니다.</li>
+	            <li class="mb-3 text-muted">
+	              <i class="fa fa-times mr-2"></i>해당 쿠폰은 타인 양도 불가합니다.
+	            </li>
+	            <li class="mb-3 text-muted">
+	              <i class="fa fa-times mr-2"></i>거짓물품 배송시 사이트 이용에 제한이 생깁니다.
+	            </li>
+	            <li class="mb-3 text-muted">
+	              <i class="fa fa-times mr-2"></i>쿠폰 적용 후 취소는 불가합니다.
+	            </li>
+	          </ul>
+	          <a href="javascript:void(0);" class="btn btn-primary btn-block p-2 shadow rounded-pill coupon">적용</a>
+	          <input type="hidden" name="coupon" value="0"/>
+	        </div>
+	      </div>
+	      </c:if>
+	      <!-- 끌올 가능 END -->
+	      <!-- 끌올 불가능 START -->
+	      <c:if test="${product.timeMillis lt 259200000 }">
+	      <div class="mb-5 mb-lg-0" style="float:none; margin:0 auto;">
+	        <div class="bg-white rounded-lg">
+	        	<div class="media" style="background-color: #F9F9FF;">
+	              <div class="d-flex ml-4 my-2" style="width: 17%;">
+	                <img class="rounded-circle" 
+	                	 src="${pageContext.request.contextPath }/resources/img/member/${seller.originalFilename }"  
+	                	 alt="" />
+	              </div>
+	              <div class="my-4 ml-4 text-left" style="width: 37%;">
+	                <h4>${product.title }</h4>
+	                <span><fmt:formatNumber type="number" maxFractionDigits="3" value="${product.price}" />원</span>
+	              </div>
+				</div>
+				<div class="p-4 text-left">
+					<h3 style="color: red;">
+					<strong>
+						<fmt:parseNumber value="${(259200000 - product.timeMillis) / 1000 / 60 / 60 / 24 }" integerOnly="true" />일 
+						<fmt:parseNumber value="${(259200000 - product.timeMillis) / 1000 / 60 / 60 % 24 }" integerOnly="true" />시간 
+						<fmt:parseNumber value="${(259200000 - product.timeMillis) / 1000 / 60 % 60 }" integerOnly="true" />분 뒤에 
+					</strong>
+					</h3>
+					<h3><strong>끌어올릴 수 있어요.</strong></h3>
+					<br/>
+					<h4>${seller.nickname }님, 혹시 판매가 잘 안되시나요?</h4>
+					<h4>판매 꿀팁을 확인하고 판매 확률을 높여보세요.</h4>
+					<br/>
+					<a href="#">판매 확률 높이는 꿀팁보기</a>
+				</div>
+				<div class="my-5">
+					<button class="genric-btn disable w-75" disabled>끌어올리기</button>
+				</div>
+	        </div>
+	      </div>
+	      </c:if>
+	      <!-- 끌올 불가능 END -->
+      	</div>
+	  </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- ====== 끌올 Modal END ======  -->
 	
 <script>
 //관심 목록 추가

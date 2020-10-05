@@ -118,6 +118,7 @@ create table product
     coupon number default 1 not null,
     offer number default 1 not null,
     delete_yn char(1) default 'y' not null,
+    pull number default 0 not null,
     constraint pk_product primary key(p_code),
     constraint fk_product_seller foreign key(seller) references member(user_id),
     constraint fk_product_buyer foreign key(buyer) references member(user_id),
@@ -126,8 +127,10 @@ create table product
     constraint ck_product_trade_status check(trade_status in('S','R','C')),
     constraint ck_product_coupon check(coupon in(1,0)),
     constraint ck_product_offer check(offer in(1,0)),
-    constraint ck_product_delete_yn check(delete_yn in('Y', 'N')
+    constraint ck_product_delete_yn check(delete_yn in('Y', 'N'),
+    constraint ck_product_pull check(pull in(1, 0))
 );
+
 create table product_photo
 (
     uuid varchar2(100),
@@ -474,3 +477,4 @@ select * from evaluation;
 select * from evaluate;
 select * from product;
 commit;
+update product set delete_yn = 'N' where p_code = 22;

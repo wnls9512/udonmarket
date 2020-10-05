@@ -143,6 +143,9 @@ public class ProductController
     {
         ProductDTO product = service.selectDTOByPCode(pCode);
         SellerDTO seller = service.selectSeller(product.getSeller());
+
+        long timeMillis = System.currentTimeMillis() - product.getOriginalRegDate().getTime();
+        product.setTimeMillis(timeMillis);
         
         model.addAttribute("product", product);
         model.addAttribute("seller", seller);

@@ -96,7 +96,8 @@
                                 	 onclick="location.href='${pageContext.request.contextPath}/product/productDetailView?pCode=${p.PCode}';">
                                 <div class="single_product_text">
                                     <h4>${p.title}</h4>
-                                    <span style="color: gray;">${p.address} · <c:if test="${p.regDate != 0}">${p.regDate} days ago</c:if>
+                                    <span style="color: gray;">${p.address} · <c:if test="${p.pull }">끌올 &nbsp;</c:if>
+                                    										   <c:if test="${p.regDate != 0}">${p.regDate} days ago</c:if>
                                     										   <c:if test="${p.regDate == 0}">today</c:if></span>
                                     <h3><fmt:formatNumber type="number" maxFractionDigits="3" value="${p.price}" />원</h3>
                                     <span class="float-right" style="color: gray;"><i class="far fa-heart"></i> ${p.wish}  <i class="far fa-comments"></i> ${p.chat }<br /></span>
