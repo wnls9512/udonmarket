@@ -84,19 +84,30 @@ public class MemberDaoImpl implements MemberDao
 	}
 
 	@Override
-	public int insertMember(Member member) {
-		return session.insert("member.insertMember", member);
+	public int insertMember(Map<String, Object> map) {
+		return session.insert("member.insertMember", map);
 	}
 
 	@Override
-	public int insertLocation(String userId) {
-		return session.insert("member.insertLocation", userId);
+	public int insertLocation(Map<String, Object> map) {
+		return session.insert("member.insertLocation", map);
 	}
 	
 	@Override
-	public int insertAuthority(String userId) {
-		return session.insert("member.insertAuthority", userId);
+	public int insertAuthority(Map<String, Object> map) {
+		return session.insert("member.insertAuthority", map);
 	}
+	
+	@Override
+	public int insertScore(Map<String, Object> map) {
+		return session.insert("member.insertScore", map);
+	}
+	
+	@Override
+	public int inserEvaluate(Map<String, Object> map) {
+		return session.insert("member.inserEvaluate", map);
+	}
+
 	
 	public List<Wish> selectAllSalesPro(String userId) {
 		return session.selectList("member.selectAllSalesPro", userId);
@@ -139,9 +150,10 @@ public class MemberDaoImpl implements MemberDao
 	}
 
 	@Override
-	public int deleteMember(String userId) {
-		log.debug("userId = {}", userId);
-		return session.delete("member.deleteMember", userId);
+	public int updateQuitMember(String userId) {
+		return session.update("member.updateQuitMember", userId);
 	}
+
+
 
 }

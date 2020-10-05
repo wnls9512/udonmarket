@@ -65,8 +65,19 @@ public class MemberController {
 
 		log.debug("rawPassword@controller = {}", rawPassword);
 		log.debug("encryptPassword@controller = {}", encryptPassword);
-
-		int result = service.insertMemberLocAuth(member);
+		
+		
+		List<Integer> num = new ArrayList<>();
+		Map<String, Object> map = new HashMap<>();
+		
+		for(int i=0;i<=26; i++) {
+			num.add(i);
+		}
+		
+		map.put("list", num);
+		map.put("userId", member.getUserId());
+				
+		int result = service.insertMemberLocAuthScoreEvaluate(map);
 		
 		
 		log.debug("result@controller = {}", result);

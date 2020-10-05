@@ -38,11 +38,11 @@ public interface MemberDao
 
 	List<Review> selectAllReview(String userId);
 
-	int insertMember(Member member);
+	int insertMember(Map<String, Object> map);
 
-	int insertLocation(String userId);
+	int insertLocation(Map<String, Object> map);
 
-	int insertAuthority(String userId);
+	int insertAuthority(Map<String, Object> map);
 
 	List<Wish> selectAllSalesPro(String userId);
 
@@ -60,7 +60,9 @@ public interface MemberDao
 
 	int selectMemberTotalContents();
 
-	int deleteMember(String userId);
+	int updateQuitMember(String userId);
 
+	int insertScore(Map<String, Object> map);
 
+	int inserEvaluate(Map<String, Object> map);
 }
