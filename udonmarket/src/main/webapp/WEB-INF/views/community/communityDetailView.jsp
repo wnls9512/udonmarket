@@ -95,9 +95,9 @@ $(".replyWriteBtn").on("click", function(){
                   </div>
                   <div class="blog_details">
                   
-                  			<c:if test="${ community.categoryCode == 22 }">
+                  			<%-- <c:if test="${ community.categoryCode == 22 }">
 								<a class="genric-btn success-border medium" style="border-color: red; font-weight: bold;">공지사항</a>
-							</c:if>
+							</c:if> --%>
 							<c:if test="${ community.categoryCode == 17 }">
 								<a class="genric-btn success-border medium">동네생활이야기</a>
 							</c:if>
@@ -322,11 +322,11 @@ $(".replyWriteBtn").on("click", function(){
                             <h4 class="widget_title">카테고리</h4>
                             <ul class="list cat-list">
                                 
-                                <li>
+                                <!-- <li>
                                     <a href="communityListView?categoryCode=22" class="d-flex">
                                         <p>공지사항</p>
                                     </a>
-                                </li>
+                                </li> -->
                                 <li>
                                     <a href="communityListView?categoryCode=17" class="d-flex">
                                         <p>동네생활이야기</p>
@@ -354,6 +354,7 @@ $(".replyWriteBtn").on("click", function(){
                             <h3 class="widget_title">최근 게시글</h3>
                            
                            	<c:forEach var="c" items="${ list }"  begin="0" end="3" step="1">
+                           		<c:if test="${ c.categoryCode == 17 || c.categoryCode == 18 || c.categoryCode == 19 || c.categoryCode == 20}">
 								<div class="media post_item">
 									<a data-board-no="${ c.BCode }">
 									<img src="${pageContext.request.contextPath}/resources/img/blog/no_img.png" alt="post" style="width: 42px; height: 42px">
@@ -363,6 +364,7 @@ $(".replyWriteBtn").on("click", function(){
 									</a>
 									</div>
 								</div>
+								</c:if>
 							</c:forEach>
                            	
                            
