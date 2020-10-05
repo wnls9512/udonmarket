@@ -87,7 +87,7 @@ public class ProductServiceImpl implements ProductService
     }
 
     @Override
-    public ProductDTO selectOneByPCode(int pCode)
+    public ProductDTO selectDTOByPCode(int pCode)
     {
         return dao.selectOneByPCode(pCode);
     }
@@ -102,6 +102,18 @@ public class ProductServiceImpl implements ProductService
     public int changeStatus(Map<String, Object> map)
     {
         return dao.changeStatus(map);
+    }
+
+    @Override
+    public ProductVO selectVOByPCode(int pCode)
+    {
+        return dao.selectVOByPCode(pCode);
+    }
+
+    @Override
+    public int update(ProductVO product)
+    {
+        return dao.update(product);
     }
 
 

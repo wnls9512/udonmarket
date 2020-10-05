@@ -11,6 +11,7 @@
 	<jsp:param value="제품 상세보기" name="pageTitle"/>
 </jsp:include>
 
+
 <sec:authentication property="principal.username" var="userId"/>
 
     <!--================Home Banner Area =================-->
@@ -143,6 +144,35 @@
             ${product.title }
             </h3>&nbsp;&nbsp;
             <span style="color: red;">${product.category }</span>
+            <!-- kebab START -->
+            <c:if test="${product.seller ne userId }">
+			<div class="d-inline float-right" id="test">
+			  <div class="dropdown">
+			    <a data-toggle="dropdown"><i class="fa fa-ellipsis-v fa-2x waves-effect"></i></a>
+			    <div class="dropdown-menu">
+			      <a class="dropdown-item" href="#">신고하기</a>
+			    </div>
+			  </div>
+			</div>
+			</c:if>
+            <c:if test="${product.seller eq userId }">
+			<div class="d-inline float-right" id="test">
+			  <div class="dropdown">
+			    <a data-toggle="dropdown"><i class="fa fa-ellipsis-v fa-2x waves-effect"></i></a>
+			    <div class="dropdown-menu">
+			      <a class="dropdown-item" href="#">끌어 올리기</a>
+			      <a class="dropdown-item" 
+			      	 href="${pageContext.request.contextPath }/product/updateProduct?pCode=${product.PCode}&categoryName=${product.category }">
+			      	 수정
+		      	  </a>
+			      <div class="dropdown-divider"></div>
+			      <a class="dropdown-item" href="#">숨기기</a>
+			      <a class="dropdown-item" href="#">삭제</a>
+			    </div>
+			  </div>
+			</div>
+			</c:if>
+			<!-- kebab END -->
             <br/><br/>
             <h2 class="d-inline"><fmt:formatNumber type="number" maxFractionDigits="3" value="${product.price}" />원</h2>&nbsp;&nbsp;
             <br/>

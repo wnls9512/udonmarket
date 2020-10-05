@@ -138,7 +138,7 @@ public class ProductController
     @RequestMapping("/productDetailView")
     public String productDetail(int pCode, Model model)
     {
-        ProductDTO product = service.selectOneByPCode(pCode);
+        ProductDTO product = service.selectDTOByPCode(pCode);
         SellerDTO seller = service.selectSeller(product.getSeller());
         
         model.addAttribute("product", product);
@@ -162,17 +162,41 @@ public class ProductController
     @ResponseBody
     public String changeStatus(String status, int pCode)
     {
-        log.debug("status = {}", status);
-        log.debug("pCode = {}", pCode);
-        
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("status", status);
         map.put("pCode", pCode);
         
-        
         int result = service.changeStatus(map);
         
         return result > 0 ? "상태가 변경되었어요 🍜" : "상태 변경에 실패했어요 💧";
+    }
+    
+    // 상품 수정
+    @GetMapping("/updateProduct")
+    public String updateProduct(@RequestParam int pCode, @RequestParam String categoryName, Model model)
+    {
+        ProductVO product = service.selectVOByPCode(pCode);
+        CouponDTO coupon = service.selectCoupon(product.getSeller());
+        List<CategoryVO> category = service.selectAllCategory();
+        
+        model.addAttribute("product", product);
+        model.addAttribute("coupon", coupon);
+        model.addAttribute("category", category);
+        model.addAttribute("categoryName", categoryName);
+        
+        return "product/update";
+    }
+    
+    @PostMapping("/update")
+    public String update(ProductVO product, RedirectAttributes rttr)
+    {
+        log.debug("product = {}", product);
+        
+        int result = service.update(product);
+        
+        rttr.addFlashAttribute("msg", result > 0 ? "상품 수정 성공 💛" : "상품 등록 실패 🤔");
+        
+        return "redirect:/product/productListView";
     }
     
 }

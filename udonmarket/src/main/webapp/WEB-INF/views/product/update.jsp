@@ -3,15 +3,12 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
-<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
 <fmt:requestEncoding value="utf-8"/>
 
 <jsp:include page="/WEB-INF/views/common/header.jsp">
 	<jsp:param value="" name="pageTitle"/>
 </jsp:include>
-
-<sec:authentication property="principal.username" var="userId"/>
 
 <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/upload.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/modal.css">
@@ -24,7 +21,7 @@
                 <div class="col-lg-8">
                     <div class="breadcrumb_iner">
                         <div class="breadcrumb_iner_item">
-                            <h2>상품 등록</h2>
+                            <h2>상품 수정</h2>
                         </div>
                     </div>
                 </div>
@@ -36,7 +33,7 @@
     <!--================ Register Area =================-->
     <section class="login_part padding_top">
         <div class="container">
-           	<form action="${pageContext.request.contextPath }/product/register" method="post" enctype="multipart/form-data">
+           	<form action="${pageContext.request.contextPath }/product/update" method="post" enctype="multipart/form-data">
 	            <div class="row align-items-center">
 	                <div class="col-lg-6 col-md-6">
 	                    <div class="login_part_text text-center" style="background-image:none; border: 1px solid #ff3368; width:88%; padding: 0;">
@@ -48,9 +45,11 @@
 	                <div class="col-lg-6 col-md-6">
 	                    <div class="login_part_form" style="padding: 70px 0;">
 	                        <div class="login_part_form_iner">
-	                        	<input type="hidden" name="seller" id="seller" value="${userId }"/>
+	                        	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+	                        	<input type="hidden" name="pCode" value="${product.PCode }" />
+	                        	<input type="hidden" name="seller" id="seller" value="${product.seller }"/>
                                 <div class="col-md-12 form-group p_star" style="margin-top: 10%;">
-                                    <input type="text" name="title" placeholder="글 제목"
+                                    <input type="text" name="title" placeholder="글 제목" value="${product.title }"
 											onfocus="this.placeholder = ''" onblur="this.placeholder = '글 제목'" required
 											class="single-input-primary">
                                 </div>
@@ -61,7 +60,7 @@
                                 </div>
                                 <div class="col-md-12 form-group">
                                     <div class="creat_account d-flex align-items-center">
-										<input type="number" name="price" placeholder="가격 입력"
+										<input type="number" name="price" placeholder="가격 입력" value="${product.price }"
 											onfocus="this.placeholder = ''" onblur="this.placeholder = '가격 입력'" required
 											class="single-input-primary" style="width:68%;">
 										<div class="primary-switch">
@@ -75,12 +74,13 @@
                                 <div class="col-md-12 form-group p_star">
 									<textarea class="single-textarea" placeholder="부개1동에 올릴 게시글 내용을 작성해주세요.(가품 및 판매금지품목은 게시가 제한될 수 있어요.)" 
 											  onfocus="this.placeholder = ''" style="height: 240px;" name="content"
-											  onblur="this.placeholder = '부개1동에 올릴 게시글 내용을 작성해주세요.(가품 및 판매금지품목은 게시가 제한될 수 있어요.)'" required></textarea>
+											  onblur="this.placeholder = '부개1동에 올릴 게시글 내용을 작성해주세요.(가품 및 판매금지품목은 게시가 제한될 수 있어요.)'" 
+											  required>${product.content }</textarea>
                                 </div>
                                 <div class="col-md-12 form-group">
                                     <div class="creat_account d-flex align-items-center">
 	                                	<button type="button" class="genric-btn default-border btn btn-primary" data-toggle="modal" data-target="#couponModal" 
-	                                			style="width: 68%; color: #007bff;">쿠폰 조회</button>
+	                                			style="width: 68%; color: #007bff;" id="selectCoupon">쿠폰 조회</button>
 	                   					<div class="confirm-switch">
 											<input type="checkbox" id="confirm-switch" disabled>
 											<label for="confirm-switch"></label>
@@ -90,7 +90,7 @@
                                 </div>
                                 <div class="col-md-12 form-group p_star">
 	                                <button type="submit" value="submit" class="btn_3" id="uploadBtn">
-	                                    	완료
+	                                    	수정
 	                                </button>
                            		 </div>
 	                        </div>
@@ -187,6 +187,43 @@
 /* ================ submit form START ================*/
 $(function()
 {
+	/*
+			초기값
+			1. 카테고리
+			2. 쿠폰
+			3. 가격제안
+	*/
+	$("#category").html('${categoryName}');
+	$("[name=category]").val('${product.category}');
+
+	$("[name=coupon]").val(0);
+	if(${product.coupon })
+	{
+		$('#selectCoupon').attr('disabled', true);
+		
+		$("#confirm-switch").removeAttr("disabled");
+		$("#confirm-switch").prop("checked", true);
+		$("[name=coupon]").val(1);
+		$("#confirm-switch").on("click", function()
+		{
+			alert("적용한 쿠폰은 변경할 수 없어요 💧");
+			$("#confirm-switch").prop("checked", true);
+			$("[name=coupon]").val(1);
+		});
+	}
+
+	if(${product.offer })
+	{
+		$("#primary-switch").prop("checked", true);
+		$("[name=offer]").val(1);
+	}
+	else
+	{
+		$("#primary-switch").prop("checked", false);
+		$("[name=offer]").val(0);
+	}
+	
+	
 	// 카테고리
 	function selectCategory(code, name)
 	{
