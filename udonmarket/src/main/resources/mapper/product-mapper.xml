@@ -6,7 +6,7 @@
 
 	<!-- 전체 리스트 -->
 	<select id="selectAll" resultType="productDTO">
-		select p.p_code, p.seller, p.title, p.price, trunc(sysdate - p.reg_date) reg_date, substr(m.address, instr(m.address, ' ', 1, 1), instr(m.address, ' ', 1, 2)) address, wc.wish, cc.chat
+		select p.p_code, p.seller, p.title, p.price, p.pull, trunc(sysdate - p.reg_date) reg_date, substr(m.address, instr(m.address, ' ', 1, 1), instr(m.address, ' ', 1, 2)) address, wc.wish, cc.chat
 		from product p left join member m on(p.seller = m.user_id)
 		               left join (select a.p_code p_code, count(b.p_code) wish from product a left outer join wish b on(a.p_code = b.p_code) group by a.p_code) wc on(wc.p_code = p.p_code)
 		               left join (select a.p_code p_code, count(b.p_code) chat from product a left outer join chat_room b on(a.p_code = b.p_code) group by a.p_code) cc on(cc.p_code = p.p_code)
@@ -15,7 +15,7 @@
 	
 	<!-- 카테고리 리스트 -->
 	<select id="selectCategoryProducts" resultType="productDTO">
-		select p.p_code, p.seller, p.title, p.price, trunc(sysdate - p.reg_date) reg_date, substr(m.address, instr(m.address, ' ', 1, 1), instr(m.address, ' ', 1, 2)) address, wc.wish, cc.chat
+		select p.p_code, p.seller, p.title, p.price, p.pull, trunc(sysdate - p.reg_date) reg_date, substr(m.address, instr(m.address, ' ', 1, 1), instr(m.address, ' ', 1, 2)) address, wc.wish, cc.chat
 		from product p left join member m on(p.seller = m.user_id)
 		               left join (select a.p_code p_code, count(b.p_code) wish from product a left outer join wish b on(a.p_code = b.p_code) group by a.p_code) wc on(wc.p_code = p.p_code)
 		               left join (select a.p_code p_code, count(b.p_code) chat from product a left outer join chat_room b on(a.p_code = b.p_code) group by a.p_code) cc on(cc.p_code = p.p_code)
@@ -24,7 +24,7 @@
 
 	<!-- 검색결과 리스트 -->
 	<select id="search" resultType="productDTO">
-		select p.p_code, p.seller, p.title, p.price, trunc(sysdate - p.reg_date) reg_date, substr(m.address, instr(m.address, ' ', 1, 1), instr(m.address, ' ', 1, 2)) address, wc.wish, cc.chat
+		select p.p_code, p.seller, p.title, p.price, p.pull, trunc(sysdate - p.reg_date) reg_date, substr(m.address, instr(m.address, ' ', 1, 1), instr(m.address, ' ', 1, 2)) address, wc.wish, cc.chat
 		from product p left join member m on(p.seller = m.user_id)
 		               left join (select a.p_code p_code, count(b.p_code) wish from product a left outer join wish b on(a.p_code = b.p_code) group by a.p_code) wc on(wc.p_code = p.p_code)
 		               left join (select a.p_code p_code, count(b.p_code) chat from product a left outer join chat_room b on(a.p_code = b.p_code) group by a.p_code) cc on(cc.p_code = p.p_code)
@@ -91,14 +91,17 @@
 	</insert>
 	
 	<!-- 상품 조회 -->
-	<select id="selectOneByPCode" resultType="productDTO">
-		select p.p_code, p.seller, p.title, p.content, p.price, trunc(sysdate - p.reg_date) reg_date, substr(m.address, instr(m.address, ' ', 1, 1), instr(m.address, ' ', 1, 2)) address, 
-			   c.category_name category, p.trade_status, p.offer, wc.wish, cc.chat
+	<select id="selectDTOByPCode" resultType="productDTO">
+		select p.p_code, p.seller, p.title, p.content, p.price, p.pull, trunc(sysdate - p.reg_date) reg_date, substr(m.address, instr(m.address, ' ', 1, 1), instr(m.address, ' ', 1, 2)) address, 
+			   c.category_name category, p.trade_status, p.offer, wc.wish, cc.chat, p.reg_date original_reg_date
 		from product p left join member m on(p.seller = m.user_id)
 					   left join category c on(p.category = c.category_code)
 		               left join (select a.p_code p_code, count(b.p_code) wish from product a left outer join wish b on(a.p_code = b.p_code) group by a.p_code) wc on(wc.p_code = p.p_code)
 		               left join (select a.p_code p_code, count(b.p_code) chat from product a left outer join chat_room b on(a.p_code = b.p_code) group by a.p_code) cc on(cc.p_code = p.p_code)
 		where p.p_code = #{pCode}
+	</select>
+	<select id="selectVOByPCode" resultType="productVO">
+		select * from product where p_code = #{pCode}
 	</select>
 	
 	<!-- 판매자 정보 -->
@@ -111,6 +114,18 @@
 	<!-- 거래상태 변경 -->
 	<update id="changeStatus">
 		update product set trade_status = #{status} where p_code = #{pCode}
+	</update>
+	
+	<!-- 상품 수정 -->
+	<update id="update">
+		update product set 
+		title = #{title}, category = #{category}, content = #{content}, price = #{price}, coupon = #{coupon}, offer = #{offer}
+		where p_code = #{pCode}
+	</update>
+	
+	<!-- 상품 삭제 -->
+	<update id="delete">
+		update product set delete_yn = 'Y' where p_code = #{pCode}
 	</update>
 	
 </mapper>

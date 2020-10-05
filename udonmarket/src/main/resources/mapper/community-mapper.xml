@@ -20,6 +20,37 @@
 				AND board_content like CONCAT('%' || #{keyword}, '%')
 
 			</if>
+			
+			<if test="categoryCode==17">
+
+				AND category_code = 17
+
+			</if>
+			
+			<if test="categoryCode==18">
+
+				AND category_code = 18
+
+			</if>
+			
+			<if test="categoryCode==19">
+
+				AND category_code = 19
+
+			</if>
+			
+			<if test="categoryCode==20">
+
+				AND category_code = 20
+
+			</if>
+			
+			<!-- <if test="categoryCode==22">
+
+				AND category_code = 22
+
+			</if> -->
+			
 
 		</trim> 
 		order by b_code desc

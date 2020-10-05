@@ -39,7 +39,14 @@ $(document).on('click', '#btnSearch', function(e){
 
 
 
+$(function(){
 
+	$("a[data-category-code]").click(function(){
+		var categoryCode = $(this).attr("data-category-code");
+		location.href = "${ pageContext.request.contextPath }/community/communityListView?categoryCode=" + categoryCode;
+	});
+	
+});
 
 
 
@@ -95,7 +102,8 @@ $(document).on('click', '#btnSearch', function(e){
 
               --%> 
                     <c:forEach items="${ list }" var="c">
-                    
+                    	
+                    	<c:if test="${ c.categoryCode == 17 || c.categoryCode == 18 || c.categoryCode == 19 || c.categoryCode == 20}">
                         <article class="blog_item">
                             <div class="blog_item_img">
                                 <img class="card-img rounded-0" src="${pageContext.request.contextPath}/resources/img/blog/no_img.png" alt="">
@@ -107,6 +115,9 @@ $(document).on('click', '#btnSearch', function(e){
 
                             <div class="blog_details">
                             
+                            <%-- <c:if test="${ c.categoryCode == 22 }">
+								<a class="genric-btn success-border medium" style="border-color: red; font-weight: bold;">공지사항</a>
+							</c:if> --%>
                             <c:if test="${ c.categoryCode == 17 }">
 								<a class="genric-btn success-border medium">동네생활이야기</a>
 							</c:if>
@@ -131,7 +142,7 @@ $(document).on('click', '#btnSearch', function(e){
                                 </ul>
                             </div>
                         </article>
-
+						</c:if>
                        </c:forEach>
                        
 
@@ -196,45 +207,35 @@ $(document).on('click', '#btnSearch', function(e){
                         <aside class="single_sidebar_widget post_category_widget">
                             <h4 class="widget_title">카테고리</h4>
                             <ul class="list cat-list">
+                    			<!-- <li>
+                                    <a data-category-code="22" class="d-flex" style="">
+                                        <p>공지사항</p>
+                                    </a>
+                                </li> -->
                                 <li>
-                                    <a href="communityListView?categoryCode=17" class="d-flex">
+                                    <a data-category-code="17" class="d-flex">
                                         <p>동네생활이야기</p>
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="communityListView?categoryCode=18" class="d-flex">
+                                    <a data-category-code="18" class="d-flex">
                                         <p>우리동네질문</p>
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="communityListView?categoryCode=19" class="d-flex">
+                                    <a data-category-code="19" class="d-flex">
                                         <p>분실/실종센터</p>
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="communityListView?categoryCode=20" class="d-flex">
+                                    <a data-category-code="20" class="d-flex">
                                         <p>동네사건사고</p>
                                     </a>
                                 </li>
                             </ul>
                         </aside>
 
-                        <aside class="single_sidebar_widget popular_post_widget">
-                            <h3 class="widget_title">최근 게시글</h3>
-                           
-                           <c:forEach var="c" items="${ list }"  begin="0" end="3" step="1">
-								<div class="media post_item">
-									<a data-board-no="${ c.BCode }">
-									<img src="${pageContext.request.contextPath}/resources/img/blog/no_img.png" alt="post" style="width: 42px; height: 42px">
-									<div class="media-body">
-										<h3 style="font-weight: bold;">${c.boardTitle}</h3>
-									<p><fmt:formatDate value="${ c.regDate }" type="both"/></p>
-									</a>
-									</div>
-								</div>
-							</c:forEach>
-                           
-                        </aside>
+                        
                         <aside class="single_sidebar_widget tag_cloud_widget">
                             <h4 class="widget_title">태그</h4>
                             <ul class="list">

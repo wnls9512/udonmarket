@@ -45,7 +45,7 @@ public class MemberController {
 
 	@Autowired
 	private BCryptPasswordEncoder bcryptPasswordEncoder;
-
+	
 	// 로그인
 	@RequestMapping("/loginForm")
 	public String memberLoginForm() {
@@ -137,7 +137,7 @@ public class MemberController {
 		
 		return mav;
 	}
-
+		
 	@RequestMapping("/mypage")
     public Model mypage(@RequestParam("userId") String userId,
     					Model model){

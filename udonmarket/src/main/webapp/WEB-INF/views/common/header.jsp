@@ -55,7 +55,9 @@
             <div class="row align-items-center">
                 <div class="col-lg-12">
                     <nav class="navbar navbar-expand-lg navbar-light">
-                        <a class="navbar-brand" href="${pageContext.request.contextPath }"> <img src="${pageContext.request.contextPath }/resources/img/logo.jpg" alt="logo" style="width: 30%; margin-top: 8%;"> </a>
+                        <a class="navbar-brand" href="${pageContext.request.contextPath }" style="width: 20%;"> 
+                        	<img src="${pageContext.request.contextPath }/resources/img/udon (1).png" alt="logo" style="width: 30%; margin-top: 8%;"> 
+                       	</a>
                         <button class="navbar-toggler" type="button" data-toggle="collapse"
                             data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
                             aria-expanded="false" aria-label="Toggle navigation">
@@ -75,10 +77,10 @@
                                         role="button" aria-haspopup="true" aria-expanded="false">동네생활
                                     </a>
                                     <div class="dropdown-menu" aria-labelledby="navbarDropdown_1">
-                                        <a class="dropdown-item" href="/">동네생활이야기</a>
-                                        <a class="dropdown-item" href="/">우리동네질문</a>
-										<a class="dropdown-item" href="/">분실/실종센터</a>
-										<a class="dropdown-item" href="/">동네사건사고</a>
+                                        <a class="dropdown-item" href="/udon/community/communityListView?categoryCode=17">동네생활이야기</a>
+                                        <a class="dropdown-item" href="/udon/community/communityListView?categoryCode=18">우리동네질문</a>
+										<a class="dropdown-item" href="/udon/community/communityListView?categoryCode=19">분실/실종센터</a>
+										<a class="dropdown-item" href="/udon/community/communityListView?categoryCode=20">동네사건사고</a>
                                     </div>
                                 </li>
 								<!--관리자메뉴 -->

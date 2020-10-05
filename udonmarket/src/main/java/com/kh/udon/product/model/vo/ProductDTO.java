@@ -1,6 +1,7 @@
 package com.kh.udon.product.model.vo;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import lombok.Data;
 
@@ -15,6 +16,7 @@ public class ProductDTO implements Serializable
     int price;
     int regDate; // 2 days ago
     String address;
+    boolean pull;
     
     int wish;
     int chat;
@@ -23,4 +25,6 @@ public class ProductDTO implements Serializable
     String category;
     String tradeStatus;
     int offer;
+    Date originalRegDate;
+    long timeMillis;
 }

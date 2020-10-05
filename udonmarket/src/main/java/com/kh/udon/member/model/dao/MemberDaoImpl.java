@@ -10,14 +10,15 @@ import org.springframework.stereotype.Repository;
 
 import com.kh.udon.member.model.vo.Evaluate;
 import com.kh.udon.member.model.vo.Keyword;
-import com.kh.udon.member.model.vo.Location;
 import com.kh.udon.member.model.vo.Member;
 import com.kh.udon.member.model.vo.Review;
 import com.kh.udon.member.model.vo.announce;
 import com.kh.udon.member.model.vo.Wish;
-import com.kh.udon.product.model.vo.ProductVO;
+
+import lombok.extern.slf4j.Slf4j;
 
 @Repository
+@Slf4j
 public class MemberDaoImpl implements MemberDao
 {
     @Autowired
@@ -131,6 +132,23 @@ public class MemberDaoImpl implements MemberDao
 	@Override
 	public int insertWish(Map<String, Object> map) {
 		return session.insert("member.insertWish", map);
+	}
+
+	@Override
+	public List<Member> selectMemberList(int limit, int offset) {
+		RowBounds rowBounds = new RowBounds(offset, limit);
+		return session.selectList("member.selectMemberList", null, rowBounds);
+	}
+
+	@Override
+	public int selectMemberTotalContents() {
+		return session.selectOne("member.selectMemberTotalContents");
+	}
+
+	@Override
+	public int deleteMember(String userId) {
+		log.debug("userId = {}", userId);
+		return session.delete("member.deleteMember", userId);
 	}
 
 }

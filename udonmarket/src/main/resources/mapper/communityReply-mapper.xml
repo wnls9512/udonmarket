@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="communityReply">
+<select id="ReplyList" resultType="Reply">
+
+		SELECT
+
+			reply_code
+
+			, b_code
+
+			, content
+
+			, user_id
+
+			, reg_date
+
+
+		FROM
+
+			reply
+
+		WHERE
+
+			b_code = #{bCode}
+
+		ORDER BY reg_date desc
+
+	</select>
+	
+	<insert id="saveReply" parameterType="com.kh.udon.community.model.vo.Reply">
+
+		insert into reply values(
+    		seq_reply.nextval,
+		    1,
+		    #{userId},
+		    #{content},
+		    #{bCode},
+		    null,
+		    sysdate
+		)
+
+	</insert>
+
+	
+
+	<update id="updateReply" parameterType="com.kh.udon.community.model.vo.Reply">
+
+		UPDATE reply SET
+
+			content = #{content}
+
+		WHERE
+
+			reply_code = #{replyCode}
+
+	</update>
+
+	
+
+	<delete id="deleteReply" parameterType="int">
+
+		DELETE FROM reply
+
+		WHERE
+
+			reply_code = #{replyCode}
+
+	</delete>
+	
+</mapper>

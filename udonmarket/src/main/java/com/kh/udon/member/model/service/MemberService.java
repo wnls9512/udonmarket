@@ -52,4 +52,10 @@ public interface MemberService
 
 	int insertWish(Map<String, Object> map);
 
+	List<Member> selectMemberList(int limit, int offset);
+
+	int selectMemberTotalContents();
+
+	int deleteMember(String userId);
+
 }

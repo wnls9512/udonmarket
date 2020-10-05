@@ -89,7 +89,7 @@ public class ProductDaoImpl implements ProductDao
     @Override
     public ProductDTO selectOneByPCode(int pCode)
     {
-        return session.selectOne("product.selectOneByPCode", pCode);
+        return session.selectOne("product.selectDTOByPCode", pCode);
     }
 
     @Override
@@ -102,6 +102,24 @@ public class ProductDaoImpl implements ProductDao
     public int changeStatus(Map<String, Object> map)
     {
         return session.update("product.changeStatus", map);
+    }
+
+    @Override
+    public ProductVO selectVOByPCode(int pCode)
+    {
+        return session.selectOne("product.selectVOByPCode", pCode);
+    }
+
+    @Override
+    public int update(ProductVO product)
+    {
+        return session.update("product.update", product);
+    }
+
+    @Override
+    public int delete(int pCode)
+    {
+        return session.update("product.delete", pCode);
     }
 
 

@@ -104,13 +104,11 @@ html { font-size: 16px; }
 						  		<c:forEach items="${list }" var="buy">
 								    <tr>
 								      <th scope="row">
-								      <!-- 상품 상세 페이지로 이동하게 설정할 것  p_code -->
-								      	<a href="#">
-								      		<!-- 첫번째 상품 이미지로 가져오기 -->
-								      		<img src="/udon/resources/img/product/product/feature-product/f-p-1.jpg" 
-								      			 class="img-fluid" alt="product"
-								      			 style="max-height: 230px;">
-								      	</a>
+							      		<!-- 첫번째 상품 이미지로 가져오기 -->
+							      		<img src="/udon/resources/img/product/product/feature-product/f-p-1.jpg" 
+							      			 onclick="location.href='${pageContext.request.contextPath}/product/productDetailView?pCode=${buy.PCode}';"
+							      			 class="img-fluid" alt="product"
+							      			 style="max-height: 230px;">							      	
 								       </th>
 								      <td colspan="3">
 								      	<p style="font-size: 1rem;">${buy.title }</p>
@@ -157,6 +155,11 @@ html { font-size: 16px; }
 	    </div>
 	</div>
 <script>
+$(function(){
+
+	
+	
+});
 
 function reviewInfo(reviewCode){
 	alert("리뷰코드는" + reviewCode);
