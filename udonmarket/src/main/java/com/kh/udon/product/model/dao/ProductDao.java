@@ -45,6 +45,8 @@ public interface ProductDao
 
     int update(ProductVO product);
 
+    int delete(int pCode);
+
 
 
 

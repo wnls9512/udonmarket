@@ -116,6 +116,12 @@ public class ProductDaoImpl implements ProductDao
         return session.update("product.update", product);
     }
 
+    @Override
+    public int delete(int pCode)
+    {
+        return session.update("product.delete", pCode);
+    }
+
 
 
 

@@ -116,6 +116,12 @@ public class ProductServiceImpl implements ProductService
         return dao.update(product);
     }
 
+    @Override
+    public int delete(int pCode)
+    {
+        return dao.delete(pCode);
+    }
+
 
 
 

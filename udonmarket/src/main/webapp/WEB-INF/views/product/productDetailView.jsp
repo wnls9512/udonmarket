@@ -167,7 +167,7 @@
 		      	  </a>
 			      <div class="dropdown-divider"></div>
 			      <a class="dropdown-item" href="#">숨기기</a>
-			      <a class="dropdown-item" href="#">삭제</a>
+			      <a class="dropdown-item" href="javascript:deleteProduct('${product.PCode }');">삭제</a>
 			    </div>
 			  </div>
 			</div>
@@ -337,6 +337,36 @@ $(function()
 		});
 	});
 });
+
+// 삭제
+function deleteProduct(pCode)
+{
+	if(confirm("삭제할까요?"))
+	{
+		$.ajax
+		({
+			url: "${pageContext.request.contextPath}/product/" + pCode,
+			method: "PUT",
+			beforeSend: function(xhr)
+			{
+	            xhr.setRequestHeader("${_csrf.headerName}", "${_csrf.token}");
+	        },
+	        dataType: "json",
+			success: function(map)
+			{
+				alert(map.msg);
+				location.href = "${pageContext.request.contextPath}/product/productListView";									
+			},
+			error: function(xhr, status, err)
+			{
+				alert("상품 삭제에 실패했어요 💧");
+				console.log(xhr, status, err);
+			}
+		});
+	}
+	else
+		return false;
+}
 </script>
 	
 	

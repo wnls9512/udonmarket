@@ -123,4 +123,9 @@
 		where p_code = #{pCode}
 	</update>
 	
+	<!-- 상품 삭제 -->
+	<update id="delete">
+		update product set delete_yn = 'Y' where p_code = #{pCode}
+	</update>
+	
 </mapper>

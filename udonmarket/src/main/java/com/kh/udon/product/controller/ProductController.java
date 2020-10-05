@@ -8,10 +8,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.kh.udon.member.model.vo.Wish;
@@ -186,7 +189,6 @@ public class ProductController
         
         return "product/update";
     }
-    
     @PostMapping("/update")
     public String update(ProductVO product, RedirectAttributes rttr)
     {
@@ -199,4 +201,27 @@ public class ProductController
         return "redirect:/product/productListView";
     }
     
+    // 상품 삭제
+    @PutMapping("/{pCode}")
+    @ResponseBody
+    public Map<String, Object> deleteMenu(@PathVariable int pCode)
+    {
+        Map<String, Object> map = new HashMap<>();
+        
+        String msg = "삭제되었습니다 😄";
+        
+        try 
+        {
+            int result = service.delete(pCode);
+        } 
+        catch(Exception e) 
+        {
+            log.error("메뉴 삭제 오류", e);
+            msg = "삭제에 실패했어요 💧";
+        }
+        
+        map.put("msg", msg);
+        
+        return map;
+    }    
 }

@@ -45,6 +45,8 @@ public interface ProductService
 
     int update(ProductVO product);
 
+    int delete(int pCode);
+
 
 
 
