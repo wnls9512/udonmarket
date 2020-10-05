@@ -45,11 +45,11 @@
 
 			</if>
 			
-			<if test="categoryCode==22">
+			<!-- <if test="categoryCode==22">
 
 				AND category_code = 22
 
-			</if>
+			</if> -->
 			
 
 		</trim> 

@@ -102,7 +102,8 @@ $(function(){
 
               --%> 
                     <c:forEach items="${ list }" var="c">
-                    
+                    	
+                    	<c:if test="${ c.categoryCode == 17 || c.categoryCode == 18 || c.categoryCode == 19 || c.categoryCode == 20}">
                         <article class="blog_item">
                             <div class="blog_item_img">
                                 <img class="card-img rounded-0" src="${pageContext.request.contextPath}/resources/img/blog/no_img.png" alt="">
@@ -114,9 +115,9 @@ $(function(){
 
                             <div class="blog_details">
                             
-                            <c:if test="${ c.categoryCode == 22 }">
+                            <%-- <c:if test="${ c.categoryCode == 22 }">
 								<a class="genric-btn success-border medium" style="border-color: red; font-weight: bold;">공지사항</a>
-							</c:if>
+							</c:if> --%>
                             <c:if test="${ c.categoryCode == 17 }">
 								<a class="genric-btn success-border medium">동네생활이야기</a>
 							</c:if>
@@ -141,7 +142,7 @@ $(function(){
                                 </ul>
                             </div>
                         </article>
-
+						</c:if>
                        </c:forEach>
                        
 
@@ -206,11 +207,11 @@ $(function(){
                         <aside class="single_sidebar_widget post_category_widget">
                             <h4 class="widget_title">카테고리</h4>
                             <ul class="list cat-list">
-                    			<li>
+                    			<!-- <li>
                                     <a data-category-code="22" class="d-flex" style="">
                                         <p>공지사항</p>
                                     </a>
-                                </li>
+                                </li> -->
                                 <li>
                                     <a data-category-code="17" class="d-flex">
                                         <p>동네생활이야기</p>
