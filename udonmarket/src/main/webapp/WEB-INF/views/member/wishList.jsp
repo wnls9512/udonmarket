@@ -104,10 +104,11 @@ html { font-size: 16px; }
 						  
 						  <c:if test="${not empty list }">
 							  <c:forEach items="${list }" var="wish">
-							    <tr data-pcode = "${wish.PCode }"> <!-- 사용자 커스텀 속성값 -->
+							    <tr>
 							      <th scope="row">
 						      		<!-- 첫번째 상품 이미지로 가져오기 -->
 						      		<img src="/udon/resources/img/product/product/feature-product/f-p-1.jpg" 
+						      			 onclick="location.href='${pageContext.request.contextPath}/product/productDetailView?pCode=${wish.PCode}';"
 						      			 class="img-fluid" alt="product"
 						      			 style="max-height: 200px;"> 	
 							       </th>
@@ -220,11 +221,11 @@ $(function(){
 
 	});	
 
-	//tr 클릭 했을 때 상세보기로 넘어가기
+/* 	//tr 클릭 했을 때 상세보기로 넘어가기
 	$("tr[data-pcode]").click(function(){
 		var code = $(this).attr("data-pcode");
 		location.href = "${pageContext.request.contextPath}/product/productDetailView?pCode=" + code;
-	});
+	}); */
 	
 });
 </script>
