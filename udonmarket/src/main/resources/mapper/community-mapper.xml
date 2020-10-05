@@ -45,6 +45,12 @@
 
 			</if>
 			
+			<if test="categoryCode==22">
+
+				AND category_code = 22
+
+			</if>
+			
 
 		</trim> 
 		order by b_code desc
