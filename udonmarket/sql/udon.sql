@@ -350,6 +350,37 @@ create sequence seq_location;
 --========================================
 --            DUMMY DATA
 --========================================
+insert into product values
+(SEQ_PRODUCT.nextval, 'test', null, '아이패드 프로 3세대 64기가', 3, '미개봉 새제품 판매합니다',
+ 580000, default, 1, 'S', 0, 1, 'N');
+insert into product values
+(SEQ_PRODUCT.nextval, 'test', null, '애플워치 5', 3, '개봉만 해본 새 제품 이예요',
+280000, default, 1, 'S', 0, 1, 'N');
+insert into product values
+(SEQ_PRODUCT.nextval, 'test', 'juwon', '닌텐도 스위치 동물의 숲 에디션', 3, '128기가 본체 + 조이콘 외 모두 새 상품 그대로 입니다!',
+ 450000, default, 1, 'C', 0, 0, 'N');
+insert into product values
+(SEQ_PRODUCT.nextval, 'test', null, '마리오 카트', 3, '마리오 카트 구합니다! 강남역에서 직거래 원합니다',
+ 50000, default, 0, 'C', 0, 0, 'N');
+insert into product values
+(SEQ_PRODUCT.nextval, 'test', null, '플스4 + 조이스틱', 3, '용산에서 구매했습니다. 플스4 슬림 500기가, 컨트롤러2개, 조이스틱 2개 같이 드립니다.',
+250000, default, 1, 'R', 0, 0, 'N');
+insert into product values
+(SEQ_PRODUCT.nextval, 'test', null, '에어팟 1세대 오른쪽 유닛', 3, '상태 좋아요 연락 주세요~',
+25000, default, 1, 'S', 0, 0, 'Y');
+insert into product values
+(SEQ_PRODUCT.nextval, 'test', null, '네이버 클로바 인공지능 AI 블루투스 스피커', 3, '멜론 유저라 카카오스피커로 갈아타서 판매합니다 작동 잘되고 깨끗해요~',
+18000, default, 1, 'S', 0, 1, 'N'); 
+insert into product values
+(SEQ_PRODUCT.nextval, 'juwon', null, '갤럭시 버즈', 3, '구성품은 박스, 이어팁, 기기 단품 입니다.',
+80000, default, 1, 'S', 0, 1, 'N');
+insert into product values
+(SEQ_PRODUCT.nextval, 'juwon', null, '아이폰 정품 충전기', 3, '한번도 사용 안했어요 편하게 연락주세요',
+200000, default, 1, 'S', 0, 1, 'N');
+insert into product values
+(SEQ_PRODUCT.nextval, 'juwon', 'test', 'K403S 삼성 정품 프린터 토너 판매합니다', 3, '삼성 레이저 프린트 토너 검정색 개봉하지 않은 새 상품입니다!',
+300000, default, 1, 'C', 1, 1, 'N');
+
 insert into category values(seq_category.nextval, null, '상품'); -- 1
 insert into category values(seq_category.nextval, null, '게시판'); -- 2
 insert into category values(seq_category.nextval, null, '관리자'); -- 21
@@ -373,6 +404,11 @@ insert into category values(seq_category.nextval, 2, '동네생활이야기');
 insert into category values(seq_category.nextval, 2, '우리동네질문');
 insert into category values(seq_category.nextval, 2, '분실/실종센터');
 insert into category values(seq_category.nextval, 2, '동네사건사고');
+
+insert into keyword values(SEQ_KEYWORD.nextval, 'test', '애플');
+insert into keyword values(SEQ_KEYWORD.nextval, 'test', '아이폰');
+insert into keyword values(SEQ_KEYWORD.nextval, 'juwon', '삼성');
+insert into keyword values(SEQ_KEYWORD.nextval, 'juwon', '갤럭시');
 
 insert into hashtag values(1, '강아지');
 insert into hashtag values(2, '고양이');
@@ -421,4 +457,20 @@ insert into evaluation values(seq_evaluation.nextval, '질문해도 답이 없�
 insert into evaluation values(seq_evaluation.nextval, '거래 시간과 장소를 정한 후 연락이 안돼요', 0, 'C');
 insert into evaluation values(seq_evaluation.nextval, '약속 장소에 나타나지 않았어요', 0, 'C');
 insert into evaluation values(seq_evaluation.nextval, '거래 시간과 장소를 정한 후 거래 직전 취소했어요', 0, 'C');
+
+insert into evaluate values(1, 'test', 1);
+insert into evaluate values(2, 'test', 1);
+insert into evaluate values(3, 'test', 1);
+insert into evaluate values(4, 'test', 1);
+insert into evaluate values(5, 'test', 9);
+insert into evaluate values(6, 'test', 8);
+insert into evaluate values(10, 'test', 1);
+insert into evaluate values(26, 'test', 1);
+
+insert into review values(seq_review.nextval, 'juwon', 'test', '근처까지 와주셔서 감사합니다', 'B', 23);
+insert into review values(seq_review.nextval, 'test', 'juwon', '쿨거래 감사합니다. 닌텐도 잘 작동하네요 재미있게 사용하겠습니다', 'S', 23);
 --==========================================================================================
+select * from evaluation;
+select * from evaluate;
+select * from product;
+commit;
