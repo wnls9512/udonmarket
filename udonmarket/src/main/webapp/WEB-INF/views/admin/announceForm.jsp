@@ -53,6 +53,18 @@ html { font-size: 16px; }
   cursor: pointer;
 }
 </style>
+<script>
+/* textarea에도 required속성을 적용가능하지만, 공백이 입력된 경우 대비 유효성검사를 실시함. */
+function boardValidate(){
+	var $content = $("[name=content]");
+	if(/^(.|\n)+$/.test($content.val()) == false){
+		alert("내용을 입력하세요");
+		return false;
+	}
+	return true;
+}
+
+</script>
     <!--================Home Banner Area =================-->
     <!-- breadcrumb start-->
     <section class="breadcrumb breadcrumb_bg">
@@ -61,8 +73,7 @@ html { font-size: 16px; }
                 <div class="col-lg-8">
                     <div class="breadcrumb_iner">
                         <div class="breadcrumb_iner_item">
-                            <h2>공지사항</h2>
-							<!-- <h3>서울 강남구 논현동</h3> -->
+                            <h2>공지사항 글쓰기</h2>
                         </div>
                     </div>
                 </div>
@@ -123,39 +134,34 @@ html { font-size: 16px; }
 							    <p id="myLocal" style=" color: #575757;"></p>
 							</div>
 							<hr />
-							
-							<sec:authorize access="hasRole('ADMIN')">
-							<ul class="nav justify-content-end">
-                               	<a class="btn btn-primary" href="${pageContext.request.contextPath }/admin/announceForm" role="button">글쓰기</a>
-                            </ul>
-                            </sec:authorize>
-							
-				        <nav class="nav flex-column bg-white shadow-sm rounded p-3">
-						<div class="tab-content" id="pills-tabContent">
-						  <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab"><table id="tbl-board" class="table table-striped table-hover">
-								<tr>
-									<th>번호</th>
-									<th>제목</th>
-									<th>작성자</th>
-									<th>작성일</th>
-								</tr>
-								<c:forEach items="${list}" var="announce">
-								<c:if test="${announce.categoryCode eq '22' }">
-									<tr>
-										<td>${ announce.BCode }</td>
-										<td>${ announce.boardTitle }</td>
-										<td>${ announce.userId }</td>
-										<td><fmt:formatDate value="${ announce.regDate }" type="both"/></td>
-									</tr>
-									</c:if>
-									</c:forEach>
-							</table>
-							</div>		
-				        </nav>
+						
+						<form name="boardFrm" 
+							  action="${pageContext.request.contextPath}/admin/announceEnroll" 
+							  method="post" 
+							  onsubmit="return boardValidate();"
+							  enctype="multipart/form-data">
+							  
+						  <div class="form-group row">
+						    <label for="staticEmail" class="col-sm-2 col-form-label">제목</label>
+						    <div class="col-sm-10">
+						     <input type="text" class="form-control" id="formGroupExampleInput" >
+						    </div>
+						  </div>
+						  <div class="form-group row">
+						    <label for="inputPassword" class="col-sm-2 col-form-label">내용</label>
+						    <div class="col-sm-10">
+						       <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+						    </div>
+						  </div>
+						  <div style="text-align: center; ">
+						   <button type="submit" class="btn btn-primary">등록</button>
+						  </div>
+						  
+						</form>
+					</div>
 	                </div>
 	            </div>
 	        </div>
 	    </div>
 	</div>
 <jsp:include page="/WEB-INF/views/common/footer.jsp"/>
-	
