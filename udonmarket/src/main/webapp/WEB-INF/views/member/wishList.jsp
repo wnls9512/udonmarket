@@ -106,13 +106,11 @@ html { font-size: 16px; }
 							  <c:forEach items="${list }" var="wish">
 							    <tr>
 							      <th scope="row">
-							      <!-- 상품 상세 페이지로 이동하게 설정할 것  p_code -->
-							      	<a href="#">
-							      		<!-- 첫번째 상품 이미지로 가져오기 -->
-							      		<img src="/udon/resources/img/product/product/feature-product/f-p-1.jpg" 
-							      			 class="img-fluid" alt="product"
-							      			 style="max-height: 200px;">
-							      	</a>
+						      		<!-- 첫번째 상품 이미지로 가져오기 -->
+						      		<img src="/udon/resources/img/product/product/feature-product/f-p-1.jpg" 
+						      			 onclick="location.href='${pageContext.request.contextPath}/product/productDetailView?pCode=${wish.PCode}';"
+						      			 class="img-fluid" alt="product"
+						      			 style="max-height: 200px;"> 	
 							       </th>
 							      <td colspan="3">
 							      	<p style="font-size: 1rem;">${wish.title}</p>
@@ -222,9 +220,14 @@ $(function(){
 		}
 
 	});	
+
+/* 	//tr 클릭 했을 때 상세보기로 넘어가기
+	$("tr[data-pcode]").click(function(){
+		var code = $(this).attr("data-pcode");
+		location.href = "${pageContext.request.contextPath}/product/productDetailView?pCode=" + code;
+	}); */
+	
 });
-
-
 </script>
 <style>
 [name=toggle-heart] {

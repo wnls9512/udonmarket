@@ -110,18 +110,20 @@ a{text-decoration: none; color: black;}
 								  	<c:forEach items="${sale }" var="sale">
 									    <tr>
 									      <th scope="row">
-									      	<!-- 상품 상세 페이지로 이동하게 설정할 것  p_code -->
-									      	<a href="#">
-									      		<!-- 첫번째 상품 이미지로 가져오기 -->
-									      		<img src="/udon/resources/img/product/product/feature-product/f-p-1.jpg" 
-									      			 class="img-fluid" alt="product"
-									      			 style="max-height: 230px;">
-									      	</a>
+								      		<!-- 첫번째 상품 이미지로 가져오기 -->
+								      		<img src="/udon/resources/img/product/product/feature-product/f-p-1.jpg" 
+								      			 onclick="location.href='${pageContext.request.contextPath}/product/productDetailView?pCode=${sale.PCode}';"
+								      			 class="img-fluid" alt="product"
+								      			 style="max-height: 230px;">
 									       </th>
 									      <td colspan="3">
 									      	<p style="font-size: 1rem;">${sale.title }</p>
 									      	<p style="color: #545454; font-size: 0.9rem;">${sale.sellerAddr }</p>
 									      	<p style="font-weight: bold;">
+									      		<span class="badge badge-primary" id="s_${sale.PCode }" 
+									      			  ${ sale.tradeStatus eq "S" ? '' : 'style="display:none;"'}>판매중</span>
+									      		<span class="badge badge-info" id="r_${sale.PCode }"
+									      			  ${ sale.tradeStatus eq "R" ? '' : 'style="display:none;"'}>예약중</span>
 									      		<fmt:formatNumber value="${sale.price }" groupingUsed="true"/>원
 									      	</p>
 									      	<input id="toggle-heart${sale.wishCode}" name="toggle-heart" type="checkbox"/>
@@ -130,10 +132,19 @@ a{text-decoration: none; color: black;}
 									      	<!-- 열린 채팅방 수 -->
 									      	<i class="far fa-comments"></i> 2<br />
 									      	<div style="margin:10px 0px;">
-									      	<button type="button" class="btn btn-outline-secondary btn-sm"
-									      			style="margin: 0px 0.15rem;">예약중으로 변경</button>
-									      	<button type="button" class="btn btn-outline-secondary btn-sm"
-									      			style="margin: 0px 0.15rem;">거래완료로 변경</button>
+										      	<c:if test="${sale.tradeStatus eq 'S' }">
+										      	<button type="button" class="btn btn-outline-secondary btn-sm"
+										      			style="margin: 0px 0.15rem;" value="R"
+										      			onclick="changeStatus('${sale.PCode} ', this)">예약중으로 변경</button>
+										      	</c:if>
+										      	<c:if test="${sale.tradeStatus eq 'R' }">
+										      	<button type="button" class="btn btn-outline-secondary btn-sm"
+										      			style="margin: 0px 0.15rem;" value ="S"
+										      			onclick="changeStatus('${sale.PCode} ', this)">판매중으로 변경</button>
+										      	</c:if>
+										      	<button type="button" class="btn btn-outline-secondary btn-sm"
+										      			style="margin: 0px 0.15rem;" value="C"
+										      			onclick="changeStatus('${sale.PCode} ', this)">거래완료로 변경</button>
 									      	</div>
 									      </td>
 									      <td>
@@ -167,18 +178,17 @@ a{text-decoration: none; color: black;}
 								  	<c:forEach items="${complete }" var="c">
 									    <tr>
 									      <th scope="row">
-									      	<!-- 상품 상세 페이지로 이동하게 설정할 것  p_code -->
-									      	<a href="#">
-									      		<!-- 첫번째 상품 이미지로 가져오기 -->
-									      		<img src="/udon/resources/img/product/product/feature-product/f-p-1.jpg" 
-									      			 class="img-fluid" alt="product"
-									      			 style="max-height: 230px;">
-									      	</a>
+								      		<!-- 첫번째 상품 이미지로 가져오기 -->
+								      		<img src="/udon/resources/img/product/product/feature-product/f-p-1.jpg" 
+								      			 onclick="location.href='${pageContext.request.contextPath}/product/productDetailView?pCode=${c.PCode}';"
+								      			 class="img-fluid" alt="product"
+								      			 style="max-height: 230px;">
 									       </th>
 									      <td colspan="3">
 									      	<p style="font-size: 1rem;">${c.title }</p>
 									      	<p style="color: #545454; font-size: 0.9rem;">${c.sellerAddr }</p>
 									      	<p style="font-weight: bold;">
+									      		<span class="badge badge-secondary">거래완료</span>
 									      		<fmt:formatNumber value="${c.price }" groupingUsed="true"/>원
 									      	</p>
 									      	<input id="toggle-heart${c.wishCode}" name="toggle-heart" type="checkbox"/>
@@ -187,10 +197,12 @@ a{text-decoration: none; color: black;}
 									      	<!-- 열린 채팅방 수 -->
 									      	<i class="far fa-comments"></i> 2<br />
 									      	<div style="margin:10px 0px;">
-									      	<button type="button" class="btn btn-outline-secondary btn-sm"
-									      			style="margin: 0px 0.15rem;">예약중으로 변경</button>
-									      	<button type="button" class="btn btn-outline-secondary btn-sm"
-									      			style="margin: 0px 0.15rem;">거래완료로 변경</button>
+										      	<button type="button" class="btn btn-outline-secondary btn-sm"
+										      			style="margin: 0px 0.15rem;" value="R"
+										      			>예약중으로 변경</button>
+										      	<button type="button" class="btn btn-outline-secondary btn-sm"
+										      			style="margin: 0px 0.15rem;" value ="S"
+										      			>판매중으로 변경</button>
 									      	</div>
 									      </td>
 									      <td>
@@ -229,6 +241,7 @@ a{text-decoration: none; color: black;}
 									      	<a href="#">
 									      		<!-- 첫번째 상품 이미지로 가져오기 -->
 									      		<img src="/udon/resources/img/product/product/feature-product/f-p-1.jpg" 
+									      			 onclick="location.href='${pageContext.request.contextPath}/product/productDetailView?pCode=${h.PCode}';"
 									      			 class="img-fluid" alt="product"
 									      			 style="max-height: 230px;">
 									      	</a>
@@ -246,9 +259,7 @@ a{text-decoration: none; color: black;}
 									      	<i class="far fa-comments"></i> 2<br />
 									      	<div style="margin:10px 0px;">
 									      	<button type="button" class="btn btn-outline-secondary btn-sm"
-									      			style="margin: 0px 0.15rem;">예약중으로 변경</button>
-									      	<button type="button" class="btn btn-outline-secondary btn-sm"
-									      			style="margin: 0px 0.15rem;">거래완료로 변경</button>
+									      			style="margin: 0px 0.15rem;">숨기기 해제</button>
 									      	</div>
 									      </td>
 									      <td>
@@ -275,13 +286,72 @@ a{text-decoration: none; color: black;}
 								</table>
 							  </div>
 							</div>
-						
 				        </nav>
 	                </div>
 	            </div>
 	        </div>
 	    </div>
 	</div>
+<script>
+$(function(){
+
+	
+	
+});
+
+function changeStatus(pCode, elem){
+
+	let status = $(elem).val();
+	
+	//거래 완료일 경우 채팅 사용자 고르고 후기 작성하는 페이지로 이동
+	if(status == "C"){
+
+	}
+	else{
+		
+		$.ajax({
+			url: "${pageContext.request.contextPath}/product/changeStatus",
+			method: "POST",
+			data: 
+			{
+				status: status,
+				pCode: pCode
+			}, 
+			dataType: "text",
+			beforeSend: function(xhr)
+			{
+	            xhr.setRequestHeader("${_csrf.headerName}", "${_csrf.token}");
+	        },
+				success: function(result)
+			{
+				alert(result);
+	
+			 	if(status=="R"){
+			 		$("#r_"+ pCode).show();
+			 		$("#s_" + pCode).hide();
+
+ 			 		$(elem).val("S");
+			 		$(elem).text("판매중으로 변경");			 		
+			 		
+				}else if(status=="S"){
+			 		$("#r_"+ pCode).hide();
+			 		$("#s_" + pCode).show();
+
+			 		$(elem).val("R");
+			 		$(elem).text("예약중으로 변경");
+
+				}	
+			},
+			error: function(xhr, status, err)
+			{ 
+				alert("상태 변경에 실패했어요 💧");
+			}
+		});
+	}	
+};
+
+
+</script>
 <style>
 [name=toggle-heart] {
   position: absolute;
