@@ -58,19 +58,75 @@
         <div class="col-lg-5 col-xl-4">
           <div class="s_product_text">
              <div class="media">
-              <div class="d-flex w-25">
+              <div class="d-flex" style="width: 17%;">
                 <img class="rounded-circle" 
                 	 src="${pageContext.request.contextPath }/resources/img/member/${seller.renamedFilename == null ? seller.originalFilename:seller.renamedFilename}"  
                 	 alt="" />
               </div>
-              <div class="media-body" style="margin: 6%;">
+              <div class="my-2 ml-2" style="width: 37%;">
                 <h4>${seller.nickname }</h4>
                 <span>${product.address }</span>
               </div>
-              <div>
-              	거래온도 
-              	${seller.score }
+              <!-- 매너온도 시작 -->
+              <div class="my-2" style="width: 40%;">
+              	<span>매너온도</span>
+              	<!-- 얼굴아이콘 시작 -->
+             	<c:choose>
+              	<c:when test="${seller.score le '20' }">
+              	<img class="d-inline float-right" src="${pageContext.request.contextPath}/resources/img/score/face20.PNG" style="width: 20%;"/>
+              	</c:when>
+              	<c:when test="${seller.score le '32' }">
+              	<img class="d-inline float-right" src="${pageContext.request.contextPath}/resources/img/score/face32.PNG" style="width: 20%;"/>
+              	</c:when>
+              	<c:when test="${seller.score le '36.5' }">
+              	<img class="d-inline float-right" src="${pageContext.request.contextPath}/resources/img/score/face36.5.PNG" style="width: 20%;"/>
+              	</c:when>
+              	<c:when test="${seller.score le '40' }">
+              	<img class="d-inline float-right" src="${pageContext.request.contextPath}/resources/img/score/face40.PNG" style="width: 20%;"/>
+              	</c:when>
+              	<c:when test="${seller.score le '50' }">
+              	<img class="d-inline float-right" src="${pageContext.request.contextPath}/resources/img/score/face50.PNG" style="width: 20%;"/>
+              	</c:when>
+              	<c:otherwise>
+              	<img class="d-inline float-right" src="${pageContext.request.contextPath}/resources/img/score/face60.PNG" style="width: 20%;"/>
+              	</c:otherwise>
+              	</c:choose>
+              	<!-- 얼굴아이콘 끝 -->
+              	<span class="float-right">
+              	<strong style="color: 
+              	<c:choose>
+              	<c:when test="${seller.score le '20' }">#072038</c:when>
+              	<c:when test="${seller.score le '32' }">#0D3A65</c:when>
+              	<c:when test="${seller.score le '36.5' }">#186EC0</c:when>
+              	<c:when test="${seller.score le '40' }">#37B24D</c:when>
+              	<c:when test="${seller.score le '50' }">#FFAD13</c:when>
+              	<c:otherwise>#F76707</c:otherwise>
+              	</c:choose>        	
+              	;">${seller.score }℃ &nbsp;</strong></span>
+              	<!-- 온도bar 시작 -->
+              	<c:choose>
+              	<c:when test="${seller.score le '20' }">
+              	<img src="${pageContext.request.contextPath}/resources/img/score/bar20.png" />
+              	</c:when>
+              	<c:when test="${seller.score le '32' }">
+              	<img src="${pageContext.request.contextPath}/resources/img/score/bar32.png" />
+              	</c:when>
+              	<c:when test="${seller.score le '36.5' }">
+              	<img src="${pageContext.request.contextPath}/resources/img/score/bar36.5.png" />
+              	</c:when>
+              	<c:when test="${seller.score le '40' }">
+              	<img src="${pageContext.request.contextPath}/resources/img/score/bar40.png" />
+              	</c:when>
+              	<c:when test="${seller.score le '50' }">
+              	<img src="${pageContext.request.contextPath}/resources/img/score/bar50.png" />
+              	</c:when>
+              	<c:otherwise>
+              	<img src="${pageContext.request.contextPath}/resources/img/score/bar60.png" />
+              	</c:otherwise>
+              	</c:choose>
+              	<!-- 온도bar 끝 -->
               </div>
+              <!-- 매너온도 끝 -->
             </div>
             <br/>
             <c:if test="${product.seller != userId }">
@@ -85,10 +141,11 @@
             </c:if>
             <h3 class="d-inline">
             ${product.title }
-            </h3>
+            </h3>&nbsp;&nbsp;
+            <span style="color: red;">${product.category }</span>
             <br/><br/>
             <h2 class="d-inline"><fmt:formatNumber type="number" maxFractionDigits="3" value="${product.price}" />원</h2>&nbsp;&nbsp;
-            <span style="color: red;">${product.category }</span><br/>
+            <br/>
             <ul class="list">
               <li>
                 <a href="javascript:void(0);">
