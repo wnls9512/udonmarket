@@ -128,4 +128,11 @@
 		update product set delete_yn = 'Y' where p_code = #{pCode}
 	</update>
 	
+	<!-- 끌올 -->
+	<update id="pull">
+		update product set pull = 1, reg_date = sysdate where p_code = #{pCode}
+	</update>	
+	<update id="pullWithPrice">
+		update product set pull = 1, reg_date = sysdate, price = #{price} where p_code = #{pCode}
+	</update>	
 </mapper>

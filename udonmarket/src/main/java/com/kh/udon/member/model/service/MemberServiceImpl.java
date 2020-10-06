@@ -1,5 +1,7 @@
 package com.kh.udon.member.model.service;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -10,11 +12,9 @@ import org.springframework.transaction.annotation.Transactional;
 import com.kh.udon.member.model.dao.MemberDao;
 import com.kh.udon.member.model.vo.Evaluate;
 import com.kh.udon.member.model.vo.Keyword;
-import com.kh.udon.member.model.vo.Location;
 import com.kh.udon.member.model.vo.Member;
 import com.kh.udon.member.model.vo.Review;
 import com.kh.udon.member.model.vo.Wish;
-import com.kh.udon.product.model.vo.ProductVO;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -92,19 +92,23 @@ public class MemberServiceImpl implements MemberService
 
 	@Transactional(rollbackFor = { Exception.class })
 	@Override
-	public int insertMemberLocAuth(Member member) {
+	public int insertMemberLocAuthScoreEvaluate(Map<String, Object> map) {
 		
 		int result = 0;
-		
-		result = memberDao.insertMember(member);
+				
+		result = memberDao.insertMember(map);
 		log.debug("result = {}", result);
-		log.debug("member = {}", member);
+		log.debug("map = {}", map);
 
 		
 		if(result > 0) {
-			result = memberDao.insertLocation(member.getUserId());
+			result = memberDao.insertLocation(map);
 			log.debug("result = {}", result);
-			result = memberDao.insertAuthority(member.getUserId());
+			result = memberDao.insertAuthority(map);
+			log.debug("result = {}", result);
+			result = memberDao.insertScore(map);
+			log.debug("result = {}", result);
+			result = memberDao.insertEvaluate(map);
 			log.debug("result = {}", result);
 		}
 		
@@ -151,9 +155,7 @@ public class MemberServiceImpl implements MemberService
 	}
 
 	@Override
-	public int deleteMember(String userId) {
-		log.debug("userId = {}", userId);
-		return memberDao.deleteMember(userId);
+	public int updateQuitMember(String userId) {
+		return memberDao.updateQuitMember(userId);
 	}
-
 }
