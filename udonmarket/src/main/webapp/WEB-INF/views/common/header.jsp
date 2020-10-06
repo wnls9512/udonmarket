@@ -55,7 +55,9 @@
             <div class="row align-items-center">
                 <div class="col-lg-12">
                     <nav class="navbar navbar-expand-lg navbar-light">
-                        <a class="navbar-brand" href="${pageContext.request.contextPath }"> <img src="${pageContext.request.contextPath }/resources/img/logo.jpg" alt="logo" style="width: 30%; margin-top: 8%;"> </a>
+                        <a class="navbar-brand" href="${pageContext.request.contextPath }" style="width: 20%;"> 
+                        	<img src="${pageContext.request.contextPath }/resources/img/udon (1).png" alt="logo" style="width: 30%; margin-top: 8%;"> 
+                       	</a>
                         <button class="navbar-toggler" type="button" data-toggle="collapse"
                             data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
                             aria-expanded="false" aria-label="Toggle navigation">

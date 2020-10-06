@@ -35,11 +35,22 @@ public interface ProductService
 
     int selectSearchCount(Map<String, Object> map);
 
-    ProductDTO selectOneByPCode(int pCode);
+    ProductDTO selectDTOByPCode(int pCode);
 
     SellerDTO selectSeller(String id);
 
     int changeStatus(Map<String, Object> map);
+
+    ProductVO selectVOByPCode(int pCode);
+
+    int update(ProductVO product);
+
+    int delete(int pCode);
+
+    int pull(int pCode);
+
+    int pull(Map<String, Object> param);
+
 
 
 

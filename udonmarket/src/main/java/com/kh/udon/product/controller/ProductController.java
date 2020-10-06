@@ -8,10 +8,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.kh.udon.member.model.vo.Wish;
@@ -138,8 +141,18 @@ public class ProductController
     @RequestMapping("/productDetailView")
     public String productDetail(int pCode, Model model)
     {
-        ProductDTO product = service.selectOneByPCode(pCode);
+        /*
+         *      1. 상품 정보
+         *      2. 판매자 정보
+         *      3. 비슷한 상품
+         *      4. 판매자 다른 상품
+         */
+        ProductDTO product = service.selectDTOByPCode(pCode);
         SellerDTO seller = service.selectSeller(product.getSeller());
+//        List<ProductVO> similar = service.selectSimilarProducts();
+
+        long timeMillis = System.currentTimeMillis() - product.getOriginalRegDate().getTime();
+        product.setTimeMillis(timeMillis);
         
         model.addAttribute("product", product);
         model.addAttribute("seller", seller);
@@ -162,17 +175,90 @@ public class ProductController
     @ResponseBody
     public String changeStatus(String status, int pCode)
     {
-        log.debug("status = {}", status);
-        log.debug("pCode = {}", pCode);
-        
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("status", status);
         map.put("pCode", pCode);
-        
         
         int result = service.changeStatus(map);
         
         return result > 0 ? "상태가 변경되었어요 🍜" : "상태 변경에 실패했어요 💧";
     }
     
+    // 상품 수정
+    @GetMapping("/updateProduct")
+    public String updateProduct(@RequestParam int pCode, @RequestParam String categoryName, Model model)
+    {
+        ProductVO product = service.selectVOByPCode(pCode);
+        CouponDTO coupon = service.selectCoupon(product.getSeller());
+        List<CategoryVO> category = service.selectAllCategory();
+        
+        model.addAttribute("product", product);
+        model.addAttribute("coupon", coupon);
+        model.addAttribute("category", category);
+        model.addAttribute("categoryName", categoryName);
+        
+        return "product/update";
+    }
+    @PostMapping("/update")
+    public String update(ProductVO product, RedirectAttributes rttr)
+    {
+        log.debug("product = {}", product);
+        
+        int result = service.update(product);
+        
+        rttr.addFlashAttribute("msg", result > 0 ? "상품 수정 성공 💛" : "상품 등록 실패 🤔");
+        
+        return "redirect:/product/productListView";
+    }
+    
+    // 상품 삭제
+    @PutMapping("/{pCode}")
+    @ResponseBody
+    public Map<String, Object> deleteMenu(@PathVariable int pCode)
+    {
+        Map<String, Object> map = new HashMap<>();
+        
+        String msg = "삭제되었습니다 😄";
+        
+        try 
+        {
+            int result = service.delete(pCode);
+        } 
+        catch(Exception e) 
+        {
+            log.error("메뉴 삭제 오류", e);
+            msg = "삭제에 실패했어요 💧";
+        }
+        
+        map.put("msg", msg);
+        
+        return map;
+    }
+    
+    // 끌올
+    @PutMapping("/pull/{price}/{pCode}")
+    @ResponseBody
+    public Map<String, Object> pull(@PathVariable String price, @PathVariable int pCode)
+    {
+        Map<String, Object> map = new HashMap<String, Object>();
+        int result = 0;
+        
+        Map<String, Object> param = new HashMap<String, Object>();
+        
+        if(price.equals("x"))
+            result = service.pull(pCode);
+        else
+        {
+            param.put("price", Integer.parseInt(price));
+            param.put("pCode", pCode);
+            
+            result = service.pull(param);
+        }
+        
+        String msg = result > 0 ? "끌어올리기 성공 😄" : "끌어올리기에 실패했어요 💧";
+        
+        map.put("msg", msg);
+        
+        return map;
+    }    
 }

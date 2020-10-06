@@ -1,5 +1,7 @@
 package com.kh.udon.member.model.vo;
 
+import java.io.Serializable;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,16 +13,11 @@ import lombok.ToString;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString(callSuper = true)
-public class Evaluate extends Evalution{
+public class Evaluate extends Evalution implements Serializable{
 
 	private int evaCode;
 	private String userId;
 	private int count;
-	
-	public Evaluate(int eva_code, String content, boolean kind, String member) {
-		super(eva_code, content, kind, member);
-		// TODO Auto-generated constructor stub
-	}
 
 	
 }

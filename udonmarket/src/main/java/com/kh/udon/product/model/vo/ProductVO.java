@@ -16,7 +16,7 @@ public class ProductVO implements Serializable
     int category;
     String content;
     int price;
-    int regDate;
+    Date regDate;
     boolean openStatus;
     String tradeStatus;
     boolean coupon;

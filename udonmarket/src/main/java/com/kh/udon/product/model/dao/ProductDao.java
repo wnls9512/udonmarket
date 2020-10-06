@@ -41,6 +41,16 @@ public interface ProductDao
 
     int changeStatus(Map<String, Object> map);
 
+    ProductVO selectVOByPCode(int pCode);
+    
+    int update(ProductVO product);
+
+    int delete(int pCode);
+
+    int pull(int pCode);
+
+    int pull(Map<String, Object> param);
+
 
 
 
