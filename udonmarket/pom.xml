@@ -230,17 +230,17 @@
 		
 		
 		<!-- spring websocket 웹 소켓 (알림) 시작 -->
-		<!-- https://mvnrepository.com/artifact/org.springframework/spring-websocket -->
 		<dependency>
 		    <groupId>org.springframework</groupId>
 		    <artifactId>spring-websocket</artifactId>
-		    <version>4.2.4.RELEASE</version>
+		    <version>${org.springframework-version}</version>
 		</dependency>
-		<!-- websocket api -->
+		<!-- websocket api (For handshake) -->
 		<dependency>
-			<groupId>javax.websocket</groupId>
-			<artifactId>javax.websocket-api</artifactId>
-			<version>1.1</version>
+		    <groupId>javax.websocket</groupId>
+		    <artifactId>javax.websocket-api</artifactId>
+		    <version>1.1</version>
+		    <scope>provided</scope>
 		</dependency>
 		<!-- spring websocket 웹 소켓 (알림) 끝 -->
 		
