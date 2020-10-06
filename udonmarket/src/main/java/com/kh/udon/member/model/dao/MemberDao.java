@@ -46,8 +46,6 @@ public interface MemberDao
 
 	int insertScore(Map<String, Object> map);
 	
-	int insertEvaluate(Map<String, Object> map);
-	
 	List<Wish> selectAllSalesPro(String userId);
 
 	List<Wish> selectAllBuyPro(String userId);
@@ -65,5 +63,7 @@ public interface MemberDao
 	int selectMemberTotalContents();
 
 	int updateQuitMember(String userId);
+
+    int insertEvaluate(Map<String, Object> map);
 
 }
