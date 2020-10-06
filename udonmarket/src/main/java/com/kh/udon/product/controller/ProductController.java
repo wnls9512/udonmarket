@@ -141,8 +141,15 @@ public class ProductController
     @RequestMapping("/productDetailView")
     public String productDetail(int pCode, Model model)
     {
+        /*
+         *      1. 상품 정보
+         *      2. 판매자 정보
+         *      3. 비슷한 상품
+         *      4. 판매자 다른 상품
+         */
         ProductDTO product = service.selectDTOByPCode(pCode);
         SellerDTO seller = service.selectSeller(product.getSeller());
+//        List<ProductVO> similar = service.selectSimilarProducts();
 
         long timeMillis = System.currentTimeMillis() - product.getOriginalRegDate().getTime();
         product.setTimeMillis(timeMillis);
@@ -233,9 +240,6 @@ public class ProductController
     @ResponseBody
     public Map<String, Object> pull(@PathVariable String price, @PathVariable int pCode)
     {
-        log.debug("price = {}", price);
-        log.debug("pCode = {}", pCode);
-        
         Map<String, Object> map = new HashMap<String, Object>();
         int result = 0;
         
