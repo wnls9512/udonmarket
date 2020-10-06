@@ -226,5 +226,35 @@ public class ProductController
         map.put("msg", msg);
         
         return map;
+    }
+    
+    // 끌올
+    @PutMapping("/pull/{price}/{pCode}")
+    @ResponseBody
+    public Map<String, Object> pull(@PathVariable String price, @PathVariable int pCode)
+    {
+        log.debug("price = {}", price);
+        log.debug("pCode = {}", pCode);
+        
+        Map<String, Object> map = new HashMap<String, Object>();
+        int result = 0;
+        
+        Map<String, Object> param = new HashMap<String, Object>();
+        
+        if(price.equals("x"))
+            result = service.pull(pCode);
+        else
+        {
+            param.put("price", Integer.parseInt(price));
+            param.put("pCode", pCode);
+            
+            result = service.pull(param);
+        }
+        
+        String msg = result > 0 ? "끌어올리기 성공 😄" : "끌어올리기에 실패했어요 💧";
+        
+        map.put("msg", msg);
+        
+        return map;
     }    
 }

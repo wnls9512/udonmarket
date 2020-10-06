@@ -122,6 +122,19 @@ public class ProductServiceImpl implements ProductService
         return dao.delete(pCode);
     }
 
+    @Override
+    public int pull(int pCode)
+    {
+        return dao.pull(pCode);
+    }
+
+    @Override
+    public int pull(Map<String, Object> param)
+    {
+        return dao.pull(param);
+    }
+
+
 
 
 

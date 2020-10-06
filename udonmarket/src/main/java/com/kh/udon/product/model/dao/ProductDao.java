@@ -47,6 +47,11 @@ public interface ProductDao
 
     int delete(int pCode);
 
+    int pull(int pCode);
+
+    int pull(Map<String, Object> param);
+
+
 
 
 

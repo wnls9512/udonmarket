@@ -289,30 +289,34 @@
 	      <!-- 끌올 가능 START -->
 	      <c:if test="${product.timeMillis gt 259200000 }">
 	      <div class="mb-5 mb-lg-0" style="float:none; margin:0 auto;">
-	        <div class="bg-white p-5 rounded-lg shadow">
-	          <h1 class="h6 text-uppercase font-weight-bold mb-4">${coupon.couponName }</h1>
-	          <h2 class="h1 font-weight-bold">${coupon.amount }<span class="text-small font-weight-normal ml-2">개</span></h2>
-	
-	          <div class="custom-separator my-4 mx-auto bg-primary"></div>
-	
-	          <ul class="list-unstyled my-5 text-small text-left">
-	            <li class="mb-3">
-	              <i class="fa fa-check mr-2 text-primary"></i> 쿠폰 적용된 상품은 전국에 노출됩니다.</li>
-	            <li class="mb-3">
-	              <i class="fa fa-check mr-2 text-primary"></i> 유효기간은 <span class="text-small font-weight-normal ml-2">
-	              		<fmt:formatDate value="${coupon.expireDate }" pattern="yyyy년 MM월 dd일"/></span>까지 입니다.</li>
-	            <li class="mb-3 text-muted">
-	              <i class="fa fa-times mr-2"></i>해당 쿠폰은 타인 양도 불가합니다.
-	            </li>
-	            <li class="mb-3 text-muted">
-	              <i class="fa fa-times mr-2"></i>거짓물품 배송시 사이트 이용에 제한이 생깁니다.
-	            </li>
-	            <li class="mb-3 text-muted">
-	              <i class="fa fa-times mr-2"></i>쿠폰 적용 후 취소는 불가합니다.
-	            </li>
-	          </ul>
-	          <a href="javascript:void(0);" class="btn btn-primary btn-block p-2 shadow rounded-pill coupon">적용</a>
-	          <input type="hidden" name="coupon" value="0"/>
+	        <div class="bg-white rounded-lg">
+	        	<div class="media" style="background-color: #F9F9FF;">
+	              <div class="d-flex ml-4 my-2" style="width: 17%;">
+	                <img class="rounded-circle" 
+	                	 src="${pageContext.request.contextPath }/resources/img/member/${seller.originalFilename }"  
+	                	 alt="" />
+	              </div>
+	              <div class="my-4 ml-4 text-left" style="width: 37%;">
+	                <h4>${product.title }</h4>
+	                <span><fmt:formatNumber type="number" maxFractionDigits="3" value="${product.price}" />원</span>
+	              </div>
+				</div>
+				<div class="p-4 text-left">
+					<h3><strong>${seller.nickname }님, 끌어올리기 전에</strong></h3>
+					<h3><strong>가격을 낮춰보세요.</strong></h3>
+					<h4>판매 확률이 올라간답니다.</h4>
+					<br/>
+					<input type="number" name="price" placeholder="가격 입력"
+											onfocus="this.placeholder = ''" onblur="this.placeholder = '가격 입력'" required
+											class="single-input-primary" style="width:68%;">
+					<br/><hr/>
+					<h3><strong>가격을 변경하지 않고</strong></h3>
+					<h3><strong>지금 끌어올리시겠어요?</strong></h3>
+					<h4>다음 끌어올리기는 <span style="color: red;">3일</span> 뒤에 할 수 있어요.</h4>
+				</div>
+				<div class="my-5">
+					<button class="genric-btn primary w-75" onclick="pull();">끌어올리기</button>
+				</div>
 	        </div>
 	      </div>
 	      </c:if>
@@ -455,6 +459,34 @@ function deleteProduct(pCode)
 	}
 	else
 		return false;
+}
+
+// 끌올
+function pull()
+{
+	var price = $("input[name=price]").val() == "" ? "x" : $("input[name=price]").val();
+	var pCode = "${product.PCode}";
+
+	$.ajax
+	({
+		url: "${pageContext.request.contextPath}/product/pull/"+price+"/"+pCode,
+		method: "PUT",
+		beforeSend: function(xhr)
+		{
+            xhr.setRequestHeader("${_csrf.headerName}", "${_csrf.token}");
+        },
+        dataType: "json",
+		success: function(map)
+		{
+			alert(map.msg);
+			$("#pullModal").modal('hide');
+		},
+		error: function(xhr, status, err)
+		{
+			alert("끌어올리기에 실패했어요 💧");
+			console.log(xhr, status, err);
+		}
+	});
 }
 </script>
 	
