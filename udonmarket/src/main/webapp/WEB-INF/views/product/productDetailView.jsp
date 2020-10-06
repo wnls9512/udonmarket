@@ -231,14 +231,15 @@
                 <div class="col-lg-12">
                     <div class="best_product_slider owl-carousel">
                     
-                    
+                    	<c:forEach items="${similar }" var="p">
                         <div class="single_product_item">
                             <img src="${pageContext.request.contextPath }/resources/img/product/product_1.png" alt="">
                             <div class="single_product_text">
-                                <h4>Quartz Belt Watch</h4>
-                                <h3>$150.00</h3>
+                                <h4>${p.title }</h4>
+                                <h3><fmt:formatNumber type="number" maxFractionDigits="3" value="${p.price}" />원</h3>
                             </div>
                         </div>
+                        </c:forEach>
                         
                         
                     </div>
