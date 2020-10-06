@@ -107,7 +107,7 @@ public class MemberServiceImpl implements MemberService
 			log.debug("result = {}", result);
 			result = memberDao.insertScore(map);
 			log.debug("result = {}", result);
-			result = memberDao.inserEvaluate(map);
+			result = memberDao.insertEvaluate(map);
 			log.debug("result = {}", result);
 		}
 		

@@ -70,12 +70,19 @@ public class MemberController {
 		List<Integer> num = new ArrayList<>();
 		Map<String, Object> map = new HashMap<>();
 		
-		for(int i=0;i<=26; i++) {
+		for(int i=1;i<=26;i++) {
 			num.add(i);
 		}
+
+				
 		
 		map.put("list", num);
 		map.put("userId", member.getUserId());
+		map.put("password", member.getPassword());
+		map.put("email", member.getEmail());
+		map.put("nickName", member.getNickName());
+
+		
 				
 		int result = service.insertMemberLocAuthScoreEvaluate(map);
 		

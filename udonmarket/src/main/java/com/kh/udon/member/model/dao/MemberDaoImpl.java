@@ -104,8 +104,8 @@ public class MemberDaoImpl implements MemberDao
 	}
 	
 	@Override
-	public int inserEvaluate(Map<String, Object> map) {
-		return session.insert("member.inserEvaluate", map);
+	public int insertEvaluate(Map<String, Object> map) {
+		return session.insert("member.insertEvaluate", map);
 	}
 
 	
