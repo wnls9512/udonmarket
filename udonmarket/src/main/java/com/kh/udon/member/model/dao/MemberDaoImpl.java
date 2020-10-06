@@ -102,11 +102,6 @@ public class MemberDaoImpl implements MemberDao
 	public int insertScore(Map<String, Object> map) {
 		return session.insert("member.insertScore", map);
 	}
-	
-	@Override
-	public int insertEvaluate(Map<String, Object> map) {
-		return session.insert("member.insertEvaluate", map);
-	}
 
 	
 	public List<Wish> selectAllSalesPro(String userId) {
@@ -153,6 +148,13 @@ public class MemberDaoImpl implements MemberDao
 	public int updateQuitMember(String userId) {
 		return session.update("member.updateQuitMember", userId);
 	}
+
+    @Override
+    public int insertEvaluate(Map<String, Object> map)
+    {
+        return session.update("member.insertEvaluate", map);
+    }
+
 
 
 

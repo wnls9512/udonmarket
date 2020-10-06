@@ -28,7 +28,6 @@ import com.kh.udon.member.model.vo.Keyword;
 import com.kh.udon.member.model.vo.Member;
 import com.kh.udon.member.model.vo.Review;
 import com.kh.udon.member.model.vo.Wish;
-import com.kh.udon.product.model.vo.ProductVO;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -67,16 +66,13 @@ public class MemberController {
 		log.debug("encryptPassword@controller = {}", encryptPassword);
 		
 		
-		List<Integer> num = new ArrayList<>();
 		Map<String, Object> map = new HashMap<>();
+		List<Integer> list = new ArrayList<>();
 		
-		for(int i=1;i<=26;i++) {
-			num.add(i);
-		}
+		for(int i = 1; i <= 26; i++)
+		    list.add(i);
 
-				
-		
-		map.put("list", num);
+		map.put("list", list);
 		map.put("userId", member.getUserId());
 		map.put("password", member.getPassword());
 		map.put("email", member.getEmail());
