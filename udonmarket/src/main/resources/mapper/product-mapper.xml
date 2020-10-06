@@ -93,7 +93,7 @@
 	<!-- 상품 조회 -->
 	<select id="selectDTOByPCode" resultType="productDTO">
 		select p.p_code, p.seller, p.title, p.content, p.price, p.pull, trunc(sysdate - p.reg_date) reg_date, substr(m.address, instr(m.address, ' ', 1, 1), instr(m.address, ' ', 1, 2)) address, 
-			   c.category_name category, p.trade_status, p.offer, wc.wish, cc.chat, p.reg_date original_reg_date
+			   p.category categoryCode, c.category_name category, p.trade_status, p.offer, wc.wish, cc.chat, p.reg_date original_reg_date
 		from product p left join member m on(p.seller = m.user_id)
 					   left join category c on(p.category = c.category_code)
 		               left join (select a.p_code p_code, count(b.p_code) wish from product a left outer join wish b on(a.p_code = b.p_code) group by a.p_code) wc on(wc.p_code = p.p_code)
@@ -135,4 +135,18 @@
 	<update id="pullWithPrice">
 		update product set pull = 1, reg_date = sysdate, price = #{price} where p_code = #{pCode}
 	</update>	
+	
+	<!-- 관련 상품 -->
+	<select id="selectSimilarProduct" resultType="productVO">
+		select p_code, title, price from product
+		<where>
+		<foreach collection="keywords" item="k" open="(" close=")" separator="or">
+			title like '%'||#{k}||'%' 
+		</foreach>
+		and p_code not in (#{pCode}) and open_status = 1 and (trade_status = 'S' or trade_status = 'R') and delete_yn = 'N'
+		</where>
+		union
+		select p_code, title, price from product 
+		where category = #{category} and p_code not in (#{pCode}) and open_status = 1 and (trade_status = 'S' or trade_status = 'R') and delete_yn = 'N'
+	</select>
 </mapper>

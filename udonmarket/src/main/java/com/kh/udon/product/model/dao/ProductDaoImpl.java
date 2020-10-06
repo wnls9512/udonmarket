@@ -134,6 +134,12 @@ public class ProductDaoImpl implements ProductDao
         return session.update("product.pullWithPrice", param);
     }
 
+    @Override
+    public List<ProductVO> selectSimilarProducts(Map<String, Object> map)
+    {
+        return session.selectList("product.selectSimilarProduct", map);
+    }
+
 
 
 

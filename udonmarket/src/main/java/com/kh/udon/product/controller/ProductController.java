@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.kh.udon.member.model.vo.Wish;
@@ -145,17 +144,29 @@ public class ProductController
          *      1. 상품 정보
          *      2. 판매자 정보
          *      3. 비슷한 상품
-         *      4. 판매자 다른 상품
+         *      (4. 판매자 다른 상품)
          */
         ProductDTO product = service.selectDTOByPCode(pCode);
         SellerDTO seller = service.selectSeller(product.getSeller());
-//        List<ProductVO> similar = service.selectSimilarProducts();
+        
+        // --- 비슷한 상품 ---
+        String[] keywords = product.getTitle().split(" ");
+        int category = product.getCategoryCode();
 
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("keywords", keywords);
+        map.put("category", category);
+        map.put("pCode", pCode);
+        
+        List<ProductVO> similar = service.selectSimilarProducts(map);
+        
+        // --- 시간 차 구하기 ---
         long timeMillis = System.currentTimeMillis() - product.getOriginalRegDate().getTime();
         product.setTimeMillis(timeMillis);
         
         model.addAttribute("product", product);
         model.addAttribute("seller", seller);
+        model.addAttribute("similar", similar);
         
         return "product/productDetailView";
     }
