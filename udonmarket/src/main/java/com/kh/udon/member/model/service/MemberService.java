@@ -35,7 +35,7 @@ public interface MemberService
 
 	List<Review> selectAllReview(String userId);
 
-	int insertMemberLocAuth(Member member);
+	int insertMemberLocAuthScoreEvaluate(Map<String, Object> map);
 
 	List<Wish> selectAllSalesPro(String userId);
 
@@ -53,6 +53,5 @@ public interface MemberService
 
 	int selectMemberTotalContents();
 
-	int deleteMember(String userId);
-
+	int updateQuitMember(String userId);
 }
