@@ -116,15 +116,17 @@
 	insert into Score
 	values (#{userId}, '36.5' , '1')
 </insert>
-<insert id="insertEvaluate" parameterType="java.util.List">
+<!-- <insert id="insertEvaluate" parameterType="java.util.Map">
 	insert into evaluate
 	values
 		<foreach collection="list" item="item" separator=",">
 		(
-			#{item}, #{userId}, '0'
+			#{item}, #{userId}, 0
 		)
 		</foreach>
-</insert>
+</insert> -->
+
+
 <!-- <insert id="insertEvaluate" parameterType="java.util.Map">
     <foreach collection="list" item="item" index="index" separator=" " open="INSERT ALL" close="SELECT * FROM DUAL">
         into evaluate (#{item}, #{userId}, 0)
