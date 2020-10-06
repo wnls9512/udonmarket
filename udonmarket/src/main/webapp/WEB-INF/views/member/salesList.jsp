@@ -135,31 +135,32 @@ a{text-decoration: none; color: black;}
 										      	<c:if test="${sale.tradeStatus eq 'S' }">
 										      	<button type="button" class="btn btn-outline-secondary btn-sm"
 										      			style="margin: 0px 0.15rem;" value="R"
-										      			onclick="changeStatus('${sale.PCode} ', this)">예약중으로 변경</button>
+										      			onclick="changeStatus('${sale.PCode} ','${sale.tradeStatus}', this)">예약중으로 변경</button>
 										      	</c:if>
 										      	<c:if test="${sale.tradeStatus eq 'R' }">
 										      	<button type="button" class="btn btn-outline-secondary btn-sm"
 										      			style="margin: 0px 0.15rem;" value ="S"
-										      			onclick="changeStatus('${sale.PCode} ', this)">판매중으로 변경</button>
+										      			onclick="changeStatus('${sale.PCode} ','${sale.tradeStatus}', this)">판매중으로 변경</button>
 										      	</c:if>
 										      	<button type="button" class="btn btn-outline-secondary btn-sm"
 										      			style="margin: 0px 0.15rem;" value="C"
-										      			onclick="changeStatus('${sale.PCode} ', this)">거래완료로 변경</button>
+										      			onclick="changeStatus('${sale.PCode} ','${sale.tradeStatus}', this)">거래완료로 변경</button>
 									      	</div>
 									      </td>
 									      <td>
-									      	<div class="btn-group">
-											  <button type="button" 
-											  		  class="btn btn-outline-link btn-sm dropdown-toggle" 
-											  		  data-toggle="dropdown" 
-											  		  aria-haspopup="true">
-											  </button>
-											  <div class="dropdown-menu dropdown-menu-right">
-											    <button class="dropdown-item" type="button">수정</button>
-											    <button class="dropdown-item" type="button">끌어 올리기</button>
-											    <button class="dropdown-item" type="button">게시물 삭제</button>
-											  </div>
-											</div>
+											<ul>
+												<li class="nav-item dropdown">
+				                                    <a class="nav-link dropdown-toggle" id="navbarDropdown_1"
+				                                       aria-haspopup="true" aria-expanded="false">
+				                                    </a>
+				                                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown_1">
+				                                    	<button class="dropdown-item" type="button" onclick="updateProduct('${sale.PCode}', '${sale.category }');">수정</button>
+													    <button class="dropdown-item" type="button" >숨기기</button>
+													    <button class="dropdown-item" type="button">끌어 올리기</button>
+													    <button class="dropdown-item" type="button" onclick="deleteProduct('${sale.PCode }');">게시물 삭제</button>
+				                                    </div>
+				                                </li>
+			                                </ul>
 									      </td>
 									    </tr>  
 								  	</c:forEach>
@@ -198,26 +199,23 @@ a{text-decoration: none; color: black;}
 									      	<i class="far fa-comments"></i> 2<br />
 									      	<div style="margin:10px 0px;">
 										      	<button type="button" class="btn btn-outline-secondary btn-sm"
-										      			style="margin: 0px 0.15rem;" value="R"
-										      			>예약중으로 변경</button>
-										      	<button type="button" class="btn btn-outline-secondary btn-sm"
 										      			style="margin: 0px 0.15rem;" value ="S"
-										      			>판매중으로 변경</button>
+										      			onclick="changeStatus('${c.PCode} ','${c.tradeStatus}', this)">판매중으로 변경</button>
 									      	</div>
 									      </td>
 									      <td>
-									      	<div class="btn-group">
-											  <button type="button" 
-											  		  class="btn btn-outline-link btn-sm dropdown-toggle" 
-											  		  data-toggle="dropdown" 
-											  		  aria-haspopup="true">
-											  </button>
-											  <div class="dropdown-menu dropdown-menu-right">
-											    <button class="dropdown-item" type="button">수정</button>
-											    <button class="dropdown-item" type="button">끌어 올리기</button>
-											    <button class="dropdown-item" type="button">게시물 삭제</button>
-											  </div>
-											</div>
+									      	<ul>
+												<li class="nav-item dropdown">
+				                                    <a class="nav-link dropdown-toggle" id="navbarDropdown_1"
+				                                       aria-haspopup="true" aria-expanded="false">
+				                                    </a>
+				                                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown_1">
+				                                    	<button class="dropdown-item" type="button" onclick="updateProduct('${c.PCode}', '${c.category }');">수정</button>
+				                                    	<button class="dropdown-item" type="button" >숨기기</button>
+														<button class="dropdown-item" type="button" onclick="deleteProduct('${c.PCode }');">게시물 삭제</button>
+				                                    </div>
+				                                </li>
+			                                </ul>
 									      </td>
 									    </tr>  
 								  	</c:forEach>
@@ -263,18 +261,17 @@ a{text-decoration: none; color: black;}
 									      	</div>
 									      </td>
 									      <td>
-									      	<div class="btn-group">
-											  <button type="button" 
-											  		  class="btn btn-outline-link btn-sm dropdown-toggle" 
-											  		  data-toggle="dropdown" 
-											  		  aria-haspopup="true">
-											  </button>
-											  <div class="dropdown-menu dropdown-menu-right">
-											    <button class="dropdown-item" type="button">수정</button>
-											    <button class="dropdown-item" type="button">끌어 올리기</button>
-											    <button class="dropdown-item" type="button">게시물 삭제</button>
-											  </div>
-											</div>
+									      	<ul>
+												<li class="nav-item dropdown">
+				                                    <a class="nav-link dropdown-toggle" id="navbarDropdown_1"
+				                                       aria-haspopup="true" aria-expanded="false">
+				                                    </a>
+				                                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown_1">
+				                                    	<button class="dropdown-item" type="button" onclick="updateProduct('${h.PCode}', '${h.category }');">수정</button>
+														<button class="dropdown-item" type="button" onclick="deleteProduct('${h.PCode }');">게시물 삭제</button>
+				                                    </div>
+				                                </li>
+			                                </ul>
 									      </td>
 									    </tr>  
 								  	</c:forEach>
@@ -285,6 +282,7 @@ a{text-decoration: none; color: black;}
 								  </tbody>
 								</table>
 							  </div>
+							  <input type="hidden" Id="userId_" value="${member.userId }" />
 							</div>
 				        </nav>
 	                </div>
@@ -292,18 +290,48 @@ a{text-decoration: none; color: black;}
 	        </div>
 	    </div>
 	</div>
+<jsp:include page="/WEB-INF/views/common/footer.jsp"/>
+	
 <script>
-$(function(){
+function updateProduct(pCode, category){
+	location.href = "${ pageContext.request.contextPath }/product/updateProduct?pCode=" + pCode + "&categoryName=" + category;
+}
 
-	
-	
-});
+function deleteProduct(pCode)
+{
+	if(confirm("삭제할까요?"))
+	{
+		$.ajax
+		({
+			url: "${pageContext.request.contextPath}/product/" + pCode,
+			method: "PUT",
+			beforeSend: function(xhr)
+			{
+	            xhr.setRequestHeader("${_csrf.headerName}", "${_csrf.token}");
+	        },
+	        dataType: "json",
+			success: function(map)
+			{
+				alert(map.msg);
+				location.href = "${pageContext.request.contextPath}/member/salesList?userId=" + $("#userId_").val();								
+			},
+			error: function(xhr, status, err)
+			{
+				alert("상품 삭제에 실패했어요 💧");
+				console.log(xhr, status, err);
+			}
+		});
+	}
+	else
+		return false;
+}
 
-function changeStatus(pCode, elem){
+function changeStatus(pCode, currentStatus, elem){
 
+	//바꿀 거래 상태
 	let status = $(elem).val();
 	
-	//거래 완료일 경우 채팅 사용자 고르고 후기 작성하는 페이지로 이동
+	//거래 완료로 변경 일경우 채팅 사용자 고르고 후기 작성하는 페이지로 이동
 	if(status == "C"){
 
 	}
@@ -324,23 +352,26 @@ function changeStatus(pCode, elem){
 	        },
 				success: function(result)
 			{
-				alert(result);
-	
-			 	if(status=="R"){
+
+				if(currentStatus=="C"){		
+					location.href = "${pageContext.request.contextPath}/member/salesList?userId=" + $("#userId_").val();						
+				}else if(currentStatus!="C" && status=="R"){
 			 		$("#r_"+ pCode).show();
 			 		$("#s_" + pCode).hide();
 
  			 		$(elem).val("S");
 			 		$(elem).text("판매중으로 변경");			 		
-			 		
-				}else if(status=="S"){
+				 		
+				}else if(currentStatus!="C" && status=="S"){
 			 		$("#r_"+ pCode).hide();
 			 		$("#s_" + pCode).show();
 
 			 		$(elem).val("R");
 			 		$(elem).text("예약중으로 변경");
-
-				}	
+				}
+				
+				alert(result);
+				
 			},
 			error: function(xhr, status, err)
 			{ 
@@ -371,8 +402,3 @@ function changeStatus(pCode, elem){
   align-self: center; 
 }
 </style>
-<jsp:include page="/WEB-INF/views/common/footer.jsp"/>
-	
-	
-	
-	
