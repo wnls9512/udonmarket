@@ -50,6 +50,7 @@
 	                        <div class="login_part_form_iner">
 	                        	<input type="hidden" name="seller" id="seller" value="${userId }"/>
                                 <div class="col-md-12 form-group p_star" style="margin-top: 10%;">
+                                	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
                                     <input type="text" name="title" placeholder="글 제목"
 											onfocus="this.placeholder = ''" onblur="this.placeholder = '글 제목'" required
 											class="single-input-primary">

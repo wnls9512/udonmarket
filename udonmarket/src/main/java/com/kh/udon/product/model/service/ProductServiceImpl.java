@@ -140,6 +140,12 @@ public class ProductServiceImpl implements ProductService
         return dao.selectSimilarProducts(map);
     }
 
+    @Override
+    public List<ProductVO> selectOtherProducts(String seller)
+    {
+        return dao.selectOtherProducts(seller);
+    }
+
 
 
 

@@ -144,7 +144,7 @@ public class ProductController
          *      1. 상품 정보
          *      2. 판매자 정보
          *      3. 비슷한 상품
-         *      (4. 판매자 다른 상품)
+         *      4. 판매자 다른 상품
          */
         ProductDTO product = service.selectDTOByPCode(pCode);
         SellerDTO seller = service.selectSeller(product.getSeller());
@@ -160,6 +160,9 @@ public class ProductController
         
         List<ProductVO> similar = service.selectSimilarProducts(map);
         
+        // --- 판매자 다른 상품 ---
+        List<ProductVO> other = service.selectOtherProducts(product.getSeller());
+        
         // --- 시간 차 구하기 ---
         long timeMillis = System.currentTimeMillis() - product.getOriginalRegDate().getTime();
         product.setTimeMillis(timeMillis);
@@ -167,6 +170,7 @@ public class ProductController
         model.addAttribute("product", product);
         model.addAttribute("seller", seller);
         model.addAttribute("similar", similar);
+        model.addAttribute("other", other);
         
         return "product/productDetailView";
     }
