@@ -140,6 +140,12 @@ public class ProductDaoImpl implements ProductDao
         return session.selectList("product.selectSimilarProduct", map);
     }
 
+    @Override
+    public List<ProductVO> selectOtherProducts(String seller)
+    {
+        return session.selectList("product.selectOtherProducts", seller);
+    }
+
 
 
 

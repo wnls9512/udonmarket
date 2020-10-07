@@ -219,10 +219,37 @@
 
     <!-- product_list part start-->
     <section class="product_list best_seller">
+        <!-- 판매자의 다른상품 -->
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-lg-12">
                     <div class="section_tittle text-center">
+                        <h2>${seller.nickname }님의 다른 상품</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="row align-items-center justify-content-between">
+                <div class="col-lg-12">
+                    <div class="best_product_slider owl-carousel">
+                    	<c:forEach items="${other }" var="p">
+                        <div class="single_product_item">
+                            <img src="${pageContext.request.contextPath }/resources/img/product/product_1.png" alt="">
+                            <div class="single_product_text">
+                                <h4>${p.title }</h4>
+                                <h3><fmt:formatNumber type="number" maxFractionDigits="3" value="${p.price}" />원</h3>
+                            </div>
+                        </div>
+                        </c:forEach>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br/>
+        <!-- 비슷한 상품 -->
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-12">
+                    <div class="section_tittle text-center mt-3">
                         <h2>비슷한 상품</h2>
                     </div>
                 </div>
@@ -230,7 +257,6 @@
             <div class="row align-items-center justify-content-between">
                 <div class="col-lg-12">
                     <div class="best_product_slider owl-carousel">
-                    
                     	<c:forEach items="${similar }" var="p">
                         <div class="single_product_item">
                             <img src="${pageContext.request.contextPath }/resources/img/product/product_1.png" alt="">
@@ -240,8 +266,6 @@
                             </div>
                         </div>
                         </c:forEach>
-                        
-                        
                     </div>
                 </div>
             </div>

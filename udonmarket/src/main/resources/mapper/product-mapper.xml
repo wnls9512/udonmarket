@@ -149,4 +149,10 @@
 		select p_code, title, price from product 
 		where category = #{category} and p_code not in (#{pCode}) and open_status = 1 and (trade_status = 'S' or trade_status = 'R') and delete_yn = 'N'
 	</select>
+	
+	<!-- 판매자 다른 상품 -->
+	<select id="selectOtherProducts" resultType="productVO">
+		select p_code, title, price from product
+		where seller = #{seller} and open_status = 1 and (trade_status = 'S' or trade_status = 'R') and delete_yn = 'N'
+	</select>
 </mapper>

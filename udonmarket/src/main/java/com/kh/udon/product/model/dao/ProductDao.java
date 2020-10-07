@@ -53,6 +53,8 @@ public interface ProductDao
 
     List<ProductVO> selectSimilarProducts(Map<String, Object> map);
 
+    List<ProductVO> selectOtherProducts(String seller);
+
 
 
 
