@@ -19,7 +19,7 @@
 <!-- 알림 관련 스크립트 -->
 <script>
 
-/* $(function(){
+$(function(){
 
  	$("#uploadBtn").click(function(){
 		let $title = $("#title").val();
@@ -36,7 +36,7 @@
 		
 	}); 
 	
-}) */
+})
 
 </script>
 
@@ -77,7 +77,7 @@
                                 	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
                                     <input type="text" name="title" placeholder="글 제목"
 											onfocus="this.placeholder = ''" onblur="this.placeholder = '글 제목'" required
-											id="title"
+											id=""
 											class="single-input-primary">
                                 </div>
                                 <div class="col-md-12 form-group p_star">
