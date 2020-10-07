@@ -79,7 +79,7 @@
 	</select> -->
 	
 	
-	<select id="selectReportList">
+	<select id="selectReportList" resultMap="ReportMap">
 		select report_code, 
 			   b_code, 
 			   report_id, 
@@ -88,4 +88,12 @@
 		from report
 		order by report_code;
 	</select>
+	
+	<resultMap type="Report" id="ReportMap">
+		<id column="report_code" property="reportCode"/>
+		<result column="b_code" property="bCode"/>
+		<result column="report_id" property="reportId"/>
+		<result column="reason_content" property="reportContent"/>
+		<result column="content" property="content"/>
+	</resultMap>
 </mapper>

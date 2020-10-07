@@ -61,12 +61,12 @@ a {
                         </aside>
                     </div>
                 </div>
- 			<div class="col-lg-9">
+ 			<div class="col-lg-9"> 
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="product_top_bar d-flex justify-content-between align-items-center">
                                 <div class="single_product_menu">
-                                    <p><span>${totalContents }</span> 개의 상품</p>
+                                    <p><span>${totalContents }</span>명의 회원</p>
                                 </div>
                             </div>
                         </div>
@@ -89,7 +89,7 @@ a {
 												<td>${ member.email }</td>
 												<td>${ member.nickName }</td>
 												<td><fmt:formatDate value="${ member.regDate }" type="both"/></td>
-												<td><button type="button" class="btn btn-outline-danger" onclick="adminMemberDelete('${ member.userId }')">삭제</button></td>
+												<td><button type="button" class="btn btn-outline-danger" onclick="adminMemberQuit('${ member.userId }')">탈퇴</button></td>
 											</tr>
 										</c:forEach>
 										<tr>
@@ -118,15 +118,16 @@ a {
             </div>
         </div>
 	</section>
-	<form:form id="adminMemberDeleteFrm" action="adminMemberDelete" method="post">
+<!-- 	quit_yn == y로 수정 해야 함. -->
+	<form:form id="adminMemberQuitFrm" action="adminMemberQuit" method="post">
 		<input type="hidden" name="userId" />
 	</form:form>
 	<script>
-	function adminMemberDelete(userId){
-		if(confirm("정말 삭제하시겠습니까?") == false) {
+	function adminMemberQuit(userId){
+		if(confirm("정말 탈퇴하시겠습니까?") == false) {
 			return;
 		}
-		var $frm = $("#adminMemberDeleteFrm");
+		var $frm = $("#adminMemberQuitFrm");
 		$frm.find("[name=userId]").val(userId);
 		$frm.submit();
 	}

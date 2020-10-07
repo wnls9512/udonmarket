@@ -23,5 +23,6 @@ public class Report implements Serializable{
 	private int replyCode;
 	private boolean checked;
 	private String content;
+	private String reportContent;
 	
 }
