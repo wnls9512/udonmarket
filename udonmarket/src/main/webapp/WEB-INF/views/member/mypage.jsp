@@ -145,6 +145,3 @@ a{text-decoration: none; color: black;}
 
 <jsp:include page="/WEB-INF/views/common/footer.jsp"/>
 	
-	
-	
-	
