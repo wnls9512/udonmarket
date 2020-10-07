@@ -22,6 +22,7 @@ public class ProductDTO implements Serializable
     int chat;
     
     // detail
+    int categoryCode;
     String category;
     String tradeStatus;
     int offer;

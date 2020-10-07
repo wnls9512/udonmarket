@@ -51,6 +51,8 @@ public interface ProductService
 
     int pull(Map<String, Object> param);
 
+    List<ProductVO> selectSimilarProducts(Map<String, Object> map);
+
 
 
 
