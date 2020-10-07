@@ -47,6 +47,15 @@ public interface ProductService
 
     int delete(int pCode);
 
+    int pull(int pCode);
+
+    int pull(Map<String, Object> param);
+
+    List<ProductVO> selectSimilarProducts(Map<String, Object> map);
+
+    List<ProductVO> selectOtherProducts(String seller);
+
+
 
 
 

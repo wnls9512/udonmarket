@@ -28,9 +28,12 @@ import com.kh.udon.member.model.vo.Keyword;
 import com.kh.udon.member.model.vo.Member;
 import com.kh.udon.member.model.vo.Review;
 import com.kh.udon.member.model.vo.Wish;
+<<<<<<< HEAD
 import com.kh.udon.member.model.vo.announce;
 
 //github.com/oheunju/udonmarket.git
+=======
+>>>>>>> branch 'master' of https://github.com/oheunju/udonmarket.git
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -67,8 +70,23 @@ public class MemberController {
 
 		log.debug("rawPassword@controller = {}", rawPassword);
 		log.debug("encryptPassword@controller = {}", encryptPassword);
+		
+		
+		Map<String, Object> map = new HashMap<>();
+		List<Integer> list = new ArrayList<>();
+		
+		for(int i = 1; i <= 26; i++)
+		    list.add(i);
 
-		int result = service.insertMemberLocAuth(member);
+		map.put("list", list);
+		map.put("userId", member.getUserId());
+		map.put("password", member.getPassword());
+		map.put("email", member.getEmail());
+		map.put("nickName", member.getNickName());
+
+		
+				
+		int result = service.insertMemberLocAuthScoreEvaluate(map);
 		
 		
 		log.debug("result@controller = {}", result);
@@ -94,6 +112,7 @@ public class MemberController {
 		 if(member != null && bcryptPasswordEncoder.matches(password,member.getPassword())) { 
 			//세션처리 
 			model.addAttribute("loginMember", member);
+			session.setAttribute("loginMember", member);
 		 
 			//세션에서 next값 가져오기 
 		    String next = (String)session.getAttribute("next");

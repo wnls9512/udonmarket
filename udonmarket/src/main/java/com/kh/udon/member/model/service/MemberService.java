@@ -36,9 +36,13 @@ public interface MemberService
 
 	List<Review> selectAllReview(String userId);
 
+<<<<<<< HEAD
 	List<announce> selectAnnounceList(int limit, int offset);
 	
 	int insertMemberLocAuth(Member member);
+=======
+	int insertMemberLocAuthScoreEvaluate(Map<String, Object> map);
+>>>>>>> branch 'master' of https://github.com/oheunju/udonmarket.git
 
 	List<Wish> selectAllSalesPro(String userId);
 
@@ -56,10 +60,14 @@ public interface MemberService
 
 	int selectMemberTotalContents();
 
+<<<<<<< HEAD
 	int deleteMember(String userId);
 
 	int announceEnroll(announce announce);
 
 	announce selectOneAnnounce(int bCode);
 
+=======
+	int updateQuitMember(String userId);
+>>>>>>> branch 'master' of https://github.com/oheunju/udonmarket.git
 }

@@ -39,14 +39,20 @@ public interface MemberDao
 
 	List<Review> selectAllReview(String userId);
 
+<<<<<<< HEAD
 	List<announce> selectAnnounceList(int limit, int offset);
 	
 	int insertMember(Member member);
+=======
+	int insertMember(Map<String, Object> map);
+>>>>>>> branch 'master' of https://github.com/oheunju/udonmarket.git
 
-	int insertLocation(String userId);
+	int insertLocation(Map<String, Object> map);
 
-	int insertAuthority(String userId);
+	int insertAuthority(Map<String, Object> map);
 
+	int insertScore(Map<String, Object> map);
+	
 	List<Wish> selectAllSalesPro(String userId);
 
 	List<Wish> selectAllBuyPro(String userId);
@@ -63,11 +69,15 @@ public interface MemberDao
 
 	int selectMemberTotalContents();
 
-	int deleteMember(String userId);
+	int updateQuitMember(String userId);
 
+<<<<<<< HEAD
 	int announceEnroll(announce announce);
 
 	announce selectOneAnnounce(int bCode);
 
+=======
+    int insertEvaluate(Map<String, Object> map);
+>>>>>>> branch 'master' of https://github.com/oheunju/udonmarket.git
 
 }

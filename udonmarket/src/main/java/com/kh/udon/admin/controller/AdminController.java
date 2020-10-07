@@ -1,10 +1,14 @@
 package com.kh.udon.admin.controller;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -85,7 +89,17 @@ public class AdminController {
 		log.debug("encryptPassword@controller = {}", encryptPassword);
 		
 		
-		int result = memberService.insertMemberLocAuth(member);
+		List<Integer> num = new ArrayList<>();
+		Map<String, Object> map = new HashMap<>();
+		
+		for(int i=0;i<=26; i++) {
+			num.add(i);
+		}
+		
+		map.put("list", num);
+		map.put("userId", member.getUserId());
+				
+		int result = memberService.insertMemberLocAuthScoreEvaluate(map);
 		
 		log.debug("result@controller = {}", result);
 		
@@ -97,10 +111,10 @@ public class AdminController {
 		return "redirect:/admin/memberList";
 	}
 	
-	@RequestMapping(value="/adminMemberDelete", method = RequestMethod.POST)
-	public String adminMemberDelete(@RequestParam("userId") String userId, RedirectAttributes redirectAttr) {
+	@RequestMapping(value="/adminMemberQuit", method = RequestMethod.POST)
+	public String adminMemberQuit(@RequestParam("userId") String userId, RedirectAttributes redirectAttr) {
 		
-		int result = memberService.deleteMember(userId);
+		int result = memberService.updateQuitMember(userId);
 		log.debug("result = {}", result);
 		redirectAttr.addFlashAttribute("msg",result > 0  ? "회원 삭제 성공!" : "회원 삭제 실패");
 		
@@ -123,5 +137,15 @@ public class AdminController {
 		redirectAttr.addFlashAttribute("msg",result > 0  ? "공지사항 등록 성공!" : "공지사항 등록 실패!");
 		
 		return "redirect:/member/announce";
+	}
+	@GetMapping("/declareBoardList")
+	public ModelAndView declareBoardList(ModelAndView mav, @RequestParam(defaultValue = "1", value="cPage") int cPage) {
+		
+		final int limit = 10;
+		int offset = (cPage - 1) * limit;
+		
+		
+		
+		return mav;
 	}
 }

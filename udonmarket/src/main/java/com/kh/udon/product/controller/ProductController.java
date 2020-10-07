@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.kh.udon.member.model.vo.Wish;
@@ -141,14 +140,37 @@ public class ProductController
     @RequestMapping("/productDetailView")
     public String productDetail(int pCode, Model model)
     {
+        /*
+         *      1. 상품 정보
+         *      2. 판매자 정보
+         *      3. 비슷한 상품
+         *      4. 판매자 다른 상품
+         */
         ProductDTO product = service.selectDTOByPCode(pCode);
         SellerDTO seller = service.selectSeller(product.getSeller());
+        
+        // --- 비슷한 상품 ---
+        String[] keywords = product.getTitle().split(" ");
+        int category = product.getCategoryCode();
 
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("keywords", keywords);
+        map.put("category", category);
+        map.put("pCode", pCode);
+        
+        List<ProductVO> similar = service.selectSimilarProducts(map);
+        
+        // --- 판매자 다른 상품 ---
+        List<ProductVO> other = service.selectOtherProducts(product.getSeller());
+        
+        // --- 시간 차 구하기 ---
         long timeMillis = System.currentTimeMillis() - product.getOriginalRegDate().getTime();
         product.setTimeMillis(timeMillis);
         
         model.addAttribute("product", product);
         model.addAttribute("seller", seller);
+        model.addAttribute("similar", similar);
+        model.addAttribute("other", other);
         
         return "product/productDetailView";
     }
@@ -222,6 +244,33 @@ public class ProductController
             log.error("메뉴 삭제 오류", e);
             msg = "삭제에 실패했어요 💧";
         }
+        
+        map.put("msg", msg);
+        
+        return map;
+    }
+    
+    // 끌올
+    @PutMapping("/pull/{price}/{pCode}")
+    @ResponseBody
+    public Map<String, Object> pull(@PathVariable String price, @PathVariable int pCode)
+    {
+        Map<String, Object> map = new HashMap<String, Object>();
+        int result = 0;
+        
+        Map<String, Object> param = new HashMap<String, Object>();
+        
+        if(price.equals("x"))
+            result = service.pull(pCode);
+        else
+        {
+            param.put("price", Integer.parseInt(price));
+            param.put("pCode", pCode);
+            
+            result = service.pull(param);
+        }
+        
+        String msg = result > 0 ? "끌어올리기 성공 😄" : "끌어올리기에 실패했어요 💧";
         
         map.put("msg", msg);
         
