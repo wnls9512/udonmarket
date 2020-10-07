@@ -107,7 +107,7 @@ public class MemberController {
 			//세션처리 
 			model.addAttribute("loginMember", member);
 			session.setAttribute("loginMember", member);
-		 
+			
 			//세션에서 next값 가져오기 
 		    String next = (String)session.getAttribute("next");
 			location = next != null ? next : location; session.removeAttribute("next"); }

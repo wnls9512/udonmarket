@@ -13,6 +13,36 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/upload.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/modal.css">
 
+<!-- 알림 관련 스크립트 -->
+<script>
+
+$(function(){
+
+ 	$("#uploadBtn").click(function(){
+		let $title = $("#title").val();
+
+		//소켓이 연결 되었을 때만 (있을 때만)
+		console.log("reply.js :: socket >> ", sock);
+		if(sock) {
+			//webSocket에 보내기
+			//cmd/발신인/수신인/글번호
+			sendMessage("reply,juwon,test,1");
+		}else{
+			console.log("Error on editReply ", sock);
+		}
+		
+	}); 
+
+    // 메시지 전송
+    function sendMessage(msg) {
+        console.log(dsadsad);
+        sock.send(msg);
+    }
+})
+
+</script>
+
+
     <!--================Home Banner Area =================-->
     <!-- breadcrumb start-->
     <section class="breadcrumb breadcrumb_bg">
