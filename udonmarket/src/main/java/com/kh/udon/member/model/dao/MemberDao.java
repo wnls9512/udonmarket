@@ -65,5 +65,9 @@ public interface MemberDao
 
 	int deleteMember(String userId);
 
+	int announceEnroll(announce announce);
+
+	announce selectOneAnnounce(int bCode);
+
 
 }

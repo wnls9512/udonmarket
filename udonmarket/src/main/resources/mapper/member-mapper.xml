@@ -290,4 +290,34 @@
 	)
 </insert>
 
+<!-- 공지사항 등록 -->
+<insert id="announceEnroll">
+	insert into
+		board
+	values(
+		seq_board_no.nextval,
+		#{userId},
+		'22',
+		#{boardTitle},
+		#{boardContent},
+		sysdate ,
+		null,
+		'0'
+	)
+</insert>
+
+<select id="selectOneAnnounce">
+	
+</select>
+
+<!-- 회원 닉네임 변경 -->
+<update id="nickModify">
+update 
+	member
+set 
+    nickname=#{nickName}
+where 
+	user_id=#{userId}
+</update>
+
 </mapper>

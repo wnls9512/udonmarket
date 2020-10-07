@@ -58,4 +58,8 @@ public interface MemberService
 
 	int deleteMember(String userId);
 
+	int announceEnroll(announce announce);
+
+	announce selectOneAnnounce(int bCode);
+
 }

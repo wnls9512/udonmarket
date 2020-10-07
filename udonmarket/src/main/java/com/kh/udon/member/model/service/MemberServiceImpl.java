@@ -162,4 +162,14 @@ public class MemberServiceImpl implements MemberService
 		return memberDao.deleteMember(userId);
 	}
 
+	@Override
+	public int announceEnroll(announce announce) {
+		return memberDao.announceEnroll(announce);
+	}
+
+	@Override
+	public announce selectOneAnnounce(int bCode) {
+		return memberDao.selectOneAnnounce(bCode);
+	}
+
 }

@@ -27,9 +27,8 @@ import com.kh.udon.member.model.vo.Evaluate;
 import com.kh.udon.member.model.vo.Keyword;
 import com.kh.udon.member.model.vo.Member;
 import com.kh.udon.member.model.vo.Review;
-import com.kh.udon.member.model.vo.announce;
 import com.kh.udon.member.model.vo.Wish;
-import com.kh.udon.product.model.vo.ProductVO;
+import com.kh.udon.member.model.vo.announce;
 
 //github.com/oheunju/udonmarket.git
 
@@ -148,9 +147,14 @@ public class MemberController {
     }
 
     //프로필 수정
-	@RequestMapping("/editprofile")
-	public String editProfile() 
+	@RequestMapping("/editprofile"/* ,method=RequestMethod.POST */)
+	public String editProfile(@RequestParam("userId") String userId, 
+							  Model model)
 	{
+		
+		 Member member = service.selectOneMember(userId); 
+		 model.addAttribute("member",member);
+		 
 		return "member/editProfile";
 	}
 	
@@ -314,16 +318,23 @@ public class MemberController {
     
     //자주 묻는 질문
     @RequestMapping("/FAQ")
-    public String FAQ()
+    public String FAQ(@RequestParam("userId") String userId,Model model)
     {
+    	log.debug("loginMemberId = {} ", userId);
+    	Member member = service.selectOneMember(userId);
+    	
+    	model.addAttribute("member",member);
     	return "member/FAQ";
     }
     
     //공지 사항
     @RequestMapping("/announce")
     public ModelAndView announce(ModelAndView mav,
+    							@RequestParam("userId") String userId,
     							@RequestParam(defaultValue="1")int cPage)
     {
+    	log.debug("loginMemberId = {} ", userId);
+    	Member member = service.selectOneMember(userId);
     	//1.사용자 입력값
     	final int limit = 10;
     	int offset = (cPage -1) * limit;
@@ -333,6 +344,7 @@ public class MemberController {
     	log.debug("list = {}",list);
     	
     	//3.view단처리
+    	mav.addObject("member",member);
     	mav.addObject("list",list);
     	mav.setViewName("member/announce");
     	return mav;
@@ -469,5 +481,16 @@ public class MemberController {
     	model.addAttribute("reviewSeller", seller);
     	model.addAttribute("reviewBuyer", buyer);
     	return model;
+    }
+    
+    //공지사항 디테일
+    @GetMapping("/announceDetail")
+    public String announceDetail(@RequestParam int bCode,Model model) {
+    	
+    	log.debug("[{}]번 공지사항 조회",bCode);
+    	announce announce = service.selectOneAnnounce(bCode);
+    	model.addAttribute("announce",announce);
+    	
+    	return "member/announceDetail";
     }
 }

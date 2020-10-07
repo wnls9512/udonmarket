@@ -151,4 +151,14 @@ public class MemberDaoImpl implements MemberDao
 		return session.delete("member.deleteMember", userId);
 	}
 
+	@Override
+	public int announceEnroll(announce announce) {
+		return session.insert("member.announceEnroll", announce);
+	}
+
+	@Override
+	public announce selectOneAnnounce(int bCode) {
+		return session.selectOne("member.selectOneAnnounce",bCode);
+	}
+
 }

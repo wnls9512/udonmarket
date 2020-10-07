@@ -106,16 +106,21 @@ public class AdminController {
 		
 		return "redirect:/admin/memberList";
 	}
-	@RequestMapping("/admin/announceForm")
+	
+	//공지사항 글쓰기 폼
+	@RequestMapping("/announceForm")
 	public ModelAndView announceForm(ModelAndView mav) {
 		mav.setViewName("admin/announceForm");
 		return mav;
 	}
 	
-	@PostMapping("/admin/announceEnroll")
-	public String announceEnroll(announce Announce) {
+	//공지사항 등록
+	@PostMapping("/announceEnroll")
+	public String announceEnroll(announce announce,RedirectAttributes redirectAttr) {
 		
-		log.debug("Announce = {}", Announce);
+		int result = memberService.announceEnroll(announce);
+		
+		redirectAttr.addFlashAttribute("msg",result > 0  ? "공지사항 등록 성공!" : "공지사항 등록 실패!");
 		
 		return "redirect:/member/announce";
 	}

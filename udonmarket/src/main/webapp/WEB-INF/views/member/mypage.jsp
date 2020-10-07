@@ -45,9 +45,6 @@ a{text-decoration: none; color: black;}
 	        <div class="bg-white shadow rounded overflow-hidden">
 	            <div class="px-4 pt-0 pb-4 cover">
 	                <div class="media align-items-end profile-head">
-	                    <div class="profile mr-3"><img src="https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=80" alt="..." width="130" class="rounded mb-2 img-thumbnail">
-	                    <a href="${pageContext.request.contextPath}/member/editprofile" class="btn btn-outline-dark btn-sm btn-block">Edit profile</a>
-	                    </div>
 	                    <div class="profile mr-3">
 	                    	<!-- LoggdeInUser 정보 가져오기  -->
 	                        <sec:authentication property="principal" var="loggedInUser" />
@@ -56,7 +53,7 @@ a{text-decoration: none; color: black;}
 	                    		 alt="..." 
 	                    		 width="130" 
 	                    		 class="rounded mb-2 img-thumbnail">
-	                    	<a href="${pageContext.request.contextPath}/member/editprofile" class="btn btn-outline-dark btn-sm btn-block">Edit profile</a></div>
+	                    	<a href="${pageContext.request.contextPath}/member/editprofile?userId=${member.userId}" class="btn btn-outline-dark btn-sm btn-block">Edit profile</a></div>
 	                    <div class="media-body mb-5 text-white">
 	                        <h4 class="mt-0 mb-0" style="color:white;">${member.nickName}</h4>
 	                        <p class="small mb-4" style="color:white;"> <i class="fas fa-map-marker-alt mr-2"></i>${member.address}</p>
@@ -122,13 +119,13 @@ a{text-decoration: none; color: black;}
 	                <div class="p-4 rounded shadow-sm bg-light">
 				        <!-- Vertical Menu-->
 				        <nav class="nav flex-column bg-white shadow-sm rounded p-3">
-				          <a href="${pageContext.request.contextPath}/member/myPost" class="nav-link px-4 rounded-pill">
+				          <a href="${pageContext.request.contextPath}/member/myPost?userId=${member.userId}" class="nav-link px-4 rounded-pill">
 	                           <i class="far fa-edit"></i>&nbsp; 동네생활 글
 	                      </a>
-				          <a href="${pageContext.request.contextPath}/member/myComment" class="nav-link px-4 rounded-pill">
+				          <a href="${pageContext.request.contextPath}/member/myComment?userId=${member.userId}" class="nav-link px-4 rounded-pill">
 		                      <i class="far fa-comment-dots"></i>&nbsp; 동네생활 댓글
 	                      </a>
-				          <a href="${pageContext.request.contextPath}/member/interList" class="nav-link px-4 rounded-pill">
+				          <a href="${pageContext.request.contextPath}/member/interList?userId=${member.userId}" class="nav-link px-4 rounded-pill">
 		                      <i class="far fa-star"></i>&nbsp; 관심 주제 목록
 	                      </a>
 				        </nav>
@@ -138,10 +135,10 @@ a{text-decoration: none; color: black;}
 	                <div class="p-4 rounded shadow-sm bg-light">
 				        <!-- Vertical Menu-->
 				        <nav class="nav flex-column bg-white shadow-sm rounded p-3">
-				          <a href="${pageContext.request.contextPath}/member/announce" class="nav-link px-4 rounded-pill">
+				          <a href="${pageContext.request.contextPath}/member/announce?userId=${member.userId}" class="nav-link px-4 rounded-pill">
 		                      <i class="far fa-flag"></i>&nbsp; 공지사항
 	                      </a>
-				          <a href="${pageContext.request.contextPath}/member/FAQ" class="nav-link px-4 rounded-pill">
+				          <a href="${pageContext.request.contextPath}/member/FAQ?userId=${member.userId}" class="nav-link px-4 rounded-pill">
 		                      <i class="far fa-question-circle"></i>&nbsp; 자주 묻는 질문
 	                      </a>
 				        </nav>

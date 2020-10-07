@@ -3,16 +3,12 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
-<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 
 <fmt:requestEncoding value="utf-8"/>
 
 <jsp:include page="/WEB-INF/views/common/header.jsp">
 	<jsp:param value="공지사항" name="pageTitle"/>
 </jsp:include>
-
-<sec:authentication property="principal" var="loggedInUser"/>
 
 <!-- mypage css -->
 <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/mypage.css">
@@ -55,18 +51,6 @@ html { font-size: 16px; }
   cursor: pointer;
 }
 </style>
-<script>
-/* textarea에도 required속성을 적용가능하지만, 공백이 입력된 경우 대비 유효성검사를 실시함. */
-function boardValidate(){
-	var $content = $("[name=content]");
-	if(/^(.|\n)+$/.test($content.val()) == false){
-		alert("내용을 입력하세요");
-		return false;
-	}
-	return true;
-}
-
-</script>
     <!--================Home Banner Area =================-->
     <!-- breadcrumb start-->
     <section class="breadcrumb breadcrumb_bg">
@@ -75,7 +59,8 @@ function boardValidate(){
                 <div class="col-lg-8">
                     <div class="breadcrumb_iner">
                         <div class="breadcrumb_iner_item">
-                            <h2>공지사항 글쓰기</h2>
+                            <h2>공지사항</h2>
+							<!-- <h3>서울 강남구 논현동</h3> -->
                         </div>
                     </div>
                 </div>
@@ -132,38 +117,36 @@ function boardValidate(){
 					<hr />
 							<div style="text-align: center; ">
 								<h5 style="font-weight: bold;
-									  		color: #575757;">공지사항</h5> 		
-							    <p id="myLocal" style=" color: #575757;"></p>
+									  		color: #575757;">공지사항 상세정보</h5> 		
 							</div>
-							<hr />
+							<hr />			
+				        <nav class="nav flex-column bg-white shadow-sm rounded p-3">
+				        
+	                	<table class="table table-borderless">
+						  <thead>
+						    <tr>
+						      <th scope="col"><h2>제목 : 공지사항입니다</h2></th>
+						      <th scope="col"><p>작성일 : 2020 20 20</p></th>
+						    </tr>
+						  </thead>
+						  <tbody>
+						    <tr>
+						      <th scope="row">작성자 : 관리자</th>
+						    </tr>
+						    <tr>
+						      <th scope="row">공지사항입니담니ㅏ치나ㅣ암;ㅣ나치나아너아</th>
+						      
+						    </tr>
+						    
+						  </tbody>
+						</table> 
 						
-						<form:form name="boardFrm" 
-							  action="${pageContext.request.contextPath}/admin/announceEnroll" 
-							  method="post" 
-							  onsubmit="return boardValidate();"
-							 >
-						  <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-						  <div class="form-group row">
-						    <label for="staticEmail" class="col-sm-2 col-form-label">제목</label>
-						    <div class="col-sm-10">
-						     <input type="text" class="form-control" id="boardTitle" >
-						    </div>
-						  </div>
-						  <div class="form-group row">
-						    <label for="inputPassword" class="col-sm-2 col-form-label">내용</label>
-						    <div class="col-sm-10">
-						       <textarea class="form-control" id="boardContent" rows="3"></textarea>
-						    </div>
-						  </div>
-						  <div style="text-align: center; ">
-						   <button type="submit" class="btn btn-primary">등록</button>
-						  </div>
-						  
-						</form:form>
-					</div>
+						  	
+				        </nav>
 	                </div>
 	            </div>
 	        </div>
 	    </div>
 	</div>
 <jsp:include page="/WEB-INF/views/common/footer.jsp"/>
+	
