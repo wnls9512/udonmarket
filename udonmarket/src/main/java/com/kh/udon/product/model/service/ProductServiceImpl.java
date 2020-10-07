@@ -134,6 +134,18 @@ public class ProductServiceImpl implements ProductService
         return dao.pull(param);
     }
 
+    @Override
+    public List<ProductVO> selectSimilarProducts(Map<String, Object> map)
+    {
+        return dao.selectSimilarProducts(map);
+    }
+
+    @Override
+    public List<ProductVO> selectOtherProducts(String seller)
+    {
+        return dao.selectOtherProducts(seller);
+    }
+
 
 
 
