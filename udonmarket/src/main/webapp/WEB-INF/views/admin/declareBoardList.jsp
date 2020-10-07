@@ -65,7 +65,7 @@ a {
                         <div class="col-lg-12">
                             <div class="product_top_bar d-flex justify-content-between align-items-center">
                                 <div class="single_product_menu">
-                                    <p><span>${totalContents }</span> 개의 상품</p>
+                                    <p><span>${totalContents }</span>의 게시글 신고</p>
                                 </div>
                             </div>
                         </div>

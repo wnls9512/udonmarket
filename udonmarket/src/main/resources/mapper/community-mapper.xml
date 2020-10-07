@@ -77,5 +77,15 @@
 	<!-- <select id="selectCommunityCategory" resultType="community">
 		select * from board where category_code = #{ categoryCode } order by b_code desc
 	</select> -->
-
+	
+	
+	<select id="selectReportList">
+		select report_code, 
+			   b_code, 
+			   report_id, 
+			   (select reason_content from reason_report) as reason_content, 
+			   content
+		from report
+		order by report_code;
+	</select>
 </mapper>

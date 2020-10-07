@@ -52,6 +52,7 @@ a {
                             <div class="widgets_inner">
                                 <ul class="list">
                                     <li><a href="${pageContext.request.contextPath }/admin/memberList">회원 조회 / 등록 / 삭제</a></li>
+                                    <li><a href="${pageContext.request.contextPath }/admin/declareMemberList">신고 관리(사용자)</a></li>
 									<li><a href="${pageContext.request.contextPath }/admin/declareBoardList">신고 관리(게시글)</a></li>
 									<li><a href="${pageContext.request.contextPath }/admin/declareReplyList">신고 관리(댓글)</a></li>
 									<li><a href="${pageContext.request.contextPath }/admin/CouponList">쿠폰 관리</a></li>
@@ -60,7 +61,7 @@ a {
                         </aside>
                     </div>
                 </div>
- 			<div class="col-lg-9">
+ 			<div class="col-lg-9"> 
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="product_top_bar d-flex justify-content-between align-items-center">

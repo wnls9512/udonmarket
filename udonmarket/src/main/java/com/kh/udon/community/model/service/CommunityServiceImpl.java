@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.kh.udon.community.model.dao.CommunityDao;
 import com.kh.udon.community.model.vo.Community;
 import com.kh.udon.community.model.vo.Reply;
+import com.kh.udon.community.model.vo.Report;
 import com.kh.udon.community.model.vo.Search;
 
 @Service
@@ -73,6 +74,16 @@ public class CommunityServiceImpl implements CommunityService
 		return dao.deleteReply(replyCode);
 
 	}
+
+	@Override
+	
+	public List<Report> selectReportList(int limit, int offset) {
+		
+		return dao.selectReportList(limit, offset);
+		
+	}
+
+
 
 
     
