@@ -16,6 +16,30 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/upload.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/modal.css">
 
+<!-- 알림 관련 스크립트 -->
+<script>
+
+$(function(){
+
+ 	$("#uploadBtn").click(function(){
+		let $title = $("#title").val();
+
+		//소켓이 연결 되었을 때만 (있을 때만)
+		console.log("reply.js :: socket >> ", socket);
+		if(sock) {
+			//webSocket에 보내기
+			//cmd/발신인/수신인/글번호
+			socket.send("reply", "test", "juwon", 1);
+		}else{
+			console.log("Error on editReply ", socket);
+		}
+		
+	}); 
+	
+})
+
+</script>
+
     <!--================Home Banner Area =================-->
     <!-- breadcrumb start-->
     <section class="breadcrumb breadcrumb_bg">
@@ -53,6 +77,7 @@
                                 	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
                                     <input type="text" name="title" placeholder="글 제목"
 											onfocus="this.placeholder = ''" onblur="this.placeholder = '글 제목'" required
+											id=""
 											class="single-input-primary">
                                 </div>
                                 <div class="col-md-12 form-group p_star">
