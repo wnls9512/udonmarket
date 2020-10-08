@@ -135,4 +135,20 @@ public class AdminController {
 		
 		return mav;
 	}
+	
+	@GetMapping("/declareReplyList")
+	public ModelAndView declareReplyList(ModelAndView mav, @RequestParam(defaultValue = "1", value="cPage") int cPage) {
+		
+		final int limit = 10;
+		int offset = (cPage - 1) * limit;
+		
+		List<Report> list = communityService.selectReplyList(limit, offset); 
+		log.debug("list = {}", list);
+		
+		
+		mav.addObject("list", list);
+		mav.setViewName("admin/declareReplyList");
+		
+		return mav;
+	}
 }

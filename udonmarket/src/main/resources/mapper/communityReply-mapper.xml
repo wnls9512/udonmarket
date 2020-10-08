@@ -68,4 +68,6 @@
 
 	</delete>
 	
+	<select id="selectReplyList"></select>
+	
 </mapper>

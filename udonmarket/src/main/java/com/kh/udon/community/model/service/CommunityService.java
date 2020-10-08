@@ -36,6 +36,8 @@ public interface CommunityService
 
 	List<Report> selectReportList(int limit, int offset);
 
+	List<Report> selectReplyList(int limit, int offset);
+
 
 	
 }

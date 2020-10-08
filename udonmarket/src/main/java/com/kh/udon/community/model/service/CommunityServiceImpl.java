@@ -83,6 +83,14 @@ public class CommunityServiceImpl implements CommunityService
 		
 	}
 
+	@Override
+	
+	public List<Report> selectReplyList(int limit, int offset) {
+		
+		return dao.selectReplyList(limit,offset);
+		
+	}
+
 
 
 

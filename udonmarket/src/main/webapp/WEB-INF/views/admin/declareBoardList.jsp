@@ -10,7 +10,7 @@
 <fmt:requestEncoding value="utf-8"/>	
 	
 	<jsp:include page="/WEB-INF/views/common/header.jsp">
-		<jsp:param value="회원관리" name="pageTitle"/>
+		<jsp:param value="신고자관리(게시글)" name="pageTitle"/>
 	</jsp:include>
 
 
@@ -78,7 +78,7 @@ a {
 												<td>${ report.reportCode }</td>
 												<td>${ report.bCode }</td>
 												<td>${ report.reportId }</td>
-												<td>${ report.reportContent }</td>
+												<td>${ report.reasonContent }</td>
 												<td>${ report.content }</td>
 											</tr>
 										</c:forEach>			
@@ -90,6 +90,7 @@ a {
             </div>
         </div>
 	</section>
+
 	
 
 

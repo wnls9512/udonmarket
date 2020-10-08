@@ -88,4 +88,14 @@ public class CommunityDaoImpl implements CommunityDao
 		return session.selectList("community.selectReportList", null, rowBounds);
 		
 	}
+
+	@Override
+	
+	public List<Report> selectReplyList(int limit, int offset) {
+
+		RowBounds rowBounds = new RowBounds(offset, limit);
+
+		return session.selectList("communityReply.selectReplyList", null, rowBounds);
+		
+	}
 }

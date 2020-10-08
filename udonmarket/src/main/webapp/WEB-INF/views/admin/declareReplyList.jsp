@@ -62,76 +62,35 @@ a {
                     </div>
                 </div>
  			<div class="col-lg-9">
-                    <div class="row">
-                        <div class="col-lg-12">
-                            <div class="product_top_bar d-flex justify-content-between align-items-center">
-                                <div class="single_product_menu">
-                                    <p><span>${totalContents }</span>의 신고</p>
-                                </div>
+                    <div class="row align-items-center latest_product_inner">
+                        <div class="col-lg-4 col-sm-6">
+                            <div class="single_product_item">
+                            		<table id="tbl-declareReplyList" class="table table-striped table-hover">
+										<tr>
+											<th>신고번호</th>
+											<th>댓글번호</th>
+											<th>신고자</th>
+											<th>카테고리의 사유내용</th>
+											<th>신고 사유내용</th>
+										</tr>
+										<c:forEach items="${ list }" var="ReplyReport">
+											<tr>
+												<td>${ report.reportCode }</td>
+												<td>${ report.reply_code }</td>
+												<td>${ report.reportId }</td>
+												<td>${ report.reasonContent }</td>
+												<td>${ report.Content }</td>
+											</tr>
+										</c:forEach>
+									</table>
                             </div>
                         </div>
-                    </div>
-<!--                     <div class="row align-items-center latest_product_inner"> -->
-<!--                         <div class="col-lg-4 col-sm-6"> -->
-<!--                             <div class="single_product_item"> -->
-<%--                             	<form:form id="adminMemberSignupFrm" action="adminMemberEnroll" method="post"> --%>
-<!--                             		<table id="tbl-member" class="table table-striped table-hover"> -->
-<!-- 										<tr> -->
-<!-- 											<th>아이디</th> -->
-<!-- 											<th>이메일</th> -->
-<!-- 											<th>닉네임</th> -->
-<!-- 											<th>가입날짜</th> -->
-<!-- 											<th>삭제여부</th> -->
-<!-- 										</tr> -->
-<%-- 										<c:forEach items="${ list }" var="member"> --%>
-<!-- 											<tr> -->
-<%-- 												<td>${ member.userId }</td> --%>
-<%-- 												<td>${ member.email }</td> --%>
-<%-- 												<td>${ member.nickName }</td> --%>
-<%-- 												<td><fmt:formatDate value="${ member.regDate }" type="both"/></td> --%>
-<%-- 												<td><button type="button" class="btn btn-outline-danger" onclick="adminMemberDelete('${ member.userId }')">삭제</button></td> --%>
-<!-- 											</tr> -->
-<%-- 										</c:forEach> --%>
-<!-- 										<tr> -->
-<!-- 											<td> -->
-<!-- 												<input type="text" class="input-field1" name="userId" id="userId" placeholder="아이디" /> -->
-<!-- 											</td> -->
-<!-- 											<td> -->
-<!-- 												<input type="password" class="input-field1" name="password" id="password" placeholder="패스워드" />											 -->
-<!-- 											</td> -->
-<!-- 											<td> -->
-<!-- 												<input type="email" class="input-field1" name="email" id="email" placeholder="이메일" /> -->
-<!-- 											</td> -->
-<!-- 											<td> -->
-<!-- 												<input type="text" class="input-field1" name="nickName" id="nickName" placeholder="닉네임" /> -->
-<!-- 											</td> -->
-<!-- 											<td> -->
-<!-- 												<input type="submit" value="회원등록" /> -->
-<!-- 											</td> -->
-<!-- 										</tr> -->
-<!-- 									</table> -->
-<%-- 							</form:form> --%>
-<!--                             </div> -->
-<!--                         </div> -->
-<!-- 					</div> -->
+					</div>
                 </div>
             </div>
         </div>
 	</section>
-<%-- 	<form:form id="adminMemberDeleteFrm" action="adminMemberDelete" method="post"> --%>
-<!-- 		<input type="hidden" name="userId" /> -->
-<%-- 	</form:form> --%>
-<!-- 	<script> -->
-// 	function adminMemberDelete(userId){
-// 		if(confirm("정말 삭제하시겠습니까?") == false) {
-// 			return;
-// 		}
-// 		var $frm = $("#adminMemberDeleteFrm");
-// 		$frm.find("[name=userId]").val(userId);
-// 		$frm.submit();
-// 	}
 
-<!-- 	</script> -->
 	
 
 

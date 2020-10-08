@@ -10,7 +10,7 @@
 <fmt:requestEncoding value="utf-8"/>	
 	
 	<jsp:include page="/WEB-INF/views/common/header.jsp">
-		<jsp:param value="회원관리" name="pageTitle"/>
+		<jsp:param value="신고자관리(사용자)" name="pageTitle"/>
 	</jsp:include>
 
 
