@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="socket">
+
+<!-- 알림  -->
+<select id="selectAllNoti" resultType="noti">
+	select 
+		*
+	from 
+		notification_test
+	where
+		receiver = #{userId}
+	order by 
+		noti_code desc
+</select>
+
+<!-- 알림 저장 -->
+<insert id="insertNoti">
+insert into 
+	notification_test
+values 
+	(noti_seq_test.nextval, 
+	 #{notiKind}, 
+	 #{sender}, 
+	 #{receiver}, 
+	 #{pCode}, 
+	 #{pTitle}, 
+	 #{notiContent}, 
+	 default)
+</insert>
+
+</mapper>
+
+
+
+
+
+
+
+
+

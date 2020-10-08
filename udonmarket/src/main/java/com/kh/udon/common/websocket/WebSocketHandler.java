@@ -6,14 +6,16 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
+import com.kh.udon.member.model.service.MemberService;
 import com.kh.udon.member.model.vo.Member;
+import com.kh.udon.member.model.vo.Noti;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -36,6 +38,9 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class WebSocketHandler extends TextWebSocketHandler{
 	
+	@Autowired
+	private MemberService service;
+	
 	//세션 리스트 (현재 login 중인 정보를 모두 모아 놓는 곳)
 	private List<WebSocketSession> sessions = new ArrayList<WebSocketSession>();
 	
@@ -57,15 +62,11 @@ public class WebSocketHandler extends TextWebSocketHandler{
 	@Override
 	protected void handleTextMessage(WebSocketSession session, 
 									 TextMessage message) throws Exception {
+		
 		String senderId = getId(session);
 		log.debug("{} : {} ", senderId, message);
-		/*
-		 * for(WebSocketSession sess : sessions) { //userId : 안녕하세요 sess.sendMessage(new
-		 * TextMessage(senderId + " : " + message.getPayload())); }
-		 */
 		
 		//protocol 
-		//cmd(구분자), 댓글 작성자, 게시글 작성자, boardNo : (reply, user1, writer, 1234)
 		//cmd(구분자), 발신자, 수신자, 게시글번호, 게시글제목, 기타 내용  : (reply, user1, writer, 1234, 안녕하세요, 공지사항)
 		String msg = message.getPayload();
 		
@@ -76,7 +77,7 @@ public class WebSocketHandler extends TextWebSocketHandler{
 				String cmd = strs[0];
 				String sender = strs[1];
 				String receiver = strs[2];
-				String pCode = strs[3];
+				int pCode = Integer.parseInt(strs[3]);
 				String title = strs[4];
 				String noti = strs[5];
 				
@@ -88,9 +89,7 @@ public class WebSocketHandler extends TextWebSocketHandler{
 					TextMessage tmpMsg = new TextMessage("[가격 변동] " 
 							+ "<a href='/udon/product/productDetailView?pCode=" + pCode + "'>" + title +"</a>의 가격이 " + noti + " 원으로 변동 되었습니다.");
 	
-					receiverSession.sendMessage(tmpMsg);
-					
-					
+					receiverSession.sendMessage(tmpMsg);									
 				}
 				else if("keyword".equals(cmd) && receiverSession != null) {
 					TextMessage tmpMsg = new TextMessage("[키워드:" + noti + "] " + sender + "님이" + pCode + "를 판매합니다");
@@ -100,10 +99,22 @@ public class WebSocketHandler extends TextWebSocketHandler{
 					TextMessage tmpMsg = new TextMessage("[댓글] " + sender + "님이" + pCode +"에 댓글을 달았습니다");
 					receiverSession.sendMessage(tmpMsg);
 				}
+
+				
+				System.out.println("Line 104");
+				//insert Noti
+				Noti n = new Noti(0, cmd, sender, receiver, pCode, title, noti, false);
+				log.debug("noti = {}", n);
+				try {
+					int result = service.insertNoti(n);
+					log.debug("InsertNoti result = {}", result);
+				}catch (Exception e) {
+					e.printStackTrace();
+				}
+				System.out.println("Line 114");
+				
 			}
-		}
-		
-		
+		}		
 	}
 	
 	//클라이언트와의 연결을 끊었을 때 실행되는 메소드
