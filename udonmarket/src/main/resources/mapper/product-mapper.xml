@@ -155,4 +155,11 @@
 		select p_code, title, price from product
 		where seller = #{seller} and open_status = 1 and (trade_status = 'S' or trade_status = 'R') and delete_yn = 'N'
 	</select>
+	
+	<!-- 관심목록 가격 변동 알림을 위한 수신자 리스트 -->
+	<select id="selectWishUserId" resultType="string">
+		select wish.user_id from wish, product
+		where wish.p_code = product.p_code
+		and product.p_code = #{pCode}
+	</select>
 </mapper>

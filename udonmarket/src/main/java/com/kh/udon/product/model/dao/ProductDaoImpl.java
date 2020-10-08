@@ -146,6 +146,11 @@ public class ProductDaoImpl implements ProductDao
         return session.selectList("product.selectOtherProducts", seller);
     }
 
+	@Override
+	public List<String> selectWishUserId(int pCode) {
+		return session.selectList("product.selectWishUserId",pCode);
+	}
+
 
 
 

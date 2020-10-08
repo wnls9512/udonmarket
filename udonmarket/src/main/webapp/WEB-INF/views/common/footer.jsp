@@ -19,18 +19,16 @@ function connectWS(){
     sock.onmessage = onMessage;
     sock.onclose = onClose;
     
-    // 메시지 전송
-    function sendMessage() {
-        sock.send($("#message").val());
-    }
     // 서버로부터 메시지를 받았을 때
     function onMessage(msg) {
-        var data = msg.data;
-        $("#messageArea").append(data + "<br/>");
+        console.log(msg.data);
+        let $socketAlert = $("#socketAlert");
+        $socketAlert.html(msg.data);
+        $socketAlert.css('display', 'block');
     }
     // 서버와 연결을 끊었을 때
     function onClose(evt) {
-        $("#messageArea").append("연결 끊김");
+        console.log("연결 끊김");
     }
     
 }

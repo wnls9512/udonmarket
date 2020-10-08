@@ -207,6 +207,15 @@ public class ProductController
         CouponDTO coupon = service.selectCoupon(product.getSeller());
         List<CategoryVO> category = service.selectAllCategory();
         
+        //해당 상품을 관심목록 지정한 사용자 아이디
+        List<String> userIdList = service.selectWishUserId(pCode);
+        log.debug("userIdList = {}", userIdList);
+        String userId = "";
+        for(int i=0; i<userIdList.size(); i++) {
+        	userId += userIdList.get(i) + " ";
+        }
+        System.out.println(userId);
+        model.addAttribute("userId", userId);
         model.addAttribute("product", product);
         model.addAttribute("coupon", coupon);
         model.addAttribute("category", category);

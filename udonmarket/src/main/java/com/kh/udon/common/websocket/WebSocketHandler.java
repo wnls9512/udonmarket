@@ -6,13 +6,16 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
 import com.kh.udon.member.model.vo.Member;
+
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * 1. 텍스트 메세지 전용
@@ -30,20 +33,22 @@ import com.kh.udon.member.model.vo.Member;
  * 3. 댓글 작성 or 키워드 관련 상품 업데이트 or ... 면 Websocket에 알린다
  *
  */
-@RequestMapping("/websocket")
+@Slf4j
 public class WebSocketHandler extends TextWebSocketHandler{
 	
 	//세션 리스트 (현재 login 중인 정보를 모두 모아 놓는 곳)
 	private List<WebSocketSession> sessions = new ArrayList<WebSocketSession>();
+	
+	//1대1
 	private Map<String, WebSocketSession> userSessions = new HashMap<>(); 
 
 	//웹소켓이 연결되면 호출되는 함수
 	@Override
 	public void afterConnectionEstablished(WebSocketSession session) throws Exception {
-		System.out.printf("%s 연결 됨\n", session.getId());
 		sessions.add(session);
 		String senderId = getId(session);
 		userSessions.put(senderId, session); //Map에 senderId 키값으로 session 담기
+		log.debug("연결 되었습니다 : {} ", senderId);
 	}		
 
 	//클라이언트가 서버로 메세지를 전송했을 때 실행 되는 메소드
@@ -53,6 +58,7 @@ public class WebSocketHandler extends TextWebSocketHandler{
 	protected void handleTextMessage(WebSocketSession session, 
 									 TextMessage message) throws Exception {
 		String senderId = getId(session);
+		log.debug("{} : {} ", senderId, message);
 		/*
 		 * for(WebSocketSession sess : sessions) { //userId : 안녕하세요 sess.sendMessage(new
 		 * TextMessage(senderId + " : " + message.getPayload())); }
@@ -60,27 +66,38 @@ public class WebSocketHandler extends TextWebSocketHandler{
 		
 		//protocol 
 		//cmd(구분자), 댓글 작성자, 게시글 작성자, boardNo : (reply, user1, writer, 1234)
-		//cmd(구분자), 발신자, 수신자, 게시글번호 : (reply, user1, writer, 1234)
+		//cmd(구분자), 발신자, 수신자, 게시글번호, 게시글제목, 기타 내용  : (reply, user1, writer, 1234, 안녕하세요, 공지사항)
 		String msg = message.getPayload();
+		
 		//메세지가 있을 경우에만
 		if(StringUtils.isNotEmpty(msg)) {
 			String[] strs = msg.split(",");
-			if(strs != null && strs.length == 4) {
+			if(strs != null && strs.length == 6) {
 				String cmd = strs[0];
 				String sender = strs[1];
 				String receiver = strs[2];
-				String boardNo = strs[3];
+				String pCode = strs[3];
+				String title = strs[4];
+				String noti = strs[5];
 				
 				//현재 접속 중인 (로그인 중인) 사용자 중에 receiver가 있을때만 알림을 보낸다
-				WebSocketSession receiverSession 
-					= userSessions.get(receiver); 
+				WebSocketSession receiverSession = userSessions.get(receiver); 
 				
-				if("reply".equals(cmd) && receiverSession != null) {
-					TextMessage tmpMsg = new TextMessage("[" + cmd + "]" + sender + "님이" + boardNo + "에 ㅇㅇ를 했습니다");
+				if("price".equals(cmd) && receiverSession != null) {
+//					TextMessage tmpMsg = new TextMessage("[가격 변동] " + boardNo +"의 가격이 " + noti + " 원으로 변동 되었습니다.");
+					TextMessage tmpMsg = new TextMessage("[가격 변동] " 
+							+ "<a href='/udon/product/productDetailView?pCode=" + pCode + "'>" + title +"</a>의 가격이 " + noti + " 원으로 변동 되었습니다.");
+	
 					receiverSession.sendMessage(tmpMsg);
+					
+					
 				}
 				else if("keyword".equals(cmd) && receiverSession != null) {
-					TextMessage tmpMsg = new TextMessage("[" + cmd + "]" + sender + "님이" + boardNo + "에 ㅇㅇ를 했습니다");
+					TextMessage tmpMsg = new TextMessage("[키워드:" + noti + "] " + sender + "님이" + pCode + "를 판매합니다");
+					receiverSession.sendMessage(tmpMsg);
+				}
+				else if("reply".equals(cmd) && receiverSession != null) {
+					TextMessage tmpMsg = new TextMessage("[댓글] " + sender + "님이" + pCode +"에 댓글을 달았습니다");
 					receiverSession.sendMessage(tmpMsg);
 				}
 			}
@@ -94,7 +111,9 @@ public class WebSocketHandler extends TextWebSocketHandler{
 	@Override
 	public void afterConnectionClosed(WebSocketSession session, 
 									  CloseStatus status) throws Exception {
-		System.out.printf("%s 연결 끊김\n", session.getId());
+		
+		String senderId = getId(session);
+		log.debug("연결 해제 되었습니다 : {} ", senderId);
 	}
 	
 	
@@ -103,7 +122,10 @@ public class WebSocketHandler extends TextWebSocketHandler{
 		//Map객체에 session에 담긴 값들을 가져오기
 		Map<String, Object> httpSession = session.getAttributes();
 		//login할때 세션에 담았던 사용자 정보 가져오기
-		Member loginMember = (Member)httpSession.get("loginMember");
+//		Member loginMember = (Member)httpSession.get("loginMember");
+
+		 Member loginMember = (Member) ((Authentication) session
+	                	 	   .getPrincipal()).getPrincipal();
 		
 		//로그인 하지 않은 사용자라면 sessionId 리턴
 		if(loginMember == null)

@@ -218,6 +218,8 @@
         M.address sellerAddr,
         trade_status,
         P.price,
+        P.category,
+        C.category_name categoryName,
         (select count(*) from wish where wish.p_code = p.p_code) totalWish,
         (select review_code from review where sender = P.buyer and review.p_code = P.p_code) reviewCode,
         P.trade_status,
@@ -225,6 +227,8 @@
 	from product P
     	join member M
         	on P.seller = M.user_id
+        join category C
+        	on P.category = C.category_code
 	where 
 		P.seller = #{userId}
 	and 

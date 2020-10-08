@@ -39,13 +39,15 @@
 	<!-- notification css -->
     <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/notification.css">
     <script src="${pageContext.request.contextPath }/resources/js/notification.js"></script>
+	<!-- sockJS -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.3.0/sockjs.min.js"></script>
+
 <script>
 <%-- RedirectAttribute에 등록된 msg값 존재 여부 확인 후 출력 --%>
 <c:if test="${not empty msg }">
 	alert('${ msg }');
 </c:if>
 </script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.3.0/sockjs.min.js"></script>
 </head>
 
 <body>
@@ -109,22 +111,32 @@
                             </form:form> 
 	                        </sec:authorize>
 							
-                        </div>                        
+                        </div>
+                        
+                        <!-- 알림 --> 
+                        <sec:authorize access="isAnonymous()">
+                        <div class="notifications" id="box">
+					        <h2>Notifications</h2>
+					        <div class="notifications-item">
+					            <div class="text">
+					                <h4>로그인을 해주세요</h4>
+					            </div>
+					        </div>
+					    </div>
+                        </sec:authorize>
+                        
+                        <sec:authorize access="isAuthenticated()">
                         <div class="notifications" id="box">
 					        <h2>Notifications - <span>2</span></h2>
-					        <div class="notifications-item"> <img src="https://i.imgur.com/uIgDDDd.jpg" alt="img">
+					        <div class="notifications-item">
 					            <div class="text">
 					                <h4>Samso aliao</h4>
 					                <p>Samso Nagaro Like your home work</p>
 					            </div>
 					        </div>
-					        <div class="notifications-item"> <img src="https://img.icons8.com/flat_round/64/000000/vote-badge.png" alt="img">
-					            <div class="text">
-					                <h4>John Silvester</h4>
-					                <p>+20 vista badge earned</p>
-					            </div>
-					        </div>
 					    </div>
+                        </sec:authorize>
+                        <!-- 알림 --> 
  
                     </nav>
                 </div>
@@ -139,5 +151,8 @@
                 </form>
             </div>
         </div>
+        
+        <div id="socketAlert" class="alert alert-primary" role="alert" style="display: none"></div>
+        
     </header>
 
