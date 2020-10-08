@@ -8,6 +8,8 @@ import java.util.Map;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -106,7 +108,6 @@ public class MemberController {
 		 if(member != null && bcryptPasswordEncoder.matches(password,member.getPassword())) { 
 			//세션처리 
 			model.addAttribute("loginMember", member);
-			session.setAttribute("loginMember", member);
 			
 			//세션에서 next값 가져오기 
 		    String next = (String)session.getAttribute("next");

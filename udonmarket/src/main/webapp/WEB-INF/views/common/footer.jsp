@@ -21,8 +21,9 @@ function connectWS(){
     
     // 서버로부터 메시지를 받았을 때
     function onMessage(msg) {
-        let $socketAlert = $("div#socketAlert");
-        $socketAlert.test(msg);
+        console.log(msg.data);
+        let $socketAlert = $("#socketAlert");
+        $socketAlert.text(msg.data);
         $socketAlert.css('display', 'block');
     }
     // 서버와 연결을 끊었을 때

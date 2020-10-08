@@ -17,28 +17,24 @@
 <script>
 
 $(function(){
-
  	$("#uploadBtn").click(function(){
-		let $title = $("#title").val();
+		let $title = $("[name=title]").val();
+		let $price = $("[name=price]").val();
+		let $seller = $("[name=seller]").val();
 
 		//소켓이 연결 되었을 때만 (있을 때만)
-		console.log("reply.js :: socket >> ", sock);
 		if(sock) {
+			console.log("reply.js :: socket >> ", sock);
+
 			//webSocket에 보내기
-			//cmd/발신인/수신인/글번호
-			sendMessage("reply,juwon,test,1");
+			//cmd/발신인/수신인/글번호/바뀐 것
+			//수신인이 여러명일땐..?
+			sock.send("price," + $seller + ",test," + $title + "," + $price);
 		}else{
 			console.log("Error on editReply ", sock);
 		}
-		
 	}); 
-
-    // 메시지 전송
-    function sendMessage(msg) {
-        console.log(dsadsad);
-        sock.send(msg);
-    }
-})
+});
 
 </script>
 

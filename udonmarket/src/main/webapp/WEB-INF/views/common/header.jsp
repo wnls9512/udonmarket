@@ -39,13 +39,15 @@
 	<!-- notification css -->
     <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/notification.css">
     <script src="${pageContext.request.contextPath }/resources/js/notification.js"></script>
+	<!-- sockJS -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.3.0/sockjs.min.js"></script>
+
 <script>
 <%-- RedirectAttribute에 등록된 msg값 존재 여부 확인 후 출력 --%>
 <c:if test="${not empty msg }">
 	alert('${ msg }');
 </c:if>
 </script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.3.0/sockjs.min.js"></script>
 </head>
 
 <body>
@@ -139,5 +141,8 @@
                 </form>
             </div>
         </div>
+        
+        <div id="socketAlert" class="alert alert-primary" role="alert" style="display: none"></div>
+        
     </header>
 
