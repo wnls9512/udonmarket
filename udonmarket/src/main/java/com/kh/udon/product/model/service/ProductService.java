@@ -55,6 +55,8 @@ public interface ProductService
 
     List<ProductVO> selectOtherProducts(String seller);
 
+	List<String> selectWishUserId(int pCode);
+
 
 
 
