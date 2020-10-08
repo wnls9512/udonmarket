@@ -25,6 +25,12 @@ function connectWS(){
         let $socketAlert = $("#socketAlert");
         $socketAlert.html(msg.data);
         $socketAlert.css('display', 'block');
+
+        //알림 유지 시간 (3초)
+       /*  setTimeout( function(){
+        	$socketAlert.css('display', 'none');
+        }, 3000); */
+        
     }
     // 서버와 연결을 끊었을 때
     function onClose(evt) {

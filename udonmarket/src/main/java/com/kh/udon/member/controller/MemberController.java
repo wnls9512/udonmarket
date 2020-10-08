@@ -28,6 +28,7 @@ import com.kh.udon.member.model.service.MemberService;
 import com.kh.udon.member.model.vo.Evaluate;
 import com.kh.udon.member.model.vo.Keyword;
 import com.kh.udon.member.model.vo.Member;
+import com.kh.udon.member.model.vo.Noti;
 import com.kh.udon.member.model.vo.Review;
 import com.kh.udon.member.model.vo.Wish;
 
@@ -471,4 +472,17 @@ public class MemberController {
     	model.addAttribute("reviewBuyer", buyer);
     	return model;
     }
+    
+    @RequestMapping("/showNoti")
+    @ResponseBody
+    public Map<String, Object> myReviewList(@RequestParam("userId") String userId){
+    	Map<String, Object> map = new HashMap<>();
+    	
+    	List<Noti> noti = service.selectAllNoti(userId);
+    	log.debug("notiList = {}", noti);
+    	map.put("noti", noti);
+    	
+    	return map;
+    }
+    
 }
