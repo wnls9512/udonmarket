@@ -112,7 +112,20 @@
 	                        </sec:authorize>
 							
                         </div>
+                        
                         <!-- 알림 --> 
+                        <sec:authorize access="isAnonymous()">
+                        <div class="notifications" id="box">
+					        <h2>Notifications</h2>
+					        <div class="notifications-item">
+					            <div class="text">
+					                <h4>로그인을 해주세요</h4>
+					            </div>
+					        </div>
+					    </div>
+                        </sec:authorize>
+                        
+                        <sec:authorize access="isAuthenticated()">
                         <div class="notifications" id="box">
 					        <h2>Notifications - <span>2</span></h2>
 					        <div class="notifications-item">
@@ -122,6 +135,7 @@
 					            </div>
 					        </div>
 					    </div>
+                        </sec:authorize>
                         <!-- 알림 --> 
  
                     </nav>

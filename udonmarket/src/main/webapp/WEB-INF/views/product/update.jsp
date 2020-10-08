@@ -19,9 +19,10 @@
 $(function(){
 
 	var userIdList = "${userId}";
-	var userIdArr = userIdList.split(" ");
+	var userIdArr = userIdList != null ? userIdList.split(" ") : null;
 	
  	$("#uploadBtn").click(function(){
+		let $pCode = $("[name=pCode]").val();
 		let $title = $("[name=title]").val();
 		let $price = $("[name=price]").val();
 		let $seller = $("[name=seller]").val();
@@ -32,11 +33,13 @@ $(function(){
 			//소켓이 연결 되었을 때만 (있을 때만)
 			if(sock) {
 				console.log("reply.js :: socket >> ", sock);
-	
-				//webSocket에 보내기
-				//cmd/발신인/수신인/상품정보/바뀐 것
-				for(let i=0; i<userIdArr.length-1; i++)
-				sock.send("price," + $seller + "," + userIdArr[i] + "," + $title + "," + $price);
+
+				if(userIdArr != null){
+					//webSocket에 보내기
+					//cmd/발신인/수신인/상품코드/상품제목/가격
+					for(let i=0; i<userIdArr.length-1; i++)
+					sock.send("price," + $seller + "," + userIdArr[i] + "," + $pCode + "," + $title + "," + $price);
+				}
 								
 			}else{
 				console.log("Error on editReply ", sock);

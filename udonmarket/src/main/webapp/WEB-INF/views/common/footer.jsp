@@ -23,7 +23,7 @@ function connectWS(){
     function onMessage(msg) {
         console.log(msg.data);
         let $socketAlert = $("#socketAlert");
-        $socketAlert.text(msg.data);
+        $socketAlert.html(msg.data);
         $socketAlert.css('display', 'block');
     }
     // 서버와 연결을 끊었을 때

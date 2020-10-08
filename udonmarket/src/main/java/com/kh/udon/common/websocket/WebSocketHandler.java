@@ -66,32 +66,38 @@ public class WebSocketHandler extends TextWebSocketHandler{
 		
 		//protocol 
 		//cmd(구분자), 댓글 작성자, 게시글 작성자, boardNo : (reply, user1, writer, 1234)
-		//cmd(구분자), 발신자, 수신자, 게시글번호 : (reply, user1, writer, 1234)
+		//cmd(구분자), 발신자, 수신자, 게시글번호, 게시글제목, 기타 내용  : (reply, user1, writer, 1234, 안녕하세요, 공지사항)
 		String msg = message.getPayload();
 		
 		//메세지가 있을 경우에만
 		if(StringUtils.isNotEmpty(msg)) {
 			String[] strs = msg.split(",");
-			if(strs != null && strs.length == 5) {
+			if(strs != null && strs.length == 6) {
 				String cmd = strs[0];
 				String sender = strs[1];
 				String receiver = strs[2];
-				String boardNo = strs[3];
-				String noti = strs[4];
+				String pCode = strs[3];
+				String title = strs[4];
+				String noti = strs[5];
 				
 				//현재 접속 중인 (로그인 중인) 사용자 중에 receiver가 있을때만 알림을 보낸다
 				WebSocketSession receiverSession = userSessions.get(receiver); 
 				
 				if("price".equals(cmd) && receiverSession != null) {
-					TextMessage tmpMsg = new TextMessage("[가격 변동] " + boardNo +"의 가격이 " + noti + " 원으로 변동 되었습니다.");
+//					TextMessage tmpMsg = new TextMessage("[가격 변동] " + boardNo +"의 가격이 " + noti + " 원으로 변동 되었습니다.");
+					TextMessage tmpMsg = new TextMessage("[가격 변동] " 
+							+ "<a href='/udon/product/productDetailView?pCode=" + pCode + "'>" + title +"</a>의 가격이 " + noti + " 원으로 변동 되었습니다.");
+	
 					receiverSession.sendMessage(tmpMsg);
+					
+					
 				}
 				else if("keyword".equals(cmd) && receiverSession != null) {
-					TextMessage tmpMsg = new TextMessage("[키워드:" + noti + "] " + sender + "님이" + boardNo + "를 판매합니다");
+					TextMessage tmpMsg = new TextMessage("[키워드:" + noti + "] " + sender + "님이" + pCode + "를 판매합니다");
 					receiverSession.sendMessage(tmpMsg);
 				}
 				else if("reply".equals(cmd) && receiverSession != null) {
-					TextMessage tmpMsg = new TextMessage("[댓글] " + sender + "님이" + boardNo +"에 댓글을 달았습니다");
+					TextMessage tmpMsg = new TextMessage("[댓글] " + sender + "님이" + pCode +"에 댓글을 달았습니다");
 					receiverSession.sendMessage(tmpMsg);
 				}
 			}
