@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import com.kh.udon.community.model.vo.Community;
 import com.kh.udon.community.model.vo.Reply;
+import com.kh.udon.community.model.vo.Report;
 import com.kh.udon.community.model.vo.Search;
 
 
@@ -78,6 +79,23 @@ public class CommunityDaoImpl implements CommunityDao
 
 	}
 
+	@Override
+	
+	public List<Report> selectReportList(int limit, int offset) {
+		
+		RowBounds rowBounds = new RowBounds(offset, limit);
+		
+		return session.selectList("community.selectReportList", null, rowBounds);
+		
+	}
 
+	@Override
+	
+	public List<Report> selectReplyList(int limit, int offset) {
 
+		RowBounds rowBounds = new RowBounds(offset, limit);
+
+		return session.selectList("communityReply.selectReplyList", null, rowBounds);
+		
+	}
 }

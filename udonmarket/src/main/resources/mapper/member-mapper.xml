@@ -116,15 +116,6 @@
 	insert into Score
 	values (#{userId}, '36.5' , '1')
 </insert>
-<!-- <insert id="insertEvaluate" parameterType="java.util.List">
-	insert into evaluate
-	values
-		<foreach collection="list" item="item" separator=",">
-		(
-			#{item}, #{userId}, '0'
-		)
-		</foreach>
-</insert> -->
 <insert id="insertEvaluate" parameterType="java.util.Map">
 	insert all 
     <foreach collection="list" item="item" index="index" separator=" ">
@@ -132,12 +123,6 @@
     </foreach> 
     select * from dual 
 </insert>
-<!-- <insert id="insertEvaluate">
-	<foreach item="item" collection="java.util.List" separator=" " open="INSERT ALL ">
-	insert into evaluate
-	values (#{item},#{userId},0)
-	</foreach>
-</insert> -->
 
 
 <!-- 로그인 -->
@@ -151,13 +136,14 @@
 <select id="selectMemberList" resultMap="memberMap">
  	select *
  	from member
- 	where quit_yn = 'Y'
+ 	where quit_yn = 'N'
  	order by reg_date desc
 </select>
 
 <select id="selectMemberTotalContents" resultType="_int">
 	select count(*)
 	from member
+	where quit_yn = 'N'
 </select>
 
 <resultMap type="member" id="memberMap">
@@ -165,10 +151,10 @@
 </resultMap>
 
 <!-- 관리자에서 멤버 quit_yn == y로하기 -->
-<update id="updateQuitMember" parameterType="String" >
-	delete member
+<update id="updateQuitMember">
+	update member
 	set quit_yn = 'Y'
-	where user_id = #{value}
+	where user_id = #{userId}
 </update>
 
 

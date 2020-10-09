@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.kh.udon.community.model.vo.Community;
 import com.kh.udon.community.model.vo.Reply;
+import com.kh.udon.community.model.vo.Report;
 import com.kh.udon.community.model.vo.Search;
 
 
@@ -32,6 +33,11 @@ public interface CommunityService
 	
 
 	public int deleteReply(int replyCode) throws Exception;
+
+	List<Report> selectReportList(int limit, int offset);
+
+	List<Report> selectReplyList(int limit, int offset);
+
 
 	
 }
