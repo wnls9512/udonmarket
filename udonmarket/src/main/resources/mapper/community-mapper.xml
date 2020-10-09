@@ -84,7 +84,6 @@
 			   b_code, 
 			   report_id, 
 			   (select reason_content from reason_report) as reason_content, 
-			   content
 		from report
 		order by report_code;
 	</select>
@@ -94,6 +93,5 @@
 		<result column="b_code" property="bCode"/>
 		<result column="report_id" property="reportId"/>
 		<result column="reason_content" property="reportContent"/>
-		<result column="content" property="content"/>
 	</resultMap>
 </mapper>

@@ -71,7 +71,6 @@ a {
 											<th>게시판번호</th>
 											<th>신고자</th>
 											<th>카테고리의 신고사유내용</th>
-											<th>신고 사유내용</th>
 										</tr>
 										<c:forEach items="${ list }" var="report">
 											<tr>
@@ -91,11 +90,4 @@ a {
         </div>
 	</section>
 
-	
-
-
-
-
-
-		
 	<jsp:include page="/WEB-INF/views/common/footer.jsp"/>

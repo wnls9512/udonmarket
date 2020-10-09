@@ -71,15 +71,13 @@ a {
 											<th>댓글번호</th>
 											<th>신고자</th>
 											<th>카테고리의 사유내용</th>
-											<th>신고 사유내용</th>
 										</tr>
 										<c:forEach items="${ list }" var="ReplyReport">
 											<tr>
-												<td>${ report.reportCode }</td>
-												<td>${ report.reply_code }</td>
-												<td>${ report.reportId }</td>
-												<td>${ report.reasonContent }</td>
-												<td>${ report.Content }</td>
+												<td>${ ReplyReport.reportCode }</td>
+												<td>${ ReplyReport.reply_code }</td>
+												<td>${ ReplyReport.reportId }</td>
+												<td>${ ReplyReport.reasonContent }</td>
 											</tr>
 										</c:forEach>
 									</table>
@@ -92,10 +90,4 @@ a {
 	</section>
 
 	
-
-
-
-
-
-		
 	<jsp:include page="/WEB-INF/views/common/footer.jsp"/>

@@ -22,7 +22,6 @@ public class Report implements Serializable{
 	private int bCode;
 	private int replyCode;
 	private boolean checked;
-	private String content;
 	private String reasonContent;
 	
 }

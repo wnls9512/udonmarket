@@ -92,23 +92,6 @@ a {
 												<td><button type="button" class="btn btn-outline-danger" onclick="adminMemberQuit('${ member.userId }')">탈퇴</button></td>
 											</tr>
 										</c:forEach>
-										<tr>
-											<td>
-												<input type="text" class="input-field1" name="userId" id="userId" placeholder="아이디" />
-											</td>
-											<td>
-												<input type="password" class="input-field1" name="password" id="password" placeholder="패스워드" />											
-											</td>
-											<td>
-												<input type="email" class="input-field1" name="email" id="email" placeholder="이메일" />
-											</td>
-											<td>
-												<input type="text" class="input-field1" name="nickName" id="nickName" placeholder="닉네임" />
-											</td>
-											<td>
-												<input type="submit" value="회원등록" />
-											</td>
-										</tr>
 									</table>
 							</form:form>
                             </div>
@@ -118,21 +101,6 @@ a {
             </div>
         </div>
 	</section>
-<!-- 	quit_yn == y로 수정 해야 함. -->
-	<form:form id="adminMemberQuitFrm" action="adminMemberQuit" method="post">
-		<input type="hidden" name="userId" />
-	</form:form>
-	<script>
-	function adminMemberQuit(userId){
-		if(confirm("정말 탈퇴하시겠습니까?") == false) {
-			return;
-		}
-		var $frm = $("#adminMemberQuitFrm");
-		$frm.find("[name=userId]").val(userId);
-		$frm.submit();
-	}
-
-	</script>
 	
 
 
