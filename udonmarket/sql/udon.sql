@@ -558,8 +558,3 @@ insert into keyword values(SEQ_KEYWORD.nextval, 'test', '아이폰');
 insert into keyword values(SEQ_KEYWORD.nextval, 'juwon', '삼성');
 insert into keyword values(SEQ_KEYWORD.nextval, 'juwon', '갤럭시');
 --==========================================================================================
-		select r.* ,connect_by_isleaf leaf
-        from  reason_report r
-        start with reason_code = 1
-        connect by prior reason_code=parent_code;
-        select * from report;
