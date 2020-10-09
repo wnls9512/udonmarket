@@ -12,6 +12,20 @@
 
 <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/upload.css">
 
+ <script>
+
+function fn_addtoBoard(){
+    
+    var form = document.getElementById("writeForm");
+    
+    form.action = "<c:url value='/community/communityFormDone'/>";
+    form.submit();
+    
+}
+
+
+</script>
+
     <!--================Home Banner Area =================-->
     <!-- breadcrumb start-->
     <section class="breadcrumb breadcrumb_bg">
@@ -61,15 +75,16 @@
 	                <div class="col-lg-6 col-md-6">
 	                    <div class="login_part_form">
 	                        <div class="login_part_form_iner">
+	                        <form id="writeForm" name="writeForm" method="post">
 	                        	<div class="col-md-12 form-group p_star" style="margin-top: 10%;">
-                                    <input type="text" name="userId" value="닉네임"
-											onfocus="this.placeholder = ''" onblur="this.placeholder = '회원'" required
+                                    <input type="hidden" id="userId" name="userId" value="test" required
 											class="single-input-primary" readonly required style="background-color: #f6f6f6; width: 50%">
                                 </div>
                                 <div class="col-md-12 form-group p_star">
+                                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
                                 	<!-- <a href="#" class="genric-btn default-border" style="width: 100%;">카테고리 선택 &nbsp;&nbsp;&nbsp;&nbsp; ></a> -->
                                 	
-										<select name="category">
+										<select id="categoryCode" name="categoryCode">
 										    <option value="">카테고리 선택</option>
 										    <option value="17">동네생활이야기</option>
 										    <option value="18">우리동네질문</option>
@@ -78,27 +93,34 @@
 										</select>
                                 </div>
                                 <div class="col-md-12 form-group p_star">
-                                    <input type="text" name="first_name" placeholder="글 제목"
-											onfocus="this.placeholder = ''" onblur="this.placeholder = '글 제목'" required
-											class="single-input-primary">
+                                    <input type="text" id="boardTitle"name="boardTitle" placeholder="글 제목" onfocus="this.placeholder = ''" onblur="this.placeholder = '글 제목'" required class="single-input-primary">
                                 </div>
                                
                                 
                                 <div class="col-md-12 form-group p_star">
-									<textarea class="single-textarea" placeholder="내용" 
-											  onfocus="this.placeholder = ''" style="height: 240px;"
-											  onblur="this.placeholder = '내용'" required></textarea>
+									<textarea class="single-textarea" id="boardContent"name="boardContent" placeholder="내용" onfocus="this.placeholder = ''" onblur="this.placeholder = '내용'" style="height: 240px;" required></textarea>
                                 </div>
                                 <div class="col-md-12 form-group p_star">
-                                    <input type="text" name="first_name" placeholder="#태그"
-											onfocus="this.placeholder = ''" onblur="this.placeholder = '#태그'" required
-											class="single-input-primary">
+                                    	<select id="hashtagCode" name="hashtagCode">
+										    <option value="100">태그 선택</option>
+										    <option value="1">#강아지</option>
+										    <option value="2">#고양이</option>
+										    <option value="3">#건강</option>
+										    <option value="4">#동네맛집</option>
+										    <option value="5">#동네카페</option>
+										    <option value="6">#살림/청소/정리</option>
+										    <option value="7">#식물</option>
+										    <option value="8">#임신/출산/육아</option>
+										    <option value="9">#집꾸미기</option>
+										    
+										</select>
                                 </div>
                                 <div class="col-md-12 form-group p_star">
-	                                <button type="button" value="submit" class="btn_3" id="uploadBtn">
-	                                    	게시글 등록
-	                                </button>
+	                               <!-- <input type="submit" value="게시글 등록" class="btn_1" /> -->
+	                                <a href='#' onClick='fn_addtoBoard()' class="btn_3" style="text-align: center;">게시글 등록</a>
+	                                    
                            		 </div>
+                           		 </form>
 	                        </div>
 	                    </div>
 	                </div>
@@ -108,77 +130,7 @@
 
 
 <script>
-/* ================ file upload start ================*/
-$(function()
-{
-	$("#uploadBtn").on("click", function(e)
-	{
-		var formData = new FormData();
-		var inputFile = $("input[name='uploadFile']");
-		var files = inputFile[0].files;
 
-		console.log(files);
-
-		// add filedata to formdata
-		for(var i = 0; i < files.length; i++)
-		{
-			formData.append("uploadFile", files[i]);
-		}
-
-		$.ajax
-		({
-			url: '${pageContext.request.contextPath}/product/register',
-			processData: false,
-			contentType: false,
-			data: formData,
-			type: 'POST',
-			success: function(result)
-			{
-				alert("Uploaded");
-			}	
-		});
-	});
-});
-
-var btnUpload = $("#upload_file"),
-	btnOuter = $(".button_outer");
-	
-btnUpload.on("change", function(e)
-{
-	var ext = btnUpload.val().split('.').pop().toLowerCase();
-	
-	if($.inArray(ext, ['png','jpg','jpeg']) == -1) 
-	{
-		$(".error_msg").text("해당 종류의 파일은 업로드할 수 없습니다.");
-	} 
-	else 
-	{
-		// process bar
-		$(".error_msg").text("");
-		btnOuter.addClass("file_uploading");
-		setTimeout(function()
-		{
-			btnOuter.addClass("file_uploaded");
-		},3000);
-
-		// add thumbnail
-		var uploadedFile = URL.createObjectURL(e.target.files[0]);
-		setTimeout(function()
-		{
-			$("#uploaded_view").append('<img src="'+uploadedFile+'" />').addClass("show");
-		},3500);
-	}
-});
-
-// remove thumbnail
-$(".file_remove").on("click", function(e)
-{
-	$("#uploaded_view").removeClass("show");
-	$("#uploaded_view").find("img").remove();
-	btnOuter.removeClass("file_uploading");
-	btnOuter.removeClass("file_uploaded");
-});
-/* ================ file upload end ================*/
 </script>
 
 

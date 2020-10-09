@@ -32,6 +32,10 @@ public interface CommunityService
 	
 
 	public int deleteReply(int replyCode) throws Exception;
+	
+	int insert(Community community);
+	
+	int delete(int bCode);
 
 	
 }
