@@ -551,11 +551,6 @@ function reportProduct(reasonCode, pCode, userId)
 // 사용자 신고
 function reportUser(reasonCode, suspectId, userId)
 {
-	alert("reasonCode = " + reasonCode);
-	alert("suscpectId = " + suspectId);
-	alert("userId = " + userId);
-
-	
 	if(confirm("신고하시겠습니까?"))
 	{
 		$.ajax
