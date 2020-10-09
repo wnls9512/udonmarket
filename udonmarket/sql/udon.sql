@@ -323,6 +323,7 @@ create table report
     b_code number,
     reply_code number,
     checked number default 0 not null,
+    p_code number,
     content varchar2(500),
     constraint pk_report primary key(report_code),
     constraint fk_report_reason_code foreign key(reason_code) references reason_report(reason_code),
@@ -330,7 +331,8 @@ create table report
     constraint fk_report_shooter_id foreign key(shooter_id) references member(user_id),
     constraint fk_report_b_code foreign key(b_code) references board(b_code),
     constraint fk_report_reply_code foreign key(reply_code) references reply(reply_code),
-    constraint fk_report_checked check(checked in(1,0))
+    constraint fk_report_checked check(checked in(1,0)),
+    constraint fk_report_p_code foreign key (p_code) references product(p_code)
 );
 
 create sequence seq_category;
@@ -556,9 +558,8 @@ insert into keyword values(SEQ_KEYWORD.nextval, 'test', '아이폰');
 insert into keyword values(SEQ_KEYWORD.nextval, 'juwon', '삼성');
 insert into keyword values(SEQ_KEYWORD.nextval, 'juwon', '갤럭시');
 --==========================================================================================
-SELECT r.*, CONNECT_BY_ISLEAF leaf
-FROM  reason_report r
-START WITH parent_code IS NULL
-CONNECT BY PRIOR reason_code=parent_code;
-
-
+		select r.* ,connect_by_isleaf leaf
+        from  reason_report r
+        start with reason_code = 1
+        connect by prior reason_code=parent_code;
+        select * from report;
