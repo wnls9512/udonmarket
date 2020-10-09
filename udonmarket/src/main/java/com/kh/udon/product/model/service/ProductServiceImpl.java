@@ -148,7 +148,6 @@ public class ProductServiceImpl implements ProductService
         return dao.selectOtherProducts(seller);
     }
 
-    @Override
     public List<ReasonReportVO> selectReasonReport()
     {
         return dao.selectReasonReport();
@@ -171,6 +170,11 @@ public class ProductServiceImpl implements ProductService
     {
         return dao.reportUser(report);
     }
+
+	@Override
+	public List<String> selectWishUserId(int pCode) {
+		return dao.selectWishUserId(pCode);
+	}
 
 
 

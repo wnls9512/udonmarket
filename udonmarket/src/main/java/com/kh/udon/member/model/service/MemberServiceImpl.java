@@ -13,6 +13,7 @@ import com.kh.udon.member.model.dao.MemberDao;
 import com.kh.udon.member.model.vo.Evaluate;
 import com.kh.udon.member.model.vo.Keyword;
 import com.kh.udon.member.model.vo.Member;
+import com.kh.udon.member.model.vo.Noti;
 import com.kh.udon.member.model.vo.Review;
 import com.kh.udon.member.model.vo.Wish;
 
@@ -157,5 +158,20 @@ public class MemberServiceImpl implements MemberService
 	@Override
 	public int updateQuitMember(String userId) {
 		return memberDao.updateQuitMember(userId);
+	}
+
+	@Override
+	public List<Noti> selectAllNoti(String userId) {
+		return memberDao.selectAllNoti(userId);
+	}
+
+	@Override
+	public int insertNoti(Noti n) {
+		return memberDao.insertNoti(n);
+	}
+
+	@Override
+	public int updateNotiCheck(int notiCode) {
+		return memberDao.updateNotiCheck(notiCode);
 	}
 }

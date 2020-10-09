@@ -64,6 +64,8 @@ public interface ProductService
     int reportProduct(ReportVO report);
 
     int reportUser(ReportVO report);
+	
+	List<String> selectWishUserId(int pCode);
 
 
 

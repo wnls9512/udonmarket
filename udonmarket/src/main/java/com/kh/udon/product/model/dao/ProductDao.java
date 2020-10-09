@@ -65,6 +65,9 @@ public interface ProductDao
 
     int reportUser(ReportVO report);
 
+	List<String> selectWishUserId(int pCode);
+
+
 
 
 

@@ -7,6 +7,7 @@ import com.kh.udon.member.model.vo.Evaluate;
 import com.kh.udon.member.model.vo.Keyword;
 import com.kh.udon.member.model.vo.Location;
 import com.kh.udon.member.model.vo.Member;
+import com.kh.udon.member.model.vo.Noti;
 import com.kh.udon.member.model.vo.Review;
 import com.kh.udon.member.model.vo.Wish;
 import com.kh.udon.product.model.vo.ProductVO;
@@ -65,5 +66,11 @@ public interface MemberDao
 	int updateQuitMember(String userId);
 
     int insertEvaluate(Map<String, Object> map);
+
+	List<Noti> selectAllNoti(String userId);
+
+	int insertNoti(Noti n);
+
+	int updateNotiCheck(int notiCode);
 
 }

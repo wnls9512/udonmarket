@@ -106,10 +106,10 @@ html { font-size: 16px; }
 							<br />
 							<form:form class="insertKeyword">
 								<div class="input-group mb-3">
-								  <input type="text" 
+								  <input type="text"
 								  		 name="keyword"
 								  		 class="form-control" 
-								  		 placeholder="키워드를 입력해주세요." 
+								  		 placeholder="키워드를 입력해주세요(2글자 이상)" 
 								  		 aria-label="Recipient's username" 
 								  		 aria-describedby="basic-addon2">
 								  <!-- value = 로그인 중인 유저 아이디 -->
@@ -152,7 +152,7 @@ $(function(){
 	$(".guide.error").hide();
 	$("#idValid").val(0);
 	$("#btn-insert").attr('disabled', true);
-
+	
 	//키워드 30개 이상 추가 막기
 	if( $("#totalKeywordContents").val() >= 30 ){
 		$("[name=keyword]").attr("readonly", true);
@@ -162,12 +162,11 @@ $(function(){
 	//키워드 중복 검사
 	$("[name=keyword]").keyup(function(){
 
-	 	if($(this).val() == ''){
+	 	if($(this).val().length < 2){
 	 		$(".guide.error").hide();
 			$("#btn-insert").attr('disabled', true);
 			return;
 		} 
-
 		
 		$.ajax({
 			url : "${pageContext.request.contextPath}/member/checkKeywordDuplicate",
