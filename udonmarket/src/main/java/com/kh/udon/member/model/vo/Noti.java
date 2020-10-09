@@ -12,7 +12,6 @@ import lombok.ToString;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
 public class Noti implements Serializable{
 
 	private int notiCode;
@@ -23,8 +22,10 @@ public class Noti implements Serializable{
 	 * keyword : 키워드 
 	 * chat : 채팅
 	 * nego : 가격 제안
+	 * like : 게시판 좋아요
 	 */
 	private String sender;
+	private String senderNickName;
 	private String receiver;
 	private int pCode;
 	private String pTitle;
