@@ -473,9 +473,10 @@ public class MemberController {
     	return model;
     }
     
+    //알림 띄우기 (헤더)
     @RequestMapping("/showNoti")
     @ResponseBody
-    public Map<String, Object> myReviewList(@RequestParam("userId") String userId){
+    public Map<String, Object> showNoti(@RequestParam("userId") String userId){
     	Map<String, Object> map = new HashMap<>();
     	
     	List<Noti> noti = service.selectAllNoti(userId);
@@ -484,5 +485,34 @@ public class MemberController {
     	
     	return map;
     }
+    
+    //알림 모아보기 (마이페이지)
+    @RequestMapping("/myNotiList")
+    public Model myNotiList(@RequestParam("userId") String userId,
+    						Model model){
+    	
+    	Member member = service.selectOneMember(userId);
+    	List<Noti> list = service.selectAllNoti(userId);
+    	
+    	model.addAttribute("member", member);
+    	model.addAttribute("list", list);
+    	
+    	return model;
+    }
+    
+    //알림 상태 체크여부 바꾸기
+    @RequestMapping("/updateCheck")
+    @ResponseBody
+    public String updateCheck(@RequestParam("notiCode") int notiCode){
+    	
+    	String resultStr = "처리 성공";
+    	try {
+    		int result = service.updateNotiCheck(notiCode);
+    	} catch (Exception e) {
+			resultStr = "처리 실패";
+		}    	
+    	return resultStr;
+    }
+    
     
 }

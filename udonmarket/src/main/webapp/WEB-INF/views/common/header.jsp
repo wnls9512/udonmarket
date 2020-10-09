@@ -109,7 +109,7 @@
                             <a href="${pageContext.request.contextPath }/member/mypage?userId=${loggedInUserId}"><i class="ti-user"></i></a>
                        
                             <form:form method="POST" action="${pageContext.request.contextPath }/member/logout">
-                            	<button type="submit"><i class="ti-power-off"></i></button>
+                            	<button type="submit" style="background: none; border: none; margin-left: 1.8em; padding: 0px;"><i class="ti-power-off"></i></button>
                             </form:form> 
 	                        </sec:authorize>
 							
@@ -130,8 +130,8 @@
                         <sec:authorize access="isAuthenticated()">
                         <div class="notifications" id="box">
 					        <h2> 💡 알림이 왔어요 - <span id="totalNoti"></span></h2>
-					        <div class="notifications-item" id="noti_" style="display: block;">
-
+					        <div id="noti_" style="display: block;">
+					        
 					        </div>
 					    </div>
                         </sec:authorize>
@@ -156,10 +156,11 @@
     </header>
 
 <script>
+//알림 리스트 띄우기
 function showNoti(){
 	var $userId = "${loggedInUserId}";
 
-	$.ajax({
+ 	$.ajax({
 		url : "${pageContext.request.contextPath}/member/showNoti",
 		method : "POST",
 		dataType : "json",
@@ -171,25 +172,38 @@ function showNoti(){
         },
 		success : function(data){	
 			let noti = data.noti;
-			console.log(noti);
+
 			if(noti != ""){
 				let add = "";
+				let notiCount = 0;
 				
 				//console.log(noti.length);
 				for(let i = 0; i<noti.length; i++){
-					let kind = "";
-					switch (noti[i].notiKind){
-						case "reply": kind = "댓글이 달렸어요"; break;
-						case "price": kind = "가격이 변했어요"; break;
-						case "keyword": kind = "키워드로 등록한 상품이 올라왔어요"; break;
-						case "chat": kind = "채팅 알림"; break;
-						case "nego": kind = "가격 제안이 도착했어요"; break;
-				    }
-	
-					add += "<div class='text'><h4>[" + kind +"] </h4><h5><a href='${pageContext.request.contextPath }/product/productDetailView?pCode= " + noti[i].pcode + "'>" + noti[i].ptitle + "</a></h5></div>";
+					//체크 안한 알림만
+					if(noti[i].notiCheck == 0){
+						notiCount ++;
+						let kind = "";
+						switch (noti[i].notiKind){
+							case "reply": kind = "댓글"; break;
+							case "price": kind = "가격 변동"; break;
+							case "keyword": kind = "키워드"; break;
+							case "like": kind = "좋아요"; break;
+							case "nego": kind = "가격 제안"; break;
+					    }
+		
+						add += "<div class='notifications-item'>" + 
+							   "<div class='text'>" + 
+							   		"<h4>[" + kind +"] " + 
+							   			"<a href='${pageContext.request.contextPath }/product/productDetailView?pCode= " + noti[i].pcode + "' " + 
+							   				"onclick='updateCheck(" + noti[i].notiCode +")'>" +
+							   			 	noti[i].ptitle + "</a>" +
+							   		"</h4>" + 
+							   "</div>" + 
+							   "</div>";
+					}
 				}
 					$("#noti_").html(add);
-					$("#totalNoti").text(noti.length);
+					$("#totalNoti").text(notiCount);
 
 			}else{
 				
@@ -200,8 +214,31 @@ function showNoti(){
 		},
 		error : function(xhr, status, err){
 			console.log("처리 실패", xhr, status, err);
-			alert("실패 😥");
+			alert("알림 불러오기에 실패했어요 다시 시도해주세요 💦");
 		}
+	}); 
+}
+
+//체크여부
+function updateCheck(notiCode){
+
+	$.ajax({
+		url : "${pageContext.request.contextPath}/member/updateCheck",
+		method : "POST",
+		data : {
+				notiCode : notiCode,
+		},
+		beforeSend : function(xhr){
+            xhr.setRequestHeader("${_csrf.headerName}", "${_csrf.token}");
+        },
+		success : function(data){
+			console.log("처리 성공!");
+		},
+		error : function(xhr, status, err){
+			console.log("처리 실패", xhr, status, err);
+			alert("실패했어요 다시 시도해주세요 💦");
+		}
+		
 	});
 	
 }

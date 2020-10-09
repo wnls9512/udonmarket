@@ -59,4 +59,6 @@ public interface MemberService
 	List<Noti> selectAllNoti(String userId);
 
 	int insertNoti(Noti n);
+
+	int updateNotiCheck(int notiCode);
 }

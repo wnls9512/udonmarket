@@ -166,4 +166,9 @@ public class MemberDaoImpl implements MemberDao
 		return session.insert("socket.insertNoti", n);
 	}
 
+	@Override
+	public int updateNotiCheck(int notiCode) {
+		return session.update("socket.updateNotiCheck", notiCode);
+	}
+
 }

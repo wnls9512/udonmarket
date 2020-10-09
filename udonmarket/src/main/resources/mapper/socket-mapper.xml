@@ -6,10 +6,11 @@
 
 <!-- 알림  -->
 <select id="selectAllNoti" resultType="noti">
-	select 
-		*
+	select
+		N.*,
+        (select nickname from member where sender = user_id) senderNickName
 	from 
-		notification_test
+		notification_test N
 	where
 		receiver = #{userId}
 	order by 
@@ -30,6 +31,16 @@ values
 	 #{notiContent}, 
 	 default)
 </insert>
+
+<!-- 알림 읽음 상태 변경 -->
+<update id="updateNotiCheck">
+	update 
+		notification_test 
+	set 
+		noti_check = 1 
+	where 
+		noti_code = #{notiCode}
+</update>
 
 </mapper>
 

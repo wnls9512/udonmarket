@@ -71,4 +71,6 @@ public interface MemberDao
 
 	int insertNoti(Noti n);
 
+	int updateNotiCheck(int notiCode);
+
 }

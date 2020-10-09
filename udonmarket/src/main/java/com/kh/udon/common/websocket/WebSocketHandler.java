@@ -99,20 +99,16 @@ public class WebSocketHandler extends TextWebSocketHandler{
 					TextMessage tmpMsg = new TextMessage("[댓글] " + sender + "님이" + pCode +"에 댓글을 달았습니다");
 					receiverSession.sendMessage(tmpMsg);
 				}
-
-				
-				System.out.println("Line 104");
+			
 				//insert Noti
-				Noti n = new Noti(0, cmd, sender, receiver, pCode, title, noti, false);
+				Noti n = new Noti(0, cmd, sender, receiver, null, pCode, title, noti, false);
 				log.debug("noti = {}", n);
 				try {
 					int result = service.insertNoti(n);
 					log.debug("InsertNoti result = {}", result);
 				}catch (Exception e) {
 					e.printStackTrace();
-				}
-				System.out.println("Line 114");
-				
+				}			
 			}
 		}		
 	}

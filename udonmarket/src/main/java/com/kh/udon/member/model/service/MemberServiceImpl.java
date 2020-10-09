@@ -169,4 +169,9 @@ public class MemberServiceImpl implements MemberService
 	public int insertNoti(Noti n) {
 		return memberDao.insertNoti(n);
 	}
+
+	@Override
+	public int updateNotiCheck(int notiCode) {
+		return memberDao.updateNotiCheck(notiCode);
+	}
 }
