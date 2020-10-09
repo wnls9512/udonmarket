@@ -146,6 +146,11 @@ public class ProductServiceImpl implements ProductService
         return dao.selectOtherProducts(seller);
     }
 
+	@Override
+	public List<String> selectWishUserId(int pCode) {
+		return dao.selectWishUserId(pCode);
+	}
+
 
 
 
