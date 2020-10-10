@@ -46,7 +46,8 @@ margin: 5px 10px;
     </section>
     <!-- breadcrumb start-->
     
-    
+    <!-- 로그인 한 사용자 아이디 -->
+ 	<sec:authentication property="principal.username" var="loggedInUserId" />   
     
     <div class="row py-5 px-4">
 	    <div class="col-md-5 mx-auto">
@@ -55,8 +56,6 @@ margin: 5px 10px;
 	            <div class="px-4 pt-0 pb-4 cover">
 	                <div class="media align-items-end profile-head">
 	                    <div class="profile mr-3">
-	                    	<!-- LoggdeInUser 정보 가져오기  -->
-	                        <sec:authentication property="principal" var="loggedInUser" />
 	                    	<img src="${pageContext.request.contextPath }/resources/img/member/${member.renamedFileName == null 
 	                    															 ? member.originalFileName:member.renamedFileName}" 
 	                    		 alt="..." 
@@ -86,6 +85,7 @@ margin: 5px 10px;
 	                       	</a>
 	                       </h6>
 	                    </li>
+	                    <c:if test="${loggedInUserId == member.userId }">
 	                    <li class="list-inline-item">
 	                    	<h6 class="font-weight-bold mb-0 d-block">	                       	
 	                       	<a href="${pageContext.request.contextPath }/member/wishList?userId=${member.userId}">
@@ -93,6 +93,7 @@ margin: 5px 10px;
 	                       	</a>
 	                       </h6>
 	                    </li>
+	                    </c:if>
 	                </ul>
 	            </div>
 	            <div class="px-4 py-3">
@@ -203,16 +204,15 @@ margin: 5px 10px;
 				</tbody>
 	        </table>
 	        <br />
+	        <!-- 받은 비매너 -->
 	        <hr />
 	        <br />
-	        <!-- 받은 비매너 -->
       		<h4><i class="far fa-angry fa-2x"></i> 받은 비매너</h4>
       		<br />
+			<c:if test="${loggedInUserId == member.userId }">
       		<table>
 			<tbody>
-				<!-- 로그인 유저 == 평가받은 유저 (받은 비매너는 내꺼만 볼 수 있음) -->
-				<%-- <c:if test="${ loginMember.userId eq evaList.get(0).getUserId()}"> --%>
-		        <c:if test="${ not empty evaList}">
+				<c:if test="${ not empty evaList}">
 				<c:forEach items="${evaList}" var="eva">
 		        <c:if test="${ eva.kind eq false }">
 		        	<tr>
@@ -225,12 +225,12 @@ margin: 5px 10px;
 				<c:if test="${ empty evaList }">
 					<tr><td>받은 비매너가 없어요</td></tr>
 				</c:if>			
-				<%-- </c:if> --%>
-				<%-- <c:if test="${ loginMember.userId ne evaList.get(0).getUserId()}">
-					<tr><td>'받은 비매너'는 본인에게만 보여요</td></tr>
-				</c:if> --%>
 			</tbody>
 	        </table>
+	        </c:if>
+	        <c:if test="${loggedInUserId != member.userId }">
+	        	<span>'받은 비매너'는 본인에게만 보여요</span>
+	        </c:if>
       	</div>
 	    <div class="modal-footer">
 	        <button type="button" class="genric-btn primary radius" data-dismiss="modal">Close</button>

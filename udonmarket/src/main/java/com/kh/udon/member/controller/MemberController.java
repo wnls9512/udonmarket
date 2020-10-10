@@ -157,6 +157,7 @@ public class MemberController {
 		return mav;
 	}
 		
+	//내 마이페이지 or 다른 사용자의 마이페이지 (view 를 따로 구분 할 것)
 	@RequestMapping("/mypage")
     public Model mypage(@RequestParam("userId") String userId,
     					Model model){
@@ -589,6 +590,5 @@ public class MemberController {
 		}    	
     	return resultStr;
     }
-    
-    
+
 }
