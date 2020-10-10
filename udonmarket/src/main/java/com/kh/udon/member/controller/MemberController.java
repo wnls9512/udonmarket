@@ -12,6 +12,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -22,18 +23,16 @@ import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.kh.udon.community.model.vo.Community;
+import com.kh.udon.community.model.vo.Reply;
 import com.kh.udon.member.model.service.MemberService;
 import com.kh.udon.member.model.vo.Evaluate;
 import com.kh.udon.member.model.vo.Keyword;
 import com.kh.udon.member.model.vo.Member;
 import com.kh.udon.member.model.vo.Review;
 import com.kh.udon.member.model.vo.Wish;
-<<<<<<< HEAD
 import com.kh.udon.member.model.vo.announce;
 
-//github.com/oheunju/udonmarket.git
-=======
->>>>>>> branch 'master' of https://github.com/oheunju/udonmarket.git
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -166,7 +165,7 @@ public class MemberController {
     }
 
     //프로필 수정
-	@RequestMapping("/editprofile"/* ,method=RequestMethod.POST */)
+	@RequestMapping("/editprofile" )
 	public String editProfile(@RequestParam("userId") String userId, 
 							  Model model)
 	{
@@ -174,7 +173,20 @@ public class MemberController {
 		 Member member = service.selectOneMember(userId); 
 		 model.addAttribute("member",member);
 		 
-		return "member/editProfile";
+		return "/member/editProfile";
+	}
+	
+	//닉네임 수정
+	@PostMapping("/nickUpdate" )
+	public String nickUpdate(@ModelAttribute Member member)
+	{
+		log.debug("member = {}", member);
+		
+		service.updateNick(member);
+		/* model.addAttribute("member",member); */
+		
+		return "/member/mypage";
+		
 	}
 	
     //관심목록
@@ -378,16 +390,38 @@ public class MemberController {
     
     //동네생활 댓글
     @RequestMapping("/myComment")
-    public String mycomment()
+    public  ModelAndView mycomment(ModelAndView mav,
+			   					   @RequestParam("userId") String userId)
     {
-    	return "member/myComment";
+    	log.debug("loginMemberId = {} ", userId);
+    	Member member = service.selectOneMember(userId);
+    	
+    	
+    	List<Reply> list = service.selectReplyList(userId);
+    	log.debug("list = {}",list);
+    	
+    	mav.addObject("member",member);
+    	mav.addObject("list",list);
+    	mav.setViewName("member/myComment");
+    	return mav;
     }
 
     //동네생활 게시글
     @RequestMapping("/myPost")
-    public String mypost()
+    public ModelAndView mypost(ModelAndView mav,
+							   @RequestParam("userId") String userId)
     {
-    	return "member/myPost";
+    	log.debug("loginMemberId = {} ", userId);
+    	Member member = service.selectOneMember(userId);
+    	
+    	
+    	List<Community> list = service.selectPostList(userId);
+    	log.debug("list = {}",list);
+    	
+    	mav.addObject("member",member);
+    	mav.addObject("list",list);
+    	mav.setViewName("member/myPost");
+    	return mav;
     }
     
     //나의 키워드 알림 설정

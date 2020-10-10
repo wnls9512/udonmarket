@@ -319,7 +319,6 @@
 	)
 </insert>
 
-<<<<<<< HEAD
 <!-- 공지사항 등록 -->
 <insert id="announceEnroll">
 	insert into
@@ -341,7 +340,7 @@
 </select>
 
 <!-- 회원 닉네임 변경 -->
-<update id="nickModify">
+<update id="updateNick">
 update 
 	member
 set 
@@ -349,7 +348,33 @@ set
 where 
 	user_id=#{userId}
 </update>
-=======
->>>>>>> branch 'master' of https://github.com/oheunju/udonmarket.git
+
+<select id="selectPostList" resultMap="PostMap">
+	select
+		*
+	from 
+		board
+	where 
+		user_id = #{userId}
+</select>
+
+	<resultMap type="community" id="PostMap">
+		<id column="b_code" property="bCode"/>
+		<result column="user_id" property="userId"/>
+		<result column="board_title" property="boardTitle"/>
+		<result column="board_content" property="boardContent"/>
+		<result column="reg_date" property="regDate"/>
+		<result column="hashtag_code" property="hashtagCode"/>
+		<result column="like_this" property="likeThis"/>
+	</resultMap>
+	
+	<select id="selectReplyList" resultType="com.kh.udon.community.model.vo.Reply">
+	select
+		*
+	from 
+		reply
+	where 
+		user_id = #{userId}
+</select>
 
 </mapper>

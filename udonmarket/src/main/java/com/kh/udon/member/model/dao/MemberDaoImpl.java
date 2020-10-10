@@ -8,6 +8,8 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.kh.udon.community.model.vo.Community;
+import com.kh.udon.community.model.vo.Reply;
 import com.kh.udon.member.model.vo.Evaluate;
 import com.kh.udon.member.model.vo.Keyword;
 import com.kh.udon.member.model.vo.Member;
@@ -85,7 +87,6 @@ public class MemberDaoImpl implements MemberDao
 	}
 
 	@Override
-<<<<<<< HEAD
 	public List<announce> selectAnnounceList(int limit, int offset) {
 		RowBounds rowBounds = new RowBounds(offset, limit);
 		return session.selectList("member.selectAnnounceList", null , rowBounds );
@@ -94,10 +95,9 @@ public class MemberDaoImpl implements MemberDao
 	@Override
 	public int insertMember(Member member) {
 		return session.insert("member.insertMember", member);
-=======
+	}
 	public int insertMember(Map<String, Object> map) {
 		return session.insert("member.insertMember", map);
->>>>>>> branch 'master' of https://github.com/oheunju/udonmarket.git
 	}
 
 	@Override
@@ -161,7 +161,6 @@ public class MemberDaoImpl implements MemberDao
 		return session.update("member.updateQuitMember", userId);
 	}
 
-<<<<<<< HEAD
 	@Override
 	public int announceEnroll(announce announce) {
 		return session.insert("member.announceEnroll", announce);
@@ -171,15 +170,26 @@ public class MemberDaoImpl implements MemberDao
 	public announce selectOneAnnounce(int bCode) {
 		return session.selectOne("member.selectOneAnnounce",bCode);
 	}
-=======
+	
     @Override
     public int insertEvaluate(Map<String, Object> map)
     {
         return session.update("member.insertEvaluate", map);
     }
 
+	@Override
+	public void updateNick(Member member) {
+		session.update("member.updateNick",member);
+	}
 
+	@Override
+	public List<Community> selectPostList(String userId) {
+		return session.selectList("member.selectPostList",userId);
+	}
 
->>>>>>> branch 'master' of https://github.com/oheunju/udonmarket.git
+	@Override
+	public List<Reply> selectReplyList(String userId) {
+		return session.selectList("member.selectReplyList",userId);
+	}
 
 }

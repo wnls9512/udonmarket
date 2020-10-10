@@ -41,6 +41,8 @@ a{text-decoration: none; color: black;}
     <div class="row py-5 px-4">
 	    <div class="col-md-5 mx-auto">
 	        <!-- Profile widget -->
+	       <form action="${pageContext.request.contextPath }/member/nickUpdate" method="post">
+	       <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 	        <div class="bg-white shadow rounded overflow-hidden">
 	            <div class="px-4 pt-0 pb-4 cover">
 	                <div class="media align-items-end profile-head">
@@ -64,16 +66,16 @@ a{text-decoration: none; color: black;}
 	                <div class="p-4 rounded shadow-sm bg-light">
 				        <!-- Vertical Menu-->
 				        <nav class="nav flex-column bg-white shadow-sm rounded p-3">
-						<form>
 						  <div class="form-row">
 						    <div class="col">
-						      <input type="text" class="form-control" placeholder="${member.nickName}">
+						      <input type="text" name="nickName" class="form-control" placeholder="${member.nickName}">
+						      <input type="hidden" name="userId" class="form-control" placeholder="${LoggedInUser}">
 						    </div>
 						  </div>
-						</form>
 				        </nav>
 	                </div>
-	                <button style="margin:10px auto;" type="button" class="btn btn-dark">적용</button>
+	                <button style="margin:10px auto;" type="submit" class="btn btn-dark">적용</button>
+	                </form>
 	            </div>
 	        </div>
 	    </div>

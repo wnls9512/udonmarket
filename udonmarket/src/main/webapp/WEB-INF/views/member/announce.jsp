@@ -146,7 +146,7 @@ $(function(){
 							
 							<sec:authorize access="hasRole('ADMIN')">
 							<ul class="nav justify-content-end">
-                               	<a class="btn btn-primary" href="${pageContext.request.contextPath }/admin/announceForm" role="button">글쓰기</a>
+                               	<a class="btn btn-primary" href="${pageContext.request.contextPath }/admin/announceForm?userId=${member.userId}" role="button">글쓰기</a>
                             </ul>
                             </sec:authorize>
 							

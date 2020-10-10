@@ -123,7 +123,12 @@ public class AdminController {
 	
 	//공지사항 글쓰기 폼
 	@RequestMapping("/announceForm")
-	public ModelAndView announceForm(ModelAndView mav) {
+	public ModelAndView announceForm(ModelAndView mav,
+									@RequestParam("userId") String userId) {
+		
+		Member member = memberService.selectOneMember(userId);
+		
+		mav.addObject("member",member);
 		mav.setViewName("admin/announceForm");
 		return mav;
 	}
@@ -131,6 +136,7 @@ public class AdminController {
 	//공지사항 등록
 	@PostMapping("/announceEnroll")
 	public String announceEnroll(announce announce,RedirectAttributes redirectAttr) {
+		
 		
 		int result = memberService.announceEnroll(announce);
 		

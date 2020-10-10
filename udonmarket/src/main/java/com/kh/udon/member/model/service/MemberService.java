@@ -3,6 +3,8 @@ package com.kh.udon.member.model.service;
 import java.util.List;
 import java.util.Map;
 
+import com.kh.udon.community.model.vo.Community;
+import com.kh.udon.community.model.vo.Reply;
 import com.kh.udon.member.model.vo.Evaluate;
 import com.kh.udon.member.model.vo.Keyword;
 import com.kh.udon.member.model.vo.Location;
@@ -36,13 +38,11 @@ public interface MemberService
 
 	List<Review> selectAllReview(String userId);
 
-<<<<<<< HEAD
 	List<announce> selectAnnounceList(int limit, int offset);
 	
 	int insertMemberLocAuth(Member member);
-=======
+	
 	int insertMemberLocAuthScoreEvaluate(Map<String, Object> map);
->>>>>>> branch 'master' of https://github.com/oheunju/udonmarket.git
 
 	List<Wish> selectAllSalesPro(String userId);
 
@@ -60,14 +60,17 @@ public interface MemberService
 
 	int selectMemberTotalContents();
 
-<<<<<<< HEAD
 	int deleteMember(String userId);
 
 	int announceEnroll(announce announce);
 
 	announce selectOneAnnounce(int bCode);
 
-=======
 	int updateQuitMember(String userId);
->>>>>>> branch 'master' of https://github.com/oheunju/udonmarket.git
+
+	void updateNick(Member member);
+
+	List<Community> selectPostList(String userId);
+
+	List<Reply> selectReplyList(String userId);
 }

@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.kh.udon.community.model.vo.Community;
+import com.kh.udon.community.model.vo.Reply;
 import com.kh.udon.member.model.dao.MemberDao;
 import com.kh.udon.member.model.vo.Evaluate;
 import com.kh.udon.member.model.vo.Keyword;
@@ -164,7 +166,6 @@ public class MemberServiceImpl implements MemberService
 	public int updateQuitMember(String userId) {
 		return memberDao.updateQuitMember(userId);
 	}
-<<<<<<< HEAD
 
 	@Override
 	public int announceEnroll(announce announce) {
@@ -176,6 +177,32 @@ public class MemberServiceImpl implements MemberService
 		return memberDao.selectOneAnnounce(bCode);
 	}
 
-=======
->>>>>>> branch 'master' of https://github.com/oheunju/udonmarket.git
+	@Override
+	public int insertMemberLocAuth(Member member) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int deleteMember(String userId) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public void updateNick(Member member) {
+		memberDao.updateNick(member);
+		
+	}
+
+	@Override
+	public List<Community> selectPostList(String userId) {
+		return memberDao.selectPostList(userId);
+	}
+
+	@Override
+	public List<Reply> selectReplyList(String userId) {
+		return memberDao.selectReplyList(userId);
+	}
+
 }
