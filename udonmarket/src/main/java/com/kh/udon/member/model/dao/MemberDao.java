@@ -42,7 +42,7 @@ public interface MemberDao
 
 	List<Review> selectAllReview(String userId);
 
-	List<announce> selectAnnounceList(int limit, int offset);
+	List<announce> selectAnnounceList(int limit, int offset,String userId);
 	
 	int insertMember(Member member);
 	

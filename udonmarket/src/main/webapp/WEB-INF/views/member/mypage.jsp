@@ -151,12 +151,6 @@ a{text-decoration: none; color: black;}
 	                <div class="p-4 rounded shadow-sm bg-light">
 				        <!-- Vertical Menu-->
 				        <nav class="nav flex-column bg-white shadow-sm rounded p-3">
-				          <a href="#" class="nav-link px-4 rounded-pill">
-	                           <i class="far fa-envelope"></i>&nbsp; 친구초대
-	                      </a>
-				          <a href="#" class="nav-link px-4 rounded-pill">
-		                      <i class="fas fa-share-alt"></i>&nbsp; 당근마켓 공유
-	                      </a>
 				          <a href="${pageContext.request.contextPath}/member/announce" class="nav-link px-4 rounded-pill">
 		                      <i class="far fa-flag"></i>&nbsp; 공지사항
 	                      </a>

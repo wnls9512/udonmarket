@@ -374,7 +374,7 @@ public class MemberController {
     	int offset = (cPage -1) * limit;
     	
     	//2.업무로직
-    	List<announce> list = service.selectAnnounceList(limit,offset);
+    	List<announce> list = service.selectAnnounceList(limit,offset,userId);
     	log.debug("list = {}",list);
     	
     	//3.view단처리
