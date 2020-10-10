@@ -48,6 +48,36 @@ $(".replyWriteBtn").on("click", function(){
   formObj.submit();
 });
 
+// 삭제
+function deleteProduct(bCode)
+{
+	if(confirm("삭제할까요?"))
+	{
+		$.ajax
+		({
+			url: "${pageContext.request.contextPath}/community/" + bCode,
+			method: "PUT",
+			beforeSend: function(xhr)
+			{
+	            xhr.setRequestHeader("${_csrf.headerName}", "${_csrf.token}");
+	        },
+	        dataType: "json",
+			success: function(map)
+			{
+				alert(map.msg);
+				location.href = "${pageContext.request.contextPath}/community/communityListView";									
+			},
+			error: function(xhr, status, err)
+			{
+				alert("게시글 삭제에 실패했어요 💧");
+				console.log(xhr, status, err);
+			}
+		});
+	}
+	else
+		return false;
+}
+
 
 </script>
 
@@ -120,16 +150,48 @@ $(".replyWriteBtn").on("click", function(){
                         ${ community.boardContent }
                      </p>
                      <ul class="blog-info-link mt-3 mb-4">
-                        <li><a href="#"><i class="fa fa-hashtag"></i> 강아지 </a></li>
+                       			<c:if test="${ community.hashtagCode == 1 }">
+                                    <li><i class="fa fa-hashtag"></i> 강아지 </li>
+                                </c:if>
+                                <c:if test="${ community.hashtagCode == 2 }">
+                                    <li><i class="fa fa-hashtag"></i> 고양이 </li>
+                                </c:if>
+                                <c:if test="${ community.hashtagCode == 3 }">
+                                    <li><i class="fa fa-hashtag"></i> 건강 </li>
+                                </c:if>
+                                <c:if test="${ community.hashtagCode == 4 }">
+                                    <li><i class="fa fa-hashtag"></i> 동네맛집 </li>
+                                </c:if>
+                                <c:if test="${ community.hashtagCode == 5 }">
+                                    <li><i class="fa fa-hashtag"></i> 동네카페 </li>
+                                </c:if>
+                                <c:if test="${ community.hashtagCode == 6 }">
+                                    <li><i class="fa fa-hashtag"></i> 살림/청소/정리 </li>
+                                </c:if>
+                                <c:if test="${ community.hashtagCode == 7 }">
+                                    <li><i class="fa fa-hashtag"></i> 식물 </li>
+                                </c:if>
+                                <c:if test="${ community.hashtagCode == 8 }">
+                                    <li><i class="fa fa-hashtag"></i> 임신/출산/육아 </li>
+                                </c:if>
+                                <c:if test="${ community.hashtagCode == 9 }">
+                                    <li><i class="fa fa-hashtag"></i> 집꾸미기 </li>
+                                </c:if>
                      </ul>
                      
+                     <div style="float: right;">
+	                     <a href="${pageContext.request.contextPath }/community/updateBoard?bCode=${community.BCode}<%-- &categoryCode=${community.categoryCode }&hashtagCode=${community.hashtagCode} --%>">수정</a>
+	                     &nbsp;
+	                     <a href="javascript:deleteProduct('${community.BCode }');">삭제</a>
+                     </div>
+                     <br /><br />
                      <a href="#">
                      <div class="blog-author" style="width: 100%;/*  margin:0 auto; */ margin-top: 5px; /* background-color: white; */">
                   <div class="media align-items-center" >
                      <img src="${pageContext.request.contextPath}/resources/img/blog/author.png" alt="">
                      <div class="media-body">
                         
-                           <h4>닉네임</h4>
+                           <h4>${ community.userId }</h4>
                         
                         <p>서울시 강남구 논현동</p>
                      </div>
@@ -235,7 +297,7 @@ $(".replyWriteBtn").on("click", function(){
 			</div>  --%>
 
 	<div class="comments-area">
-                  <h4>댓글 <span style="color: red">3</span></h4>
+                  <h4>댓글 <span style="color: red"></span></h4>
 				<c:forEach items="${replyList}" var="r">
                   <div class="comment-list">
                      <div class="single-comment justify-content-between d-flex">
@@ -373,31 +435,31 @@ $(".replyWriteBtn").on("click", function(){
                             <h4 class="widget_title">태그</h4>
                             <ul class="list">
                                 <li>
-                                    <a href="#">강아지</a>
+                                    <a href="communityListView?hashtagCode=1">강아지</a>
                                 </li>
                                 <li>
-                                    <a href="#">고양이</a>
+                                    <a href="communityListView?hashtagCode=2">고양이</a>
                                 </li>
                                 <li>
-                                    <a href="#">건강</a>
+                                    <a href="communityListView?hashtagCode=3">건강</a>
                                 </li>
                                 <li>
-                                    <a href="#">동네맛집</a>
+                                    <a href="communityListView?hashtagCode=4">동네맛집</a>
                                 </li>
                                 <li>
-                                    <a href="#">동네카페</a>
+                                    <a href="communityListView?hashtagCode=5">동네카페</a>
                                 </li>
                                 <li>
-                                    <a href="#">살림/청소/정리</a>
+                                    <a href="communityListView?hashtagCode=6">살림/청소/정리</a>
                                 </li>
                                 <li>
-                                    <a href="#">식물</a>
+                                    <a href="communityListView?hashtagCode=7">식물</a>
                                 </li>
                                 <li>
-                                    <a href="#">임신/출산/육아</a>
+                                    <a href="communityListView?hashtagCode=8">임신/출산/육아</a>
                                 </li>
                                 <li>
-                                    <a href="#">집꾸미기</a>
+                                    <a href="communityListView?hashtagCode=9">집꾸미기</a>
                                 </li>
                             </ul>
                         </aside>

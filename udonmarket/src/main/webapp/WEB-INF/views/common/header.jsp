@@ -41,7 +41,6 @@
     <script src="${pageContext.request.contextPath }/resources/js/notification.js"></script>
 	<!-- sockJS -->
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.3.0/sockjs.min.js"></script>
-
 <script>
 <%-- RedirectAttribute에 등록된 msg값 존재 여부 확인 후 출력 --%>
 <c:if test="${not empty msg }">
@@ -51,6 +50,12 @@
 </head>
 
 <body>
+
+<sec:authorize access="isAuthenticated()">
+	<sec:authentication property="principal.username" var="userId"/>
+</sec:authorize>
+
+
     <!--::header part start::-->
     <header class="main_menu home_menu">
         <div class="container">
@@ -72,7 +77,7 @@
                                     <a class="nav-link" href="${pageContext.request.contextPath }">HOME</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="${pageContext.request.contextPath }/product/productListView">중고거래</a>
+                                    <a class="nav-link" href="${pageContext.request.contextPath }/product/productListView?userId=${userId}">중고거래</a>
                                 </li>
                                 <li class="nav-item dropdown">
                                     <a class="nav-link dropdown-toggle" href="${pageContext.request.contextPath }/community/communityListView" id="navbarDropdown_1"
@@ -167,9 +172,9 @@ function showNoti(){
 		data : {
 				userId : $userId,
 		},
-		beforeSend : function(xhr){
+		/* beforeSend : function(xhr){
             xhr.setRequestHeader("${_csrf.headerName}", "${_csrf.token}");
-        },
+        }, */
 		success : function(data){	
 			let noti = data.noti;
 

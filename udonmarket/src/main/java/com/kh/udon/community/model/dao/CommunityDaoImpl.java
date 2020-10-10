@@ -78,6 +78,30 @@ public class CommunityDaoImpl implements CommunityDao
 		return session.delete("communityReply.deleteReply", replyCode);
 
 	}
+	
+	 @Override
+	    public int insert(Community community)
+	    {
+	        return session.insert("community.insert", community);
+	    }
+	 
+	 @Override
+	    public Community selectByBCode(int bCode)
+	    {
+	        return session.selectOne("community.selectByBCode", bCode);
+	    }
+	 
+	 @Override
+	    public int update(Community community)
+	    {
+	        return session.update("community.update", community);
+	    }
+
+	 @Override
+	    public int delete(int bCode)
+	    {
+	        return session.delete("community.delete", bCode);
+	    }
 
 	@Override
 	
@@ -88,6 +112,7 @@ public class CommunityDaoImpl implements CommunityDao
 		return session.selectList("community.selectReportList", null, rowBounds);
 		
 	}
+
 
 	@Override
 	

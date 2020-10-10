@@ -353,6 +353,11 @@ create sequence seq_report;
 create sequence seq_member;
 create sequence seq_location;
 
+--========================================
+--            FUNCTION
+--========================================
+-- 거리 구하기 함수
+
 
 
 --========================================
@@ -558,3 +563,32 @@ insert into keyword values(SEQ_KEYWORD.nextval, 'test', '아이폰');
 insert into keyword values(SEQ_KEYWORD.nextval, 'juwon', '삼성');
 insert into keyword values(SEQ_KEYWORD.nextval, 'juwon', '갤럭시');
 --==========================================================================================
+select * from location;
+
+
+
+select l.user_id
+from location l,
+    (select latitude, longitude, radius from location where user_id = 'eunju') a
+where calc_distance(a.latitude, a.longitude, l.latitude, l.longitude) < a.radius
+      and user_id != 'eunju';   
+
+
+select p.p_code, p.seller, p.title, p.price, p.pull, trunc(sysdate - p.reg_date) reg_date, substr(m.address, instr(m.address, ' ', 1, 1), instr(m.address, ' ', 1, 2)) address, wc.wish, cc.chat
+from product p left join member m on(p.seller = m.user_id)
+               left join (select a.p_code p_code, count(b.p_code) wish from product a left outer join wish b on(a.p_code = b.p_code) group by a.p_code) wc on(wc.p_code = p.p_code)
+               left join (select a.p_code p_code, count(b.p_code) chat from product a left outer join chat_room b on(a.p_code = b.p_code) group by a.p_code) cc on(cc.p_code = p.p_code)
+where p.open_status = 1 and (p.trade_status = 'S' or p.trade_status = 'R') and delete_yn = 'N'
+      and p.seller in (
+                        select l.user_id 
+                        from location l,(select latitude, longitude, radius from location where user_id = 'eunju') a
+                        where calc_distance(a.latitude, a.longitude, l.latitude, l.longitude) < a.radius and user_id != 'eunju'
+                        )
+order by reg_date;
+
+select count(*) from product
+where seller in (
+                        select l.user_id 
+                        from location l,(select latitude, longitude, radius from location where user_id = 'eunju') a
+                        where calc_distance(a.latitude, a.longitude, l.latitude, l.longitude) < a.radius and user_id != 'eunju'
+                        );

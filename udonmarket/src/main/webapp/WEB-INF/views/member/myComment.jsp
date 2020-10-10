@@ -3,6 +3,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 
 <fmt:requestEncoding value="utf-8"/>
 
@@ -50,7 +52,21 @@ html { font-size: 16px; }
   background: #4CAF50;
   cursor: pointer;
 }
+
+tr[data-board-no] {
+	cursor: pointer;
 </style>
+
+<script>
+$(function(){
+
+	$("tr[data-board-no]").click(function(){
+		var BCode = $(this).attr("data-board-no");
+		location.href = "${ pageContext.request.contextPath }/community/communityDetailView?bCode=" + BCode;
+	});
+	
+});
+</script>
     <!--================Home Banner Area =================-->
     <!-- breadcrumb start-->
     <section class="breadcrumb breadcrumb_bg">
@@ -59,7 +75,7 @@ html { font-size: 16px; }
                 <div class="col-lg-8">
                     <div class="breadcrumb_iner">
                         <div class="breadcrumb_iner_item">
-                            <h2>공지사항</h2>
+                            <h2>공지사항11</h2>
 							<!-- <h3>서울 강남구 논현동</h3> -->
                         </div>
                     </div>
@@ -72,18 +88,24 @@ html { font-size: 16px; }
     
     
     
-    <div class="row py-5 px-4">
+     <div class="row py-5 px-4">
 	    <div class="col-md-5 mx-auto">
 	        <!-- Profile widget -->
 	        <div class="bg-white shadow rounded overflow-hidden">
 	            <div class="px-4 pt-0 pb-4 cover">
 	                <div class="media align-items-end profile-head">
-	                    <div class="profile mr-3"><img src="https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=80" alt="..." width="130" class="rounded mb-2 img-thumbnail">
-	                    	<a href="${pageContext.request.contextPath }/member/mypage" class="btn btn-outline-dark btn-sm btn-block">Mypage</a>
+	                    <div class="profile mr-3">
+	                     <sec:authentication property="principal" var="loggedInUser" />
+	                    	<img src="${pageContext.request.contextPath }/resources/img/member/${member.renamedFileName == null 
+	                    															 ? member.originalFileName:member.renamedFileName}" 
+	                    		 alt="..." 
+	                    		 width="130" 
+	                    		 class="rounded mb-2 img-thumbnail">
+	                    	<a href="${pageContext.request.contextPath }/member/mypage?userId=${member.userId}" class="btn btn-outline-dark btn-sm btn-block">Mypage</a>
 	                    </div>
 	                    <div class="media-body mb-5 text-white">
-	                        <h4 class="mt-0 mb-0" style="color:white;">Mark Williams</h4>
-	                        <p class="small mb-4" style="color:white;"> <i class="fas fa-map-marker-alt mr-2"></i>New York</p>
+	                        <h4 class="mt-0 mb-0" style="color:white;">${member.nickName}</h4>
+	                        <p class="small mb-4" id="addr" style="color:white;"> <i class="fas fa-map-marker-alt mr-2"></i>${member.address}</p>
 	                    </div>
 	                </div>
 	            </div>
@@ -91,21 +113,21 @@ html { font-size: 16px; }
 	                <ul class="list-inline mb-0">
 	                    <li class="list-inline-item">            
 	                       <h6 class="font-weight-bold mb-0 d-block">	                       	
-	                       	<a href="${pageContext.request.contextPath }/member/salesList">
+	                       	<a href="${pageContext.request.contextPath }/member/salesList?userId=${member.userId}">
 	                       		<i class="fas fa-receipt fa-2x" ></i> <br /> 판매목록
 	                       	</a>
 	                       </h6>
 	                    </li>
 	                    <li class="list-inline-item">
 	                    	<h6 class="font-weight-bold mb-0 d-block">	                       	
-	                       	<a href="#">
+	                       	<a href="${pageContext.request.contextPath }/member/buyList?userId=${member.userId}">
 	                       		<i class="fas fa-shopping-bag fa-2x" ></i> <br /> 구매목록
 	                       	</a>
 	                       </h6>
 	                    </li>
 	                    <li class="list-inline-item">
 	                    	<h6 class="font-weight-bold mb-0 d-block">	                       	
-	                       	<a href="${pageContext.request.contextPath }/member/wishList">
+	                       	<a href="${pageContext.request.contextPath }/member/wishList?userId=${member.userId}">
 	                       		<i class="fas fa-heart fa-2x" ></i> <br /> 관심목록
 	                       	</a>
 	                       </h6>
@@ -117,35 +139,17 @@ html { font-size: 16px; }
 					<hr />
 							<div style="text-align: center; ">
 								<h5 style="font-weight: bold;
-									  		color: #575757;">동네 생활 글</h5> 		
+									  		color: #575757;">동네 생활 나의 댓글</h5> 		
 							</div>
 							<hr />			
 				        <nav class="nav flex-column bg-white shadow-sm rounded p-3">
 				        <table class="table table-striped">
-						  <thead>
-						    <tr>
-						      <th scope="col">#</th>
-						      <th scope="col">내 댓글</th>
-						      <th scope="col">작성위치</th>
-						    </tr>
-						  </thead>
 						  <tbody>
-						    <tr>
-						      <th scope="row">1</th>
-						      <td>참 멋있네요~</td>
-						      <td>'~~'에서 작성</td>
-						     
-						    </tr>
-						    <tr>
-						      <th scope="row">2</th>
-						      <td>좋은 정보 감사합니다</td>
-						      <td>'~~'에서 작성</td>
-						    </tr>
-						    <tr>
-						      <th scope="row">3</th>
-						      <td>저도 한번 가봐야겠어요!</td>
-						     <td>'~~'에서 작성</td>
-						    </tr>
+						     <c:forEach items="${list}" var="reply">
+									<tr data-board-no="${ reply.BCode }">
+										<td>${reply.content }</td>
+									</tr>
+									</c:forEach>
 						  </tbody>
 						</table>
 				        </nav>

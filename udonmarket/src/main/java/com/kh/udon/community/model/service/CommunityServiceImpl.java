@@ -94,5 +94,29 @@ public class CommunityServiceImpl implements CommunityService
 
 
 
+	 @Override
+	    public int insert(Community community)
+	    {
+	        return dao.insert(community);
+	    }
+	 
+	 
+	 @Override
+	    public Community selectByBCode(int bCode)
+	    {
+	        return dao.selectByBCode(bCode);
+	    }
+	 
+	 @Override
+	    public int update(Community community)
+	    {
+	        return dao.update(community);
+	    }
+
+	 @Override
+	    public int delete(int bCode)
+	    {
+	        return dao.delete(bCode);
+	    }
     
 }

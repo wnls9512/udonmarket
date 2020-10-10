@@ -20,5 +20,7 @@ public class Search {
 	private String keyword;	
 	
 	private String categoryCode;
+	
+	private String hashtagCode;
 
 }

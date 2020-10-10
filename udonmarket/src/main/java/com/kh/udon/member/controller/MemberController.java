@@ -13,6 +13,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -22,9 +23,10 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 import com.kh.email.Email;
 import com.kh.email.EmailSender;
+import com.kh.udon.community.model.vo.Community;
+import com.kh.udon.community.model.vo.Reply;
 import com.kh.udon.member.model.service.MemberService;
 import com.kh.udon.member.model.vo.Evaluate;
 import com.kh.udon.member.model.vo.Keyword;
@@ -32,6 +34,8 @@ import com.kh.udon.member.model.vo.Member;
 import com.kh.udon.member.model.vo.Noti;
 import com.kh.udon.member.model.vo.Review;
 import com.kh.udon.member.model.vo.Wish;
+import com.kh.udon.member.model.vo.announce;
+
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -178,6 +182,7 @@ public class MemberController {
 		return "redirect:/";
 	}
 		
+	//내 마이페이지 or 다른 사용자의 마이페이지 (view 를 따로 구분 할 것)
 	@RequestMapping("/mypage")
     public Model mypage(@RequestParam("userId") String userId,
     					Model model){
@@ -188,10 +193,28 @@ public class MemberController {
     }
 
     //프로필 수정
-	@RequestMapping("/editprofile")
-	public String editProfile() 
+	@RequestMapping("/editprofile" )
+	public String editProfile(@RequestParam("userId") String userId, 
+							  Model model)
 	{
-		return "member/editProfile";
+		
+		 Member member = service.selectOneMember(userId); 
+		 model.addAttribute("member",member);
+		 
+		return "/member/editProfile";
+	}
+	
+	//닉네임 수정
+	@PostMapping("/nickUpdate" )
+	public String nickUpdate(@ModelAttribute Member member)
+	{
+		log.debug("member = {}", member);
+		
+		service.updateNick(member);
+		/* model.addAttribute("member",member); */
+		
+		return "/member/mypage";
+		
 	}
 	
     //관심목록
@@ -354,16 +377,36 @@ public class MemberController {
     
     //자주 묻는 질문
     @RequestMapping("/FAQ")
-    public String FAQ()
+    public String FAQ(@RequestParam("userId") String userId,Model model)
     {
+    	log.debug("loginMemberId = {} ", userId);
+    	Member member = service.selectOneMember(userId);
+    	
+    	model.addAttribute("member",member);
     	return "member/FAQ";
     }
     
     //공지 사항
     @RequestMapping("/announce")
-    public String announce()
+    public ModelAndView announce(ModelAndView mav,
+    							@RequestParam("userId") String userId,
+    							@RequestParam(defaultValue="1")int cPage)
     {
-    	return "member/announce";
+    	log.debug("loginMemberId = {} ", userId);
+    	Member member = service.selectOneMember(userId);
+    	//1.사용자 입력값
+    	final int limit = 10;
+    	int offset = (cPage -1) * limit;
+    	
+    	//2.업무로직
+    	List<announce> list = service.selectAnnounceList(limit,offset);
+    	log.debug("list = {}",list);
+    	
+    	//3.view단처리
+    	mav.addObject("member",member);
+    	mav.addObject("list",list);
+    	mav.setViewName("member/announce");
+    	return mav;
     }
 
     //관심 주제 목록
@@ -375,16 +418,38 @@ public class MemberController {
     
     //동네생활 댓글
     @RequestMapping("/myComment")
-    public String mycomment()
+    public  ModelAndView mycomment(ModelAndView mav,
+			   					   @RequestParam("userId") String userId)
     {
-    	return "member/myComment";
+    	log.debug("loginMemberId = {} ", userId);
+    	Member member = service.selectOneMember(userId);
+    	
+    	
+    	List<Reply> list = service.selectReplyList(userId);
+    	log.debug("list = {}",list);
+    	
+    	mav.addObject("member",member);
+    	mav.addObject("list",list);
+    	mav.setViewName("member/myComment");
+    	return mav;
     }
 
     //동네생활 게시글
     @RequestMapping("/myPost")
-    public String mypost()
+    public ModelAndView mypost(ModelAndView mav,
+							   @RequestParam("userId") String userId)
     {
-    	return "member/myPost";
+    	log.debug("loginMemberId = {} ", userId);
+    	Member member = service.selectOneMember(userId);
+    	
+    	
+    	List<Community> list = service.selectPostList(userId);
+    	log.debug("list = {}",list);
+    	
+    	mav.addObject("member",member);
+    	mav.addObject("list",list);
+    	mav.setViewName("member/myPost");
+    	return mav;
     }
     
     //나의 키워드 알림 설정
@@ -499,6 +564,17 @@ public class MemberController {
     	return model;
     }
     
+    //공지사항 디테일
+    @GetMapping("/announceDetail")
+    public String announceDetail(@RequestParam int bCode,Model model) {
+    	
+    	log.debug("[{}]번 공지사항 조회",bCode);
+    	announce announce = service.selectOneAnnounce(bCode);
+    	model.addAttribute("announce",announce);
+    	
+    	return "member/announceDetail";
+    }
+
     //알림 띄우기 (헤더)
     @RequestMapping("/showNoti")
     @ResponseBody
@@ -539,6 +615,5 @@ public class MemberController {
 		}    	
     	return resultStr;
     }
-    
-    
+
 }

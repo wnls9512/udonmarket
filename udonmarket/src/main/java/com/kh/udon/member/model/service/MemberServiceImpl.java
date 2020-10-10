@@ -10,6 +10,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.kh.udon.community.model.vo.Community;
+import com.kh.udon.community.model.vo.Reply;
 import com.kh.udon.member.model.dao.MemberDao;
 import com.kh.udon.member.model.vo.Coupon;
 import com.kh.udon.member.model.vo.Evaluate;
@@ -17,6 +19,7 @@ import com.kh.udon.member.model.vo.Keyword;
 import com.kh.udon.member.model.vo.Member;
 import com.kh.udon.member.model.vo.Noti;
 import com.kh.udon.member.model.vo.Review;
+import com.kh.udon.member.model.vo.announce;
 import com.kh.udon.member.model.vo.Wish;
 
 import lombok.extern.slf4j.Slf4j;
@@ -96,6 +99,11 @@ public class MemberServiceImpl implements MemberService
 		return memberDao.selectAllReview(userId);
 	}
 
+	@Override
+	public List<announce> selectAnnounceList(int limit, int offset) {
+		return memberDao.selectAnnounceList(limit, offset);
+	}
+		
 	@Transactional(rollbackFor = { Exception.class })
 	@Override
 	public int insertMemberLocAuthScoreEvaluate(Map<String, Object> map) {
@@ -166,6 +174,43 @@ public class MemberServiceImpl implements MemberService
 	}
 
 	@Override
+	public int announceEnroll(announce announce) {
+		return memberDao.announceEnroll(announce);
+	}
+
+	@Override
+	public announce selectOneAnnounce(int bCode) {
+		return memberDao.selectOneAnnounce(bCode);
+	}
+
+	@Override
+	public int insertMemberLocAuth(Member member) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int deleteMember(String userId) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public void updateNick(Member member) {
+		memberDao.updateNick(member);
+		
+	}
+
+	@Override
+	public List<Community> selectPostList(String userId) {
+		return memberDao.selectPostList(userId);
+	}
+
+	@Override
+	public List<Reply> selectReplyList(String userId) {
+		return memberDao.selectReplyList(userId);
+	}
+
 	public List<Noti> selectAllNoti(String userId) {
 		return memberDao.selectAllNoti(userId);
 	}
