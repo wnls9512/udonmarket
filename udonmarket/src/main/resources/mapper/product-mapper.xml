@@ -198,6 +198,13 @@
 			title like '%'||#{k}||'%' 
 		</foreach>
 		and p_code not in (#{pCode}) and open_status = 1 and (trade_status = 'S' or trade_status = 'R') and delete_yn = 'N'
+		and seller in (
+   	            		select l.user_id 
+       	         		from location l,(select latitude, longitude, radius from location where user_id = #{userId}) a
+						<![CDATA[
+               			where calc_distance(a.latitude, a.longitude, l.latitude, l.longitude) < a.radius and user_id != #{userId}
+						]]>
+					   )
 		</where>
 		union
 		select p_code, title, price from product 

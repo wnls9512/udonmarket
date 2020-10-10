@@ -93,7 +93,7 @@
                         <div class="col-lg-4 col-sm-6">
                             <div class="single_product_item">
                                 <img src="${pageContext.request.contextPath}/resources/img/product/product_1.png" alt=""
-                                	 onclick="location.href='${pageContext.request.contextPath}/product/productDetailView?pCode=${p.PCode}';">
+                                	 onclick="location.href='${pageContext.request.contextPath}/product/productDetailView?pCode=${p.PCode}&userId=${userId }';">
                                 <div class="single_product_text">
                                     <h4>${p.title}</h4>
                                     <span style="color: gray;">${p.address} · <c:if test="${p.pull }">끌올 &nbsp;</c:if>

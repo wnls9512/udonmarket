@@ -147,7 +147,7 @@ public class ProductController
     
     // 게시글 상세보기
     @RequestMapping("/productDetailView")
-    public String productDetail(int pCode, Model model)
+    public String productDetail(int pCode, String userId, Model model)
     {
         /*
          *      1. 상품 정보
@@ -168,6 +168,7 @@ public class ProductController
         map.put("keywords", keywords);
         map.put("category", category);
         map.put("pCode", pCode);
+        map.put("userId", userId);
         
         List<ProductVO> similar = service.selectSimilarProducts(map);
         
