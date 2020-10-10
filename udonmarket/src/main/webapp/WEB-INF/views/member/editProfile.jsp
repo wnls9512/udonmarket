@@ -41,14 +41,22 @@ a{text-decoration: none; color: black;}
     <div class="row py-5 px-4">
 	    <div class="col-md-5 mx-auto">
 	        <!-- Profile widget -->
+	       <form action="${pageContext.request.contextPath }/member/nickUpdate" method="post">
+	       <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 	        <div class="bg-white shadow rounded overflow-hidden">
 	            <div class="px-4 pt-0 pb-4 cover">
 	                <div class="media align-items-end profile-head">
-	                    <div class="profile mr-3"><img src="https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=80" alt="..." width="130" class="rounded mb-2 img-thumbnail">
+	                    <div class="profile mr-3">
+	                    <sec:authentication property="principal" var="loggedInUser" />
+	                    <img src="${pageContext.request.contextPath }/resources/img/member/${member.renamedFileName == null 
+	                    															 ? member.originalFileName:member.renamedFileName}" 
+	                    		 alt="..." 
+	                    		 width="130" 
+	                    		 class="rounded mb-2 img-thumbnail">
 	                    <a href="#" class="btn btn-outline-dark btn-sm btn-block">사진 바꾸기</a></div>
 	                    <div class="media-body mb-5 text-white">
-	                        <h4 class="mt-0 mb-0" style="color:white;">Mark Williams</h4>
-	                        <p class="small mb-4" style="color:white;"> <i class="fas fa-map-marker-alt mr-2"></i>New York</p>
+	                        <h4 class="mt-0 mb-0" style="color:white;">${member.nickName}</h4>
+	                        <p class="small mb-4" style="color:white;"> <i class="fas fa-map-marker-alt mr-2"></i>${member.address}</p>
 	                    </div>
 	                </div>
 	            </div>
@@ -58,16 +66,16 @@ a{text-decoration: none; color: black;}
 	                <div class="p-4 rounded shadow-sm bg-light">
 				        <!-- Vertical Menu-->
 				        <nav class="nav flex-column bg-white shadow-sm rounded p-3">
-						<form>
 						  <div class="form-row">
 						    <div class="col">
-						      <input type="text" class="form-control" placeholder="Mark Williams">
+						      <input type="text" name="nickName" class="form-control" placeholder="${member.nickName}">
+						      <input type="hidden" name="userId" class="form-control" placeholder="${LoggedInUser}">
 						    </div>
 						  </div>
-						</form>
 				        </nav>
 	                </div>
-	                <button style="margin:10px auto;" type="button" class="btn btn-dark">적용</button>
+	                <button style="margin:10px auto;" type="submit" class="btn btn-dark">적용</button>
+	                </form>
 	            </div>
 	        </div>
 	    </div>

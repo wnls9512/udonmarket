@@ -195,6 +195,23 @@
 		review_code desc
 </select>
 
+<!-- 공지사항 조회 -->
+<select id="selectAnnounceList" resultMap="announceMap">
+	select
+		*
+	from 
+		board
+</select>
+	<resultMap type="announce" id="announceMap">
+		<id column="b_code" property="bCode"/>
+		<result column="user_id" property="userId"/>
+		<result column="board_title" property="boardTitle"/>
+		<result column="board_content" property="boardContent"/>
+		<result column="reg_date" property="regDate"/>
+		<result column="hashtag_code" property="hashtagCode"/>
+		<result column="like_this" property="likeThis"/>
+	</resultMap>
+
 <!-- 판매 내역 조회하기 -->
 <select id="selectAllSalesPro" resultType="wish">
 	select 
@@ -291,5 +308,63 @@
 		#{pCode}
 	)
 </insert>
+
+<!-- 공지사항 등록 -->
+<insert id="announceEnroll">
+	insert into
+		board
+	values(
+		seq_board_no.nextval,
+		#{userId},
+		'22',
+		#{boardTitle},
+		#{boardContent},
+		sysdate ,
+		null,
+		'0'
+	)
+</insert>
+
+<select id="selectOneAnnounce">
+	
+</select>
+
+<!-- 회원 닉네임 변경 -->
+<update id="updateNick">
+update 
+	member
+set 
+    nickname=#{nickName}
+where 
+	user_id=#{userId}
+</update>
+
+<select id="selectPostList" resultMap="PostMap">
+	select
+		*
+	from 
+		board
+	where 
+		user_id = #{userId}
+</select>
+
+	<resultMap type="community" id="PostMap">
+		<id column="b_code" property="bCode"/>
+		<result column="user_id" property="userId"/>
+		<result column="board_title" property="boardTitle"/>
+		<result column="board_content" property="boardContent"/>
+		<result column="reg_date" property="regDate"/>
+		<result column="hashtag_code" property="hashtagCode"/>
+		<result column="like_this" property="likeThis"/>
+	</resultMap>
+	
+	<select id="selectReplyList" resultType="com.kh.udon.community.model.vo.Reply">
+	select
+		*
+	from 
+		reply
+	where 
+		user_id = #{userId}
+</select>
 
 </mapper>

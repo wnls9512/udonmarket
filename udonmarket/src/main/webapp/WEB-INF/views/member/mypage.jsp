@@ -64,7 +64,14 @@ a{text-decoration: none; color: black;}
 	                    </div>
 	                </div>
 	            </div>
-	            <div class="bg-light p-4 d-flex justify-content-end text-center">
+	           <div class="bg-light p-4">
+	           <!-- <span class="d-flex justify-content-center"><h2>36.5ºc</h2></span> -->
+	           <div class="d-flex justify-content-around text-center">
+	           <!-- 여백맞추기용 -->
+	           <p></p><p></p><p></p><p></p><p></p><p></p><p></p><p></p><p></p><p></p><p></p><p></p><p></p>
+	           <!-- <h2 class="tempe">36.5ºc</h2> -->
+	           <!-- 여백맞추기용 -->
+	           <p></p><p></p><p></p><p></p>
 	                <ul class="list-inline mb-0">
 	                    <li class="list-inline-item">            
 	                       <h6 class="font-weight-bold mb-0 d-block">	                       	
@@ -91,7 +98,13 @@ a{text-decoration: none; color: black;}
 	                    </c:if>
 	                </ul>
 	            </div>				        
-		        <!-- 로그인한 사용자 == 파라미터(myPage?userId = )의 userId일 때만 보여주기 -->
+	                </div>
+	                 <!-- 매너온도 게이지 -->
+	              <div class="progress" style="height: 20px;">
+					  <div class="progress-bar" role="progressbar" style="width: 25%;" aria-valuenow="36.5" aria-valuemin="0" aria-valuemax="100">36.5ºc</div>
+					</div>
+	            </div>
+	            <div class="bg-white">
 		        <c:if test="${loggedInUserId == member.userId }">
 	            <div class="px-4 py-3">
 	                <div class="p-4 rounded shadow-sm bg-light">
@@ -100,6 +113,9 @@ a{text-decoration: none; color: black;}
 				          <a href="${pageContext.request.contextPath }/member/myNotiList?userId=${member.userId}" class="nav-link px-4 rounded-pill">
 		                      <i class="far fa-bell"></i>&nbsp; 알림 모아보기
 	                      </a>
+	                      <a href="${pageContext.request.contextPath}/member/interList" class="nav-link px-4 rounded-pill">
+		                      <i class="far fa-star"></i>&nbsp; 관심 주제 목록
+	                      </a>
 	  				      <a href="${pageContext.request.contextPath }/member/settingsArea?userId=${member.userId}" class="nav-link px-4 rounded-pill">
 	                           <i class="fas fa-map-marker-alt"></i>&nbsp; 내 동네 설정
 	                      </a>
@@ -107,8 +123,8 @@ a{text-decoration: none; color: black;}
 				          <a href="${pageContext.request.contextPath }/member/keywordNoti?userId=${member.userId}" class="nav-link px-4 rounded-pill">
 		                      <i class="fas fa-tag"></i>&nbsp; 키워드 알림 설정
 	                      </a>				        
-	                      <a href="${pageContext.request.contextPath}/member/interList" class="nav-link px-4 rounded-pill">
-		                      <i class="far fa-star"></i>&nbsp; 관심 주제 목록
+	                      <a href="#" class="nav-link px-4 rounded-pill">
+	                           <i class="fas fa-user-lock"></i>&nbsp; 차단 사용자 관리
 	                      </a>
 				        </nav>
 	                </div>
@@ -121,13 +137,12 @@ a{text-decoration: none; color: black;}
 				          <a href="${pageContext.request.contextPath }/member/myReviewList?userId=${member.userId}" class="nav-link px-4 rounded-pill">
 		                      <i class="far fa-smile"></i>&nbsp; 받은 거래 후기
 	                      </a>
-				          <a href="${pageContext.request.contextPath}/member/myPost" class="nav-link px-4 rounded-pill">
+				          <a href="${pageContext.request.contextPath}/member/myPost?userId=${member.userId}" class="nav-link px-4 rounded-pill">
 	                           <i class="far fa-edit"></i>&nbsp; 동네생활 글
 	                      </a>
-				          <a href="${pageContext.request.contextPath}/member/myComment" class="nav-link px-4 rounded-pill">
+				          <a href="${pageContext.request.contextPath}/member/myComment?userId=${member.userId}" class="nav-link px-4 rounded-pill">
 		                      <i class="far fa-comment-dots"></i>&nbsp; 동네생활 댓글
 	                      </a>
-				          
 				        </nav>
 	                </div>
 	            </div>
@@ -136,7 +151,6 @@ a{text-decoration: none; color: black;}
 	                <div class="p-4 rounded shadow-sm bg-light">
 				        <!-- Vertical Menu-->
 				        <nav class="nav flex-column bg-white shadow-sm rounded p-3">
-				        <!-- 로그인한 사용자 == 파라미터(myPage?userId = )의 userId일 때만 보여주기 -->
 				          <a href="#" class="nav-link px-4 rounded-pill">
 	                           <i class="far fa-envelope"></i>&nbsp; 친구초대
 	                      </a>
@@ -146,7 +160,7 @@ a{text-decoration: none; color: black;}
 				          <a href="${pageContext.request.contextPath}/member/announce" class="nav-link px-4 rounded-pill">
 		                      <i class="far fa-flag"></i>&nbsp; 공지사항
 	                      </a>
-				          <a href="${pageContext.request.contextPath}/member/FAQ" class="nav-link px-4 rounded-pill">
+				          <a href="${pageContext.request.contextPath}/member/FAQ?userId=${member.userId}" class="nav-link px-4 rounded-pill">
 		                      <i class="far fa-question-circle"></i>&nbsp; 자주 묻는 질문
 	                      </a>
 				        </nav>
@@ -156,6 +170,7 @@ a{text-decoration: none; color: black;}
 	        </div>
 	    </div>
 	</div>
+
 
 
 <jsp:include page="/WEB-INF/views/common/footer.jsp"/>
