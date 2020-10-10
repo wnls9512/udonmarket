@@ -26,7 +26,7 @@ html { font-size: 16px; }
                 <div class="col-lg-8">
                     <div class="breadcrumb_iner">
                         <div class="breadcrumb_iner_item">
-                            <h2>마이페이지</h2>
+                            <h2>MyPage</h2>
 							<!-- <h3>서울 강남구 논현동</h3> -->
                         </div>
                     </div>
@@ -36,8 +36,8 @@ html { font-size: 16px; }
     </section>
     <!-- breadcrumb start-->
     
-    
-    
+     <!-- 로그인 한 사용자 아이디 -->
+ 	<sec:authentication property="principal.username" var="loggedInUserId" />   
     
     <div class="row py-5 px-4">
 	    <div class="col-md-5 mx-auto">
@@ -78,6 +78,7 @@ html { font-size: 16px; }
 	                       	</a>
 	                       </h6>
 	                    </li>
+	                    <c:if test="${loggedInUserId == member.userId }">
 	                    <li class="list-inline-item">
 	                    	<h6 class="font-weight-bold mb-0 d-block">	                       	
 	                       	<a href="${pageContext.request.contextPath }/member/wishList?userId=${member.userId}">
@@ -85,6 +86,7 @@ html { font-size: 16px; }
 	                       	</a>
 	                       </h6>
 	                    </li>
+	                    </c:if>
 	                </ul>
 	            </div>
 	            <div class="px-4 py-3">
@@ -122,6 +124,7 @@ html { font-size: 16px; }
 								      	${buy.totalWish}
 								      	<!-- 열린 채팅방 수 -->
 								      	<i class="far fa-comments"></i> 2<br />
+								      	<c:if test="${loggedInUserId == member.userId }">
 								      	<div style="margin:10px 0px;">
 								      	<!-- 작성 후기가 있다면 후기 보기 페이지로 -->
 								      	<c:if test="${ buy.reviewCode ne 0}">
@@ -136,6 +139,7 @@ html { font-size: 16px; }
 									      			onclick="insertReview('${buy.PCode}','${member.userId}')">후기 작성하러 가기</button>
 								      	</c:if>
 								      	</div>
+								      	</c:if>
 								      </td>
 								    </tr>
 						  		</c:forEach>

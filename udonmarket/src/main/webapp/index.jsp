@@ -7,7 +7,7 @@
 <fmt:requestEncoding value="utf-8"/>
 
 <jsp:include page="/WEB-INF/views/common/header.jsp">
-	<jsp:param value="우동마켓" name="pageTitle"/>
+	<jsp:param value="우리 동네 우동마켓" name="pageTitle"/>
 </jsp:include>
 
 
@@ -25,16 +25,18 @@
                                 <div class="col-lg-5 col-md-8">
                                     <div class="banner_text">
                                         <div class="banner_text_iner">
-                                            <h1>Wood & Cloth
-                                                Sofa</h1>
-                                            <p>Incididunt ut labore et dolore magna aliqua quis ipsum
-                                                suspendisse ultrices gravida. Risus commodo viverra</p>
-                                            <a href="#" class="btn_2">buy now</a>
+                                            <h1>우리 동네 직거래 
+                                                <br />우동 마켓</h1>
+                                            <p>중고 거래부터 동네 이야기 까지, 이웃과 함께 해요.
+                                               <br /> 가깝고 따뜻한 우리의 동네를 만들어요.</p>
+                                            <a href="#" class="btn_2">구경하기</a>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="banner_img d-none d-lg-block">
-                                    <img src="${pageContext.request.contextPath }/resources/img/banner_img.png" alt="">
+                                    <img src="${pageContext.request.contextPath }/resources/img/banner/noodle.png" 
+                                    	 alt="" 
+                                    	 style="max-width: 400px; position: relative; right: 155px;" >
                                 </div>
                             </div>
                         </div><div class="single_banner_slider">
@@ -42,16 +44,17 @@
                                 <div class="col-lg-5 col-md-8">
                                     <div class="banner_text">
                                         <div class="banner_text_iner">
-                                            <h1>Cloth & Wood
-                                                Sofa</h1>
-                                            <p>Incididunt ut labore et dolore magna aliqua quis ipsum
-                                                suspendisse ultrices gravida. Risus commodo viverra</p>
-                                            <a href="#" class="btn_2">buy now</a>
+                                            <h1>우리 동네
+                                                <br />지역 기반 마켓</h1>
+                                            <p>동네 주민들과 가깝고 따뜻한 거래를 <br />지금 경험해 보세요.</p>
+                                            <a href="#" class="btn_2">인기 매물 보기</a>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="banner_img d-none d-lg-block">
-                                    <img src="${pageContext.request.contextPath }/resources/img/banner_img.png" alt="">
+                                    <img src="${pageContext.request.contextPath }/resources/img/banner/web.png" 
+                                    	 alt="" 
+                                    	 style="max-width: 600px; position: relative; right: 135px;" >
                                 </div>
                             </div>
                         </div><div class="single_banner_slider">
@@ -59,16 +62,18 @@
                                 <div class="col-lg-5 col-md-8">
                                     <div class="banner_text">
                                         <div class="banner_text_iner">
-                                            <h1>Wood & Cloth
-                                                Sofa</h1>
-                                            <p>Incididunt ut labore et dolore magna aliqua quis ipsum
-                                                suspendisse ultrices gravida. Risus commodo viverra</p>
-                                            <a href="#" class="btn_2">buy now</a>
+                                            <h1>이웃과 함께 하는
+                                                <br />동네 생활</h1>
+                                            <p>우리 동네의 다양한 이야기를 이웃과 함께 나누어요.</p>
+                                            <a href="#" class="btn_2">우리 동네 질문</a>
+                                          </div>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="banner_img d-none d-lg-block">
-                                    <img src="${pageContext.request.contextPath }/resources/img/banner_img.png" alt="">
+                                    <img src="${pageContext.request.contextPath }/resources/img/banner/house.png" 
+                                    	 alt="" 
+                                    	 style="max-width: 550px; position: relative; right: 135px;" >
                                 </div>
                             </div>
                         </div>
