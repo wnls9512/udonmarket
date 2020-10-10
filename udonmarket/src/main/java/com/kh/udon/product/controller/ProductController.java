@@ -7,6 +7,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,6 +23,8 @@ import com.kh.udon.product.model.vo.CategoryVO;
 import com.kh.udon.product.model.vo.CouponDTO;
 import com.kh.udon.product.model.vo.ProductDTO;
 import com.kh.udon.product.model.vo.ProductVO;
+import com.kh.udon.product.model.vo.ReasonReportVO;
+import com.kh.udon.product.model.vo.ReportVO;
 import com.kh.udon.product.model.vo.SellerDTO;
 
 import lombok.extern.slf4j.Slf4j;
@@ -145,9 +148,11 @@ public class ProductController
          *      2. 판매자 정보
          *      3. 비슷한 상품
          *      4. 판매자 다른 상품
+         *      5. 신고 목록
          */
         ProductDTO product = service.selectDTOByPCode(pCode);
         SellerDTO seller = service.selectSeller(product.getSeller());
+        List<ReasonReportVO> reasonReport = service.selectReasonReport();
         
         // --- 비슷한 상품 ---
         String[] keywords = product.getTitle().split(" ");
@@ -171,6 +176,7 @@ public class ProductController
         model.addAttribute("seller", seller);
         model.addAttribute("similar", similar);
         model.addAttribute("other", other);
+        model.addAttribute("reasonReport", reasonReport);
         
         return "product/productDetailView";
     }
@@ -284,5 +290,39 @@ public class ProductController
         map.put("msg", msg);
         
         return map;
-    }    
+    }   
+    
+    // 신고 리스트
+    @GetMapping("/report/{reasonCode}")
+    @ResponseBody
+    public List<ReasonReportVO> reportList(@PathVariable int reasonCode)
+    {
+        List<ReasonReportVO> reasonList = service.selectReportListByRCode(reasonCode);
+        
+        return reasonList;
+    }
+    
+    // 상품 게시글 신고
+    @PostMapping(value = "/reportProduct", produces = "application/text; charset=utf8")
+    @ResponseBody
+    public String reportProduct(ReportVO report)
+    {
+        int result = service.reportProduct(report);
+        
+        return result > 0 ? "신고가 접수되었습니다." : "다시 시도해주세요.";
+    }
+    
+    // 유저 신고
+    @PostMapping(value = "/reportUser", produces = "application/text; charset=utf8")
+    @ResponseBody
+    public String reportUser(ReportVO report)
+    {
+        log.debug("report = {}", report);
+        
+        int result = service.reportUser(report);
+        
+        return result > 0 ? "신고가 접수되었습니다." : "다시 시도해주세요.";
+    }
+    
+    
 }

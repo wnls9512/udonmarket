@@ -156,6 +156,27 @@
 		where seller = #{seller} and open_status = 1 and (trade_status = 'S' or trade_status = 'R') and delete_yn = 'N'
 	</select>
 	
+	<!-- 신고목록 -->
+	<select id="reasonReport" resultType="reasonReportVO">
+		select * from reason_report where parent_code = 1
+	</select>
+	<select id="reportListByRCode" resultType="reasonReportVO">
+		select r.* ,connect_by_isleaf leaf
+        from  reason_report r
+        start with reason_code = #{reasonCode}
+        connect by prior reason_code=parent_code
+	</select>
+	
+	<!-- 신고하기 -->
+	<insert id="reportProduct">
+		insert into report values 
+		(seq_report.nextval, #{reasonCode}, #{reportId}, null, null, null, 0, #{pCode})
+	</insert>
+	<insert id="reportUser">
+		insert into report values 
+		(seq_report.nextval, #{reasonCode}, #{reportId}, #{shooterId}, null, null, 0, null)
+	</insert>
+	
 	<!-- 관심목록 가격 변동 알림을 위한 수신자 리스트 -->
 	<select id="selectWishUserId" resultType="string">
 		select wish.user_id from wish, product

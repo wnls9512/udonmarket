@@ -12,6 +12,8 @@ import com.kh.udon.product.model.vo.CategoryVO;
 import com.kh.udon.product.model.vo.CouponDTO;
 import com.kh.udon.product.model.vo.ProductDTO;
 import com.kh.udon.product.model.vo.ProductVO;
+import com.kh.udon.product.model.vo.ReasonReportVO;
+import com.kh.udon.product.model.vo.ReportVO;
 import com.kh.udon.product.model.vo.SellerDTO;
 
 @Service
@@ -144,6 +146,29 @@ public class ProductServiceImpl implements ProductService
     public List<ProductVO> selectOtherProducts(String seller)
     {
         return dao.selectOtherProducts(seller);
+    }
+
+    public List<ReasonReportVO> selectReasonReport()
+    {
+        return dao.selectReasonReport();
+    }
+
+    @Override
+    public List<ReasonReportVO> selectReportListByRCode(int reasonCode)
+    {
+        return dao.selectReportListByRCode(reasonCode);
+    }
+
+    @Override
+    public int reportProduct(ReportVO report)
+    {
+        return dao.reportProduct(report);
+    }
+
+    @Override
+    public int reportUser(ReportVO report)
+    {
+        return dao.reportUser(report);
     }
 
 	@Override

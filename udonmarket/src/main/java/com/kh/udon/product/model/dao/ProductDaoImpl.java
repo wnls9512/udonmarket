@@ -12,6 +12,8 @@ import com.kh.udon.product.model.vo.CategoryVO;
 import com.kh.udon.product.model.vo.CouponDTO;
 import com.kh.udon.product.model.vo.ProductDTO;
 import com.kh.udon.product.model.vo.ProductVO;
+import com.kh.udon.product.model.vo.ReasonReportVO;
+import com.kh.udon.product.model.vo.ReportVO;
 import com.kh.udon.product.model.vo.SellerDTO;
 
 @Repository
@@ -146,6 +148,30 @@ public class ProductDaoImpl implements ProductDao
         return session.selectList("product.selectOtherProducts", seller);
     }
 
+    @Override
+    public List<ReasonReportVO> selectReasonReport()
+    {
+        return session.selectList("product.reasonReport");
+    }
+
+    @Override
+    public List<ReasonReportVO> selectReportListByRCode(int reasonCode)
+    {
+        return session.selectList("product.reportListByRCode", reasonCode);
+    }
+
+    @Override
+    public int reportProduct(ReportVO report)
+    {
+        return session.insert("product.reportProduct", report);
+    }
+
+    @Override
+    public int reportUser(ReportVO report)
+    {
+        return session.insert("product.reportUser", report);
+    }
+	
 	@Override
 	public List<String> selectWishUserId(int pCode) {
 		return session.selectList("product.selectWishUserId",pCode);
