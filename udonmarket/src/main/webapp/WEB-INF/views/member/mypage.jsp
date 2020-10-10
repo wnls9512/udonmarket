@@ -53,14 +53,21 @@ a{text-decoration: none; color: black;}
 	                    		 alt="..." 
 	                    		 width="130" 
 	                    		 class="rounded mb-2 img-thumbnail">
-	                    	<a href="${pageContext.request.contextPath}/member/editprofile" class="btn btn-outline-dark btn-sm btn-block">Edit profile</a></div>
+	                    	<a href="${pageContext.request.contextPath}/member/editprofile?userId=${member.userId}" class="btn btn-outline-dark btn-sm btn-block">Edit profile</a></div>
 	                    <div class="media-body mb-5 text-white">
 	                        <h4 class="mt-0 mb-0" style="color:white;">${member.nickName}</h4>
 	                        <p class="small mb-4" style="color:white;"> <i class="fas fa-map-marker-alt mr-2"></i>${member.address}</p>
 	                    </div>
 	                </div>
 	            </div>
-	            <div class="bg-light p-4 d-flex justify-content-end text-center">
+	            <div class="bg-light p-4">
+	           <!-- <span class="d-flex justify-content-center"><h2>36.5ºc</h2></span> -->
+	           <div class="d-flex justify-content-around text-center">
+	           <!-- 여백맞추기용 -->
+	           <p></p><p></p><p></p><p></p><p></p><p></p><p></p><p></p><p></p><p></p><p></p><p></p><p></p>
+	           <!-- <h2 class="tempe">36.5ºc</h2> -->
+	           <!-- 여백맞추기용 -->
+	           <p></p><p></p><p></p><p></p>
 	                <ul class="list-inline mb-0">
 	                    <li class="list-inline-item">            
 	                       <h6 class="font-weight-bold mb-0 d-block">	                       	
@@ -84,6 +91,11 @@ a{text-decoration: none; color: black;}
 	                       </h6>
 	                    </li>
 	                </ul>
+	                </div>
+	                 <!-- 매너온도 게이지 -->
+	              <div class="progress" style="height: 20px;">
+					  <div class="progress-bar" role="progressbar" style="width: 25%;" aria-valuenow="36.5" aria-valuemin="0" aria-valuemax="100">36.5ºc</div>
+					</div>
 	            </div>
 	            <div class="px-4 py-3">
 	                <div class="p-4 rounded shadow-sm bg-light">
@@ -111,13 +123,13 @@ a{text-decoration: none; color: black;}
 	                <div class="p-4 rounded shadow-sm bg-light">
 				        <!-- Vertical Menu-->
 				        <nav class="nav flex-column bg-white shadow-sm rounded p-3">
-				          <a href="${pageContext.request.contextPath}/member/myPost" class="nav-link px-4 rounded-pill">
+				          <a href="${pageContext.request.contextPath}/member/myPost?userId=${member.userId}" class="nav-link px-4 rounded-pill">
 	                           <i class="far fa-edit"></i>&nbsp; 동네생활 글
 	                      </a>
-				          <a href="${pageContext.request.contextPath}/member/myComment" class="nav-link px-4 rounded-pill">
+				          <a href="${pageContext.request.contextPath}/member/myComment?userId=${member.userId}" class="nav-link px-4 rounded-pill">
 		                      <i class="far fa-comment-dots"></i>&nbsp; 동네생활 댓글
 	                      </a>
-				          <a href="${pageContext.request.contextPath}/member/interList" class="nav-link px-4 rounded-pill">
+				          <a href="${pageContext.request.contextPath}/member/interList?userId=${member.userId}" class="nav-link px-4 rounded-pill">
 		                      <i class="far fa-star"></i>&nbsp; 관심 주제 목록
 	                      </a>
 				        </nav>
@@ -127,6 +139,9 @@ a{text-decoration: none; color: black;}
 	                <div class="p-4 rounded shadow-sm bg-light">
 				        <!-- Vertical Menu-->
 				        <nav class="nav flex-column bg-white shadow-sm rounded p-3">
+<<<<<<< HEAD
+				          <a href="${pageContext.request.contextPath}/member/announce?userId=${member.userId}" class="nav-link px-4 rounded-pill">
+=======
 				          <a href="#" class="nav-link px-4 rounded-pill">
 	                           <i class="fas fa-user-lock"></i>&nbsp; 차단 사용자 관리
 	                      </a>
@@ -137,9 +152,10 @@ a{text-decoration: none; color: black;}
 		                      <i class="fas fa-share-alt"></i>&nbsp; 당근마켓 공유
 	                      </a>
 				          <a href="${pageContext.request.contextPath}/member/announce" class="nav-link px-4 rounded-pill">
+>>>>>>> branch 'master' of https://github.com/oheunju/udonmarket.git
 		                      <i class="far fa-flag"></i>&nbsp; 공지사항
 	                      </a>
-				          <a href="${pageContext.request.contextPath}/member/FAQ" class="nav-link px-4 rounded-pill">
+				          <a href="${pageContext.request.contextPath}/member/FAQ?userId=${member.userId}" class="nav-link px-4 rounded-pill">
 		                      <i class="far fa-question-circle"></i>&nbsp; 자주 묻는 질문
 	                      </a>
 				        </nav>
