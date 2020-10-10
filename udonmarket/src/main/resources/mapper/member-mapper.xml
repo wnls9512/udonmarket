@@ -309,7 +309,6 @@
 	)
 </insert>
 
-<<<<<<< HEAD
 <!-- 공지사항 등록 -->
 <insert id="announceEnroll">
 	insert into
@@ -368,6 +367,4 @@ where
 		user_id = #{userId}
 </select>
 
-=======
->>>>>>> branch 'master' of https://github.com/oheunju/udonmarket.git
 </mapper>

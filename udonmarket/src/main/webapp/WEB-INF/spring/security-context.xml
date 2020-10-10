@@ -42,11 +42,8 @@
 		/>
 		
 <!-- 		모든 POST 요청에 csrf 토큰값 인증사용 -->
-<<<<<<< HEAD
  		<!-- <csrf disabled="true"/> -->
-=======
  		<csrf disabled="true"/>
->>>>>>> branch 'master' of https://github.com/oheunju/udonmarket.git
 	</http>
 	
 <!-- 	사용자 인증 -->
