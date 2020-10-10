@@ -47,11 +47,18 @@
 		<where>
 			(p.title like '%'||#{keyword}||'%' or p.content like '%'||#{keyword}||'%')
 			and p.open_status = 1 and p.trade_status = 'S' and delete_yn = 'N'
-		<if test="category != 0 ">
+			and p.seller in (
+	        	                select l.user_id 
+		                        from location l, (select latitude, longitude, radius from location where user_id = #{userId}) a
+								<![CDATA[
+		                        where calc_distance(a.latitude, a.longitude, l.latitude, l.longitude) < a.radius and user_id != #{userId}
+								]]>
+	                        )
+			<if test="category != 0 ">
 			and p.category = #{category}
-		</if>
+			</if>
 		</where>
-		order by reg_date
+		order by p.reg_date
 	</select>
 	
 	<!-- 전체 상품수 -->
@@ -81,12 +88,19 @@
 	
 	<!-- 검색 상품수 -->
 	<select id="selectSearchCount" resultType="_int">
-		select count(*) from product 
+		select count(*) from product p
 		<where>
 			(title like '%'||#{keyword}||'%' or content like '%'||#{keyword}||'%')
 			and open_status = 1 and trade_status = 'S' and delete_yn = 'N'
+			and p.seller in (
+         	            		select l.user_id 
+            	         		from location l,(select latitude, longitude, radius from location where user_id = #{userId}) a
+								<![CDATA[
+                     			where calc_distance(a.latitude, a.longitude, l.latitude, l.longitude) < a.radius and user_id != #{userId}
+								]]>
+                   		  )
 		<if test="category != 0 ">
-			and category = #{category}
+			and p.category = #{category}
 		</if>
 		</where>
 	</select>

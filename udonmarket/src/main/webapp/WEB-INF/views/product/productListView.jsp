@@ -231,8 +231,8 @@ function addToWish(userId, pCode)
 // 검색
 function search(keyword) 
 {
-	location.href = "${pageContext.request.contextPath}/product/search?keyword=" +
-					keyword + "&category=" + ${selectedCategory};
+	location.href 
+		= "${pageContext.request.contextPath}/product/search?keyword=" + keyword + "&category=${selectedCategory}&userId=${userId}";
 }
 
 

@@ -422,7 +422,7 @@ function deleteProduct(pCode)
 			success: function(map)
 			{
 				alert(map.msg);
-				location.href = "${pageContext.request.contextPath}/product/productListView";									
+				location.href = "${pageContext.request.contextPath}/product/productListView?userId=${userId}";									
 			},
 			error: function(xhr, status, err)
 			{

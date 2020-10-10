@@ -95,7 +95,7 @@ public class ProductController
     
     // 검색
     @GetMapping("/search")
-    public String search(String keyword, int category, Model model)
+    public String search(String keyword, int category, String userId, Model model)
     {
         /*
          *      1. 카테고리 목록
@@ -103,12 +103,14 @@ public class ProductController
          *      3. 전체 상품 갯수
          *      4. 선택된 카테고리 상품 리스트
          */
+        
         Map<String, Object> map = new HashMap<>();
         map.put("keyword", keyword);
         map.put("category", category);
+        map.put("userId", userId);
         
         List<CategoryVO> categoryList = service.selectAllCategory();
-        List<Integer> categoryCount = service.selectAllCategoryCount();
+        List<Integer> categoryCount = service.selectAllCategoryCount(userId);
         int totalCount = service.selectSearchCount(map);
         List<ProductDTO> products = service.search(map);
         
@@ -219,7 +221,7 @@ public class ProductController
         
         //해당 상품을 관심목록 지정한 사용자 아이디
         List<String> userIdList = service.selectWishUserId(pCode);
-        log.debug("userIdList = {}", userIdList);
+        
         String userId = "";
         for(int i=0; i<userIdList.size(); i++) {
         	userId += userIdList.get(i) + " ";
@@ -236,8 +238,6 @@ public class ProductController
     @PostMapping("/update")
     public String update(ProductVO product, RedirectAttributes rttr)
     {
-        log.debug("product = {}", product);
-        
         int result = service.update(product);
         
         rttr.addFlashAttribute("msg", result > 0 ? "상품 수정 성공 💛" : "상품 등록 실패 🤔");
@@ -321,8 +321,6 @@ public class ProductController
     @ResponseBody
     public String reportUser(ReportVO report)
     {
-        log.debug("report = {}", report);
-        
         int result = service.reportUser(report);
         
         return result > 0 ? "신고가 접수되었습니다." : "다시 시도해주세요.";
