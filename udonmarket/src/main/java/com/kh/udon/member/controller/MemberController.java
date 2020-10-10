@@ -5,11 +5,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,6 +23,8 @@ import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.kh.email.Email;
+import com.kh.email.EmailSender;
 import com.kh.udon.member.model.service.MemberService;
 import com.kh.udon.member.model.vo.Evaluate;
 import com.kh.udon.member.model.vo.Keyword;
@@ -44,6 +45,12 @@ public class MemberController {
 
 	@Autowired
 	private BCryptPasswordEncoder bcryptPasswordEncoder;
+	
+	@Autowired
+	private EmailSender emailSender;
+	
+	@Autowired
+	private Email emailVo;
 	
 	// 로그인
 	@RequestMapping("/loginForm")
@@ -88,7 +95,7 @@ public class MemberController {
 		
 		log.debug("result@controller = {}", result);
 
-		String msg = (result > 0) ? "회원가입성공!" : "회원가입성공!";
+		String msg = (result > 0) ? "회원가입성공!" : "회원가입실패!";
 		log.debug("msg@controller = " + msg);
 		redirectAttr.addFlashAttribute("msg", msg);
 
@@ -150,6 +157,25 @@ public class MemberController {
 		mav.setViewName("jsonView");// /WEB-INF/views/jsonView.jsp
 		
 		return mav;
+	}
+	
+	@RequestMapping(value="/passwordFind",method=RequestMethod.POST)
+	public String passwordSearch(@RequestParam Map<String, Object> paramMap, HttpServletRequest request) throws Exception {
+		
+		String userId = (String)paramMap.get("userId");
+		String email = (String)paramMap.get("email");
+		
+		int result = service.updatePasswordEncrypt(paramMap);
+		
+		if(result > 0) {
+			emailVo.setSubject(userId + "님의 비밀번호 찾기 메일입니다.");
+			emailVo.setReceiver(email);
+			emailVo.setContent("임시 비밀번호는 1234 입니다.");
+			emailSender.SendEmail(emailVo);
+		}
+		
+		
+		return "redirect:/";
 	}
 		
 	@RequestMapping("/mypage")

@@ -8,6 +8,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.kh.udon.member.model.vo.Coupon;
 import com.kh.udon.member.model.vo.Evaluate;
 import com.kh.udon.member.model.vo.Keyword;
 import com.kh.udon.member.model.vo.Member;
@@ -171,4 +172,29 @@ public class MemberDaoImpl implements MemberDao
 		return session.update("socket.updateNotiCheck", notiCode);
 	}
 
+	@Override
+	public List<Coupon> selectCouponList(int limit, int offset) {
+		RowBounds rowBounds = new RowBounds(offset, limit);
+		return session.selectList("coupon.selectCouponList", null, rowBounds);
+	}
+
+	@Override
+	public int selectCouponTotalContents() {
+		return session.selectOne("coupon.selectCouponTotalContents");
+	}
+
+	@Override
+	public int updatePassword(Map<String, Object> paramMap) {
+		return session.update("member.updatePassword", paramMap);
+	}
+
+	@Override
+	public String selectGetPassword(Map<String, Object> paramMap) {
+		return session.selectOne("member.selectGetPassword", paramMap);
+	}
+
+	@Override
+	public int updateEncrpytPassword(Map<String, Object> paramMap) {
+		return session.update("member.updateEncrpytPassword", paramMap);
+	}
 }

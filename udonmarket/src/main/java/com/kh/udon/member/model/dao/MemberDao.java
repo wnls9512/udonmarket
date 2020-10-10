@@ -3,6 +3,7 @@ package com.kh.udon.member.model.dao;
 import java.util.List;
 import java.util.Map;
 
+import com.kh.udon.member.model.vo.Coupon;
 import com.kh.udon.member.model.vo.Evaluate;
 import com.kh.udon.member.model.vo.Keyword;
 import com.kh.udon.member.model.vo.Location;
@@ -72,5 +73,15 @@ public interface MemberDao
 	int insertNoti(Noti n);
 
 	int updateNotiCheck(int notiCode);
+
+	List<Coupon> selectCouponList(int limit, int offset);
+
+	int selectCouponTotalContents();
+
+	int updatePassword(Map<String, Object> paramMap);
+
+	String selectGetPassword(Map<String, Object> paramMap);
+
+	int updateEncrpytPassword(Map<String, Object> paramMap);
 
 }

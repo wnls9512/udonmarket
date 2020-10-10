@@ -54,6 +54,28 @@
 			<beans:property name="order" value="1"/>
 				
 	</beans:bean>
+	
+<!-- 	회원가입 메일 인증(gmail) -->
+	<beans:bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+		<beans:property name="host" value="smtp.gmail.com" />
+		<beans:property name="port" value="587" />
+		<beans:property name="defaultEncoding" value="utf-8" />
+		<beans:property name="username"  value="dkxoxo123@gmail.com"/>
+		<beans:property name="password"  value="dlxogml12!"/>
+		<beans:property name="javaMailProperties">
+			<beans:props>
+				<beans:prop key="mail.transport.protocol">smtp</beans:prop>
+				<beans:prop key="mail.smtp.auth">true</beans:prop>
+				<beans:prop key="mail.smtp.starttls.enable">true</beans:prop>
+				<beans:prop key="mail.debug">true</beans:prop>
+			</beans:props>
+		</beans:property>
+	</beans:bean>
+	
+	<beans:bean id="emailVo" class="com.kh.email.Email"/>
+	<beans:bean id="emailSender" class="com.kh.email.EmailSender"/>
+	
+	
 	<!-- aop 어노테이션 처리용  -->
 	<!-- root-context의 transaction관련 빈 설정을 가져와서 적용 -->
 	<aop:aspectj-autoproxy/>

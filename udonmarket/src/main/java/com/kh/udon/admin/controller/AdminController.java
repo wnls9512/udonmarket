@@ -18,6 +18,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.kh.udon.community.model.service.CommunityService;
 import com.kh.udon.community.model.vo.Report;
 import com.kh.udon.member.model.service.MemberService;
+import com.kh.udon.member.model.vo.Coupon;
 import com.kh.udon.member.model.vo.Member;
 
 import lombok.extern.slf4j.Slf4j;
@@ -150,5 +151,27 @@ public class AdminController {
 		mav.setViewName("admin/declareReplyList");
 		
 		return mav;
+	}
+	
+	
+	@RequestMapping("/CouponList")
+	public ModelAndView CouponList(ModelAndView mav,@RequestParam(defaultValue = "1", value = "cPage") int cPage) {
+	
+		
+		final int limit = 10;
+		int offset = (cPage - 1) * limit;
+		
+		List<Coupon> list = memberService.selectCouponList(limit, offset); 
+		log.debug("list = {}", list);
+		
+		//전체 컨텐츠 수
+		int totalContents = memberService.selectCouponTotalContents();
+		
+		mav.addObject("totalContents", totalContents);
+		mav.addObject("list", list);
+		mav.setViewName("admin/CouponList");
+		
+		return mav;
+		
 	}
 }
