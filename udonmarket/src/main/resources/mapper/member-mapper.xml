@@ -157,8 +157,6 @@
 	where user_id = #{userId}
 </update>
 
-
-
 <!-- 매너 평가 조회하기 -->
 <select id="selectAllEva" resultType="evaluate">
 	select 
@@ -169,6 +167,8 @@
 	    E.eva_code = EE.eva_code
 	and
 	    user_id = #{userId}
+	and
+		count != 0
 	order by
 	    count desc
 </select>

@@ -25,7 +25,7 @@ a{text-decoration: none; color: black;}
                 <div class="col-lg-8">
                     <div class="breadcrumb_iner">
                         <div class="breadcrumb_iner_item">
-                            <h2>마이페이지</h2>
+                            <h2>MyPage</h2>
 							<!-- <h3>서울 강남구 논현동</h3> -->
                         </div>
                     </div>
@@ -35,8 +35,8 @@ a{text-decoration: none; color: black;}
     </section>
     <!-- breadcrumb start-->
     
-    
-    
+    <!-- 로그인 한 사용자 아이디 -->
+ 	<sec:authentication property="principal.username" var="loggedInUserId" />   
     
     <div class="row py-5 px-4">
 	    <div class="col-md-5 mx-auto">
@@ -45,8 +45,6 @@ a{text-decoration: none; color: black;}
 	            <div class="px-4 pt-0 pb-4 cover">
 	                <div class="media align-items-end profile-head">
 	                    <div class="profile mr-3">
-	                    	<!-- LoggdeInUser 정보 가져오기  -->
-	                        <sec:authentication property="principal" var="loggedInUser" />
 	                    	<img src="${pageContext.request.contextPath }/resources/img/member/${member.renamedFileName == null 
 	                    															 ? member.originalFileName:member.renamedFileName}" 
 	                    		 alt="..." 
@@ -76,6 +74,7 @@ a{text-decoration: none; color: black;}
 	                       	</a>
 	                       </h6>
 	                    </li>
+	                    <c:if test="${loggedInUserId == member.userId }">
 	                    <li class="list-inline-item">
 	                    	<h6 class="font-weight-bold mb-0 d-block">	                       	
 	                       	<a href="${pageContext.request.contextPath }/member/wishList?userId=${member.userId}">
@@ -83,6 +82,7 @@ a{text-decoration: none; color: black;}
 	                       	</a>
 	                       </h6>
 	                    </li>
+	                    </c:if>
 	                </ul>
 	            </div>
 	            <div class="px-4 py-3">
@@ -92,14 +92,16 @@ a{text-decoration: none; color: black;}
 						
 							<ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
 							  <li class="nav-item">
-							    <a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home" aria-selected="true">판매중</a>
+							    <a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home" aria-selected="true">거래중</a>
 							  </li>
 							  <li class="nav-item">
 							    <a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#pills-profile" role="tab" aria-controls="pills-profile" aria-selected="false">거래완료</a>
 							  </li>
+							  <c:if test="${loggedInUserId == member.userId }">
 							  <li class="nav-item">
 							    <a class="nav-link" id="pills-contact-tab" data-toggle="pill" href="#pills-contact" role="tab" aria-controls="pills-contact" aria-selected="false">숨김</a>
 							  </li>
+							  </c:if>
 							</ul>
 							<div class="tab-content" id="pills-tabContent">
 							  <!-- 판매중 -->
@@ -131,6 +133,7 @@ a{text-decoration: none; color: black;}
 									      	${sale.totalWish}
 									      	<!-- 열린 채팅방 수 -->
 									      	<i class="far fa-comments"></i> 2<br />
+									      	<c:if test="${loggedInUserId == member.userId }">
 									      	<div style="margin:10px 0px;">
 										      	<c:if test="${sale.tradeStatus eq 'S' }">
 										      	<button type="button" class="btn btn-outline-secondary btn-sm"
@@ -146,8 +149,10 @@ a{text-decoration: none; color: black;}
 										      			style="margin: 0px 0.15rem;" value="C"
 										      			onclick="changeStatus('${sale.PCode} ','${sale.tradeStatus}', this)">거래완료로 변경</button>
 									      	</div>
+									      	</c:if>
 									      </td>
 									      <td>
+		                                    <c:if test="${loggedInUserId == member.userId }">
 											<ul>
 												<li class="nav-item dropdown">
 				                                    <a class="nav-link dropdown-toggle" id="navbarDropdown_1"
@@ -161,6 +166,7 @@ a{text-decoration: none; color: black;}
 				                                    </div>
 				                                </li>
 			                                </ul>
+		                                    </c:if>
 									      </td>
 									    </tr>  
 								  	</c:forEach>
@@ -197,13 +203,16 @@ a{text-decoration: none; color: black;}
 									      	${c.totalWish}
 									      	<!-- 열린 채팅방 수 -->
 									      	<i class="far fa-comments"></i> 2<br />
+									      	<c:if test="${loggedInUserId == member.userId }">
 									      	<div style="margin:10px 0px;">
 										      	<button type="button" class="btn btn-outline-secondary btn-sm"
 										      			style="margin: 0px 0.15rem;" value ="S"
 										      			onclick="changeStatus('${c.PCode} ','${c.tradeStatus}', this)">판매중으로 변경</button>
 									      	</div>
+									      	</c:if>
 									      </td>
 									      <td>
+									      	<c:if test="${loggedInUserId == member.userId }">
 									      	<ul>
 												<li class="nav-item dropdown">
 				                                    <a class="nav-link dropdown-toggle" id="navbarDropdown_1"
@@ -216,6 +225,7 @@ a{text-decoration: none; color: black;}
 				                                    </div>
 				                                </li>
 			                                </ul>
+			                                </c:if>
 									      </td>
 									    </tr>  
 								  	</c:forEach>
@@ -227,7 +237,7 @@ a{text-decoration: none; color: black;}
 								</table>
 							  </div>
 							  <!-- 숨김 -->
-							  <!-- 로그인한 사용자 == 회원페이지 일때만 보여주기 -->
+							  <c:if test="${loggedInUserId == member.userId }">
 							  <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">
 							  	<table class="table table-hover">
 								  <tbody>
@@ -282,6 +292,7 @@ a{text-decoration: none; color: black;}
 								  </tbody>
 								</table>
 							  </div>
+							  </c:if>
 							  <input type="hidden" Id="userId_" value="${member.userId }" />
 							</div>
 				        </nav>
