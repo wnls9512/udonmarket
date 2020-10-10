@@ -37,4 +37,9 @@ public interface CommunityDao
 	List<Report> selectReplyList(int limit, int offset);
 
 	
+	
+	int insert(Community community);
+	
+	int delete(int bCode);
+	
 }
