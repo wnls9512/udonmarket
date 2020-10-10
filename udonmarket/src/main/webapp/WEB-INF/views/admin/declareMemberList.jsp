@@ -10,7 +10,7 @@
 <fmt:requestEncoding value="utf-8"/>	
 	
 	<jsp:include page="/WEB-INF/views/common/header.jsp">
-		<jsp:param value="쿠폰관리" name="pageTitle"/>
+		<jsp:param value="신고자관리(사용자)" name="pageTitle"/>
 	</jsp:include>
 
 
@@ -61,12 +61,12 @@ a {
                         </aside>
                     </div>
                 </div>
- 			<div class="col-lg-9">
+ 			<div class="col-lg-9"> 
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="product_top_bar d-flex justify-content-between align-items-center">
                                 <div class="single_product_menu">
-                                    <p><span>${totalContents }</span> 개의 상품</p>
+                                    <p><span>${totalContents }</span>명의 회원</p>
                                 </div>
                             </div>
                         </div>
@@ -89,26 +89,9 @@ a {
 												<td>${ member.email }</td>
 												<td>${ member.nickName }</td>
 												<td><fmt:formatDate value="${ member.regDate }" type="both"/></td>
-												<td><button type="button" class="btn btn-outline-danger" onclick="adminMemberDelete('${ member.userId }')">삭제</button></td>
+												<td><button type="button" class="btn btn-outline-danger" onclick="adminMemberQuit('${ member.userId }')">탈퇴</button></td>
 											</tr>
 										</c:forEach>
-										<tr>
-											<td>
-												<input type="text" class="input-field1" name="userId" id="userId" placeholder="아이디" />
-											</td>
-											<td>
-												<input type="password" class="input-field1" name="password" id="password" placeholder="패스워드" />											
-											</td>
-											<td>
-												<input type="email" class="input-field1" name="email" id="email" placeholder="이메일" />
-											</td>
-											<td>
-												<input type="text" class="input-field1" name="nickName" id="nickName" placeholder="닉네임" />
-											</td>
-											<td>
-												<input type="submit" value="회원등록" />
-											</td>
-										</tr>
 									</table>
 							</form:form>
                             </div>
@@ -118,20 +101,6 @@ a {
             </div>
         </div>
 	</section>
-	<form:form id="adminMemberDeleteFrm" action="adminMemberDelete" method="post">
-		<input type="hidden" name="userId" />
-	</form:form>
-	<script>
-	function adminMemberDelete(userId){
-		if(confirm("정말 삭제하시겠습니까?") == false) {
-			return;
-		}
-		var $frm = $("#adminMemberDeleteFrm");
-		$frm.find("[name=userId]").val(userId);
-		$frm.submit();
-	}
-
-	</script>
 	
 
 

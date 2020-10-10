@@ -13,32 +13,10 @@
 
 <sec:authentication property="principal.username" var="userId"/>
 
+
 <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/upload.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/modal.css">
 
-<!-- 알림 관련 스크립트 -->
-<script>
-
-$(function(){
-
- 	$("#uploadBtn").click(function(){
-		let $title = $("#title").val();
-
-		//소켓이 연결 되었을 때만 (있을 때만)
-		console.log("reply.js :: socket >> ", socket);
-		if(sock) {
-			//webSocket에 보내기
-			//cmd/발신인/수신인/글번호
-			socket.send("reply", "test", "juwon", 1);
-		}else{
-			console.log("Error on editReply ", socket);
-		}
-		
-	}); 
-	
-})
-
-</script>
 
     <!--================Home Banner Area =================-->
     <!-- breadcrumb start-->
