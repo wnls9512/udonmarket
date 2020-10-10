@@ -3,12 +3,15 @@ package com.kh.udon.member.model.dao;
 import java.util.List;
 import java.util.Map;
 
+import com.kh.udon.community.model.vo.Community;
+import com.kh.udon.community.model.vo.Reply;
 import com.kh.udon.member.model.vo.Evaluate;
 import com.kh.udon.member.model.vo.Keyword;
 import com.kh.udon.member.model.vo.Location;
 import com.kh.udon.member.model.vo.Member;
 import com.kh.udon.member.model.vo.Noti;
 import com.kh.udon.member.model.vo.Review;
+import com.kh.udon.member.model.vo.announce;
 import com.kh.udon.member.model.vo.Wish;
 import com.kh.udon.product.model.vo.ProductVO;
 
@@ -39,6 +42,10 @@ public interface MemberDao
 
 	List<Review> selectAllReview(String userId);
 
+	List<announce> selectAnnounceList(int limit, int offset);
+	
+	int insertMember(Member member);
+	
 	int insertMember(Map<String, Object> map);
 
 	int insertLocation(Map<String, Object> map);
@@ -65,7 +72,17 @@ public interface MemberDao
 
 	int updateQuitMember(String userId);
 
+	int announceEnroll(announce announce);
+
+	announce selectOneAnnounce(int bCode);
+
     int insertEvaluate(Map<String, Object> map);
+
+	void updateNick(Member member);
+
+	List<Community> selectPostList(String userId);
+
+	List<Reply> selectReplyList(String userId);
 
 	List<Noti> selectAllNoti(String userId);
 

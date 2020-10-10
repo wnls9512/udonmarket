@@ -9,6 +9,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
+
+import com.kh.udon.member.model.vo.announce;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -120,6 +125,29 @@ public class AdminController {
 		return "redirect:/admin/memberList";
 	}
 	
+	//공지사항 글쓰기 폼
+	@RequestMapping("/announceForm")
+	public ModelAndView announceForm(ModelAndView mav,
+									@RequestParam("userId") String userId) {
+		
+		Member member = memberService.selectOneMember(userId);
+		
+		mav.addObject("member",member);
+		mav.setViewName("admin/announceForm");
+		return mav;
+	}
+	
+	//공지사항 등록
+	@PostMapping("/announceEnroll")
+	public String announceEnroll(announce announce,RedirectAttributes redirectAttr) {
+		
+		
+		int result = memberService.announceEnroll(announce);
+		
+		redirectAttr.addFlashAttribute("msg",result > 0  ? "공지사항 등록 성공!" : "공지사항 등록 실패!");
+		
+		return "redirect:/member/announce";
+	}
 	@GetMapping("/declareBoardList")
 	public ModelAndView declareBoardList(ModelAndView mav, @RequestParam(defaultValue = "1", value="cPage") int cPage) {
 		

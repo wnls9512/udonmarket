@@ -8,11 +8,14 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.kh.udon.community.model.vo.Community;
+import com.kh.udon.community.model.vo.Reply;
 import com.kh.udon.member.model.vo.Evaluate;
 import com.kh.udon.member.model.vo.Keyword;
 import com.kh.udon.member.model.vo.Member;
 import com.kh.udon.member.model.vo.Noti;
 import com.kh.udon.member.model.vo.Review;
+import com.kh.udon.member.model.vo.announce;
 import com.kh.udon.member.model.vo.Wish;
 
 import lombok.extern.slf4j.Slf4j;
@@ -85,6 +88,15 @@ public class MemberDaoImpl implements MemberDao
 	}
 
 	@Override
+	public List<announce> selectAnnounceList(int limit, int offset) {
+		RowBounds rowBounds = new RowBounds(offset, limit);
+		return session.selectList("member.selectAnnounceList", null , rowBounds );
+	}
+
+	@Override
+	public int insertMember(Member member) {
+		return session.insert("member.insertMember", member);
+	}
 	public int insertMember(Map<String, Object> map) {
 		return session.insert("member.insertMember", map);
 	}
@@ -150,6 +162,16 @@ public class MemberDaoImpl implements MemberDao
 		return session.update("member.updateQuitMember", userId);
 	}
 
+	@Override
+	public int announceEnroll(announce announce) {
+		return session.insert("member.announceEnroll", announce);
+	}
+
+	@Override
+	public announce selectOneAnnounce(int bCode) {
+		return session.selectOne("member.selectOneAnnounce",bCode);
+	}
+	
     @Override
     public int insertEvaluate(Map<String, Object> map)
     {
@@ -157,16 +179,28 @@ public class MemberDaoImpl implements MemberDao
     }
 
 	@Override
+	public void updateNick(Member member) {
+		session.update("member.updateNick",member);
+	}
+	
 	public List<Noti> selectAllNoti(String userId) {
 		return session.selectList("socket.selectAllNoti", userId);
 	}
 
 	@Override
+	public List<Community> selectPostList(String userId) {
+		return session.selectList("member.selectPostList",userId);
+	}
+	
 	public int insertNoti(Noti n) {
 		return session.insert("socket.insertNoti", n);
 	}
 
 	@Override
+	public List<Reply> selectReplyList(String userId) {
+		return session.selectList("member.selectReplyList",userId);
+	}
+	
 	public int updateNotiCheck(int notiCode) {
 		return session.update("socket.updateNotiCheck", notiCode);
 	}

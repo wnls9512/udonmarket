@@ -52,20 +52,18 @@ html { font-size: 16px; }
   background: #4CAF50;
   cursor: pointer;
 }
-
-tr[data-board-no] {
-	cursor: pointer;
 </style>
-
 <script>
-$(function(){
+/* textarea에도 required속성을 적용가능하지만, 공백이 입력된 경우 대비 유효성검사를 실시함. */
+function boardValidate(){
+	var $content = $("[name=content]");
+	if(/^(.|\n)+$/.test($content.val()) == false){
+		alert("내용을 입력하세요");
+		return false;
+	}
+	return true;
+}
 
-	$("tr[data-board-no]").click(function(){
-		var BCode = $(this).attr("data-board-no");
-		location.href = "${ pageContext.request.contextPath }/community/communityDetailView?bCode=" + BCode;
-	});
-	
-});
 </script>
     <!--================Home Banner Area =================-->
     <!-- breadcrumb start-->
@@ -75,8 +73,7 @@ $(function(){
                 <div class="col-lg-8">
                     <div class="breadcrumb_iner">
                         <div class="breadcrumb_iner_item">
-                            <h2>공지사항11</h2>
-							<!-- <h3>서울 강남구 논현동</h3> -->
+                            <h2>공지사항 글쓰기</h2>
                         </div>
                     </div>
                 </div>
@@ -88,22 +85,22 @@ $(function(){
     
     
     
-     <div class="row py-5 px-4">
+    <div class="row py-5 px-4">
 	    <div class="col-md-5 mx-auto">
 	        <!-- Profile widget -->
 	        <div class="bg-white shadow rounded overflow-hidden">
 	            <div class="px-4 pt-0 pb-4 cover">
 	                <div class="media align-items-end profile-head">
 	                    <div class="profile mr-3">
-	                     <sec:authentication property="principal" var="loggedInUser" />
-	                    	<img src="${pageContext.request.contextPath }/resources/img/member/${member.renamedFileName == null 
+	                    <sec:authentication property="principal" var="loggedInUser"/>
+	                    <img src="${pageContext.request.contextPath }/resources/img/member/${member.renamedFileName == null 
 	                    															 ? member.originalFileName:member.renamedFileName}" 
 	                    		 alt="..." 
 	                    		 width="130" 
 	                    		 class="rounded mb-2 img-thumbnail">
-	                    	<a href="${pageContext.request.contextPath }/member/mypage?userId=${member.userId}" class="btn btn-outline-dark btn-sm btn-block">Mypage</a>
+	                    		<a href="${pageContext.request.contextPath }/member/mypage?userId=${member.userId}" class="btn btn-outline-dark btn-sm btn-block">Mypage</a>
 	                    </div>
-	                    <div class="media-body mb-5 text-white">
+	                   <div class="media-body mb-5 text-white">
 	                        <h4 class="mt-0 mb-0" style="color:white;">${member.nickName}</h4>
 	                        <p class="small mb-4" id="addr" style="color:white;"> <i class="fas fa-map-marker-alt mr-2"></i>${member.address}</p>
 	                    </div>
@@ -139,24 +136,38 @@ $(function(){
 					<hr />
 							<div style="text-align: center; ">
 								<h5 style="font-weight: bold;
-									  		color: #575757;">동네 생활 나의 댓글</h5> 		
+									  		color: #575757;">공지사항</h5> 		
+							    <p id="myLocal" style=" color: #575757;"></p>
 							</div>
-							<hr />			
-				        <nav class="nav flex-column bg-white shadow-sm rounded p-3">
-				        <table class="table table-striped">
-						  <tbody>
-						     <c:forEach items="${list}" var="reply">
-									<tr data-board-no="${ reply.BCode }">
-										<td>${reply.content }</td>
-									</tr>
-									</c:forEach>
-						  </tbody>
-						</table>
-				        </nav>
+							<hr />
+						
+						<form:form name="boardFrm" 
+							  action="${pageContext.request.contextPath}/admin/announceEnroll" 
+							  method="post" 
+							  onsubmit="return boardValidate();"
+							 >
+						  <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+						  <div class="form-group row">
+						    <label for="staticEmail" class="col-sm-2 col-form-label">제목</label>
+						    <div class="col-sm-10">
+						     <input type="text" class="form-control" id="boardTitle" >
+						    </div>
+						  </div>
+						  <div class="form-group row">
+						    <label for="inputPassword" class="col-sm-2 col-form-label">내용</label>
+						    <div class="col-sm-10">
+						       <textarea class="form-control" id="boardContent" rows="3"></textarea>
+						    </div>
+						  </div>
+						  <div style="text-align: center; ">
+						   <button type="submit" class="btn btn-primary">등록</button>
+						  </div>
+						  
+						</form:form>
+					</div>
 	                </div>
 	            </div>
 	        </div>
 	    </div>
 	</div>
 <jsp:include page="/WEB-INF/views/common/footer.jsp"/>
-	
