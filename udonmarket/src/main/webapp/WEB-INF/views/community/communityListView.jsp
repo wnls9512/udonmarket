@@ -137,8 +137,36 @@ $(function(){
                                 	<p>${ c.boardContent }</p>
                                 </a>
                                 <ul class="blog-info-link">
-                                    <li><a href="#"><i class="fa fa-hashtag"></i> 강아지 </a></li>
-                                    <li><a href="#"><i class="far fa-comments"></i> 03 Comments</a></li>
+                                
+                                <c:if test="${ c.hashtagCode == 1 }">
+                                    <li><i class="fa fa-hashtag"></i> 강아지 </li>
+                                </c:if>
+                                <c:if test="${ c.hashtagCode == 2 }">
+                                    <li><i class="fa fa-hashtag"></i> 고양이 </li>
+                                </c:if>
+                                <c:if test="${ c.hashtagCode == 3 }">
+                                    <li><i class="fa fa-hashtag"></i> 건강 </li>
+                                </c:if>
+                                <c:if test="${ c.hashtagCode == 4 }">
+                                    <li><i class="fa fa-hashtag"></i> 동네맛집 </li>
+                                </c:if>
+                                <c:if test="${ c.hashtagCode == 5 }">
+                                    <li><i class="fa fa-hashtag"></i> 동네카페 </li>
+                                </c:if>
+                                <c:if test="${ c.hashtagCode == 6 }">
+                                    <li><i class="fa fa-hashtag"></i> 살림/청소/정리 </li>
+                                </c:if>
+                                <c:if test="${ c.hashtagCode == 7 }">
+                                    <li><i class="fa fa-hashtag"></i> 식물 </li>
+                                </c:if>
+                                <c:if test="${ c.hashtagCode == 8 }">
+                                    <li><i class="fa fa-hashtag"></i> 임신/출산/육아 </li>
+                                </c:if>
+                                <c:if test="${ c.hashtagCode == 9 }">
+                                    <li><i class="fa fa-hashtag"></i> 집꾸미기 </li>
+                                </c:if>
+                                
+                                    <!-- <li><a href="#"><i class="far fa-comments"></i> 03 Comments</a></li> -->
                                 </ul>
                             </div>
                         </article>
@@ -170,7 +198,7 @@ $(function(){
                 </div>
                 <div class="col-lg-4">
                     <div class="blog_right_sidebar">
-                    		<a href="${ pageContext.request.contextPath }/community/communityForm">
+                    		<a href="${ pageContext.request.contextPath }/community/communityForm?userId=test">
                     		<form>
                                 <button 
                                 	class="genric-btn primary radius" style="width:100%"
@@ -240,31 +268,31 @@ $(function(){
                             <h4 class="widget_title">태그</h4>
                             <ul class="list">
                                 <li>
-                                    <a href="#">강아지</a>
+                                    <a href="communityListView?hashtagCode=1">강아지</a>
                                 </li>
                                 <li>
-                                    <a href="#">고양이</a>
+                                    <a href="communityListView?hashtagCode=2">고양이</a>
                                 </li>
                                 <li>
-                                    <a href="#">건강</a>
+                                    <a href="communityListView?hashtagCode=3">건강</a>
                                 </li>
                                 <li>
-                                    <a href="#">동네맛집</a>
+                                    <a href="communityListView?hashtagCode=4">동네맛집</a>
                                 </li>
                                 <li>
-                                    <a href="#">동네카페</a>
+                                    <a href="communityListView?hashtagCode=5">동네카페</a>
                                 </li>
                                 <li>
-                                    <a href="#">살림/청소/정리</a>
+                                    <a href="communityListView?hashtagCode=6">살림/청소/정리</a>
                                 </li>
                                 <li>
-                                    <a href="#">식물</a>
+                                    <a href="communityListView?hashtagCode=7">식물</a>
                                 </li>
                                 <li>
-                                    <a href="#">임신/출산/육아</a>
+                                    <a href="communityListView?hashtagCode=8">임신/출산/육아</a>
                                 </li>
                                 <li>
-                                    <a href="#">집꾸미기</a>
+                                    <a href="communityListView?hashtagCode=9">집꾸미기</a>
                                 </li>
                             </ul>
                         </aside>

@@ -94,5 +94,16 @@ public class CommunityServiceImpl implements CommunityService
 
 
 
+	 @Override
+	    public int insert(Community community)
+	    {
+	        return dao.insert(community);
+	    }
+	 
+	 @Override
+	    public int delete(int bCode)
+	    {
+	        return dao.delete(bCode);
+	    }
     
 }
