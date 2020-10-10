@@ -9,6 +9,7 @@ import com.kh.udon.member.model.vo.Evaluate;
 import com.kh.udon.member.model.vo.Keyword;
 import com.kh.udon.member.model.vo.Location;
 import com.kh.udon.member.model.vo.Member;
+import com.kh.udon.member.model.vo.Noti;
 import com.kh.udon.member.model.vo.Review;
 import com.kh.udon.member.model.vo.announce;
 import com.kh.udon.member.model.vo.Wish;
@@ -83,6 +84,10 @@ public interface MemberDao
 
 	List<Reply> selectReplyList(String userId);
 
-	
+	List<Noti> selectAllNoti(String userId);
+
+	int insertNoti(Noti n);
+
+	int updateNotiCheck(int notiCode);
 
 }

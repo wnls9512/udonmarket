@@ -39,13 +39,15 @@
 	<!-- notification css -->
     <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/notification.css">
     <script src="${pageContext.request.contextPath }/resources/js/notification.js"></script>
+	<!-- sockJS -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.3.0/sockjs.min.js"></script>
+
 <script>
 <%-- RedirectAttribute에 등록된 msg값 존재 여부 확인 후 출력 --%>
 <c:if test="${not empty msg }">
 	alert('${ msg }');
 </c:if>
 </script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.3.0/sockjs.min.js"></script>
 </head>
 
 <body>
@@ -93,7 +95,9 @@
                         </div>
                         <div class="hearer_icon d-flex">
                             <a id="search_1" href="javascript:void(0)"><i class="ti-search"></i></a>
-                            <a href="#" id="bell"><i class="ti-bell"></i></a>
+                           	<!-- notiList -->
+                            <a href="#" id="bell" onclick="showNoti();"><i class="ti-bell"></i></a>
+                           	<!-- notiList -->
                             <a href="${pageContext.request.contextPath }/chat/chatListView"><i class="ti-comments-smiley"></i></a>
                             
                             <sec:authorize access="isAnonymous()">
@@ -105,27 +109,34 @@
                             <a href="${pageContext.request.contextPath }/member/mypage?userId=${loggedInUserId}"><i class="ti-user"></i></a>
                        
                             <form:form method="POST" action="${pageContext.request.contextPath }/member/logout">
-                            	<button type="submit"><i class="ti-power-off"></i></button>
+                            	<button type="submit" style="background: none; border: none; margin-left: 1.8em; padding: 0px;"><i class="ti-power-off"></i></button>
                             </form:form> 
 	                        </sec:authorize>
 							
-                        </div>                        
+                        </div>
+                        
+                        <!-- 알림 --> 
+                        <sec:authorize access="isAnonymous()">
                         <div class="notifications" id="box">
-					        <h2>Notifications - <span>2</span></h2>
-					        <div class="notifications-item"> <img src="https://i.imgur.com/uIgDDDd.jpg" alt="img">
+					        <h2> 💡 알림이 왔어요</h2>
+					        <div class="notifications-item">
 					            <div class="text">
-					                <h4>Samso aliao</h4>
-					                <p>Samso Nagaro Like your home work</p>
-					            </div>
-					        </div>
-					        <div class="notifications-item"> <img src="https://img.icons8.com/flat_round/64/000000/vote-badge.png" alt="img">
-					            <div class="text">
-					                <h4>John Silvester</h4>
-					                <p>+20 vista badge earned</p>
+					                <h4><a href="${pageContext.request.contextPath }/member/loginForm">로그인</a>을 해주세요 💗 </h4>
 					            </div>
 					        </div>
 					    </div>
- 
+                        </sec:authorize>
+                        
+                        <sec:authorize access="isAuthenticated()">
+                        <div class="notifications" id="box">
+					        <h2> 💡 알림이 왔어요 - <span id="totalNoti"></span></h2>
+					        <div id="noti_" style="display: block;">
+					        
+					        </div>
+					    </div>
+                        </sec:authorize>
+                        <!-- 알림 --> 
+
                     </nav>
                 </div>
             </div>
@@ -139,5 +150,96 @@
                 </form>
             </div>
         </div>
+        
+        <div id="socketAlert" class="alert alert-primary" role="alert" style="display: none"></div>
+        
     </header>
 
+<script>
+//알림 리스트 띄우기
+function showNoti(){
+	var $userId = "${loggedInUserId}";
+
+ 	$.ajax({
+		url : "${pageContext.request.contextPath}/member/showNoti",
+		method : "POST",
+		dataType : "json",
+		data : {
+				userId : $userId,
+		},
+		beforeSend : function(xhr){
+            xhr.setRequestHeader("${_csrf.headerName}", "${_csrf.token}");
+        },
+		success : function(data){	
+			let noti = data.noti;
+
+			if(noti != ""){
+				let add = "";
+				let notiCount = 0;
+				
+				//console.log(noti.length);
+				for(let i = 0; i<noti.length; i++){
+					//체크 안한 알림만
+					if(noti[i].notiCheck == 0){
+						notiCount ++;
+						let kind = "";
+						switch (noti[i].notiKind){
+							case "reply": kind = "댓글"; break;
+							case "price": kind = "가격 변동"; break;
+							case "keyword": kind = "키워드"; break;
+							case "like": kind = "좋아요"; break;
+							case "nego": kind = "가격 제안"; break;
+					    }
+		
+						add += "<div class='notifications-item'>" + 
+							   "<div class='text'>" + 
+							   		"<h4>[" + kind +"] " + 
+							   			"<a href='${pageContext.request.contextPath }/product/productDetailView?pCode= " + noti[i].pcode + "' " + 
+							   				"onclick='updateCheck(" + noti[i].notiCode +")'>" +
+							   			 	noti[i].ptitle + "</a>" +
+							   		"</h4>" + 
+							   "</div>" + 
+							   "</div>";
+					}
+				}
+					$("#noti_").html(add);
+					$("#totalNoti").text(notiCount);
+
+			}else{
+				
+				$("#noti_").html("<div class='text'><h4>도착한 알림이 없어요</div>");
+				$("#totalNoti").text(0);
+			}
+			
+		},
+		error : function(xhr, status, err){
+			console.log("처리 실패", xhr, status, err);
+			alert("알림 불러오기에 실패했어요 다시 시도해주세요 💦");
+		}
+	}); 
+}
+
+//체크여부
+function updateCheck(notiCode){
+
+	$.ajax({
+		url : "${pageContext.request.contextPath}/member/updateCheck",
+		method : "POST",
+		data : {
+				notiCode : notiCode,
+		},
+		beforeSend : function(xhr){
+            xhr.setRequestHeader("${_csrf.headerName}", "${_csrf.token}");
+        },
+		success : function(data){
+			console.log("처리 성공!");
+		},
+		error : function(xhr, status, err){
+			console.log("처리 실패", xhr, status, err);
+			alert("실패했어요 다시 시도해주세요 💦");
+		}
+		
+	});
+	
+}
+</script>

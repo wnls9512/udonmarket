@@ -8,6 +8,8 @@ import com.kh.udon.product.model.vo.CategoryVO;
 import com.kh.udon.product.model.vo.CouponDTO;
 import com.kh.udon.product.model.vo.ProductDTO;
 import com.kh.udon.product.model.vo.ProductVO;
+import com.kh.udon.product.model.vo.ReasonReportVO;
+import com.kh.udon.product.model.vo.ReportVO;
 import com.kh.udon.product.model.vo.SellerDTO;
 
 public interface ProductDao
@@ -54,6 +56,17 @@ public interface ProductDao
     List<ProductVO> selectSimilarProducts(Map<String, Object> map);
 
     List<ProductVO> selectOtherProducts(String seller);
+
+    List<ReasonReportVO> selectReasonReport();
+
+    List<ReasonReportVO> selectReportListByRCode(int reasonCode);
+
+    int reportProduct(ReportVO report);
+
+    int reportUser(ReportVO report);
+
+	List<String> selectWishUserId(int pCode);
+
 
 
 

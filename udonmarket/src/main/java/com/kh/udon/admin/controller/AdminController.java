@@ -8,7 +8,6 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,6 +20,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.kh.udon.community.model.service.CommunityService;
+import com.kh.udon.community.model.vo.Report;
 import com.kh.udon.member.model.service.MemberService;
 import com.kh.udon.member.model.vo.Member;
 
@@ -33,6 +34,9 @@ public class AdminController {
 	
 	@Autowired
 	private MemberService memberService;
+	
+	@Autowired
+	private CommunityService communityService;
 	
 	@Autowired
 	private BCryptPasswordEncoder bcryptPasswordEncoder;
@@ -116,7 +120,7 @@ public class AdminController {
 		
 		int result = memberService.updateQuitMember(userId);
 		log.debug("result = {}", result);
-		redirectAttr.addFlashAttribute("msg",result > 0  ? "회원 삭제 성공!" : "회원 삭제 실패");
+		redirectAttr.addFlashAttribute("msg",result > 0  ? "회원 탈퇴 성공!" : "회원 탈퇴 실패");
 		
 		return "redirect:/admin/memberList";
 	}
@@ -150,7 +154,28 @@ public class AdminController {
 		final int limit = 10;
 		int offset = (cPage - 1) * limit;
 		
+		List<Report> list = communityService.selectReportList(limit, offset); 
+		log.debug("list = {}", list);
 		
+		
+		mav.addObject("list", list);
+		mav.setViewName("admin/declareBoardList");
+		
+		return mav;
+	}
+	
+	@GetMapping("/declareReplyList")
+	public ModelAndView declareReplyList(ModelAndView mav, @RequestParam(defaultValue = "1", value="cPage") int cPage) {
+		
+		final int limit = 10;
+		int offset = (cPage - 1) * limit;
+		
+		List<Report> list = communityService.selectReplyList(limit, offset); 
+		log.debug("list = {}", list);
+		
+		
+		mav.addObject("list", list);
+		mav.setViewName("admin/declareReplyList");
 		
 		return mav;
 	}

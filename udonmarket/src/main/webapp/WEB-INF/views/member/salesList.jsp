@@ -154,7 +154,7 @@ a{text-decoration: none; color: black;}
 				                                       aria-haspopup="true" aria-expanded="false">
 				                                    </a>
 				                                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown_1">
-				                                    	<button class="dropdown-item" type="button" onclick="updateProduct('${sale.PCode}', '${sale.category }');">수정</button>
+				                                    	<button class="dropdown-item" type="button" onclick="updateProduct('${sale.PCode}', '${sale.categoryName }');">수정</button>
 													    <button class="dropdown-item" type="button" >숨기기</button>
 													    <button class="dropdown-item" type="button">끌어 올리기</button>
 													    <button class="dropdown-item" type="button" onclick="deleteProduct('${sale.PCode }');">게시물 삭제</button>
@@ -210,7 +210,7 @@ a{text-decoration: none; color: black;}
 				                                       aria-haspopup="true" aria-expanded="false">
 				                                    </a>
 				                                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown_1">
-				                                    	<button class="dropdown-item" type="button" onclick="updateProduct('${c.PCode}', '${c.category }');">수정</button>
+				                                    	<button class="dropdown-item" type="button" onclick="updateProduct('${c.PCode}', '${c.categoryName }');">수정</button>
 				                                    	<button class="dropdown-item" type="button" >숨기기</button>
 														<button class="dropdown-item" type="button" onclick="deleteProduct('${c.PCode }');">게시물 삭제</button>
 				                                    </div>
@@ -267,7 +267,7 @@ a{text-decoration: none; color: black;}
 				                                       aria-haspopup="true" aria-expanded="false">
 				                                    </a>
 				                                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown_1">
-				                                    	<button class="dropdown-item" type="button" onclick="updateProduct('${h.PCode}', '${h.category }');">수정</button>
+				                                    	<button class="dropdown-item" type="button" onclick="updateProduct('${h.PCode}', '${h.categoryName }');">수정</button>
 														<button class="dropdown-item" type="button" onclick="deleteProduct('${h.PCode }');">게시물 삭제</button>
 				                                    </div>
 				                                </li>

@@ -13,6 +13,45 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/upload.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/modal.css">
 
+<!-- 알림 관련 스크립트 -->
+<script>
+
+$(function(){
+
+	var userIdList = "${userId}";
+	var userIdArr = userIdList != null ? userIdList.split(" ") : null;
+	
+ 	$("#uploadBtn").click(function(){
+		let $pCode = $("[name=pCode]").val();
+		let $title = $("[name=title]").val();
+		let $price = $("[name=price]").val();
+		let $seller = $("[name=seller]").val();
+
+		//가격이 변동 되었을 때만
+		if("${product.price }" != $price){
+
+			//소켓이 연결 되었을 때만 (있을 때만)
+			if(sock) {
+				console.log("reply.js :: socket >> ", sock);
+
+				if(userIdArr != null){
+					//webSocket에 보내기
+					//cmd/발신인/수신인/상품코드/상품제목/가격
+					for(let i=0; i<userIdArr.length-1; i++)
+					sock.send("price," + $seller + "," + userIdArr[i] + "," + $pCode + "," + $title + "," + $price);
+				}
+								
+			}else{
+				console.log("Error on editReply ", sock);
+			}
+		}
+
+	}); 
+});
+
+</script>
+
+
     <!--================Home Banner Area =================-->
     <!-- breadcrumb start-->
     <section class="breadcrumb breadcrumb_bg">

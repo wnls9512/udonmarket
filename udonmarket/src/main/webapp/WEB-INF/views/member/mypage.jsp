@@ -102,16 +102,20 @@ a{text-decoration: none; color: black;}
 				        <!-- Vertical Menu-->
 				        <nav class="nav flex-column bg-white shadow-sm rounded p-3">			          
 				        <sec:authentication property="principal.username" var="loggedInUserId" />
-	  				           <a href="${pageContext.request.contextPath }/member/settingsArea?userId=${member.userId}" class="nav-link px-4 rounded-pill">
+				          <a href="${pageContext.request.contextPath }/member/myNotiList?userId=${member.userId}" class="nav-link px-4 rounded-pill">
+		                      <i class="far fa-bell"></i>&nbsp; 알림 모아보기
+	                      </a>
+	  				      <a href="${pageContext.request.contextPath }/member/settingsArea?userId=${member.userId}" class="nav-link px-4 rounded-pill">
 	                           <i class="fas fa-map-marker-alt"></i>&nbsp; 내 동네 설정
 	                      </a>
 	                      <a href="">${loginMember.userId}</a>
 				          <a href="${pageContext.request.contextPath }/member/keywordNoti?userId=${member.userId}" class="nav-link px-4 rounded-pill">
-		                      <i class="fas fa-tag"></i>&nbsp; 키워드 알림
+		                      <i class="fas fa-tag"></i>&nbsp; 키워드 알림 설정
 	                      </a>
 				          <a href="${pageContext.request.contextPath }/member/myReviewList?userId=${member.userId}" class="nav-link px-4 rounded-pill">
 		                      <i class="far fa-smile"></i>&nbsp; 받은 거래 후기
 	                      </a>
+	                      
 				        </nav>
 	                </div>
 	            </div>
@@ -135,7 +139,20 @@ a{text-decoration: none; color: black;}
 	                <div class="p-4 rounded shadow-sm bg-light">
 				        <!-- Vertical Menu-->
 				        <nav class="nav flex-column bg-white shadow-sm rounded p-3">
+<<<<<<< HEAD
 				          <a href="${pageContext.request.contextPath}/member/announce?userId=${member.userId}" class="nav-link px-4 rounded-pill">
+=======
+				          <a href="#" class="nav-link px-4 rounded-pill">
+	                           <i class="fas fa-user-lock"></i>&nbsp; 차단 사용자 관리
+	                      </a>
+				          <a href="#" class="nav-link px-4 rounded-pill">
+	                           <i class="far fa-envelope"></i>&nbsp; 친구초대
+	                      </a>
+				          <a href="#" class="nav-link px-4 rounded-pill">
+		                      <i class="fas fa-share-alt"></i>&nbsp; 당근마켓 공유
+	                      </a>
+				          <a href="${pageContext.request.contextPath}/member/announce" class="nav-link px-4 rounded-pill">
+>>>>>>> branch 'master' of https://github.com/oheunju/udonmarket.git
 		                      <i class="far fa-flag"></i>&nbsp; 공지사항
 	                      </a>
 				          <a href="${pageContext.request.contextPath}/member/FAQ?userId=${member.userId}" class="nav-link px-4 rounded-pill">

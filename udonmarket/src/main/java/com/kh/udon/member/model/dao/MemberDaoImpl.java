@@ -13,6 +13,7 @@ import com.kh.udon.community.model.vo.Reply;
 import com.kh.udon.member.model.vo.Evaluate;
 import com.kh.udon.member.model.vo.Keyword;
 import com.kh.udon.member.model.vo.Member;
+import com.kh.udon.member.model.vo.Noti;
 import com.kh.udon.member.model.vo.Review;
 import com.kh.udon.member.model.vo.announce;
 import com.kh.udon.member.model.vo.Wish;
@@ -181,15 +182,27 @@ public class MemberDaoImpl implements MemberDao
 	public void updateNick(Member member) {
 		session.update("member.updateNick",member);
 	}
+	
+	public List<Noti> selectAllNoti(String userId) {
+		return session.selectList("socket.selectAllNoti", userId);
+	}
 
 	@Override
 	public List<Community> selectPostList(String userId) {
 		return session.selectList("member.selectPostList",userId);
 	}
+	
+	public int insertNoti(Noti n) {
+		return session.insert("socket.insertNoti", n);
+	}
 
 	@Override
 	public List<Reply> selectReplyList(String userId) {
 		return session.selectList("member.selectReplyList",userId);
+	}
+	
+	public int updateNotiCheck(int notiCode) {
+		return session.update("socket.updateNotiCheck", notiCode);
 	}
 
 }
