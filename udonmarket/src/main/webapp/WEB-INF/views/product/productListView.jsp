@@ -51,12 +51,12 @@
                                 	<c:forEach items="${category }" var="c" varStatus="status">
                                     <li>
                                     	<c:if test="${selectedCategory == c.categoryCode}">
-                                        <a href="${pageContext.request.contextPath }/product/categoryList?category=${c.categoryCode }"
+                                        <a href="${pageContext.request.contextPath }/product/categoryList?category=${c.categoryCode }&userId=${userId}"
                                            style="color: red;">
                                         			${c.categoryName }</a>
                                     	</c:if>
                                     	<c:if test="${selectedCategory != c.categoryCode}">
-                                        <a href="${pageContext.request.contextPath }/product/categoryList?category=${c.categoryCode }">
+                                        <a href="${pageContext.request.contextPath }/product/categoryList?category=${c.categoryCode }&userId=${userId}">
                                         			${c.categoryName }</a>
                                     	</c:if>
                                         <span>(${categoryCount[status.index] })</span>

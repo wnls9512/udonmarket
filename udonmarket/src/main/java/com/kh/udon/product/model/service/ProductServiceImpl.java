@@ -41,9 +41,9 @@ public class ProductServiceImpl implements ProductService
     }
 
     @Override
-    public int selectCategoryCount(String categoryCode)
+    public int selectCategoryCount(Map<String, Object> map)
     {
-        return dao.selectCategoryCount(categoryCode);
+        return dao.selectCategoryCount(map);
     }
 
     @Override
@@ -65,9 +65,9 @@ public class ProductServiceImpl implements ProductService
     }
 
     @Override
-    public List<ProductDTO> selectCategoryProducts(String categoryCode)
+    public List<ProductDTO> selectCategoryProducts(Map<String, Object> map)
     {
-        return dao.selectCategoryProducts(categoryCode);
+        return dao.selectCategoryProducts(map);
     }
 
     @Override

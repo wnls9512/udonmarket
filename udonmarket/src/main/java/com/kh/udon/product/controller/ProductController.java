@@ -64,7 +64,9 @@ public class ProductController
     
     // 카테고리별 리스트
     @GetMapping("/categoryList")
-    public String categoryList(@RequestParam("category") String categoryCode, Model model)
+    public String categoryList(@RequestParam("category") String categoryCode, 
+                               @RequestParam String userId,
+                               Model model)
     {
         /*
          *      1. 카테고리 목록
@@ -73,12 +75,14 @@ public class ProductController
          *      4. 선택된 카테고리 상품 리스트
          */
         
-        log.debug("categoryCode = {}", categoryCode);
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("categoryCode", categoryCode);
+        map.put("userId", userId);
         
         List<CategoryVO> category = service.selectAllCategory();
-        List<Integer> categoryCount = service.selectAllCategoryCount();
-        int totalCount = service.selectCategoryCount(categoryCode);
-        List<ProductDTO> products = service.selectCategoryProducts(categoryCode);
+        List<Integer> categoryCount = service.selectAllCategoryCount(userId);
+        int totalCount = service.selectCategoryCount(map);
+        List<ProductDTO> products = service.selectCategoryProducts(map);
         
         model.addAttribute("category", category);
         model.addAttribute("categoryCount", categoryCount);

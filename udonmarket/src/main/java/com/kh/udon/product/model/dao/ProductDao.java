@@ -21,7 +21,7 @@ public interface ProductDao
 
     int selectTotalCount(String userId);
 
-    int selectCategoryCount(String categoryCode);
+    int selectCategoryCount(Map<String, Object> map);
 
     CouponDTO selectCoupon(String userId);
     
@@ -29,7 +29,7 @@ public interface ProductDao
 
     List<ProductDTO> selectAll(String userId);
 
-    List<ProductDTO> selectCategoryProducts(String categoryCode);
+    List<ProductDTO> selectCategoryProducts(Map<String, Object> map);
 
     int addToWish(Wish wish);
 

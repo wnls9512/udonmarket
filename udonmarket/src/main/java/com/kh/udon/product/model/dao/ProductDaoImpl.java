@@ -41,9 +41,9 @@ public class ProductDaoImpl implements ProductDao
     }
 
     @Override
-    public int selectCategoryCount(String categoryCode)
+    public int selectCategoryCount(Map<String, Object> map)
     {
-        return session.selectOne("product.selectCategoryCount", categoryCode);
+        return session.selectOne("product.selectCategoryCount", map);
     }
 
     @Override
@@ -65,9 +65,9 @@ public class ProductDaoImpl implements ProductDao
     }
 
     @Override
-    public List<ProductDTO> selectCategoryProducts(String categoryCode)
+    public List<ProductDTO> selectCategoryProducts(Map<String, Object> map)
     {
-        return session.selectList("product.selectCategoryProducts", categoryCode);
+        return session.selectList("product.selectCategoryProducts", map);
     }
 
     @Override
