@@ -41,7 +41,7 @@
                         <aside class="left_widgets p_filter_widgets">
                             <div class="l_w_title">
 	                            <div class="single_product_menu d-flex">
-	                            	<a href="${pageContext.request.contextPath }/product/register?userId=test" class="genric-btn primary radius"
+	                            	<a href="${pageContext.request.contextPath }/product/register?userId=${userId}" class="genric-btn primary radius"
 	                            	   style="width:100%">상품 등록</a>
 	                            </div>
                                 <h3>카테고리</h3>

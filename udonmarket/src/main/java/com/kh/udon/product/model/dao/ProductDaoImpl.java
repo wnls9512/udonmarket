@@ -29,15 +29,15 @@ public class ProductDaoImpl implements ProductDao
     }
 
     @Override
-    public List<Integer> selectAllCategoryCount()
+    public List<Integer> selectAllCategoryCount(String userId)
     {
-        return session.selectList("product.selectAllCategoryCount");
+        return session.selectList("product.selectAllCategoryCount", userId);
     }
 
     @Override
-    public int selectTotalCount()
+    public int selectTotalCount(String userId)
     {
-        return session.selectOne("product.selectTotalCount");
+        return session.selectOne("product.selectTotalCount", userId);
     }
 
     @Override
@@ -59,9 +59,9 @@ public class ProductDaoImpl implements ProductDao
     }
 
     @Override
-    public List<ProductDTO> selectAll()
+    public List<ProductDTO> selectAll(String userId)
     {
-        return session.selectList("product.selectAll");
+        return session.selectList("product.selectAll", userId);
     }
 
     @Override

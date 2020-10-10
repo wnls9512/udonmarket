@@ -17,9 +17,9 @@ public interface ProductService
 
     List<CategoryVO> selectAllCategory();
 
-    List<Integer> selectAllCategoryCount();
+    List<Integer> selectAllCategoryCount(String userId);
 
-    int selectTotalCount();
+    int selectTotalCount(String userId);
 
     int selectCategoryCount(String categoryCode);
 
@@ -27,7 +27,7 @@ public interface ProductService
 
     int insert(ProductVO product);
 
-    List<ProductDTO> selectAll();
+    List<ProductDTO> selectAll(String userId);
 
     List<ProductDTO> selectCategoryProducts(String categoryCode);
 

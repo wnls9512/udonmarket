@@ -39,7 +39,7 @@ public class ProductController
 
     // 전체 리스트
     @RequestMapping("/productListView")
-    public String productList(Model model)
+    public String productList(@RequestParam String userId, Model model)
     {
         /*
          *      1. 카테고리 목록
@@ -49,9 +49,9 @@ public class ProductController
          */
         
         List<CategoryVO> category = service.selectAllCategory();
-        List<Integer> categoryCount = service.selectAllCategoryCount();
-        int totalCount = service.selectTotalCount();
-        List<ProductDTO> products = service.selectAll();
+        List<Integer> categoryCount = service.selectAllCategoryCount(userId);
+        int totalCount = service.selectTotalCount(userId);
+        List<ProductDTO> products = service.selectAll(userId);
         
         model.addAttribute("category", category);
         model.addAttribute("categoryCount", categoryCount);

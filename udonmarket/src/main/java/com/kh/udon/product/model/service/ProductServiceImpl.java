@@ -29,15 +29,15 @@ public class ProductServiceImpl implements ProductService
     }
 
     @Override
-    public List<Integer> selectAllCategoryCount()
+    public List<Integer> selectAllCategoryCount(String userId)
     {
-        return dao.selectAllCategoryCount();
+        return dao.selectAllCategoryCount(userId);
     }
 
     @Override
-    public int selectTotalCount()
+    public int selectTotalCount(String userId)
     {
-        return dao.selectTotalCount();
+        return dao.selectTotalCount(userId);
     }
 
     @Override
@@ -59,9 +59,9 @@ public class ProductServiceImpl implements ProductService
     }
 
     @Override
-    public List<ProductDTO> selectAll()
+    public List<ProductDTO> selectAll(String userId)
     {
-        return dao.selectAll();
+        return dao.selectAll(userId);
     }
 
     @Override
