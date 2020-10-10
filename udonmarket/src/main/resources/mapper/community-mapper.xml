@@ -159,6 +159,18 @@
 		)
 	</insert>
 	
+	<!-- 게시글 수정 폼 -->
+	<select id="selectByBCode" resultType="community">
+		select * from board where b_code = #{bCode}
+	</select>
+	
+	<!-- 게시글 수정 -->
+	<update id="update">
+		update board set 
+		category_code=#{categoryCode}, board_title=#{boardTitle}, board_content=#{boardContent}, hashtag_code=#{hashtagCode}
+		where b_code = #{bCode}
+	</update>
+	
 	<!-- 게시글 삭제 -->
 	<delete id="delete">
 		delete from board where b_code = #{bCode}
