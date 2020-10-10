@@ -84,11 +84,23 @@ public class CommunityDaoImpl implements CommunityDao
 	    {
 	        return session.insert("community.insert", community);
 	    }
+	 
+	 @Override
+	    public Community selectByBCode(int bCode)
+	    {
+	        return session.selectOne("community.selectByBCode", bCode);
+	    }
+	 
+	 @Override
+	    public int update(Community community)
+	    {
+	        return session.update("community.update", community);
+	    }
 
 	 @Override
 	    public int delete(int bCode)
 	    {
-	        return session.update("community.delete", bCode);
+	        return session.delete("community.delete", bCode);
 	    }
 
 	@Override

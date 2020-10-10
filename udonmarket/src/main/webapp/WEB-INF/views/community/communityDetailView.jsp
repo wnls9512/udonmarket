@@ -180,7 +180,7 @@ function deleteProduct(bCode)
                      </ul>
                      
                      <div style="float: right;">
-	                     <a href="">수정</a>
+	                     <a href="${pageContext.request.contextPath }/community/updateBoard?bCode=${community.BCode}<%-- &categoryCode=${community.categoryCode }&hashtagCode=${community.hashtagCode} --%>">수정</a>
 	                     &nbsp;
 	                     <a href="javascript:deleteProduct('${community.BCode }');">삭제</a>
                      </div>

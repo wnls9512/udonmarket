@@ -170,6 +170,28 @@ public class CommunityController
         return map;
     }
     
+    // 수정
+    @GetMapping("/updateBoard")
+    public String updateBoard(@RequestParam int bCode, Model model)
+    {
+        Community community = service.selectByBCode(bCode);
+        
+        model.addAttribute("community", community);
+        
+        return "community/communityUpdateForm";
+    }
+    @PostMapping("/update")
+    public String update(Community community, RedirectAttributes rttr)
+    {
+        log.debug("community = {}", community);
+        
+        int result = service.update(community);
+        
+        rttr.addFlashAttribute("msg", result > 0 ? "게시글 수정 성공 💛" : "게시글 수정 실패 🤔");
+        
+        return "redirect:/community/communityListView";
+    }
+    
 }
 
 
