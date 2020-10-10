@@ -75,7 +75,7 @@ a {
 										<c:forEach items="${ list }" var="ReplyReport">
 											<tr>
 												<td>${ ReplyReport.reportCode }</td>
-												<td>${ ReplyReport.reply_code }</td>
+												<td>${ ReplyReport.replyCode }</td>
 												<td>${ ReplyReport.reportId }</td>
 												<td>${ ReplyReport.reasonContent }</td>
 											</tr>

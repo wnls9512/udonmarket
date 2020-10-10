@@ -13,9 +13,9 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class ResonReport implements Serializable {
+public class ReasonReport implements Serializable {
 
 	private int reasonCode;
-	private String ReasonContent;
+	private String reasonContent;
 	private int parentCode;
 }

@@ -74,7 +74,7 @@ a {
                     <div class="row align-items-center latest_product_inner">
                         <div class="col-lg-4 col-sm-6">
                             <div class="single_product_item">
-                            		<table id="tbl-coupon" class="table table-striped table-hover">
+                            		<table id="tbl-coupon" class="table table-bordered">
 										<tr>
 											<th>쿠폰코드</th>
 											<th>쿠폰보유자</th>
