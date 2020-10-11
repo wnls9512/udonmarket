@@ -15,7 +15,7 @@
 		      and p.seller in (
 		                        select l.user_id 
 		                        from location l,(select latitude, longitude, radius from location where user_id = #{userId}) a
-		                        where calc_distance(a.latitude, a.longitude, l.latitude, l.longitude) < a.radius and user_id != #{userId}
+		                        where calc_distance(a.latitude, a.longitude, l.latitude, l.longitude) < a.radius
 		                        )
 		order by reg_date
 	]]>
@@ -32,7 +32,7 @@
 		      and p.seller in (
 		                        select l.user_id 
 		                        from location l,(select latitude, longitude, radius from location where user_id = #{userId}) a
-		                        where calc_distance(a.latitude, a.longitude, l.latitude, l.longitude) < a.radius and user_id != #{userId}
+		                        where calc_distance(a.latitude, a.longitude, l.latitude, l.longitude) < a.radius
 		                        )
 		order by reg_date	
 	]]>
@@ -51,7 +51,7 @@
 	        	                select l.user_id 
 		                        from location l, (select latitude, longitude, radius from location where user_id = #{userId}) a
 								<![CDATA[
-		                        where calc_distance(a.latitude, a.longitude, l.latitude, l.longitude) < a.radius and user_id != #{userId}
+		                        where calc_distance(a.latitude, a.longitude, l.latitude, l.longitude) < a.radius
 								]]>
 	                        )
 			<if test="category != 0 ">
@@ -65,11 +65,12 @@
 	<select id="selectTotalCount" resultType="_int">
 	<![CDATA[
 		select count(*) from product p
-		where p.seller in (
-	                        select l.user_id 
-	                        from location l,(select latitude, longitude, radius from location where user_id = #{userId}) a
-	                        where calc_distance(a.latitude, a.longitude, l.latitude, l.longitude) < a.radius and user_id != #{userId}
-	                      )
+		where p.open_status = 1 and (p.trade_status = 'S' or p.trade_status = 'R') and p.delete_yn = 'N' 
+		      and p.seller in (
+		                        select l.user_id 
+		                        from location l,(select latitude, longitude, radius from location where user_id = #{userId}) a
+		                        where calc_distance(a.latitude, a.longitude, l.latitude, l.longitude) < a.radius
+		                        )
 	]]>
 	</select>
 	
@@ -77,11 +78,12 @@
 	<select id="selectCategoryCount" resultType="_int">
 	<![CDATA[
 		select count(*) from product p
-		where p.seller in (
-	                        select l.user_id 
-	                        from location l,(select latitude, longitude, radius from location where user_id = #{userId}) a
-	                        where calc_distance(a.latitude, a.longitude, l.latitude, l.longitude) < a.radius and user_id != #{userId}
-	                      )
+		where p.open_status = 1 and (p.trade_status = 'S' or p.trade_status = 'R') and delete_yn = 'N' and p.category = #{categoryCode} 
+		      and p.seller in (
+		                        select l.user_id 
+		                        from location l,(select latitude, longitude, radius from location where user_id = #{userId}) a
+		                        where calc_distance(a.latitude, a.longitude, l.latitude, l.longitude) < a.radius
+		                        )
               and category = #{categoryCode}
 	]]>
 	</select>
@@ -96,7 +98,7 @@
          	            		select l.user_id 
             	         		from location l,(select latitude, longitude, radius from location where user_id = #{userId}) a
 								<![CDATA[
-                     			where calc_distance(a.latitude, a.longitude, l.latitude, l.longitude) < a.radius and user_id != #{userId}
+                     			where calc_distance(a.latitude, a.longitude, l.latitude, l.longitude) < a.radius
 								]]>
                    		  )
 		<if test="category != 0 ">
@@ -115,12 +117,18 @@
 	<![CDATA[
 		select count(p.category)
 		from category c 
-        left join (
-                    select * from product where seller in ( select l.user_id 
-                    from location l,(select latitude, longitude, radius from location where user_id = #{userId}) a
-                    where calc_distance(a.latitude, a.longitude, l.latitude, l.longitude) < a.radius and user_id != #{userId})) p on(c.category_code = p.category
-                   ) 
-		where c.category_parent = 1 
+		left join (
+					select * 
+					from product 
+					where seller in ( 
+										select l.user_id 
+										from location l,(select latitude, longitude, radius from location where user_id = #{userId}) a
+										where calc_distance(a.latitude, a.longitude, l.latitude, l.longitude) < a.radius
+									)
+						   and  open_status = 1 and (trade_status = 'S' or trade_status = 'R') and delete_yn = 'N'
+									 
+				  ) p on(c.category_code = p.category)
+		where c.category_parent = 1
 		group by c.category_code order by c.category_code
 	]]>
 	</select>
@@ -202,7 +210,7 @@
    	            		select l.user_id 
        	         		from location l,(select latitude, longitude, radius from location where user_id = #{userId}) a
 						<![CDATA[
-               			where calc_distance(a.latitude, a.longitude, l.latitude, l.longitude) < a.radius and user_id != #{userId}
+               			where calc_distance(a.latitude, a.longitude, l.latitude, l.longitude) < a.radius
 						]]>
 					   )
 		</where>
