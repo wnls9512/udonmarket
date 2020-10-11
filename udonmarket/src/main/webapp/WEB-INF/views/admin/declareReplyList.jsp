@@ -64,7 +64,7 @@ a {
  			<div class="col-lg-9">
                     <div class="row align-items-center latest_product_inner">
                         <div class="col-lg-4 col-sm-6">
-                            <div class="single_product_item">
+                            <div class="single_product_item">n
                             		<table id="tbl-declareReplyList" class="table table-striped table-hover">
 										<tr>
 											<th>신고번호</th>

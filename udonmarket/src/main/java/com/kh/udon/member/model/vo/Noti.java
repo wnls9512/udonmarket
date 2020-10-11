@@ -25,11 +25,12 @@ public class Noti implements Serializable{
 	 * like : 게시판 좋아요
 	 */
 	private String sender;
-	private String senderNickName;
 	private String receiver;
 	private int pCode;
 	private String pTitle;
 	private String notiContent;
 	private boolean notiCheck;
+	
+	private String senderNickName;
 	
 }

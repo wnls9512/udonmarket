@@ -3,11 +3,12 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
 <fmt:requestEncoding value="utf-8"/>
 
 <jsp:include page="/WEB-INF/views/common/header.jsp">
-	<jsp:param value="공지사항" name="pageTitle"/>
+	<jsp:param value="마이페이지" name="pageTitle"/>
 </jsp:include>
 
 <!-- mypage css -->
@@ -15,42 +16,11 @@
 <style>
 a{text-decoration: none; color: black;}
 html { font-size: 16px; }
-.slidecontainer {width: 100%;}
+#tbl th {min-width: 100px; vertical-align: middle;}
 
-.slider {
-  -webkit-appearance: none;
-  width: 100%;
-  height: 15px;
-  border-radius: 5px;
-  background: #d3d3d3;
-  outline: none;
-  opacity: 0.7;
-  -webkit-transition: .2s;
-  transition: opacity .2s;
-}
-
-.slider:hover {
-  opacity: 1;
-}
-
-.slider::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  appearance: none;
-  width: 25px;
-  height: 25px;
-  border-radius: 50%;
-  background: #4CAF50;
-  cursor: pointer;
-}
-
-.slider::-moz-range-thumb {
-  width: 25px;
-  height: 25px;
-  border-radius: 50%;
-  background: #4CAF50;
-  cursor: pointer;
 }
 </style>
+
     <!--================Home Banner Area =================-->
     <!-- breadcrumb start-->
 	<section class="breadcrumb" style="background-color : #ecfdff;">
@@ -59,7 +29,7 @@ html { font-size: 16px; }
                 <div class="col-lg-8">
                     <div class="breadcrumb_iner">
                         <div class="breadcrumb_iner_item">
-                            <h2 style="display: inline-block;">공지사항</h2>
+                            <h2 style="display: inline-block;">MYPAGE</h2>
 					       <img src="${pageContext.request.contextPath }/resources/img/banner/mypage3.png" 
 			                                    	 alt="" 
 			                                    	 style="max-width: 590px;position: relative; left: 115px;">  	 
@@ -73,19 +43,25 @@ html { font-size: 16px; }
     
     
     
-    
     <div class="row py-5 px-4">
 	    <div class="col-md-5 mx-auto">
 	        <!-- Profile widget -->
 	        <div class="bg-white shadow rounded overflow-hidden">
 	            <div class="px-4 pt-0 pb-4 cover">
 	                <div class="media align-items-end profile-head">
-	                    <div class="profile mr-3"><img src="https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=80" alt="..." width="130" class="rounded mb-2 img-thumbnail">
-	                    	<a href="${pageContext.request.contextPath }/member/mypage" class="btn btn-outline-dark btn-sm btn-block">Mypage</a>
+	                    <div class="profile mr-3">
+	                    	<!-- LoggdeInUser 정보 가져오기  -->
+	                        <sec:authentication property="principal" var="loggedInUser" />
+	                    	<img src="${pageContext.request.contextPath }/resources/img/member/${member.renamedFileName == null 
+	                    															 ? member.originalFileName:member.renamedFileName}" 
+	                    		 alt="..." 
+	                    		 width="130" 
+	                    		 class="rounded mb-2 img-thumbnail">
+	                    	<a href="${pageContext.request.contextPath }/member/mypage?userId=${member.userId}" class="btn btn-outline-dark btn-sm btn-block">Mypage</a>
 	                    </div>
 	                    <div class="media-body mb-5 text-white">
-	                        <h4 class="mt-0 mb-0" style="color:white;">Mark Williams</h4>
-	                        <p class="small mb-4" style="color:white;"> <i class="fas fa-map-marker-alt mr-2"></i>New York</p>
+	                        <h4 class="mt-0 mb-0" style="color:white;">${member.nickName}</h4>
+	                        <p class="small mb-4" style="color:white;"> <i class="fas fa-map-marker-alt mr-2"></i>${member.address}</p>
 	                    </div>
 	                </div>
 	            </div>
@@ -93,21 +69,21 @@ html { font-size: 16px; }
 	                <ul class="list-inline mb-0">
 	                    <li class="list-inline-item">            
 	                       <h6 class="font-weight-bold mb-0 d-block">	                       	
-	                       	<a href="${pageContext.request.contextPath }/member/salesList">
+	                       	<a href="${pageContext.request.contextPath }/member/salesList?userId=${member.userId}">
 	                       		<i class="fas fa-receipt fa-2x" ></i> <br /> 판매목록
 	                       	</a>
 	                       </h6>
 	                    </li>
 	                    <li class="list-inline-item">
 	                    	<h6 class="font-weight-bold mb-0 d-block">	                       	
-	                       	<a href="#">
+	                       	<a href="${pageContext.request.contextPath }/member/buyList?userId=${member.userId}">
 	                       		<i class="fas fa-shopping-bag fa-2x" ></i> <br /> 구매목록
 	                       	</a>
 	                       </h6>
 	                    </li>
 	                    <li class="list-inline-item">
 	                    	<h6 class="font-weight-bold mb-0 d-block">	                       	
-	                       	<a href="${pageContext.request.contextPath }/member/wishList">
+	                       	<a href="${pageContext.request.contextPath }/member/wishList?userId=${member.userId}">
 	                       		<i class="fas fa-heart fa-2x" ></i> <br /> 관심목록
 	                       	</a>
 	                       </h6>
@@ -116,39 +92,45 @@ html { font-size: 16px; }
 	            </div>
 	            <div class="px-4 py-3">
 	                <div class="p-4 rounded shadow-sm bg-light">
-					<hr />
-							<div style="text-align: center; ">
-								<h5 style="font-weight: bold;
-									  		color: #575757;">공지사항 상세정보</h5> 		
-							</div>
-							<hr />			
+				        <!-- Vertical Menu-->
 				        <nav class="nav flex-column bg-white shadow-sm rounded p-3">
-				        
-	                	<table class="table table-borderless">
-						  <thead>
-						    <tr>
-						      <th scope="col"><h2>제목 : 공지사항입니다</h2></th>
-						      <th scope="col"><p>작성일 : 2020 20 20</p></th>
-						    </tr>
-						  </thead>
-						  <tbody>
-						    <tr>
-						      <th scope="row">작성자 : 관리자</th>
-						    </tr>
-						    <tr>
-						      <th scope="row">공지사항입니담니ㅏ치나ㅣ암;ㅣ나치나아너아</th>
-						      
-						    </tr>
-						    
-						  </tbody>
-						</table> 
-						
-						  	
+						<div>
+							<hr />
+							<div style="text-align: center;">
+								  차단 사용자
+							</div>
+						  	<br />			
+							<div>
+							<table class="table table-hover" id="tbl">
+								<tbody>
+								<c:if test="${ not empty list}">
+									<c:forEach items="${list}" var="b">
+										<tr>
+											<th><img class="rounded-circle" src="/udon/resources/img/member/default_profile.jpg" 
+												     alt=""
+												     style="max-width: 80px;"></th>
+											<td><a href="${pageContext.request.contextPath }/member/mypage?userId=${member.userId}">
+											<h5>${b.blockUserNickName }</h5></a>
+											${b.blockUserAddr}</td>
+										</tr>
+									</c:forEach>
+								</c:if>
+								<c:if test="${ empty list }">
+									<tr><td>차단 사용자가 없어요</td></tr>
+								</c:if>
+								</tbody>
+							</table>
+							</div>
+						</div>
 				        </nav>
 	                </div>
 	            </div>
 	        </div>
 	    </div>
 	</div>
+
 <jsp:include page="/WEB-INF/views/common/footer.jsp"/>
+	
+	
+	
 	

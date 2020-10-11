@@ -28,6 +28,7 @@ import com.kh.email.EmailSender;
 import com.kh.udon.community.model.vo.Community;
 import com.kh.udon.community.model.vo.Reply;
 import com.kh.udon.member.model.service.MemberService;
+import com.kh.udon.member.model.vo.Block;
 import com.kh.udon.member.model.vo.Evaluate;
 import com.kh.udon.member.model.vo.Keyword;
 import com.kh.udon.member.model.vo.Member;
@@ -35,7 +36,6 @@ import com.kh.udon.member.model.vo.Noti;
 import com.kh.udon.member.model.vo.Review;
 import com.kh.udon.member.model.vo.Wish;
 import com.kh.udon.member.model.vo.announce;
-
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -614,6 +614,20 @@ public class MemberController {
 			resultStr = "처리 실패";
 		}    	
     	return resultStr;
+    }
+    
+    //차단 사용자 리스트
+    @RequestMapping("/blockUser")
+    public Model blockUser(@RequestParam("userId") String userId,
+    						Model model){
+    	
+    	Member member = service.selectOneMember(userId);
+    	List<Block> list = service.selectAllBlockUser(userId);
+    	
+    	model.addAttribute("member", member);
+    	model.addAttribute("list", list);
+    	
+    	return model;
     }
 
 }
