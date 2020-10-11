@@ -176,7 +176,8 @@ html { font-size: 16px; }
 														<span><a href="${pageContext.request.contextPath }/member/mypage?userId=${noti.sender }">${noti.senderNickName }</a>님이 
 														<a href="${pageContext.request.contextPath }/product/productDetailView?pCode=${noti.PCode }"
 														   onclick='updateCheck(${noti.notiCode})'>'${noti.PTitle}'</a>
-															 의 가격을  [<fmt:formatNumber value="${ noti.notiContent }" groupingUsed="true"/>]원으로 제안했어요 💌
+															 의 가격을  [<fmt:formatNumber value="${ noti.notiContent }" groupingUsed="true"/>]원으로 제안했어요
+															 [<a href="#">수락하기</a>] 💌
 														</span>
 													</td>
 											</c:when>
