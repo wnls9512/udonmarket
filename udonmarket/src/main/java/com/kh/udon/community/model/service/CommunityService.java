@@ -36,7 +36,13 @@ public interface CommunityService
 	
 	int insert(Community community);
 	
+	Community selectByBCode(int bCode);
+	
+	int update(Community community);
+	
 	int delete(int bCode);
+	
+//	int deleteReply(int replyCode);
 
 	List<Report> selectReportList(int limit, int offset);
 

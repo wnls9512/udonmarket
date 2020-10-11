@@ -41,7 +41,7 @@
                         <aside class="left_widgets p_filter_widgets">
                             <div class="l_w_title">
 	                            <div class="single_product_menu d-flex">
-	                            	<a href="${pageContext.request.contextPath }/product/register?userId=test" class="genric-btn primary radius"
+	                            	<a href="${pageContext.request.contextPath }/product/register?userId=${userId}" class="genric-btn primary radius"
 	                            	   style="width:100%">상품 등록</a>
 	                            </div>
                                 <h3>카테고리</h3>
@@ -51,12 +51,12 @@
                                 	<c:forEach items="${category }" var="c" varStatus="status">
                                     <li>
                                     	<c:if test="${selectedCategory == c.categoryCode}">
-                                        <a href="${pageContext.request.contextPath }/product/categoryList?category=${c.categoryCode }"
+                                        <a href="${pageContext.request.contextPath }/product/categoryList?category=${c.categoryCode }&userId=${userId}"
                                            style="color: red;">
                                         			${c.categoryName }</a>
                                     	</c:if>
                                     	<c:if test="${selectedCategory != c.categoryCode}">
-                                        <a href="${pageContext.request.contextPath }/product/categoryList?category=${c.categoryCode }">
+                                        <a href="${pageContext.request.contextPath }/product/categoryList?category=${c.categoryCode }&userId=${userId}">
                                         			${c.categoryName }</a>
                                     	</c:if>
                                         <span>(${categoryCount[status.index] })</span>
@@ -93,7 +93,7 @@
                         <div class="col-lg-4 col-sm-6">
                             <div class="single_product_item">
                                 <img src="${pageContext.request.contextPath}/resources/img/product/product_1.png" alt=""
-                                	 onclick="location.href='${pageContext.request.contextPath}/product/productDetailView?pCode=${p.PCode}';">
+                                	 onclick="location.href='${pageContext.request.contextPath}/product/productDetailView?pCode=${p.PCode}&userId=${userId }';">
                                 <div class="single_product_text">
                                     <h4>${p.title}</h4>
                                     <span style="color: gray;">${p.address} · <c:if test="${p.pull }">끌올 &nbsp;</c:if>
@@ -231,8 +231,8 @@ function addToWish(userId, pCode)
 // 검색
 function search(keyword) 
 {
-	location.href = "${pageContext.request.contextPath}/product/search?keyword=" +
-					keyword + "&category=" + ${selectedCategory};
+	location.href 
+		= "${pageContext.request.contextPath}/product/search?keyword=" + keyword + "&category=${selectedCategory}&userId=${userId}";
 }
 
 

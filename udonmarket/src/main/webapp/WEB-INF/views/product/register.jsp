@@ -41,12 +41,13 @@
     
     
         <div class="container">
-           	<form action="${pageContext.request.contextPath }/product/register" method="post" enctype="multipart/form-data">
+           	<form action="${pageContext.request.contextPath }/product/register?${_csrf.parameterName}=${_csrf.token}" method="post" >
+           	<!-- enctype="multipart/form-data" -->
 	            <div class="row align-items-center">
 	                <div class="col-lg-6 col-md-6">
 	                    <div class="login_part_text text-center" style="background-image:none; border: 1px solid #ff3368; width:88%; padding: 0;">
 	                        <div class="login_part_text_iner">
-								<input type="file" multiple/>
+								<!-- <input type="file" multiple/> -->
 	                        </div>
 	                    </div>
 	                </div>
@@ -55,7 +56,6 @@
 	                        <div class="login_part_form_iner">
 	                        	<input type="hidden" name="seller" id="seller" value="${userId }"/>
                                 <div class="col-md-12 form-group p_star" style="margin-top: 10%;">
-                                	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
                                     <input type="text" name="title" placeholder="글 제목"
 											onfocus="this.placeholder = ''" onblur="this.placeholder = '글 제목'" required
 											id=""

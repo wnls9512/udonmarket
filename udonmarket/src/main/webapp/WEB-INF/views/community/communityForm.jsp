@@ -35,7 +35,6 @@ function fn_addtoBoard(){
                     <div class="breadcrumb_iner">
                         <div class="breadcrumb_iner_item">
                             <h2>게시글 작성하기</h2>
-							<h3>서울 강남구 논현동</h3>
                         </div>
                     </div>
                 </div>

@@ -43,6 +43,7 @@ public class CommunityController
 //	@Autowired
 //	ResourceLoader resourceLoader;
     
+    // 게시글 리스트 & 검색
     @RequestMapping("/communityListView")
 	public String CommunityList(/* @RequestParam int categoryCode, */
     						Model model
@@ -90,6 +91,7 @@ public class CommunityController
 				return "community/communityListView";
     }
     
+    // 게시글 상세보기
     @RequestMapping("/communityDetailView")
     public String communityDetail(@RequestParam int bCode,
 			  Model model,
@@ -114,13 +116,13 @@ public class CommunityController
     			return "community/communityDetailView";
     }
     
+    // 게시글 작성
     @RequestMapping("/communityForm")
 	public String communityForm(/* @RequestParam String userId */) {
     	
     	return "community/communityForm";
     	
     }
-    
     @RequestMapping("/communityFormDone")
     public String register(@ModelAttribute("community") Community community, RedirectAttributes rttr, Model model) throws Exception
     {
@@ -134,6 +136,7 @@ public class CommunityController
     }
     
 
+    // 댓글 작성
 	@RequestMapping(value="/saveReply", method = RequestMethod.POST)
 	public String saveReply(Reply reply, RedirectAttributes rttr) throws Exception {
 		log.info("saveReply");
@@ -143,10 +146,36 @@ public class CommunityController
 		rttr.addAttribute("bCode", reply.getBCode());
 
 		
-		return "redirect:/community/communityListView";
+		return "redirect:/community/communityDetailView?bCode={bCode}";
 	}
 	
-	 // 삭제
+	// 댓글 삭제
+	@RequestMapping("/deleteReply")
+    public String deleteReply(@RequestParam int replyCode, @RequestParam int bCode, Model model)
+    {
+//        Map<String, Object> map = new HashMap<>();
+        
+//        String msg = "삭제되었습니다 😄";
+        
+        try 
+        {
+            int result = service.deleteReply(replyCode);
+        } 
+        catch(Exception e) 
+        {
+//        	e.printStackTrace();
+//            log.error("메뉴 삭제 오류", e);
+//            msg = "삭제에 실패했어요 💧";
+        }
+        
+//        map.put("msg", msg);
+        
+        
+        return "redirect:/community/communityDetailView?bCode=" + bCode;
+        
+    }
+	
+	 // 게시글 삭제
     @PutMapping("/{bCode}")
     @ResponseBody
     public Map<String, Object> deleteBoard(@PathVariable int bCode)
@@ -161,6 +190,7 @@ public class CommunityController
         } 
         catch(Exception e) 
         {
+        	e.printStackTrace();
             log.error("메뉴 삭제 오류", e);
             msg = "삭제에 실패했어요 💧";
         }
@@ -168,6 +198,28 @@ public class CommunityController
         map.put("msg", msg);
         
         return map;
+    }
+    
+    // 게시글 수정
+    @GetMapping("/updateBoard")
+    public String updateBoard(@RequestParam int bCode, Model model)
+    {
+        Community community = service.selectByBCode(bCode);
+        
+        model.addAttribute("community", community);
+        
+        return "community/communityUpdateForm";
+    }
+    @PostMapping("/update")
+    public String update(Community community, RedirectAttributes rttr)
+    {
+        log.debug("community = {}", community);
+        
+        int result = service.update(community);
+        
+        rttr.addFlashAttribute("msg", result > 0 ? "게시글 수정 성공 💛" : "게시글 수정 실패 🤔");
+        
+        return "redirect:/community/communityListView";
     }
     
 }
