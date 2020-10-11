@@ -52,7 +52,7 @@ a{text-decoration: none; color: black;}
 	                    		 width="130" 
 	                    		 class="rounded mb-2 img-thumbnail">
 	                    	<c:if test="${loggedInUserId == member.userId }">
-		                    	<a href="${pageContext.request.contextPath}/member/editprofile" class="btn btn-outline-dark btn-sm btn-block">Edit profile</a>
+		                    	<a href="${pageContext.request.contextPath}/member/editprofile?userId=${member.userId}" class="btn btn-outline-dark btn-sm btn-block">Edit profile</a>
 	                    	</c:if>
 	                    	<c:if test="${loggedInUserId ne member.userId }">
 	                    		<a href="${pageContext.request.contextPath}/member/addBlockUser" class="btn btn-outline-dark btn-sm btn-block">차단하기</a>
@@ -151,7 +151,7 @@ a{text-decoration: none; color: black;}
 	                <div class="p-4 rounded shadow-sm bg-light">
 				        <!-- Vertical Menu-->
 				        <nav class="nav flex-column bg-white shadow-sm rounded p-3">
-				          <a href="${pageContext.request.contextPath}/member/announce" class="nav-link px-4 rounded-pill">
+				          <a href="${pageContext.request.contextPath}/member/announce?userId=${member.userId}" class="nav-link px-4 rounded-pill">
 		                      <i class="far fa-flag"></i>&nbsp; 공지사항
 	                      </a>
 				          <a href="${pageContext.request.contextPath}/member/FAQ?userId=${member.userId}" class="nav-link px-4 rounded-pill">

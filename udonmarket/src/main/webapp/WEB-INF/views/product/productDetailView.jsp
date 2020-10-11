@@ -60,6 +60,7 @@
           <div class="s_product_text">
              <div class="media">
               <div class="d-flex" style="width: 17%;">
+              <a href="${pageContext.request.contextPath}/member/mypage?userId=${product.seller}">
                 <img class="rounded-circle" 
                 	 src="${pageContext.request.contextPath }/resources/img/member/${seller.renamedFilename == null ? seller.originalFilename:seller.renamedFilename}"  
                 	 alt="" />
@@ -67,6 +68,7 @@
               <div class="my-2 ml-2" style="width: 37%;">
                 <h4>${seller.nickname }</h4>
                 <span>${product.address }</span>
+                </a>
               </div>
               <!-- ==== 매너온도 START ==== -->
 			  <div class="my-2" style="width: 40%;">

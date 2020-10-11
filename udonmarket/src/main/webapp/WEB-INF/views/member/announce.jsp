@@ -3,17 +3,17 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
-<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 
 <fmt:requestEncoding value="utf-8"/>
 
 <jsp:include page="/WEB-INF/views/common/header.jsp">
-	<jsp:param value="공지사항" name="pageTitle"/>
+	<jsp:param value="FAQ" name="pageTitle"/>
 </jsp:include>
 
 <!-- mypage css -->
 <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/mypage.css">
+<link href="//cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.4.0/css/bootstrap4-toggle.min.css" rel="stylesheet">  
+<script src="//cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.4.0/js/bootstrap4-toggle.min.js"></script>
 <style>
 a{text-decoration: none; color: black;}
 html { font-size: 16px; }
@@ -52,20 +52,7 @@ html { font-size: 16px; }
   background: #4CAF50;
   cursor: pointer;
 }
-
-tr[data-board-no] {
-	cursor: pointer;
 </style>
-<script>
-$(function(){
-
-	$("tr[data-board-no]").click(function(){
-		var BCode = $(this).attr("data-board-no");
-		location.href = "${ pageContext.request.contextPath }/member/announceDetail?BCode=" + BCode;
-	});
-	
-});
-</script>
     <!--================Home Banner Area =================-->
     <!-- breadcrumb start-->
     <section class="breadcrumb breadcrumb_bg">
@@ -74,7 +61,7 @@ $(function(){
                 <div class="col-lg-8">
                     <div class="breadcrumb_iner">
                         <div class="breadcrumb_iner_item">
-                            <h2>공지사항</h2>
+                            <h2>자주묻는질문(FAQ)</h2>
 							<!-- <h3>서울 강남구 논현동</h3> -->
                         </div>
                     </div>
@@ -87,7 +74,7 @@ $(function(){
     
     
     
-   <div class="row py-5 px-4">
+    <div class="row py-5 px-4">
 	    <div class="col-md-5 mx-auto">
 	        <!-- Profile widget -->
 	        <div class="bg-white shadow rounded overflow-hidden">
@@ -145,9 +132,11 @@ $(function(){
 							<hr />
 							
 							<sec:authorize access="hasRole('ADMIN')">
+							<c:if test="${member.userId == 'admin' }">
 							<ul class="nav justify-content-end">
                                	<a class="btn btn-primary" href="${pageContext.request.contextPath }/admin/announceForm?userId=${member.userId}" role="button">글쓰기</a>
                             </ul>
+                            </c:if>
                             </sec:authorize>
 							
 				        <nav class="nav flex-column bg-white shadow-sm rounded p-3">

@@ -39,7 +39,7 @@ public interface MemberService
 
 	List<Review> selectAllReview(String userId);
 
-	List<announce> selectAnnounceList(int limit, int offset,String userId);
+	List<announce> selectAnnounceList(int limit, int offset);
 	
 	int insertMemberLocAuth(Member member);
 	

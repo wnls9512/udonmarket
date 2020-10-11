@@ -95,8 +95,8 @@ public class MemberServiceImpl implements MemberService
 	}
 
 	@Override
-	public List<announce> selectAnnounceList(int limit, int offset,String userId) {
-		return memberDao.selectAnnounceList(limit, offset,userId);
+	public List<announce> selectAnnounceList(int limit, int offset) {
+		return memberDao.selectAnnounceList(limit, offset);
 	}
 		
 	@Transactional(rollbackFor = { Exception.class })

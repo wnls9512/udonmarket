@@ -185,7 +185,7 @@ function deleteProduct(bCode)
 	                     <a href="javascript:deleteProduct('${community.BCode }');">삭제</a>
                      </div>
                      <br /><br />
-                     <a href="#">
+                     <a href="${pageContext.request.contextPath}/member/mypage?userId=${community.userId}">
                      <div class="blog-author" style="width: 100%;/*  margin:0 auto; */ margin-top: 5px; /* background-color: white; */">
                   <div class="media align-items-center" >
                      <img src="${pageContext.request.contextPath}/resources/img/blog/author.png" alt="">

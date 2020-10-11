@@ -88,7 +88,7 @@ public class MemberDaoImpl implements MemberDao
 	}
 
 	@Override
-	public List<announce> selectAnnounceList(int limit, int offset,String userId) {
+	public List<announce> selectAnnounceList(int limit, int offset) {
 		RowBounds rowBounds = new RowBounds(offset, limit);
 		return session.selectList("member.selectAnnounceList", null , rowBounds );
 	}
