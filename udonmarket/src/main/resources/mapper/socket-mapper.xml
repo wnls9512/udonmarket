@@ -19,17 +19,17 @@
 
 <!-- 알림 저장 -->
 <insert id="insertNoti">
-insert into 
-	notification_test
-values 
-	(noti_seq_test.nextval, 
-	 #{notiKind}, 
-	 #{sender}, 
-	 #{receiver}, 
-	 #{pCode}, 
-	 #{pTitle}, 
-	 #{notiContent}, 
-	 default)
+	insert into 
+		notification_test
+	values 
+		(noti_seq_test.nextval, 
+		 #{notiKind}, 
+		 #{sender}, 
+		 #{receiver}, 
+		 #{pCode}, 
+		 #{pTitle}, 
+		 #{notiContent}, 
+		 default)
 </insert>
 
 <!-- 알림 읽음 상태 변경 -->

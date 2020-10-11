@@ -25,6 +25,7 @@ $(function(){
 	
 });
 
+// 사이드바 검색
 $(document).on('click', '#btnSearch', function(e){
 
 		e.preventDefault();
@@ -42,14 +43,41 @@ $(document).on('click', '#btnSearch', function(e){
 	});	
 
 
-$(".replyWriteBtn").on("click", function(){
-  var formObj = $("form[name='replyForm']");
-  formObj.attr("action", "/saveReply");
-  formObj.submit();
-});
+// $(".replyWriteBtn").on("click", function(){
+//  var formObj = $("form[name='replyForm']");
+//  formObj.attr("action", "/saveReply");
+//  formObj.submit();
+// });
 
-// 삭제
-function deleteProduct(bCode)
+// 댓글 등록
+function fn_addtoBoard(){
+    
+    var form = document.getElementById("replyForm");
+    
+    form.action = "<c:url value='/community/saveReply'/>";
+    form.submit();
+
+    //댓글 등록 알림 관련
+    let $bCode = $("#bCode").val();
+    alert($bCode);
+    let $title = "${ community.boardTitle }";
+    let $sender = $("#userId").val();
+    let $bWriter = "${ community.userId }";
+    
+  	//소켓이 연결 되었을 때만 
+	if(sock) {
+		console.log("reply :: socket >> ", sock);
+		//cmd/발신인/수신인/게시글번호/게시글제목/공란
+		sock.send("reply," + $sender + "," + $bWriter + "," + $bCode + "," + $title + ", ");
+	}else{
+		console.log("Error on Reply ", sock);
+	}
+    //댓글 등록 알림 관련
+    
+}
+
+// 게시글 삭제
+function deleteBoard(bCode)
 {
 	if(confirm("삭제할까요?"))
 	{
@@ -182,7 +210,8 @@ function deleteProduct(bCode)
                      <div style="float: right;">
 	                     <a href="${pageContext.request.contextPath }/community/updateBoard?bCode=${community.BCode}<%-- &categoryCode=${community.categoryCode }&hashtagCode=${community.hashtagCode} --%>">수정</a>
 	                     &nbsp;
-	                     <a href="javascript:deleteProduct('${community.BCode }');">삭제</a>
+	                     <a href="javascript:deleteBoard('${community.BCode }');">삭제</a>
+	                     
                      </div>
                      <br /><br />
                      <a href="#">
@@ -316,6 +345,10 @@ function deleteProduct(bCode)
                                     </h5>
                                     <p class="date"> <fmt:formatDate value="${r.regDate}" pattern="yyyy-MM-dd" /> </p>
                                       &nbsp;&nbsp; &nbsp;&nbsp;
+                                      <a href="#">수정</a>&nbsp;
+                                      <p>·</p>&nbsp;
+                                      <a  href="${pageContext.request.contextPath }/community/deleteReply?replyCode=${r.replyCode}&bCode=${community.BCode}">삭제</a>&nbsp;
+                                      <p>·</p>&nbsp;
                                     <a href="#">신고하기</a>
                                  </div>
                                  
@@ -331,15 +364,16 @@ function deleteProduct(bCode)
                      <div class="row">
                         <div class="col-12">
                            <div class="form-group">
+                           <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                            <input type="hidden" id="bCode" name="bCode" value="${community.BCode}" />
                            <input type="hidden" id="userId" name="userId" value="test" />
-                              <textarea class="form-control w-100" name="comment" id="comment" cols="30" rows="5"
+                              <textarea class="form-control w-100" name="content" id="content" cols="30" rows="5"
                                  placeholder="댓글 작성 시 타인에 대한 배려와 책임을 담아주세요."></textarea>
                            </div>
                         </div>
                      </div>
                      <div class="form-group mt-3">
-                        <button type="button" class="replyWriteBtn">작성</button>
+                        <a href='#' onClick='fn_addtoBoard()' class="btn_3" style="text-align: center; font-weight: bold; color: white;">작성</a>
                      </div>
                   </form>
                </div>
