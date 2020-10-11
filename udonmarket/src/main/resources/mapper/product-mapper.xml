@@ -144,6 +144,9 @@
 	<insert id="insert">
 		insert into product values
 		(seq_product.nextval, #{seller}, null, #{title}, #{category}, #{content}, #{price}, sysdate, 1, 'S', #{coupon}, #{offer}, 'N', 0)
+    	<selectKey keyProperty="pCode" resultType="_int" order="AFTER">
+		select seq_product.currval from dual
+		</selectKey>
 	</insert>
 	
 	<!-- 관심 목록 등록 -->
@@ -252,4 +255,26 @@
 		where wish.p_code = product.p_code
 		and product.p_code = #{pCode}
 	</select>
+	
+	<!-- 상품 사진 추가 -->
+	<insert id="insertPhoto">
+		insert into product_photo values
+		(
+			seq_product_photo.nextval, null, #{originalFilename}, #{uuid}, #{uploadPath}
+		)
+	</insert>
+	
+	<!-- 상품사진 pCode update -->
+	<update id="updateProductCode" parameterType="java.util.Map">
+		update product_photo set p_code = #{pCode}
+		where uuid in
+		<foreach collection="uuids" item="item" index="i" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</update>
+	
+	<!-- 상품 사진 삭제(게시글 등록 페이지) -->
+	<delete id="deletePhoto">
+		delete from product_photo where uuid = #{uuid}
+	</delete>
 </mapper>

@@ -11,6 +11,7 @@ import com.kh.udon.product.model.dao.ProductDao;
 import com.kh.udon.product.model.vo.CategoryVO;
 import com.kh.udon.product.model.vo.CouponDTO;
 import com.kh.udon.product.model.vo.ProductDTO;
+import com.kh.udon.product.model.vo.ProductPhotoVO;
 import com.kh.udon.product.model.vo.ProductVO;
 import com.kh.udon.product.model.vo.ReasonReportVO;
 import com.kh.udon.product.model.vo.ReportVO;
@@ -175,6 +176,25 @@ public class ProductServiceImpl implements ProductService
 	public List<String> selectWishUserId(int pCode) {
 		return dao.selectWishUserId(pCode);
 	}
+
+    @Override
+    public int insert(ProductPhotoVO photoDTO)
+    {
+        return dao.insert(photoDTO);
+    }
+
+    @Override
+    public int updateProductCode(Map<String, Object> map)
+    {
+        return dao.updateProductCode(map);
+    }
+
+    @Override
+    public void deleteFile(String uuid)
+    {
+        dao.deleteFile(uuid);
+    }
+
 
 
 

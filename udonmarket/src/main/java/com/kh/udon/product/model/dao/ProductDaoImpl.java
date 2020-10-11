@@ -11,6 +11,7 @@ import com.kh.udon.member.model.vo.Wish;
 import com.kh.udon.product.model.vo.CategoryVO;
 import com.kh.udon.product.model.vo.CouponDTO;
 import com.kh.udon.product.model.vo.ProductDTO;
+import com.kh.udon.product.model.vo.ProductPhotoVO;
 import com.kh.udon.product.model.vo.ProductVO;
 import com.kh.udon.product.model.vo.ReasonReportVO;
 import com.kh.udon.product.model.vo.ReportVO;
@@ -55,7 +56,9 @@ public class ProductDaoImpl implements ProductDao
     @Override
     public int insert(ProductVO product)
     {
-        return session.insert("product.insert", product);
+        session.insert("product.insert", product);
+        
+        return product.getPCode();
     }
 
     @Override
@@ -176,6 +179,24 @@ public class ProductDaoImpl implements ProductDao
 	public List<String> selectWishUserId(int pCode) {
 		return session.selectList("product.selectWishUserId",pCode);
 	}
+
+    @Override
+    public int insert(ProductPhotoVO photoDTO)
+    {
+        return session.insert("product.insertPhoto", photoDTO);
+    }
+
+    @Override
+    public int updateProductCode(Map<String, Object> map)
+    {
+        return session.update("product.updateProductCode", map);
+    }
+
+    @Override
+    public void deleteFile(String uuid)
+    {
+        session.delete("product.deletePhoto", uuid);
+    }
 
 
 

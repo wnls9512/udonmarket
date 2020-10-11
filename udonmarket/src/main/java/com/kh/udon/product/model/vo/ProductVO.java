@@ -21,5 +21,6 @@ public class ProductVO implements Serializable
     String tradeStatus;
     boolean coupon;
     boolean offer;
-    
+ 
+    String photoId;
 }
