@@ -125,7 +125,7 @@ a{text-decoration: none; color: black;}
 				          <a href="${pageContext.request.contextPath }/member/keywordNoti?userId=${member.userId}" class="nav-link px-4 rounded-pill">
 		                      <i class="fas fa-tag"></i>&nbsp; 키워드 알림 설정
 	                      </a>				        
-	                      <a href="#" class="nav-link px-4 rounded-pill">
+	                      <a href="${pageContext.request.contextPath }/member/blockUser?userId=${member.userId}" class="nav-link px-4 rounded-pill">
 	                           <i class="fas fa-user-lock"></i>&nbsp; 차단 사용자 관리
 	                      </a>
 				        </nav>

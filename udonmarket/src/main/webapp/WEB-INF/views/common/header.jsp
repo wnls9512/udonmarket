@@ -103,7 +103,11 @@
                            	<!-- notiList -->
                             <a href="#" id="bell" onclick="showNoti();"><i class="ti-bell"></i></a>
                            	<!-- notiList -->
-                            <a href="${pageContext.request.contextPath }/chat/chatListView"><i class="ti-comments-smiley"></i></a>
+<%--                             <a href="${pageContext.request.contextPath }/chat/chatListView"
+                               target = "_black"> --%>
+                            <a href="${pageContext.request.contextPath }/chat/chatListView">
+                            	<i class="ti-comments-smiley"></i>
+                            </a>
                             
                             <sec:authorize access="isAnonymous()">
 	                        	<a href="${pageContext.request.contextPath }/member/loginForm"><i class="ti-power-off"></i></a>

@@ -213,7 +213,7 @@ $(function(){
 		        <div class="input-group">
 		          <input type="text" id="message" placeholder="Type a message" aria-describedby="button-addon2" class="form-control rounded-0 border-0 py-4 bg-light">
 		          <div class="input-group-append">
-		            <button id="button-addon2" type="submit" class="btn btn-link">전송<i class="far fa-paper-plane"></i></button>
+		            <button id="sendBtn" type="button" class="btn btn-link">전송<i class="far fa-paper-plane"></i></button>
 		          </div>
 		        </div>
 		      </form>
@@ -225,10 +225,10 @@ $(function(){
   </div>
 </div>
 <script>
-<script type="text/javascript">
 $("#sendBtn").click(function() {
-    sendMessage();
-    $('#message').val('');
+	let $msg = $("#message").val();
+	
+	
 });
 </script>
 </body>
