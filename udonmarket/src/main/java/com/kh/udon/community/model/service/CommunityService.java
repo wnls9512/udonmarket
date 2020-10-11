@@ -41,6 +41,8 @@ public interface CommunityService
 	int update(Community community);
 	
 	int delete(int bCode);
+	
+//	int deleteReply(int replyCode);
 
 	List<Report> selectReportList(int limit, int offset);
 
