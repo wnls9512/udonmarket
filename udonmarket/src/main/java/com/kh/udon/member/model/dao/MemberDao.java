@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.kh.udon.community.model.vo.Community;
 import com.kh.udon.community.model.vo.Reply;
+import com.kh.udon.member.model.vo.Block;
 import com.kh.udon.member.model.vo.Evaluate;
 import com.kh.udon.member.model.vo.Keyword;
 import com.kh.udon.member.model.vo.Location;
@@ -89,5 +90,7 @@ public interface MemberDao
 	int insertNoti(Noti n);
 
 	int updateNotiCheck(int notiCode);
+
+	List<Block> selectAllBlockUser(String userId);
 
 }

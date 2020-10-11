@@ -367,4 +367,18 @@ where
 		user_id = #{userId}
 </select>
 
+<!-- 차단 사용자 가져오기 -->
+<select id="selectAllBlockUser" resultType="block">
+	select 
+		b.user_id userId,
+        block_id blockUserId, 
+        m.nickname blockUserNickName,
+        m.address blockUserAddr
+	from 
+		block B, member M
+	where 
+		b.block_id = m.user_id
+	and 
+		b.user_id = #{userId}
+</select>
 </mapper>

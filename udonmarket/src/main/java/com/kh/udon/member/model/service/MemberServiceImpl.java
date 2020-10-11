@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.kh.udon.community.model.vo.Community;
 import com.kh.udon.community.model.vo.Reply;
 import com.kh.udon.member.model.dao.MemberDao;
+import com.kh.udon.member.model.vo.Block;
 import com.kh.udon.member.model.vo.Evaluate;
 import com.kh.udon.member.model.vo.Keyword;
 import com.kh.udon.member.model.vo.Member;
@@ -218,5 +219,10 @@ public class MemberServiceImpl implements MemberService
 	@Override
 	public int updateNotiCheck(int notiCode) {
 		return memberDao.updateNotiCheck(notiCode);
+	}
+
+	@Override
+	public List<Block> selectAllBlockUser(String userId) {
+		return memberDao.selectAllBlockUser(userId);
 	}
 }

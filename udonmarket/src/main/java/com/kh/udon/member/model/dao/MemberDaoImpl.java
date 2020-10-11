@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import com.kh.udon.community.model.vo.Community;
 import com.kh.udon.community.model.vo.Reply;
+import com.kh.udon.member.model.vo.Block;
 import com.kh.udon.member.model.vo.Evaluate;
 import com.kh.udon.member.model.vo.Keyword;
 import com.kh.udon.member.model.vo.Member;
@@ -203,6 +204,11 @@ public class MemberDaoImpl implements MemberDao
 	
 	public int updateNotiCheck(int notiCode) {
 		return session.update("socket.updateNotiCheck", notiCode);
+	}
+
+	@Override
+	public List<Block> selectAllBlockUser(String userId) {
+		return session.selectList("member.selectAllBlockUser", userId);
 	}
 
 }
