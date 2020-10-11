@@ -74,6 +74,8 @@ public interface ProductDao
 
     void deleteFile(String uuid);
 
+    List<ProductPhotoVO> selectPhotos(int pCode);
+
 
 
 

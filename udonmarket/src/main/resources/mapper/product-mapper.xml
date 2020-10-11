@@ -277,4 +277,9 @@
 	<delete id="deletePhoto">
 		delete from product_photo where uuid = #{uuid}
 	</delete>
+	
+	<!-- 상품 사진 불러오기 -->
+	<select id="selectPhotos" resultType="productPhotoVO">
+		select * from product_photo where p_code = #{pCode}
+	</select>
 </mapper>

@@ -74,6 +74,8 @@ public interface ProductService
 
     void deleteFile(String uuid);
 
+    List<ProductPhotoVO> selectPhotos(int pCode);
+
 
 
 

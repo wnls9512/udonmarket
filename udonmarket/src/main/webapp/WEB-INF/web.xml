@@ -28,7 +28,6 @@
 		<load-on-startup>1</load-on-startup>
 		<!-- 비동기 로직 -->
 		<async-supported>true</async-supported>
-		<!-- file upload -->
 		<multipart-config>
 			<location>C:\\upload\\temp</location>
 			<max-file-size>20971520</max-file-size> <!-- 20MB -->

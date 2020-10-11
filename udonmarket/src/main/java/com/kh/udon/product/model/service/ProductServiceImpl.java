@@ -195,6 +195,12 @@ public class ProductServiceImpl implements ProductService
         dao.deleteFile(uuid);
     }
 
+    @Override
+    public List<ProductPhotoVO> selectPhotos(int pCode)
+    {
+        return dao.selectPhotos(pCode);
+    }
+
 
 
 

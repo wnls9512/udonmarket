@@ -41,18 +41,11 @@
         <div class="col-lg-7 col-xl-7">
           <div class="product_slider_img">
             <div id="vertical">
-              <div data-thumb="${pageContext.request.contextPath}/resources/img/product/single-product/product_1.png">
-                <img src="${pageContext.request.contextPath}/resources/img/product/single-product/product_1.png" />
-              </div>
-              <div data-thumb="${pageContext.request.contextPath}/resources/img/product/single-product/product_1.png">
-                <img src="${pageContext.request.contextPath}/resources/img/product/single-product/product_1.png" />
-              </div>
-              <div data-thumb="${pageContext.request.contextPath}/resources/img/product/single-product/product_1.png">
-                <img src="${pageContext.request.contextPath}/resources/img/product/single-product/product_1.png" />
-              </div>
-              <div data-thumb="${pageContext.request.contextPath}/resources/img/product/single-product/product_1.png">
-                <img src="${pageContext.request.contextPath}/resources/img/product/single-product/product_1.png" />
-              </div>
+            	<c:forEach items="${photos }" var="photo">
+				<div data-thumb="${pageContext.request.contextPath }/resources/upload/${photo.uploadPath}/${photo.uuid}_${photo.originalFilename}">
+				  <img src="${pageContext.request.contextPath }/resources/upload/${photo.uploadPath}/${photo.uuid}_${photo.originalFilename}" />
+				</div>
+				</c:forEach>
             </div>
           </div>
         </div>
@@ -383,6 +376,29 @@
 
 	
 <script>
+/* 사진 불러오기 */
+$(function()
+{
+	var pCode = ${product.PCode};
+
+	$.getJSON("${pageContext.request.contextPath}/product/getPhotos", {pCode: pCode}, function(arr)
+	{
+		var str = "";
+
+		$(arr).each(function(i, attach))
+		{
+			var fileCallPath = encodeURIComponent(attach.uploadPath + "/" + attach.uuid + "_" + attach.originalFilename);
+
+			str += "<div data-thumb='C:/upload/${photo.uploadPath }/${photo.uuid }_${photo.originalFilename }'>";
+		}
+	});
+});
+
+
+<div data-thumb="C:/upload/${photo.uploadPath }/${photo.uuid }_${photo.originalFilename }">
+	<img src="C:/upload/${photo.uploadPath }/${photo.uuid }_${photo.originalFilename }" />
+</div>
+
 //제안 하기 버튼 막기 (최소 가격)
 $(function(){
 	$(".guide.error").hide();

@@ -198,6 +198,12 @@ public class ProductDaoImpl implements ProductDao
         session.delete("product.deletePhoto", uuid);
     }
 
+    @Override
+    public List<ProductPhotoVO> selectPhotos(int pCode)
+    {
+        return session.selectList("product.selectPhotos", pCode);
+    }
+
 
 
 

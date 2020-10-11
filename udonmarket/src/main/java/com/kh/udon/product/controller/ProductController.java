@@ -15,6 +15,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -199,10 +202,13 @@ public class ProductController
          *      3. 비슷한 상품
          *      4. 판매자 다른 상품
          *      5. 신고 목록
+         *      6. 상품 사진
          */
+        
         ProductDTO product = service.selectDTOByPCode(pCode);
         SellerDTO seller = service.selectSeller(product.getSeller());
         List<ReasonReportVO> reasonReport = service.selectReasonReport();
+        List<ProductPhotoVO> photos = service.selectPhotos(pCode);
         
         // --- 비슷한 상품 ---
         String[] keywords = product.getTitle().split(" ");
@@ -228,8 +234,17 @@ public class ProductController
         model.addAttribute("similar", similar);
         model.addAttribute("other", other);
         model.addAttribute("reasonReport", reasonReport);
+        model.addAttribute("photos", photos);
         
         return "product/productDetailView";
+    }
+    
+    /* 사진 불러오기 */
+    @GetMapping(value = "/getPhotos", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ResponseBody
+    public ResponseEntity<List<ProductPhotoVO>> getPhotos(int pCode)
+    {
+        return new ResponseEntity<List<ProductPhotoVO>>(service.selectPhotos(pCode), HttpStatus.OK);
     }
     
     // 관심목록 추가
@@ -379,7 +394,10 @@ public class ProductController
      */
     @RequestMapping("/boardSaveFile.do")
     @ResponseBody
-    public String boardSaveFile(MultipartHttpServletRequest multipartReq, Model model, HttpSession session) throws Exception 
+    public String boardSaveFile(MultipartHttpServletRequest multipartReq,
+                                HttpServletRequest request,
+                                Model model, 
+                                HttpSession session) throws Exception 
     {
         String newName = null;
 
@@ -390,7 +408,7 @@ public class ProductController
          */
 
         // ------ make folder(yyyy/MM/dd) ------
-        String uploadFolder = "C:\\upload";
+        String uploadFolder = request.getServletContext().getRealPath("/resources/upload/");
         String uploadFolderPath = getFolder();
         File uploadPath = new File(uploadFolder, uploadFolderPath);
         
@@ -459,12 +477,14 @@ public class ProductController
      */
     @PostMapping("/boardDeleteFile.do")
     @ResponseBody
-    public String boardDeleteFiles(@RequestParam(value="fileId", required=true) String fileId, Model model, HttpSession session) throws Exception 
+    public String boardDeleteFiles(@RequestParam(value="fileId", required=true) String fileId, 
+                                   Model model,
+                                   HttpServletRequest request,
+                                   HttpSession session) throws Exception 
     {
         // 물리 파일 삭제
-        File file = new File("c:\\upload\\" + getFolder() +"\\" + URLDecoder.decode(fileId, "UTF-8"));
-        
-        log.debug("deleteFile = {}", "c:\\upload\\" + getFolder() +"\\" + URLDecoder.decode(fileId, "UTF-8"));
+        String uploadFolder = request.getServletContext().getRealPath("/resources/upload/");
+        File file = new File(uploadFolder + getFolder() +"\\" + URLDecoder.decode(fileId, "UTF-8"));
         
         file.delete();
 
