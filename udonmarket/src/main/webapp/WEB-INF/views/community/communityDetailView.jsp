@@ -56,6 +56,23 @@ function fn_addtoBoard(){
     
     form.action = "<c:url value='/community/saveReply'/>";
     form.submit();
+
+    //댓글 등록 알림 관련
+    let $bCode = $("#bCode").val();
+    alert($bCode);
+    let $title = "${ community.boardTitle }";
+    let $sender = $("#userId").val();
+    let $bWriter = "${ community.userId }";
+    
+  	//소켓이 연결 되었을 때만 
+	if(sock) {
+		console.log("reply :: socket >> ", sock);
+		//cmd/발신인/수신인/게시글번호/게시글제목/공란
+		sock.send("reply," + $sender + "," + $bWriter + "," + $bCode + "," + $title + ", ");
+	}else{
+		console.log("Error on Reply ", sock);
+	}
+    //댓글 등록 알림 관련
     
 }
 

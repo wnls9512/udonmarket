@@ -23,19 +23,21 @@ html { font-size: 16px; }
 
     <!--================Home Banner Area =================-->
     <!-- breadcrumb start-->
-    <section class="breadcrumb breadcrumb_bg">
+	<section class="breadcrumb" style="background-color : #ecfdff;">
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-lg-8">
                     <div class="breadcrumb_iner">
                         <div class="breadcrumb_iner_item">
-                            <h2>MyPage</h2>
-							<!-- <h3>서울 강남구 논현동</h3> -->
+                            <h2 style="display: inline-block;">MYPAGE</h2>
+					       <img src="${pageContext.request.contextPath }/resources/img/banner/mypage3.png" 
+			                                    	 alt="" 
+			                                    	 style="max-width: 590px;position: relative; left: 115px;">  	 
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+         </div>
     </section>
     <!-- breadcrumb start-->
     

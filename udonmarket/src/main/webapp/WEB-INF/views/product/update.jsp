@@ -18,6 +18,7 @@
 
 $(function(){
 
+	//수신자가 여러명일 수 있음
 	var userIdList = "${userId}";
 	var userIdArr = userIdList != null ? userIdList.split(" ") : null;
 	
@@ -32,8 +33,7 @@ $(function(){
 
 			//소켓이 연결 되었을 때만 (있을 때만)
 			if(sock) {
-				console.log("reply.js :: socket >> ", sock);
-
+				console.log("price :: socket >> ", sock);
 				if(userIdArr != null){
 					//webSocket에 보내기
 					//cmd/발신인/수신인/상품코드/상품제목/가격
@@ -42,7 +42,7 @@ $(function(){
 				}
 								
 			}else{
-				console.log("Error on editReply ", sock);
+				console.log("Error on Price ", sock);
 			}
 		}
 

@@ -87,7 +87,7 @@ public class WebSocketHandler extends TextWebSocketHandler{
 				if("price".equals(cmd) && receiverSession != null) {
 //					TextMessage tmpMsg = new TextMessage("[가격 변동] " + boardNo +"의 가격이 " + noti + " 원으로 변동 되었습니다.");
 					TextMessage tmpMsg = new TextMessage("[가격 변동] " 
-							+ "<a href='/udon/product/productDetailView?pCode=" + pCode + "'>" + title +"</a>의 가격이 " + noti + " 원으로 변동 되었습니다.");
+							+ "<a href='/udon/product/productDetailView?pCode=" + pCode + "'>" + title +"</a>의 가격이 " + noti + " 원으로 변동 되었어요.");
 	
 					receiverSession.sendMessage(tmpMsg);									
 				}
@@ -96,12 +96,15 @@ public class WebSocketHandler extends TextWebSocketHandler{
 					receiverSession.sendMessage(tmpMsg);
 				}
 				else if("reply".equals(cmd) && receiverSession != null) {
-					TextMessage tmpMsg = new TextMessage("[댓글] " + sender + "님이" + pCode +"에 댓글을 달았습니다");
+//					TextMessage tmpMsg = new TextMessage("[댓글] " + sender + "님이" + pCode +"에 댓글을 달았습니다");
+					TextMessage tmpMsg = new TextMessage("[댓글] 게시글 "
+							+ "<a href='/udon/community/communityDetailView?bCode=" + pCode + "'>" + title +"에 댓글이 달렸어요.");
+
 					receiverSession.sendMessage(tmpMsg);
 				}
 			
 				//insert Noti
-				Noti n = new Noti(0, cmd, sender, receiver, null, pCode, title, noti, false);
+				Noti n = new Noti(0, cmd, sender, receiver, pCode, title, noti, false, null);
 				log.debug("noti = {}", n);
 				try {
 					int result = service.insertNoti(n);
