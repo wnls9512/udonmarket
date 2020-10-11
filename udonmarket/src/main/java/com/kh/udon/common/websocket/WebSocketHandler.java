@@ -102,6 +102,12 @@ public class WebSocketHandler extends TextWebSocketHandler{
 
 					receiverSession.sendMessage(tmpMsg);
 				}
+				else if("nego".equals(cmd) && receiverSession != null) {
+					TextMessage tmpMsg = new TextMessage("[가격 제안] "
+							+ "<a href='/udon/community/communityDetailView?bCode=" + pCode + "'>" + title +" 을/를 '" + noti +" 원' 으로 거래하고 싶어해요.");
+					
+					receiverSession.sendMessage(tmpMsg);
+				}
 			
 				//insert Noti
 				Noti n = new Noti(0, cmd, sender, receiver, pCode, title, noti, false, null);
