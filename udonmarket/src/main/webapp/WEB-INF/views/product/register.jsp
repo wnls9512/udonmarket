@@ -18,7 +18,12 @@
 <!-- filepond -->
 <link href="https://unpkg.com/filepond/dist/filepond.css" rel="stylesheet">
 <link href="${pageContext.request.contextPath }/resources/css/filepond-plugin-image-preview.css" rel="stylesheet">
-
+<style>
+body
+{
+	background: #fff;
+}
+</style>
     <!--================Home Banner Area =================-->
     <!-- breadcrumb start-->
     <section class="breadcrumb breadcrumb_bg">
@@ -37,16 +42,17 @@
     <!-- breadcrumb end-->
     
     <!--================ Register Area =================-->
-    <section class="login_part padding_top">
+    <section class="login_part">
     
     
         <div class="container">
             <div class="row align-items-center">
                 <div class="col-lg-6 col-md-6">
-                    <div class="login_part_text text-center" style="background-image:none; border: 1px solid #ff3368; width:88%; padding: 0;">
+                    <div class="login_part_text text-center" style="background-image:none; width:88%; padding: 0;">
                         <div class="login_part_text_iner">
 							<!-- filepond에서 사용히는 file -->
 					        <input type="file"/>
+					        <p style="color: red;">* 사진은 4개까지 업로드할 수 있어요  *</p>
                         </div>
                     </div>
                 </div>
@@ -65,7 +71,8 @@
                                     <input type="text" name="title" placeholder="글 제목"
 											onfocus="this.placeholder = ''" onblur="this.placeholder = '글 제목'" required
 											id=""
-											class="single-input-primary">
+											class="single-input-primary"
+											style="background: #f9f9ff;">
                                 </div>
                                 <div class="col-md-12 form-group p_star">
                                 	<button data-toggle="modal" data-target="#categoryModal" class="btn btn-primary genric-btn default-border" 
