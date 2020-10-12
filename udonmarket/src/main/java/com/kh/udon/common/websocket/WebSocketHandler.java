@@ -1,6 +1,8 @@
 package com.kh.udon.common.websocket;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,6 +15,8 @@ import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
+import com.kh.udon.chat.model.service.ChatService;
+import com.kh.udon.chat.model.vo.ChatMessage;
 import com.kh.udon.member.model.service.MemberService;
 import com.kh.udon.member.model.vo.Member;
 import com.kh.udon.member.model.vo.Noti;
@@ -40,6 +44,9 @@ public class WebSocketHandler extends TextWebSocketHandler{
 	
 	@Autowired
 	private MemberService service;
+
+	@Autowired
+	private ChatService chatService;
 	
 	//세션 리스트 (현재 login 중인 정보를 모두 모아 놓는 곳)
 	private List<WebSocketSession> sessions = new ArrayList<WebSocketSession>();
@@ -73,6 +80,10 @@ public class WebSocketHandler extends TextWebSocketHandler{
 		//메세지가 있을 경우에만
 		if(StringUtils.isNotEmpty(msg)) {
 			String[] strs = msg.split(",");
+			
+			/**
+			 * noti
+			 */
 			if(strs != null && strs.length == 6) {
 				String cmd = strs[0];
 				String sender = strs[1];
@@ -118,6 +129,50 @@ public class WebSocketHandler extends TextWebSocketHandler{
 				}catch (Exception e) {
 					e.printStackTrace();
 				}			
+			}
+			
+			/**
+			 * chat
+			 */
+			if(strs != null && strs.length == 5) {
+				String cmd = strs[0];
+				String sender = strs[1];
+				String receiver = strs[2];
+				int roomCode = Integer.parseInt(strs[3]);
+				String content = strs[4];
+				
+				//현재 접속 중인 (로그인 중인) 사용자 중에 receiver가 있을때만 알림을 보낸다
+				WebSocketSession receiverSession = userSessions.get(receiver); 
+				
+				if("chat".equals(cmd) && receiverSession != null) {
+					
+					Date now = new Date();
+					SimpleDateFormat fmt = new SimpleDateFormat ("yyyy/MM/dd HH:mm");
+					//fmt.format(now);
+					
+					String sendMsg = "<div name='sendMsg' class='media w-50 mb-3'><img src='https://res.cloudinary.com/mhmd/image/upload/v1564960395/avatar_usae7z.svg' alt='user' width='50' class='rounded-circle'>" +
+							"<div class='media-body ml-3'>" +
+							"<div class='bg-light rounded py-2 px-3 mb-2'>" +
+							"<p class='text-small mb-0 text-muted'>" + content + "</p>" +
+							"</div>" +
+							"<p class='small text-muted'>" + fmt.format(now) + "</p>" +
+							"</div>" +
+							"</div>";
+					
+					TextMessage tmpMsg = new TextMessage(sendMsg);
+					receiverSession.sendMessage(tmpMsg);									
+				}
+				
+				//insert Chat
+				ChatMessage m = new ChatMessage(0, roomCode, sender, content, null, null, null, null);
+				log.debug("m = {}", m);
+				try {
+					int result = chatService.insertMsg(m);
+					log.debug("InsertMsg result = {}", result);
+				}catch (Exception e) {
+					e.printStackTrace();
+				}
+				
 			}
 		}		
 	}

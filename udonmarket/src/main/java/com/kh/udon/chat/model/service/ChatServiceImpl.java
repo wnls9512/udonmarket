@@ -25,5 +25,10 @@ public class ChatServiceImpl implements ChatService
 		return dao.selectChatMsg(roomCode);
 	}
 
+	@Override
+	public int insertMsg(ChatMessage m) {
+		return dao.insertMsg(m);
+	}
+
 
 }
