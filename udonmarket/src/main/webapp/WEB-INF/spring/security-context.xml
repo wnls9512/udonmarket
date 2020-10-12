@@ -18,6 +18,7 @@
 		<intercept-url pattern="/" access="permitAll"/>
 		<intercept-url pattern="/index.jsp" access="permitAll"/>
 		<intercept-url pattern="/resources/**" access="permitAll"/>
+		<intercept-url pattern="/webSocket/**" access="permitAll"/>
 		<intercept-url pattern="/member/mypage" access="isAuthenticated()"/>		
 		<intercept-url pattern="/member/**" access="permitAll"/>
 		<intercept-url pattern="/admin/**" access="hasRole('ADMIN')"/>
@@ -32,7 +33,9 @@
 			login-processing-url="/member/login"
 			username-parameter="userId"
 			password-parameter="password"
+			authentication-success-forward-url="/member/memberLoginSuccess.do"
 			authentication-failure-forward-url="/member/memberLoginFailure"
+			default-target-url="/"
 		/>
 		
 <!-- 		logout-url: 로그아웃 처리 url. 핸들러메소드 필요없음. -->

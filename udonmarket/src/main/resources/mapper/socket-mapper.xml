@@ -42,6 +42,41 @@
 		noti_code = #{notiCode}
 </update>
 
+<!-- 채팅 방 리스트 가져오기 -->
+<select id="selectChatRoom" resultType="chatRoom">
+	select R.*,
+	       (select title 
+	        from product 
+	        where R.p_code = product.p_code) title,
+	       (select user_id 
+	        from chat_user 
+	        where room_code = R.room_code 
+	        and user_id != #{userId}) sender,
+	       (select nickname 
+	        from chat_user CU, member M 
+	        where CU.user_id = M.user_id 
+	        and room_code = R.room_code 
+	        and CU.user_id != #{userId}) senderNickName
+	from chat_room R
+	where R.room_code in (select R.room_code
+	                    from chat_room R
+	                        join chat_user U
+	                            on R.room_code = U.room_code
+	                    where user_id = #{userId})
+	order by room_code desc
+</select>
+
+<!-- 대화 내용 가져오기 -->
+<select id="selectChatMsg" resultType="chatMessage">
+	select MSG.*, 
+      	   nickname
+	from message MSG
+	    join member M
+	        on msg.user_id = m.user_id
+	where room_code = #{roomCode}
+	order by chat_date
+</select>
+
 </mapper>
 
 
