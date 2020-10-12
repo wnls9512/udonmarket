@@ -12,4 +12,6 @@ public interface ChatDao
 
 	List<ChatMessage> selectChatMsg(int roomCode);
 
+	int insertMsg(ChatMessage m);
+
 }
