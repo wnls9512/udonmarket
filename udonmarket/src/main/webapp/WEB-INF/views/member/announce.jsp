@@ -61,15 +61,12 @@ html { font-size: 16px; }
                 <div class="col-lg-8">
                     <div class="breadcrumb_iner">
                         <div class="breadcrumb_iner_item">
-<<<<<<< HEAD
                             <h2>자주묻는질문(FAQ)</h2>
 							<!-- <h3>서울 강남구 논현동</h3> -->
-=======
                             <h2 style="display: inline-block;">공지사항</h2>
 					       <img src="${pageContext.request.contextPath }/resources/img/banner/mypage3.png" 
 			                                    	 alt="" 
 			                                    	 style="max-width: 590px;position: relative; left: 115px;">  	 
->>>>>>> branch 'master' of https://github.com/oheunju/udonmarket.git
                         </div>
                     </div>
                 </div>
