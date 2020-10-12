@@ -179,8 +179,8 @@ public class MemberDaoImpl implements MemberDao
     }
 
 	@Override
-	public void updateNick(Member member) {
-		session.update("member.updateNick",member);
+	public int updateNick(Member member) {
+		return session.update("member.updateNick",member);
 	}
 	
 	public List<Noti> selectAllNoti(String userId) {

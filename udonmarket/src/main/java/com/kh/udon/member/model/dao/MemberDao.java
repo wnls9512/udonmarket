@@ -78,7 +78,7 @@ public interface MemberDao
 
     int insertEvaluate(Map<String, Object> map);
 
-	void updateNick(Member member);
+	int updateNick(Member member);
 
 	List<Community> selectPostList(String userId);
 

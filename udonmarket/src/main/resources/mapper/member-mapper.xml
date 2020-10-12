@@ -345,7 +345,7 @@ where
 	from 
 		board
 	where 
-		user_id = #{userId}
+		user_id=#{userId}
 </select>
 
 	<resultMap type="community" id="PostMap">

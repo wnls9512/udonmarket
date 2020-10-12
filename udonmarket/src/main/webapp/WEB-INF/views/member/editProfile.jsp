@@ -3,6 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
 <fmt:requestEncoding value="utf-8"/>
 
@@ -37,17 +38,17 @@ a{text-decoration: none; color: black;}
     
     
     
-    
+    <sec:authentication property="principal" var="loggedInUser" />
     <div class="row py-5 px-4">
 	    <div class="col-md-5 mx-auto">
 	        <!-- Profile widget -->
-	       <form action="${pageContext.request.contextPath }/member/nickUpdate" method="post">
+	       <form action="${pageContext.request.contextPath }/member/nickUpdate?userId=${member.userId}" method="post">
 	       <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+	       
 	        <div class="bg-white shadow rounded overflow-hidden">
 	            <div class="px-4 pt-0 pb-4 cover">
 	                <div class="media align-items-end profile-head">
 	                    <div class="profile mr-3">
-	                    <sec:authentication property="principal" var="loggedInUser" />
 	                    <img src="${pageContext.request.contextPath }/resources/img/member/${member.renamedFileName == null 
 	                    															 ? member.originalFileName:member.renamedFileName}" 
 	                    		 alt="..." 
@@ -69,7 +70,7 @@ a{text-decoration: none; color: black;}
 						  <div class="form-row">
 						    <div class="col">
 						      <input type="text" name="nickName" class="form-control" placeholder="${member.nickName}">
-						      <input type="hidden" name="userId" class="form-control" placeholder="${LoggedInUser}">
+						      <input type="hidden" name="userId" class="form-control" placeholder="${member.userId}">
 						    </div>
 						  </div>
 				        </nav>

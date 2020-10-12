@@ -181,14 +181,14 @@ public class MemberController {
 	
 	//닉네임 수정
 	@PostMapping("/nickUpdate" )
-	public String nickUpdate(@ModelAttribute Member member)
+	public String nickUpdate(Member member,RedirectAttributes rttr)
 	{
 		log.debug("member = {}", member);
 		
-		service.updateNick(member);
-		/* model.addAttribute("member",member); */
+		int result = service.updateNick(member);
+		rttr.addFlashAttribute("msg", result > 0 ? "닉네임 수정 성공" : "닉네임 수정 실패");
 		
-		return "/member/mypage";
+		return "redirect:/member/mypage";
 		
 	}
 	

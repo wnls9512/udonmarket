@@ -69,7 +69,7 @@ public interface MemberService
 
 	int updateQuitMember(String userId);
 
-	void updateNick(Member member);
+	int updateNick(Member member);
 
 	List<Community> selectPostList(String userId);
 

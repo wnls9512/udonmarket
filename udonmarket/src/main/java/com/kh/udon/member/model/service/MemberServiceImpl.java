@@ -191,8 +191,8 @@ public class MemberServiceImpl implements MemberService
 	}
 
 	@Override
-	public void updateNick(Member member) {
-		memberDao.updateNick(member);
+	public int updateNick(Member member) {
+		return memberDao.updateNick(member);
 		
 	}
 
