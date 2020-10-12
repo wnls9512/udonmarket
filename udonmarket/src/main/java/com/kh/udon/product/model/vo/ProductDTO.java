@@ -29,4 +29,5 @@ public class ProductDTO implements Serializable
     private int offer;
     private Date originalRegDate;
     private long timeMillis;
+    private boolean coupon;
 }

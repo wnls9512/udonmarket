@@ -244,7 +244,8 @@ public class ProductController
         model.addAttribute("other", other);
         model.addAttribute("reasonReport", reasonReport);
         model.addAttribute("photos", photos);
-        
+        if(product.isCoupon())
+            model.addAttribute("msg", "전국 노출 상품입니다 🐱‍🏍");        
         return "product/productDetailView";
     }
     
