@@ -86,6 +86,7 @@
 		          <input type="text" id="message" placeholder="Type a message" aria-describedby="button-addon2" class="form-control rounded-0 border-0 py-4 bg-light">
 		          <div class="input-group-append">
 		            <button id="sendBtn" type="button" class="btn btn-link">전송<i class="far fa-paper-plane"></i></button>
+		            <input type="hidden" id="receiver" />
 		          </div>
 		        </div>
 		      </form>
@@ -130,11 +131,11 @@ $("[name=chatRoom]").click(function(){
 							            "<div class='bg-light rounded py-2 px-3 mb-2'>" +
 							              "<p class='text-small mb-0 text-muted'>" + msg[i].chatContent + "</p>" +
 							            "</div>" +
-							            "<p class='small text-muted'> <fmt:formatDate value="${msg[i].regDate }" pattern='yy/MM/dd'/>" +"</p>" +
+							            "<p class='small text-muted'>" + msg[i].chatDate + "</p>" +
 							          "</div>" +
 							        "</div>";
 
-					$("#chatBox").append(senderMsg);									
+					$("#chatBox").append(senderMsg);							
 				}
 				//상대방이 보낸 메세지
 				else if (msg[i].userId == $myId){
@@ -144,7 +145,7 @@ $("[name=chatRoom]").click(function(){
 								            "<div class='bg-primary rounded py-2 px-3 mb-2'>" +
 								              "<p class='text-small mb-0 text-white'>" + msg[i].chatContent + "</p>" +
 								            "</div>" +
-								            "<p class='small text-muted'><fmt:formatDate value="${msg[i].regDate }" pattern='yy/MM/dd'/>" +"</p>" +
+								            "<p class='small text-muted'>" + msg[i].chatDate +"</p>" +
 								          "</div>" +
 								        "</div>";
 
@@ -152,6 +153,9 @@ $("[name=chatRoom]").click(function(){
 				}
 				
 			} 
+
+			$("#sendBtn").val($roomCode);
+			$("#receiver").val(msg[0].userId);
 			
 		},
 		error : function(xhr, status, err){
@@ -165,9 +169,30 @@ $("[name=chatRoom]").click(function(){
 
 $("#sendBtn").click(function() {
 	let $msg = $("#message").val();
-	
+	let roomCode = $(this).val();
+	let receiver = $("#receiver").val();
+	alert(roomCode);
+
+	if(sock){
+		console.log("chat :: socket >> ", sock);
+		sock.send("chat,${userId}," +  receiver + "," + roomCode + "," + $msg); 
+
+		let myMsg = "<div class='media w-50 ml-auto mb-3'>" +
+				        "<div class='media-body'>" +
+				          "<div class='bg-primary rounded py-2 px-3 mb-2'>" +
+				            "<p class='text-small mb-0 text-white'>" + $msg + "</p>" +
+				          "</div>" +
+				          "<p class='small text-muted'> </p>" +
+				        "</div>" +
+				      "</div>";
+
+		$("#chatBox").append(myMsg);	
+		
+	}else{
+		console.log("Error on Chat", sock);
+	}
 	
 });
 </script>
-</body>
-</html>
+
+<jsp:include page="/WEB-INF/views/common/footer.jsp"/>

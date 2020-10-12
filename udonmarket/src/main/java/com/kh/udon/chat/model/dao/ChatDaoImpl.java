@@ -24,4 +24,9 @@ public class ChatDaoImpl implements ChatDao
 	public List<ChatMessage> selectChatMsg(int roomCode) {
 		return session.selectList("socket.selectChatMsg", roomCode);
 	}
+
+	@Override
+	public int insertMsg(ChatMessage m) {
+		return session.insert("socket.insertMsg", m);
+	}
 }

@@ -12,4 +12,6 @@ public interface ChatService
 
 	List<ChatMessage> selectChatMsg(int roomCode);
 
+	int insertMsg(ChatMessage m);
+
 }

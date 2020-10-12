@@ -21,17 +21,26 @@ function connectWS(){
     
     // 서버로부터 메시지를 받았을 때
     function onMessage(msg) {
-        console.log(msg.data);
-        let $socketAlert = $("#socketAlert");
-        $socketAlert.html(msg.data);
-        $socketAlert.css('display', 'block');
+	
+        //알림
+        //console.log(typeof msg.data);
+        //console.log((msg.data).includes('sendMsg'));
+        if((msg.data).includes('sendMsg')){
+        	$("#chatBox").append(msg.data);
+        }else{
 
-        //알림 유지 시간 (5초)
-        setTimeout( function(){
-        	$socketAlert.css('display', 'none');
-        }, 5000); 
-        
+        	let $socketAlert = $("#socketAlert");
+	        $socketAlert.html(msg.data);
+	        $socketAlert.css('display', 'block');
+	
+	        //알림 유지 시간 (5초)
+	        setTimeout( function(){
+	        	$socketAlert.css('display', 'none');
+	        }, 5000);      
+
+        }
     }
+    
     // 서버와 연결을 끊었을 때
     function onClose(evt) {
         console.log("연결 끊김");

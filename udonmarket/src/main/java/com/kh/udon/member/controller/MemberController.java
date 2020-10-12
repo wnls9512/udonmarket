@@ -60,11 +60,14 @@ public class MemberController {
 	private Email emailVo;
 	
 	@RequestMapping(value="/memberLoginSuccess.do")
-	public ModelAndView memberLoginSuccess(ModelAndView mav, HttpSession session, @RequestParam String memberId, @RequestParam String password){
+	public ModelAndView memberLoginSuccess(ModelAndView mav, 
+										   HttpSession session, 
+										   @RequestParam String userId, 
+										   @RequestParam String password){
 		if(log.isDebugEnabled()) {
 			log.debug("/member/memberLoginSuccess.do");
-			log.debug("memberId = {}", memberId);
-			log.debug("password = {}", password);
+//			log.debug("userId = {}", userId);
+//			log.debug("password = {}", password);
 		}
 		//로그인전 이동하려던 페이지가 있던 경우, 이동할 페이지 처리
 		//SavedRequest는 
