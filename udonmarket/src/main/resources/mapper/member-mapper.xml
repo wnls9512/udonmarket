@@ -146,6 +146,13 @@
 	where quit_yn = 'N'
 </select>
 
+<!-- 아이디 중복검사 -->
+<select id="userIdCheck" parameterType="String" resultType="int">
+	select count(*)
+	from member
+	where user_id = #{userId}
+</select>
+
 <resultMap type="member" id="memberMap">
 
 </resultMap>
@@ -155,6 +162,28 @@
 	update member
 	set quit_yn = 'Y'
 	where user_id = #{userId}
+</update>
+
+
+<!-- 임시 비밀번호로 패스워드 변경 -->
+<update id="updatePassword" parameterType="java.util.Map">
+	update member
+	set password = '1234'
+	where user_id = #{userId} and email = #{email}
+</update>
+
+<!-- 변경한 패스워드 가져오기 -->
+<select id="selectGetPassword" parameterType="java.util.Map" resultType="java.lang.String">
+	select password
+	from member
+	where user_id = #{userId} and email = #{email}
+</select>
+
+<!-- 가져온 패스워드를 암호화하여 DB 변경하기 -->
+<update id="updateEncrpytPassword" parameterType="java.util.Map">
+	update member
+	set password = #{param1}
+	where user_id = #{userId} and email = #{email}
 </update>
 
 <!-- 매너 평가 조회하기 -->
