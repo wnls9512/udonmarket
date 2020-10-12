@@ -11,6 +11,11 @@
 <jsp:include page="/WEB-INF/views/common/header.jsp">
 	<jsp:param value="회원가입" name="pageTitle"/>
 </jsp:include>
+<script>
+
+
+
+</script>
 
 <!-- mypage css -->
 <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/signupform.css">
@@ -55,12 +60,13 @@
 					        		<div id="form-group">
 					        			<label for="userId">아이디</label>
 				        				<input type="text" name="userId" id="userId" class="form-control" placeholder="아이디 입력" required  />
-				        				<span class="guide ok">이 아이디는 사용 가능합니다.</span>		   
-										<span class="guide error">이 아이디는 사용할 수 없습니다.</span>		   
 										<input type="hidden" id="idValid" value="0" />
-<!-- 											<label for="userId">아이디</label> -->
-<!-- 											<input type="text" class="form-control" id="userId" name="userId" placeholder="ID" required> -->
-<!-- 											<div class="check_font" id="id_check"></div> -->
+										<div class="check_font" id="id_check"></div>
+<!-- 				        				<span class="guideok">이 아이디는 중복된 아이디가 아닙니다.<br>(영어 소문자 또는 숫자로 시작하는 4~12자리인지 확인해주세요.)</span>		    -->
+<!-- 										<span class="guideerror">이 아이디는 중복된 아이디입니다.</span>		    -->
+<!-- 										<label for="userId">아이디</label> -->
+<!-- 										<input type="text" class="form-control" id="userId" name="userId" placeholder="ID" required> -->
+<!-- 										<div class="check_font" id="id_check"></div> -->
 				        			</div>
 				        		</td>
 				        	</tr>
@@ -132,16 +138,16 @@ var idJ = /^[a-z0-9]{4,12}$/; //a~z, 0~9로 시작하는 4~12자리 아이디를
 // 비밀번호 정규식
 var pwJ = /^[A-Za-z0-9]{4,12}$/;  //A-Z, a-z, 0~9로 시작하는 4~12자리 비밀번호를 설정할 수 잇음.
 // 닉네임 정규식
-var nameJ = /^[A-Za-z0-9]{2,10}$/; //A-Z a-z, 0~9로 이뤄진 문자만 2~10자리 이름 적어야 함.
+var nameJ = /^[A-Za-z0-9]{4,10}$/; //A-Z a-z, 0~9로 이뤄진 문자만 4~10자리 이름 적어야 함.
 // 이메일 검사 정규식
 var mailJ = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i; // -,_ 특수문자가 가능하며, 중앙에 @필수 그리고, 뒤에 2~3글자가 필요함.
 
 
- $("#userId").keyup(function(){
+  $("#userId").keyup(function(){
 
 	//중복 검사후 아이디 재작성하는 경우
-	if(/^\w{4,}$/.test($(this).val()) == false){
-		$(".guide").hide();
+	if(/^\w{1,}$/.test($(this).val()) == false){
+		$("#id_check").hide();
 		$("#idValid").val(0);
 		return;
 	}
@@ -156,13 +162,17 @@ var mailJ = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a
 			console.log(data);
 
 			if(data.isUsable == true){
-				$(".guide.error").hide();
-				$(".guide.ok").show();
+// 				$(".guide.error").hide();
+// 				$(".guide.ok").show();
+				$("#id_check").text("이 아이디는 중복된 아이디가 아닙니다.(영어 소문자 또는 숫자로 시작하는 4~12자리인지 확인해주세요.)");
+				$("#id_check").css('color', 'green');
 				$("#idValid").val(1);
 			}
-			else {
-				$(".guide.error").show();
-				$(".guide.ok").hide();
+			else{
+				$("#id_check").text("이 아이디는 중복된 아이디입니다.");
+				$("#id_check").css('color', 'red');
+// 				$(".guide.error").show();
+// 				$(".guide.ok").hide();
 				$("#idValid").val(0);
 			}
 		},
@@ -170,7 +180,52 @@ var mailJ = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a
 			console.log("처리실패", xhr, status, err);
 		}
 	});
-}); 
+});  
+
+
+//아이디 유효성 검사(1 = 중복 / 0 != 중복)
+/* $("#userId").keyup(function() {
+	// id = "id_reg" / name = "userId"
+	var userId = $('#userId').val();
+	
+	$.ajax({
+		url : '${pageContext.request.contextPath}/member/checkIdDuplicate?userId='+ userId,
+		type : 'get',
+		success : function(data) {
+			console.log("1 = 중복o / 0 = 중복x : " + data);							
+			
+			if (data == 1) {
+					// 1 : 아이디가 중복되는 문구
+					$("#id_check").text("사용중인 아이디입니다.");
+					$("#id_check").css("color", "red");
+					$("#reg_submit").attr("disabled", true);
+				} 
+			else {
+					
+					if(idJ.test(userId)){
+						// 0 : 아이디 길이 / 문자열 검사
+						$("#id_check").text("");
+						$("#reg_submit").attr("disabled", false);
+			
+					} else if(userId == ""){
+						
+						$('#id_check').text('아이디를 입력해주세요.');
+						$('#id_check').css('color', 'red');
+						$("#reg_submit").attr("disabled", true);				
+						
+					} else {
+						
+						$('#id_check').text("아이디는 소문자와 숫자 4~12자리만 가능합니다");
+						$('#id_check').css('color', 'red');
+						$("#reg_submit").attr("disabled", true);
+					}
+					
+				}
+			}, error : function() {
+					console.log("실패");
+			}
+		});
+	}); */
 
 // 
  $("#memberSignupFrm").submit(function(){
@@ -178,8 +233,8 @@ var mailJ = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a
 		//html5 추가된 속성 pattern을 활용해 정규식 검사도 가능하지만,
 		//구체적인 피드백제공하지는 못한다.
 		var $userId = $("#userId");
-		if(idJ.test($userId.val()) == false){
-			alert("영어 소문자 / 숫자로 시작하는 4~12자리를 입력해주세요. ");
+		if(/^[a-z0-9]{4,12}$/.test($userId.val()) == false){
+			alert("영어 소문자 또는 숫자로 시작하는 4~12자리를 입력해주세요. ");
 			$userId.focus();
 			return false;
 		}
@@ -194,19 +249,19 @@ var mailJ = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a
 });
 
  // 패스워드 유효성 검사
-$('#password_').blur(funtion({
-		if(pwJ.test($'password_').val()){
+$('#password_').blur(function(){
+		if(pwJ.test($('#password_').val())){
 			console.log('true');
 			$('#pw_check').text('');
 		} else {
 			console.log('false');
-			#('#pw_check').text('숫자 or 문자로만 4~12자리 입력해주세요.');
-			#('#pw_check').css('color', red);
+			$('#pw_check').text('숫자 or 문자로만 4~12자리 입력해주세요.');
+			$('#pw_check').css('color', 'red');
 		}
 });	
 
 // 패스워드 중복 검사
-$("#password2").blur(function(){
+$("#password2").blur(function() {
 	var $p1 = $("#password_"), $p2 = $("#password2");
 	if($p1.val() != $p2.val()){
 		$('#pw2_check').text('비밀번호가 일치하지 않습니다.');
@@ -223,7 +278,7 @@ $("#nickName").blur(function() {
 			console.log(nameJ.test($(this).val()));
 			$("#nickName_check").text('');
 	} else {
-		$('#nickName_check').text('닉네임을 확인해주세요');
+		$('#nickName_check').text('영어 또는 숫자로 이뤄진 4~10자리 이름을 적어주세요. ');
 		$('#nickName_check').css('color', 'red');
 	}
 });

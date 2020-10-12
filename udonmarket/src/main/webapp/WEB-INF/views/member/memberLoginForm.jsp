@@ -64,7 +64,7 @@
                                 </div>
                                 <div class="col-md-12 form-group">
                                     <button type="submit" value="submit" class="btn_3">로그인</button>
-                                    <a class="lost_pass" href="${pageContext.request.contextPath }/member/memberSearch">아이디 / 비밀번호 찾기</a>
+                                    <a class="lost_pass" href="${pageContext.request.contextPath }/member/passwordFind">아이디 / 비밀번호 찾기</a>
                                 </div>
                             </form:form>
                         </div>

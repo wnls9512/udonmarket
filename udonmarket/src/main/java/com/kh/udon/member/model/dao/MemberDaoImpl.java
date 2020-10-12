@@ -235,4 +235,9 @@ public class MemberDaoImpl implements MemberDao
 	public List<Block> selectAllBlockUser(String userId) {
 		return session.selectList("member.selectAllBlockUser", userId);
 	}
+
+	@Override
+	public int userIdCheck(String userId) {
+		return session.selectOne("member.userIdCheck", userId);
+	}
 }

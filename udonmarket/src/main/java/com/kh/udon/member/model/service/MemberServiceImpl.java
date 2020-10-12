@@ -261,4 +261,9 @@ public class MemberServiceImpl implements MemberService
 	public List<Block> selectAllBlockUser(String userId) {
 		return memberDao.selectAllBlockUser(userId);
 	}
+
+	@Override
+	public int userIdCheck(String userId) {
+		return memberDao.userIdCheck(userId);
+	}
 }

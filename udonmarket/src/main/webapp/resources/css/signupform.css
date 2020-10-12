@@ -36,13 +36,13 @@ body {
 	margin-top: 1em;
 }
 /*중복아이디체크관련*/
-div#userId-container {
+div#form-group {
 	position: relative;
 	padding: 0px;
 	margin-bottom: 1rem;
 }
 
-div#userId-container span.guide {
+div#form-group span.guide {
 	display: none;
 	font-size: 12px;
 	position: absolute;
@@ -50,10 +50,10 @@ div#userId-container span.guide {
 	right: 10px;
 }
 
-div#userId-container span.ok {
+div#form-group span.ok {
 	color: green;
 }
 
-div#userId-container span.error {
+div#form-group span.error {
 	color: red;
 }

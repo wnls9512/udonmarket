@@ -90,4 +90,6 @@ public interface MemberService
 
 
 	List<Block> selectAllBlockUser(String userId);
+
+	int userIdCheck(String userId);
 }

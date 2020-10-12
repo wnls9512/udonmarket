@@ -103,4 +103,6 @@ public interface MemberDao
 	int updateEncrpytPassword(Map<String, Object> paramMap);
 	
 	List<Block> selectAllBlockUser(String userId);
+
+	int userIdCheck(String userId);
 }

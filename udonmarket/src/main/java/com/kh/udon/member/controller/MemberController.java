@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 import com.kh.email.Email;
 import com.kh.email.EmailSender;
 import com.kh.udon.community.model.vo.Community;
@@ -146,8 +147,21 @@ public class MemberController {
 		return "redirect:/";
 	}
 	
+	/*
+	 * @RequestMapping(value="/checkIdDuplicate", method = RequestMethod.GET)
+	 * 
+	 * @ResponseBody public int checkIdDuplicate(@RequestParam("userId") String
+	 * userId) {
+	 * 
+	 * int result =service.userIdCheck(userId); log.debug("result = {}", result);
+	 * 
+	 * return result;
+	 * 
+	 * }
+	 */
+	
 	@GetMapping("/checkIdDuplicate")
-	public ModelAndView checkIdDuplicate(ModelAndView mav,
+	public ModelAndView checkIdDuplicate1(ModelAndView mav,
 										  @RequestParam("userId") String userId) {
 		
 		//1. 업무로직 : 중복체크
@@ -163,13 +177,20 @@ public class MemberController {
 		return mav;
 	}
 	
-	@RequestMapping(value="/passwordFind",method=RequestMethod.POST)
+	// 비밀번호 찾기
+		@RequestMapping(value = "/passwordFind", method = RequestMethod.GET)
+		public String passwordSearch() {
+			return "member/passwordFind";
+		}
+	
+	@RequestMapping(value="/passwordFind",method= RequestMethod.POST)
 	public String passwordSearch(@RequestParam Map<String, Object> paramMap, HttpServletRequest request) throws Exception {
 		
 		String userId = (String)paramMap.get("userId");
 		String email = (String)paramMap.get("email");
 		
 		int result = service.updatePasswordEncrypt(paramMap);
+		log.debug("result = {} " ,result);
 		
 		if(result > 0) {
 			emailVo.setSubject(userId + "님의 비밀번호 찾기 메일입니다.");
