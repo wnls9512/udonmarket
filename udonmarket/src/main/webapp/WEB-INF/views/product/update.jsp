@@ -345,10 +345,6 @@ $(function()
 <script src="https://unpkg.com/jquery-filepond/filepond.jquery.js"></script>
 
 <script>
-$(function()
-{
-})
-
 
 /* 업로드된 파일 filepond에 보여주기 */
 var ufiles = [];
@@ -437,7 +433,7 @@ function fn_save()
 		}
 	);
 
-	/* document.frm.action = "<c:url value='/product/update'/>"; */
+	document.frm.action = "<c:url value='/product/update'/>";
 	document.frm.submit();
 
 }

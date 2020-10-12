@@ -312,6 +312,7 @@ public class ProductController
         int result = service.update(product);
         
         rttr.addFlashAttribute("msg", result > 0 ? "상품 수정 성공 💛" : "상품 등록 실패 🤔");
+        rttr.addAttribute("userId", product.getSeller());
         
         return "redirect:/product/productListView";
     }
