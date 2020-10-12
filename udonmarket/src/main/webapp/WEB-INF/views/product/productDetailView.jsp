@@ -376,29 +376,6 @@
 
 	
 <script>
-/* 사진 불러오기 */
-$(function()
-{
-	var pCode = ${product.PCode};
-
-	$.getJSON("${pageContext.request.contextPath}/product/getPhotos", {pCode: pCode}, function(arr)
-	{
-		var str = "";
-
-		$(arr).each(function(i, attach))
-		{
-			var fileCallPath = encodeURIComponent(attach.uploadPath + "/" + attach.uuid + "_" + attach.originalFilename);
-
-			str += "<div data-thumb='C:/upload/${photo.uploadPath }/${photo.uuid }_${photo.originalFilename }'>";
-		}
-	});
-});
-
-
-<div data-thumb="C:/upload/${photo.uploadPath }/${photo.uuid }_${photo.originalFilename }">
-	<img src="C:/upload/${photo.uploadPath }/${photo.uuid }_${photo.originalFilename }" />
-</div>
-
 //제안 하기 버튼 막기 (최소 가격)
 $(function(){
 	$(".guide.error").hide();

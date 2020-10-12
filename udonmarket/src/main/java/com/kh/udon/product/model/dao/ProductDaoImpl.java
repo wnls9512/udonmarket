@@ -204,6 +204,12 @@ public class ProductDaoImpl implements ProductDao
         return session.selectList("product.selectPhotos", pCode);
     }
 
+    @Override
+    public ProductPhotoVO selectFile(ProductPhotoVO photo)
+    {
+        return session.selectOne("product.selectPhotos", photo);
+    }
+
 
 
 

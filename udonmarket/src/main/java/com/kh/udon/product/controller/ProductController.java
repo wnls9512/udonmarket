@@ -1,7 +1,12 @@
 package com.kh.udon.product.controller;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -12,6 +17,7 @@ import java.util.Map.Entry;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,17 +26,20 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.kh.udon.common.util.ResourceCloseHelper;
 import com.kh.udon.member.model.vo.Wish;
 import com.kh.udon.product.model.service.ProductService;
 import com.kh.udon.product.model.vo.CategoryVO;
@@ -278,6 +287,7 @@ public class ProductController
         ProductVO product = service.selectVOByPCode(pCode);
         CouponDTO coupon = service.selectCoupon(product.getSeller());
         List<CategoryVO> category = service.selectAllCategory();
+        List<ProductPhotoVO> photos = service.selectPhotos(pCode);
         
         //해당 상품을 관심목록 지정한 사용자 아이디
         List<String> userIdList = service.selectWishUserId(pCode);
@@ -286,12 +296,13 @@ public class ProductController
         for(int i=0; i<userIdList.size(); i++) {
         	userId += userIdList.get(i) + " ";
         }
-        System.out.println(userId);
+        
         model.addAttribute("userId", userId);
         model.addAttribute("product", product);
         model.addAttribute("coupon", coupon);
         model.addAttribute("category", category);
         model.addAttribute("categoryName", categoryName);
+        model.addAttribute("photos", photos);
         
         return "product/update";
     }
@@ -505,7 +516,78 @@ public class ProductController
         return str.replace("-", File.separator);
     }
     
-    
+    /* 사진 목록 불러오기 */
+    @RequestMapping(value = "/fileList.do", method = {RequestMethod.POST, RequestMethod.GET})
+    @ResponseBody
+    public void fileList(@RequestParam(value="fileId", required=true) String uuid, HttpServletRequest request, HttpServletResponse response) throws Exception 
+    {
+        log.debug("uuid = {}", uuid);
+        
+        ProductPhotoVO photo = new ProductPhotoVO();
+        photo.setUuid(uuid);
+        photo = service.selectFile(photo);
+        
+        String uploadFolder = request.getServletContext().getRealPath("/resources/upload/");
+        String uploadFolderPath = getFolder();
+        File uploadPath = new File(uploadFolder, uploadFolderPath);
+        
+        File uFile = new File(uploadPath, photo.getUuid()+"_"+photo.getOriginalFilename());
+
+        //filepond에서는 inline으로 설정하여 전송
+        setDisposition(photo.getOriginalFilename(), "inline", request, response);
+
+        //String dispositionPrefix = "inline; filename=\"";
+        //String fileName = fvo.getOrignlFileNm(); //한글이 없는 경우
+        //response.setHeader("Content-Disposition", dispositionPrefix + fileName + "\"");
+
+        BufferedInputStream in = null;
+        BufferedOutputStream out = null;
+
+        try 
+        {
+            in = new BufferedInputStream(new FileInputStream(uFile));
+            out = new BufferedOutputStream(response.getOutputStream());
+
+            FileCopyUtils.copy(in, out);
+            out.flush();
+        } 
+        catch (IOException ex) 
+        {
+            ex.printStackTrace();
+        } 
+        finally 
+        {
+            ResourceCloseHelper.close(in, out);
+        }
+
+    }
+
+    private void setDisposition(String filename, String prefix,
+            HttpServletRequest request, HttpServletResponse response) throws Exception 
+    {
+        //크롬에서 쉼표가 들어간 파일명이 중복헤더 오류를 내므로 다음과 같이 처리한다.
+        String dispositionPrefix = prefix + "; filename=\"";
+        String encodedFilename = null;
+        
+        StringBuffer sb = new StringBuffer();
+        
+        for (int i = 0; i < filename.length(); i++) 
+        {
+            char c = filename.charAt(i);
+            //ASCII문자코드에서 마지막 문자 ~(126)
+            //이 문자보다 크다면 URL인코딩을 수행한다. 한글이 인코딩된다.
+            if (c > '~') 
+                sb.append(URLEncoder.encode("" + c, "UTF-8"));
+            else 
+                sb.append(c);
+        }
+        
+        encodedFilename = sb.toString();
+        
+        //크롬에서 쉼표가 들어간 파일명이 중복헤더 오류를 내므로 다음과 같이 처리한다.
+        //response.setHeader("Content-Disposition", dispositionPrefix + encodedFilename);
+        response.setHeader("Content-Disposition", dispositionPrefix + encodedFilename + "\"");
+    }
     
     
     

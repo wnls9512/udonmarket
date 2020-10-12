@@ -76,6 +76,8 @@ public interface ProductDao
 
     List<ProductPhotoVO> selectPhotos(int pCode);
 
+    ProductPhotoVO selectFile(ProductPhotoVO photo);
+
 
 
 

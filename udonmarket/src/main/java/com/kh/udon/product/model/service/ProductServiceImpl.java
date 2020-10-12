@@ -201,6 +201,12 @@ public class ProductServiceImpl implements ProductService
         return dao.selectPhotos(pCode);
     }
 
+    @Override
+    public ProductPhotoVO selectFile(ProductPhotoVO photo)
+    {
+        return dao.selectFile(photo);
+    }
+
 
 
 
