@@ -18,7 +18,12 @@
 <!-- filepond -->
 <link href="https://unpkg.com/filepond/dist/filepond.css" rel="stylesheet">
 <link href="${pageContext.request.contextPath }/resources/css/filepond-plugin-image-preview.css" rel="stylesheet">
-
+<style>
+body
+{
+	background: #fff;
+}
+</style>
     <!--================Home Banner Area =================-->
     <!-- breadcrumb start-->
     <section class="breadcrumb breadcrumb_bg">
@@ -37,29 +42,37 @@
     <!-- breadcrumb end-->
     
     <!--================ Register Area =================-->
-    <section class="login_part padding_top">
+    <section class="login_part">
     
     
         <div class="container">
-           	<form action="${pageContext.request.contextPath }/product/register?${_csrf.parameterName}=${_csrf.token}" method="post" >
-           	<!-- enctype="multipart/form-data" -->
-	            <div class="row align-items-center">
-	                <div class="col-lg-6 col-md-6">
-	                    <div class="login_part_text text-center" style="background-image:none; border: 1px solid #ff3368; width:88%; padding: 0;">
-	                        <div class="login_part_text_iner">
-								<!-- <input type="file" multiple/> -->
-	                        </div>
-	                    </div>
-	                </div>
-	                <div class="col-lg-6 col-md-6">
-	                    <div class="login_part_form" style="padding: 70px 0;">
-	                        <div class="login_part_form_iner">
+            <div class="row align-items-center">
+                <div class="col-lg-6 col-md-6">
+                    <div class="login_part_text text-center" style="background-image:none; width:88%; padding: 0;">
+                        <div class="login_part_text_iner">
+							<!-- filepond에서 사용히는 file -->
+					        <input type="file"/>
+					        <p style="color: red;">* 사진은 4개까지 업로드할 수 있어요  *</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6">
+                    <div class="login_part_form" style="padding: 70px 0;">
+                        <div class="login_part_form_iner">
+	                        <form method="post" name="frm">
+								<!-- 첨부파일 갯수는 최대 4개 -->
+								<input type="hidden" name="uploadFile" />
+								<input type="hidden" name="uploadFile" />
+								<input type="hidden" name="uploadFile" />
+								<input type="hidden" name="uploadFile" />
+	                        	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 	                        	<input type="hidden" name="seller" id="seller" value="${userId }"/>
                                 <div class="col-md-12 form-group p_star" style="margin-top: 10%;">
                                     <input type="text" name="title" placeholder="글 제목"
 											onfocus="this.placeholder = ''" onblur="this.placeholder = '글 제목'" required
 											id=""
-											class="single-input-primary">
+											class="single-input-primary"
+											style="background: #f9f9ff;">
                                 </div>
                                 <div class="col-md-12 form-group p_star">
                                 	<button data-toggle="modal" data-target="#categoryModal" class="btn btn-primary genric-btn default-border" 
@@ -96,15 +109,15 @@
                                     </div>
                                 </div>
                                 <div class="col-md-12 form-group p_star">
-	                                <button type="submit" value="submit" class="btn_3" id="uploadBtn">
+	                                <button type="button" value="submit" class="btn_3" id="uploadBtn" onclick="javascript:fn_save(); return false;">
 	                                    	완료
 	                                </button>
                            		 </div>
-	                        </div>
-	                    </div>
-	                </div>
-	            </div>
-            </form>
+                       		 </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
    </section>
     
@@ -241,6 +254,8 @@ $(function()
 });
 </script>
 
+
+
 <!-- ================ filepond ================  -->
 <script src="https://unpkg.com/filepond-plugin-file-metadata/dist/filepond-plugin-file-metadata.js"></script>
 <script src="https://unpkg.com/filepond-plugin-image-crop/dist/filepond-plugin-image-crop.js"></script>
@@ -249,21 +264,87 @@ $(function()
 <script src="https://unpkg.com/filepond/dist/filepond.js"></script>
     
 <script>
-    // Register the plugin with FilePond
-    FilePond.registerPlugin(
-        FilePondPluginFileMetadata, 
-        FilePondPluginImageCrop,
-        FilePondPluginImagePreview
-    );
-    
-    // Get a reference to the file input element
-    const inputElement = document.querySelector('input[type="file"]');
+const f = document.querySelector('input[type="file"]');
+const pond = FilePond.create
+			(f, { 
+					maxFiles: 4,
+                   	allowMultiple: true,
+                   	acceptedFileTypes: ['image/*'],
+                   	server: { 
+	                   			url: "<c:url value='/product' />",
+                   	        	process: {url: "/boardSaveFile.do?${_csrf.parameterName}=${_csrf.token}" },
+                   	        	revert: function (fileId, load, error) { fn_revertFile(fileId); load(); }
+							}
+                    }
+			);
 
-    // Create the FilePond instance
-    const pond = FilePond.create(inputElement, {
-        imageCropAspectRatio: '1:1',
-        maxFiles: 4
-    });
+
+//업로드가 모두 처리된 후 호출되는 callback
+//서버로 부터 받은 파일 키를 배열에 저장하고 필요할 때 사용한다.
+var uploadedfiles = [];
+pond.on('processfile', function (e, f) 
+{
+    console.log(f.serverId);
+    uploadedfiles.push(f.serverId);
+});
+
+
+var x = new XMLHttpRequest();
+var handleStateChange = function () 
+{
+	/*
+		    0: request not initialized
+		    1: server connection established
+		    2: request received
+		    3: processing request
+		    4: request finished and response is ready
+    */
+    
+	if(x.readyState == 4 && x.status == 200) //정상처리
+	{ 
+	    console.log(x.responseText);
+	} 
+	else 
+	{
+	    console.log(x.readyState);
+	}
+};
+
+/* 파일 업로드 취소 */
+function fn_revertFile(fileId) 
+{
+	let p = uploadedfiles.indexOf(fileId);
+	uploadedfiles.splice(p,1);
+
+	// 고전적인 AJAX
+	if (window.XMLHttpRequest) 
+	{
+	    x = new XMLHttpRequest();
+		x.open("POST", "<c:url value='/product/boardDeleteFile.do?${_csrf.parameterName}=${_csrf.token}'/>", true); // async 
+		x.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+		x.onreadystatechange = handleStateChange;
+		x.send("fileId=" + fileId); //POST방식일때 send()를 사용하여 querystring형태로 전달한다.
+   		//str = x.responseText;	//sync일때는 여기서 결과를 받을 수 있다.
+		//x=null;
+	}
+}
+
+/* 파일 업로드 */
+function fn_save() 
+{
+	uploadedfiles.forEach
+	(
+		function(id, index) 
+		{
+			document.frm.uploadFile[index].value = id;
+			console.log(document.frm.uploadFile[index].value);
+		}
+	);
+
+	document.frm.action = "<c:url value='/product/register'/>";
+	document.frm.submit();
+
+}
 </script>
 <jsp:include page="/WEB-INF/views/common/footer.jsp"/>
 	

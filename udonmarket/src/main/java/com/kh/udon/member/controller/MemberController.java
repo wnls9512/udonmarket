@@ -4,13 +4,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.savedrequest.SavedRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,9 +26,12 @@ import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.kh.email.Email;
+import com.kh.email.EmailSender;
 import com.kh.udon.community.model.vo.Community;
 import com.kh.udon.community.model.vo.Reply;
 import com.kh.udon.member.model.service.MemberService;
+import com.kh.udon.member.model.vo.Block;
 import com.kh.udon.member.model.vo.Evaluate;
 import com.kh.udon.member.model.vo.Keyword;
 import com.kh.udon.member.model.vo.Member;
@@ -35,7 +39,6 @@ import com.kh.udon.member.model.vo.Noti;
 import com.kh.udon.member.model.vo.Review;
 import com.kh.udon.member.model.vo.Wish;
 import com.kh.udon.member.model.vo.announce;
-
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -49,6 +52,37 @@ public class MemberController {
 
 	@Autowired
 	private BCryptPasswordEncoder bcryptPasswordEncoder;
+	
+	@Autowired
+	private EmailSender emailSender;
+	
+	@Autowired
+	private Email emailVo;
+	
+	@RequestMapping(value="/memberLoginSuccess.do")
+	public ModelAndView memberLoginSuccess(ModelAndView mav, 
+										   HttpSession session, 
+										   @RequestParam String userId, 
+										   @RequestParam String password){
+		if(log.isDebugEnabled()) {
+			log.debug("/member/memberLoginSuccess.do");
+//			log.debug("userId = {}", userId);
+//			log.debug("password = {}", password);
+		}
+		//로그인전 이동하려던 페이지가 있던 경우, 이동할 페이지 처리
+		//SavedRequest는 
+		String loc = "";
+		SavedRequest savedRequest =
+			    (SavedRequest)session.getAttribute("SPRING_SECURITY_SAVED_REQUEST");
+		Optional<SavedRequest> maybeSavedRequest = Optional.ofNullable(savedRequest);
+		loc = maybeSavedRequest.map(o -> o.getRedirectUrl())
+							   .orElse("/");
+		log.debug("loc@loginSuccess="+loc);
+		//view단 지정
+//		mav.setViewName("redirect:"+loc);
+		mav.setViewName("redirect:/");
+		return mav;
+	}
 	
 	// 로그인
 	@RequestMapping("/loginForm")
@@ -93,37 +127,37 @@ public class MemberController {
 		
 		log.debug("result@controller = {}", result);
 
-		String msg = (result > 0) ? "회원가입성공!" : "회원가입성공!";
+		String msg = (result > 0) ? "회원가입성공!" : "회원가입실패!";
 		log.debug("msg@controller = " + msg);
 		redirectAttr.addFlashAttribute("msg", msg);
 
 		return "redirect:/";
 	}
 
-	@RequestMapping(value="/login" ,method=RequestMethod.POST)
-	public String memberLogin(@RequestParam String userId, @RequestParam String password, Model model,
-			RedirectAttributes redirectAttr, HttpSession session) {
-
-		log.debug("userId = {}, password = {}", userId, password);
-		Member member = service.selectOneMember(userId);
-		log.debug("member = {}", member);
-
-		String location = "/";
-
-		// 로그인 성공
-		 if(member != null && bcryptPasswordEncoder.matches(password,member.getPassword())) { 
-			//세션처리 
-			model.addAttribute("loginMember", member);
-			
-			//세션에서 next값 가져오기 
-		    String next = (String)session.getAttribute("next");
-			location = next != null ? next : location; session.removeAttribute("next"); }
-		  //로그인 실패 
-		  else { 
-			  redirectAttr.addFlashAttribute("msg", "아이디 또는 비밀번호가 틀렸습니다.");
-		  }
-		return "redirect:" + location;
-	}
+//	@RequestMapping(value="/login" ,method=RequestMethod.POST)
+//	public String memberLogin(@RequestParam String userId, @RequestParam String password, Model model,
+//			RedirectAttributes redirectAttr, HttpSession session) {
+//
+//		log.debug("userId = {}, password = {}", userId, password);
+//		Member member = service.selectOneMember(userId);
+//		log.debug("member = {}", member);
+//
+//		String location = "/";
+//
+//		// 로그인 성공
+//		 if(member != null && bcryptPasswordEncoder.matches(password,member.getPassword())) { 
+//			//세션처리 
+//			model.addAttribute("loginMember", member);
+//			
+//			//세션에서 next값 가져오기 
+//		    String next = (String)session.getAttribute("next");
+//			location = next != null ? next : location; session.removeAttribute("next"); }
+//		  //로그인 실패 
+//		  else { 
+//			  redirectAttr.addFlashAttribute("msg", "아이디 또는 비밀번호가 틀렸습니다.");
+//		  }
+//		return "redirect:" + location;
+//	}
 
 	@PostMapping("/memberLoginFailure")
 	public String memberLoginFailure(RedirectAttributes redirectAttr) {
@@ -140,8 +174,21 @@ public class MemberController {
 		return "redirect:/";
 	}
 	
+	/*
+	 * @RequestMapping(value="/checkIdDuplicate", method = RequestMethod.GET)
+	 * 
+	 * @ResponseBody public int checkIdDuplicate(@RequestParam("userId") String
+	 * userId) {
+	 * 
+	 * int result =service.userIdCheck(userId); log.debug("result = {}", result);
+	 * 
+	 * return result;
+	 * 
+	 * }
+	 */
+	
 	@GetMapping("/checkIdDuplicate")
-	public ModelAndView checkIdDuplicate(ModelAndView mav,
+	public ModelAndView checkIdDuplicate1(ModelAndView mav,
 										  @RequestParam("userId") String userId) {
 		
 		//1. 업무로직 : 중복체크
@@ -155,6 +202,32 @@ public class MemberController {
 		mav.setViewName("jsonView");// /WEB-INF/views/jsonView.jsp
 		
 		return mav;
+	}
+	
+	// 비밀번호 찾기
+		@RequestMapping(value = "/passwordFind", method = RequestMethod.GET)
+		public String passwordSearch() {
+			return "member/passwordFind";
+		}
+	
+	@RequestMapping(value="/passwordFind",method= RequestMethod.POST)
+	public String passwordSearch(@RequestParam Map<String, Object> paramMap, HttpServletRequest request) throws Exception {
+		
+		String userId = (String)paramMap.get("userId");
+		String email = (String)paramMap.get("email");
+		
+		int result = service.updatePasswordEncrypt(paramMap);
+		log.debug("result = {} " ,result);
+		
+		if(result > 0) {
+			emailVo.setSubject(userId + "님의 비밀번호 찾기 메일입니다.");
+			emailVo.setReceiver(email);
+			emailVo.setContent("임시 비밀번호는 1234 입니다.");
+			emailSender.SendEmail(emailVo);
+		}
+		
+		
+		return "redirect:/";
 	}
 		
 	//내 마이페이지 or 다른 사용자의 마이페이지 (view 를 따로 구분 할 것)
@@ -589,6 +662,20 @@ public class MemberController {
 			resultStr = "처리 실패";
 		}    	
     	return resultStr;
+    }
+    
+    //차단 사용자 리스트
+    @RequestMapping("/blockUser")
+    public Model blockUser(@RequestParam("userId") String userId,
+    						Model model){
+    	
+    	Member member = service.selectOneMember(userId);
+    	List<Block> list = service.selectAllBlockUser(userId);
+    	
+    	model.addAttribute("member", member);
+    	model.addAttribute("list", list);
+    	
+    	return model;
     }
 
 }

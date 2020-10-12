@@ -6,12 +6,18 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.kh.udon.community.model.vo.Community;
 import com.kh.udon.community.model.vo.Reply;
 import com.kh.udon.member.model.dao.MemberDao;
+
+import com.kh.udon.member.model.vo.Coupon;
+
+import com.kh.udon.member.model.vo.Block;
+
 import com.kh.udon.member.model.vo.Evaluate;
 import com.kh.udon.member.model.vo.Keyword;
 import com.kh.udon.member.model.vo.Member;
@@ -28,6 +34,9 @@ public class MemberServiceImpl implements MemberService
 {
     @Autowired
     private MemberDao memberDao;
+    
+    @Autowired
+	private BCryptPasswordEncoder bcryptPasswordEncoder;
 
 	@Override
 	public List<Keyword> selectKeywordList(String userId) {
@@ -218,5 +227,43 @@ public class MemberServiceImpl implements MemberService
 	@Override
 	public int updateNotiCheck(int notiCode) {
 		return memberDao.updateNotiCheck(notiCode);
+	}
+
+	@Override
+	public List<Coupon> selectCouponList(int limit, int offset) {
+		return memberDao.selectCouponList(limit, offset);
+	}
+
+	@Override
+	public int selectCouponTotalContents() {
+		return memberDao.selectCouponTotalContents();
+	}
+
+	@Override
+	public int updatePasswordEncrypt(Map<String, Object> paramMap) {
+		
+		int result =0;
+		
+		result = memberDao.updatePassword(paramMap);
+		log.debug("result1 = {}", result);
+		
+		if(result > 0 ) {
+			String convertPassword = memberDao.selectGetPassword(paramMap);
+			String encryptConvertPassword = bcryptPasswordEncoder.encode(convertPassword);
+			paramMap.put("param1", encryptConvertPassword);
+			log.debug("paramMap = {}", paramMap);
+			result = memberDao.updateEncrpytPassword(paramMap);
+			log.debug("result2 = {}", result);	
+		}
+		return	result;
+	}
+
+	public List<Block> selectAllBlockUser(String userId) {
+		return memberDao.selectAllBlockUser(userId);
+	}
+
+	@Override
+	public int userIdCheck(String userId) {
+		return memberDao.userIdCheck(userId);
 	}
 }

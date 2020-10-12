@@ -20,19 +20,21 @@ html { font-size: 16px; }
 
     <!--================Home Banner Area =================-->
     <!-- breadcrumb start-->
-    <section class="breadcrumb breadcrumb_bg">
+	<section class="breadcrumb" style="background-color : #ecfdff;">
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-lg-8">
                     <div class="breadcrumb_iner">
                         <div class="breadcrumb_iner_item">
-                            <h2>마이페이지</h2>
-							<!-- <h3>서울 강남구 논현동</h3> -->
+                            <h2 style="display: inline-block;">MYPAGE</h2>
+					       <img src="${pageContext.request.contextPath }/resources/img/banner/mypage3.png" 
+			                                    	 alt="" 
+			                                    	 style="max-width: 590px;position: relative; left: 115px;">  	 
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+         </div>
     </section>
     <!-- breadcrumb start-->
     
@@ -153,10 +155,10 @@ $(function(){
 	$("#idValid").val(0);
 	$("#btn-insert").attr('disabled', true);
 	
-	//키워드 30개 이상 추가 막기
-	if( $("#totalKeywordContents").val() >= 30 ){
+	//키워드 10개 이상 추가 막기
+	if( $("#totalKeywordContents").val() >= 10 ){
 		$("[name=keyword]").attr("readonly", true);
-		$("[name=keyword]").attr("placeholder", '키워드는 최대 30개까지 설정할 수 있어요');
+		$("[name=keyword]").attr("placeholder", '키워드는 최대 10개까지 설정할 수 있어요');
 	}
 
 	//키워드 중복 검사

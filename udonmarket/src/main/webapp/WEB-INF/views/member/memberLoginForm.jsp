@@ -64,12 +64,8 @@
                                 </div>
                                 <div class="col-md-12 form-group">
                                     <button type="submit" value="submit" class="btn_3">로그인</button>
-                                    <a class="lost_pass" href="${pageContext.request.contextPath }/member/memberSearch">아이디 / 비밀번호 찾기</a>
+                                    <a class="lost_pass" href="${pageContext.request.contextPath }/member/passwordFind">아이디 / 비밀번호 찾기</a>
                                 </div>
-<!--                                 <div class="form-group socialimage" id="kakaoBtn"> -->
-<!-- 									<a href="https://kauth.kakao.com/oauth/authorize?client_id=91a359c6f4f2628b3f78a34ef78b9d82&redirect_uri=http://localhost:9090/udon/&response_type=code"> -->
-<%-- 									<img id="kakao_login_image" src="${pageContext.request.contextPath}/img/kakao_login_page.png"/></a> --%>
-<!-- 								</div> -->
                             </form:form>
                         </div>
                     </div>

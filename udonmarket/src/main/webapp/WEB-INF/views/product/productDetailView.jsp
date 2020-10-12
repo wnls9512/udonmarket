@@ -41,18 +41,11 @@
         <div class="col-lg-7 col-xl-7">
           <div class="product_slider_img">
             <div id="vertical">
-              <div data-thumb="${pageContext.request.contextPath}/resources/img/product/single-product/product_1.png">
-                <img src="${pageContext.request.contextPath}/resources/img/product/single-product/product_1.png" />
-              </div>
-              <div data-thumb="${pageContext.request.contextPath}/resources/img/product/single-product/product_1.png">
-                <img src="${pageContext.request.contextPath}/resources/img/product/single-product/product_1.png" />
-              </div>
-              <div data-thumb="${pageContext.request.contextPath}/resources/img/product/single-product/product_1.png">
-                <img src="${pageContext.request.contextPath}/resources/img/product/single-product/product_1.png" />
-              </div>
-              <div data-thumb="${pageContext.request.contextPath}/resources/img/product/single-product/product_1.png">
-                <img src="${pageContext.request.contextPath}/resources/img/product/single-product/product_1.png" />
-              </div>
+            	<c:forEach items="${photos }" var="photo">
+				<div data-thumb="${pageContext.request.contextPath }/resources/upload/${photo.uploadPath}/${photo.uuid}_${photo.originalFilename}">
+				  <img src="${pageContext.request.contextPath }/resources/upload/${photo.uploadPath}/${photo.uuid}_${photo.originalFilename}" />
+				</div>
+				</c:forEach>
             </div>
           </div>
         </div>
@@ -204,7 +197,7 @@
             <div class="card_area d-flex justify-content-between align-items-center">
               <a href="#" class="btn_3">채팅으로 거래하기</a>
               <c:if test="${product.offer == 1 }">
-              <a href="#">가격제안하기</a>
+              <a href="#" data-toggle="modal" data-target="#negoModal">가격제안하기</a>
               </c:if>
               <c:if test="${product.offer == 0 }">
               <a href="javascript:void(0);">가격제안 불가</a>
@@ -340,11 +333,101 @@
 </div>
 <!-- ========== REPORT MODAL END ========== -->
 
+<!-- ========== 가격제안 MODAL START ========== -->
+<div class="modal fade" id="negoModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle"><strong>가격 제안하기</strong></h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+      	<div class="media" style="background-color: #F9F9FF;">
+             <div class="d-flex ml-4 my-2" style="width: 17%;">
+               <img class="rounded-circle" 
+               	 src="${pageContext.request.contextPath }/resources/img/member/${seller.originalFilename }"  
+               	 alt="" />
+             </div>
+             <div class="my-4 ml-4 text-left" style="width: 37%;">
+               <h4>${product.title }</h4>
+               <span><fmt:formatNumber type="number" maxFractionDigits="3" value="${product.price}" />원</span>
+             </div>
+		</div>
+ 		<div class="p-4 text-left">
+			<%-- <h3><strong>${userId }님,</strong></h3> --%>
+			<h4><strong>시세에 맞는 가격을 제안해보세요.</strong></h4>
+			<br/>
+			<input type="number" name="nego_price" placeholder="가격 입력"
+									onfocus="this.placeholder = ''" onblur="this.placeholder = '가격 입력'" required
+									class="single-input-primary" style="width:68%;">
+			<span class="guide error" style="color: #ff3368;">너무 낮은 금액으로 제안할 수 없어요 💦</span>
+		</div>
+	  </div>
+      <div class="modal-footer">
+  		<input type="button" value="제안하기" id="btn-nego" class="genric-btn primary radius" onclick="nego();"/>
+        <button type="button" class="genric-btn primary-border" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- ========== 가격제안 MODAL END ========== -->
 
 
 
 	
 <script>
+//제안 하기 버튼 막기 (최소 가격)
+$(function(){
+	$(".guide.error").hide();
+	$("#btn-nego").attr('class', 'genric-btn disable');
+	
+	let $original_price =  "${product.price}"; //원래 가격
+	let $lowest_price = Math.round($original_price/2); // 제안할 수 있는 가격의 최소 값
+
+	$("[name=nego_price]").keyup(function(){
+		let $nego_price = $("[name=nego_price]").val(); //제안 가격
+		/* console.log($lowest_price); */
+
+		if($nego_price < 1){
+			$("#btn-nego").attr('class', 'genric-btn disable');
+			$(".guide.error").hide();
+			return;
+		} 
+		
+		if($nego_price < $lowest_price){
+			$(".guide.error").show();
+			$("#btn-nego").attr('class', 'genric-btn disable');
+			return;
+		}else{
+			$(".guide.error").hide();
+			$("#btn-nego").attr('class', 'genric-btn primary radius');
+			return;
+		}
+	});
+});
+
+//알림보내기
+function nego(){
+	let $userId = "${userId}";
+	let $seller = "${product.seller}";
+	let $price = $("[name=nego_price]").val();
+	let $pCode = "${product.PCode}";
+	let $title = "${product.title }";
+
+	if(sock) {
+		console.log("nego :: socket >> ", sock);
+			//webSocket에 보내기
+			//cmd/발신인/수신인/상품코드/상품제목/제안가격
+			sock.send("nego," + $userId + "," + $seller + "," + $pCode + "," + $title + "," + $price);
+			alert($seller + "님에게 " + $title + "를 " + $price + "원으로 제안했어요");
+			$('#negoModal').modal("hide");
+	}else{
+		console.log("Error on Nego ", sock);
+	}
+}
+
 //관심 목록 추가
 function addToWish(userId, pCode)
 {

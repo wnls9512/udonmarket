@@ -29,6 +29,7 @@ drop sequence seq_category;
 drop sequence seq_hashtag;
 drop sequence seq_board_photo;
 drop sequence seq_product;
+drop sequence seq_product_photo;
 drop sequence seq_chat_room;
 drop sequence seq_message;
 drop sequence seq_wish;
@@ -133,10 +134,12 @@ create table product
 
 create table product_photo
 (
-    uuid varchar2(100),
-    p_code number not null,
-    filename varchar2(50) not null,
-    uploadpath varchar2(50) not null,
+    photo_code number,
+    p_code number,
+    original_filename varchar2(50) not null,
+    uuid varchar2(50) not null,
+    upload_path varchar2(100),
+    constraint pk_product_photo_photo_code primary key(photo_code),
     constraint fk_product_photo_p_code foreign key(p_code) references product(p_code)
 );
 
@@ -339,6 +342,7 @@ create sequence seq_category;
 create sequence seq_hashtag;
 create sequence seq_board_photo;
 create sequence seq_product;
+create sequence seq_product_photo;
 create sequence seq_chat_room;
 create sequence seq_message;
 create sequence seq_wish;
@@ -563,32 +567,4 @@ insert into keyword values(SEQ_KEYWORD.nextval, 'test', '아이폰');
 insert into keyword values(SEQ_KEYWORD.nextval, 'juwon', '삼성');
 insert into keyword values(SEQ_KEYWORD.nextval, 'juwon', '갤럭시');
 --==========================================================================================
-select * from location;
-
-
-
-select l.user_id
-from location l,
-    (select latitude, longitude, radius from location where user_id = 'eunju') a
-where calc_distance(a.latitude, a.longitude, l.latitude, l.longitude) < a.radius
-      and user_id != 'eunju';   
-
-
-select p.p_code, p.seller, p.title, p.price, p.pull, trunc(sysdate - p.reg_date) reg_date, substr(m.address, instr(m.address, ' ', 1, 1), instr(m.address, ' ', 1, 2)) address, wc.wish, cc.chat
-from product p left join member m on(p.seller = m.user_id)
-               left join (select a.p_code p_code, count(b.p_code) wish from product a left outer join wish b on(a.p_code = b.p_code) group by a.p_code) wc on(wc.p_code = p.p_code)
-               left join (select a.p_code p_code, count(b.p_code) chat from product a left outer join chat_room b on(a.p_code = b.p_code) group by a.p_code) cc on(cc.p_code = p.p_code)
-where p.open_status = 1 and (p.trade_status = 'S' or p.trade_status = 'R') and delete_yn = 'N'
-      and p.seller in (
-                        select l.user_id 
-                        from location l,(select latitude, longitude, radius from location where user_id = 'eunju') a
-                        where calc_distance(a.latitude, a.longitude, l.latitude, l.longitude) < a.radius and user_id != 'eunju'
-                        )
-order by reg_date;
-
-select count(*) from product
-where seller in (
-                        select l.user_id 
-                        from location l,(select latitude, longitude, radius from location where user_id = 'eunju') a
-                        where calc_distance(a.latitude, a.longitude, l.latitude, l.longitude) < a.radius and user_id != 'eunju'
-                        );
+select * from product_photo;

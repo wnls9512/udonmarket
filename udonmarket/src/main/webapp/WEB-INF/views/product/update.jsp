@@ -12,12 +12,23 @@
 
 <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/upload.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/modal.css">
+<!-- filepond -->
+<link href="https://unpkg.com/filepond/dist/filepond.css" rel="stylesheet">
+<link href="${pageContext.request.contextPath }/resources/css/filepond-plugin-image-preview.css" rel="stylesheet">
+
+<style>
+body
+{
+	background: #fff;
+}
+</style>
 
 <!-- 알림 관련 스크립트 -->
 <script>
 
 $(function(){
 
+	//수신자가 여러명일 수 있음
 	var userIdList = "${userId}";
 	var userIdArr = userIdList != null ? userIdList.split(" ") : null;
 	
@@ -32,8 +43,7 @@ $(function(){
 
 			//소켓이 연결 되었을 때만 (있을 때만)
 			if(sock) {
-				console.log("reply.js :: socket >> ", sock);
-
+				console.log("price :: socket >> ", sock);
 				if(userIdArr != null){
 					//webSocket에 보내기
 					//cmd/발신인/수신인/상품코드/상품제목/가격
@@ -42,7 +52,7 @@ $(function(){
 				}
 								
 			}else{
-				console.log("Error on editReply ", sock);
+				console.log("Error on Price ", sock);
 			}
 		}
 
@@ -70,35 +80,49 @@ $(function(){
     <!-- breadcrumb end-->
     
     <!--================ Register Area =================-->
-    <section class="login_part padding_top">
+    <section class="login_part">
         <div class="container">
-           	<form action="${pageContext.request.contextPath }/product/update" method="post" enctype="multipart/form-data">
-	            <div class="row align-items-center">
-	                <div class="col-lg-6 col-md-6">
-	                    <div class="login_part_text text-center" style="background-image:none; border: 1px solid #ff3368; width:88%; padding: 0;">
-	                        <div class="login_part_text_iner">
-								<input type="file" name="files" class="files">
-	                        </div>
-	                    </div>
-	                </div>
-	                <div class="col-lg-6 col-md-6">
+            <div class="row align-items-center">
+                <div class="col-lg-6 col-md-6">
+                    <div class="login_part_text text-center" style="background-image:none; width:88%; padding: 0;">
+                        <div class="login_part_text_iner">
+                        	<!-- filepond에서 사용히는 file -->
+							<input type="file" class="my-pond" />
+							<p style="color: red;">* 사진은 4개까지 업로드할 수 있어요  *</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6">
+		           	<form method="post" name="frm">
 	                    <div class="login_part_form" style="padding: 70px 0;">
 	                        <div class="login_part_form_iner">
+                        	    <!-- 첨부파일의 갯수는 최대 4개로 하고 각 파일ID를 저장하기 위해 만든다. -->
+							    <!-- 4개 미만인 경우에는 4개로 맞추어 주기 위해 비어 있는 필드를 생성한다. -->
+							    <c:set var="fileListSize" value="${fn:length(photos)}"/>
+							    <c:forEach var="photo" items="${photos}" varStatus="status">
+							        <input type="hidden" name="uploadFile" value="${photo.uuid}" />
+							    </c:forEach>
+							    <c:if test="${fileListSize lt 4}">
+							        <c:forEach begin="0" end="${3-fileListSize}">
+							            <input type="hidden" name="uploadFile"/>
+							        </c:forEach>
+							    </c:if>
 	                        	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 	                        	<input type="hidden" name="pCode" value="${product.PCode }" />
 	                        	<input type="hidden" name="seller" id="seller" value="${product.seller }"/>
-                                <div class="col-md-12 form-group p_star" style="margin-top: 10%;">
-                                    <input type="text" name="title" placeholder="글 제목" value="${product.title }"
+	                               <div class="col-md-12 form-group p_star" style="margin-top: 10%;">
+	                                   <input type="text" name="title" placeholder="글 제목" value="${product.title }"
 											onfocus="this.placeholder = ''" onblur="this.placeholder = '글 제목'" required
-											class="single-input-primary">
-                                </div>
-                                <div class="col-md-12 form-group p_star">
-                                	<button data-toggle="modal" data-target="#categoryModal" class="btn btn-primary genric-btn default-border" 
-                                			id="category" data-code="" type="button" style="width: 100%; color: #007bff;">카테고리 선택 &nbsp;&nbsp;&nbsp;&nbsp; ></button>
-                              		<input type="hidden" name="category" value=""/>
-                                </div>
-                                <div class="col-md-12 form-group">
-                                    <div class="creat_account d-flex align-items-center">
+											class="single-input-primary"
+											style="background: #f9f9ff;">
+	                               </div>
+	                               <div class="col-md-12 form-group p_star">
+	                               	<button data-toggle="modal" data-target="#categoryModal" class="btn btn-primary genric-btn default-border" 
+	                               			id="category" data-code="" type="button" style="width: 100%; color: #007bff;">카테고리 선택 &nbsp;&nbsp;&nbsp;&nbsp; ></button>
+	                             		<input type="hidden" name="category" value=""/>
+	                               </div>
+	                               <div class="col-md-12 form-group">
+	                                   <div class="creat_account d-flex align-items-center">
 										<input type="number" name="price" placeholder="가격 입력" value="${product.price }"
 											onfocus="this.placeholder = ''" onblur="this.placeholder = '가격 입력'" required
 											class="single-input-primary" style="width:68%;">
@@ -108,16 +132,16 @@ $(function(){
 										</div>
 										<input type="hidden" name="offer" value="1"/>
 										<p style="margin-left: 6%; width: 30%; color: darkgray; font-size:14px;">가격제안 받기</p>
-                                    </div>
-                                </div>
-                                <div class="col-md-12 form-group p_star">
+	                                   </div>
+	                               </div>
+	                               <div class="col-md-12 form-group p_star">
 									<textarea class="single-textarea" placeholder="부개1동에 올릴 게시글 내용을 작성해주세요.(가품 및 판매금지품목은 게시가 제한될 수 있어요.)" 
 											  onfocus="this.placeholder = ''" style="height: 240px;" name="content"
 											  onblur="this.placeholder = '부개1동에 올릴 게시글 내용을 작성해주세요.(가품 및 판매금지품목은 게시가 제한될 수 있어요.)'" 
 											  required>${product.content }</textarea>
-                                </div>
-                                <div class="col-md-12 form-group">
-                                    <div class="creat_account d-flex align-items-center">
+	                               </div>
+	                               <div class="col-md-12 form-group">
+	                                   <div class="creat_account d-flex align-items-center">
 	                                	<button type="button" class="genric-btn default-border btn btn-primary" data-toggle="modal" data-target="#couponModal" 
 	                                			style="width: 68%; color: #007bff;" id="selectCoupon">쿠폰 조회</button>
 	                   					<div class="confirm-switch">
@@ -125,18 +149,18 @@ $(function(){
 											<label for="confirm-switch"></label>
 										</div>
 										<p style="margin-left: 6%; width: 27%; color: darkgray; font-size:14px;">쿠폰 적용</p>
-                                    </div>
-                                </div>
-                                <div class="col-md-12 form-group p_star">
-	                                <button type="submit" value="submit" class="btn_3" id="uploadBtn">
+	                                   </div>
+	                               </div>
+	                               <div class="col-md-12 form-group p_star">
+	                                <button type="button" value="submit" class="btn_3" id="uploadBtn" onclick="javascript:fn_save(); return false;">
 	                                    	수정
 	                                </button>
-                           		 </div>
+								   </div>
 	                        </div>
 	                    </div>
-	                </div>
-	            </div>
-            </form>
+		            </form>
+                </div>
+            </div>
         </div>
    </section>
     
@@ -223,7 +247,7 @@ $(function(){
 
  
 <script>
-/* ================ submit form START ================*/
+/* ================ submit form ================*/
 $(function()
 {
 	/*
@@ -308,12 +332,114 @@ $(function()
 			$("[name=offer]").val(0);
 	});
 });
-/* ================ submit form END ================*/
-
 </script>
 
+
+
+<!-- ================ filepond ================  -->
+<%-- <script src="https://unpkg.com/filepond-plugin-file-metadata/dist/filepond-plugin-file-metadata.js"></script>
+<script src="https://unpkg.com/filepond-plugin-image-crop/dist/filepond-plugin-image-crop.js"></script>
+
+<script src="${pageContext.request.contextPath }/resources/js/filepond-plugin-image-preview.js"></script> --%>
+<script src="https://unpkg.com/filepond/dist/filepond.min.js"></script>
+<script src="https://unpkg.com/jquery-filepond/filepond.jquery.js"></script>
+
+<script>
+
+/* 업로드된 파일 filepond에 보여주기 */
+var ufiles = [];
+var ufileIds = document.getElementsByName("uploadFile");
+for(let i = 0; i < ufileIds.length; i++)
+{
+	if(ufileIds[i].value != '')
+	{
+		// restore를 사용할 때는 limbo 타입이다.
+		ufiles.push({source: ufileIds[i].value, option: {type: "limbo"}}); 
+	}
+}
+const f = document.querySelector('input[type="file"]');
+const pond = FilePond.create
+			(f, { 
+					maxFiles: 4,
+                   	allowMultiple: true,
+                   	acceptedFileTypes: ['image/*'],
+                   	server: { 
+                   				url: "<c:url value='/product'/>",
+                   	        	process: {url: "/boardSaveFile.do?${_csrf.parameterName}=${_csrf.token}" },
+                   	        	revert: function (fileId, load, error) { fn_revertFile(fileId); load(); },
+                   	         	restore: {url: "/fileList.do?fileId="}
+							}, files: ufiles
+                    }
+			);
+
+//업로드가 모두 처리된 후 호출되는 callback
+//filepond에 파일이 표시 되면 이 함수가 호출된다. 결과적으로 신규등록과 같은 상태가 된다.
+var uploadedfiles = [];
+pond.on('processfile', function (e, f) 
+{
+    console.log(f.serverId);
+    uploadedfiles.push(f.serverId);
+});
+
+var x = new XMLHttpRequest();
+var handleStateChange = function () 
+{
+	/*
+		    0: request not initialized
+		    1: server connection established
+		    2: request received
+		    3: processing request
+		    4: request finished and response is ready
+    */
+    
+	if(x.readyState == 4 && x.status == 200) //정상처리
+	{ 
+	    console.log(x.responseText);
+	} 
+	else 
+	{
+	    console.log(x.readyState);
+	}
+};
+
+/* 파일 업로드 취소 */
+function fn_revertFile(fileId) 
+{
+	let p = uploadedfiles.indexOf(fileId);
+	uploadedfiles.splice(p,1);
+
+	// 고전적인 AJAX
+	if (window.XMLHttpRequest) 
+	{
+	    x = new XMLHttpRequest();
+		x.open("POST", "<c:url value='/product/boardDeleteFile.do?${_csrf.parameterName}=${_csrf.token}'/>", true); // async 
+		x.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+		x.onreadystatechange = handleStateChange;
+		x.send("fileId=" + fileId); //POST방식일때 send()를 사용하여 querystring형태로 전달한다.
+   		//str = x.responseText;	//sync일때는 여기서 결과를 받을 수 있다.
+		//x=null;
+	}
+}
+
+/* 파일 업로드 */
+function fn_save() 
+{
+	uploadedfiles.forEach
+	(
+		function(id, index) 
+		{
+			document.frm.uploadFile[index].value = id;
+			console.log(document.frm.uploadFile[index].value);
+		}
+	);
+
+	document.frm.action = "<c:url value='/product/update'/>";
+	document.frm.submit();
+
+}
+</script>
 <jsp:include page="/WEB-INF/views/common/footer.jsp"/>
 	
 	
 	
-	
+		

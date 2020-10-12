@@ -55,19 +55,26 @@ html { font-size: 16px; }
 </style>
     <!--================Home Banner Area =================-->
     <!-- breadcrumb start-->
-    <section class="breadcrumb breadcrumb_bg">
+	<section class="breadcrumb" style="background-color : #ecfdff;">
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-lg-8">
                     <div class="breadcrumb_iner">
                         <div class="breadcrumb_iner_item">
+<<<<<<< HEAD
                             <h2>자주묻는질문(FAQ)</h2>
 							<!-- <h3>서울 강남구 논현동</h3> -->
+=======
+                            <h2 style="display: inline-block;">공지사항</h2>
+					       <img src="${pageContext.request.contextPath }/resources/img/banner/mypage3.png" 
+			                                    	 alt="" 
+			                                    	 style="max-width: 590px;position: relative; left: 115px;">  	 
+>>>>>>> branch 'master' of https://github.com/oheunju/udonmarket.git
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+         </div>
     </section>
     <!-- breadcrumb start-->
     

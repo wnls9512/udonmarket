@@ -2,9 +2,10 @@ package com.kh.udon.member.model.service;
 
 import java.util.List;
 import java.util.Map;
-
+import com.kh.udon.member.model.vo.Coupon;
 import com.kh.udon.community.model.vo.Community;
 import com.kh.udon.community.model.vo.Reply;
+import com.kh.udon.member.model.vo.Block;
 import com.kh.udon.member.model.vo.Evaluate;
 import com.kh.udon.member.model.vo.Keyword;
 import com.kh.udon.member.model.vo.Location;
@@ -79,4 +80,16 @@ public interface MemberService
 	int insertNoti(Noti n);
 
 	int updateNotiCheck(int notiCode);
+
+
+	List<Coupon> selectCouponList(int limit, int offset);
+
+	int selectCouponTotalContents();
+
+	int updatePasswordEncrypt(Map<String, Object> paramMap);
+
+
+	List<Block> selectAllBlockUser(String userId);
+
+	int userIdCheck(String userId);
 }

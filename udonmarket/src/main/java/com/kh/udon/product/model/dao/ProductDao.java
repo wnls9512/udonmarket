@@ -7,6 +7,7 @@ import com.kh.udon.member.model.vo.Wish;
 import com.kh.udon.product.model.vo.CategoryVO;
 import com.kh.udon.product.model.vo.CouponDTO;
 import com.kh.udon.product.model.vo.ProductDTO;
+import com.kh.udon.product.model.vo.ProductPhotoVO;
 import com.kh.udon.product.model.vo.ProductVO;
 import com.kh.udon.product.model.vo.ReasonReportVO;
 import com.kh.udon.product.model.vo.ReportVO;
@@ -66,6 +67,16 @@ public interface ProductDao
     int reportUser(ReportVO report);
 
 	List<String> selectWishUserId(int pCode);
+
+    int insert(ProductPhotoVO photoDTO);
+
+    int updateProductCode(Map<String, Object> map);
+
+    void deleteFile(String uuid);
+
+    List<ProductPhotoVO> selectPhotos(int pCode);
+
+    ProductPhotoVO selectFile(ProductPhotoVO photo);
 
 
 
