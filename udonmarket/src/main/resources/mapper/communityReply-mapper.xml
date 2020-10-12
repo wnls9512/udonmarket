@@ -68,22 +68,10 @@
 
 	</delete>
 	
-	<select id="selectReplyList" resultMap="ReplyMap">
-		select report_code, 
-			   reply_code, 
-			   report_id, 
-			   (select reason_content from reason_report) as reason_content, 
-		from report
-		order by report_code;
-	
+	<select id="selectReplyList" resultType="report">
+		select R.report_code, R.reply_code, R.report_id, RR.reason_content
+		from report R left join reason_report RR on R.reason_code = RR.reason_code
 	</select>
-	
-	<resultMap type="Report" id="ReplyMap">
-		<id column="report_code" property="reportCode"/>
-		<result column="reply_code" property="replyCode"/>
-		<result column="report_id" property="reportId"/>
-		<result column="reason_content" property="reportContent"/>
-	</resultMap>
 	
 	
 </mapper>
