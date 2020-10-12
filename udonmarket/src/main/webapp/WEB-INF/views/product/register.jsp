@@ -13,6 +13,16 @@
 
 <sec:authentication property="principal.username" var="userId"/>
 
+<style>
+.breadcrumb_bg_01
+{
+	background-image: url(${pageContext.request.contextPath}/resources/img/breadcrumb_01.png);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+</style>
+
 <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/upload.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/modal.css">
 <!-- filepond -->
@@ -26,7 +36,7 @@ body
 </style>
     <!--================Home Banner Area =================-->
     <!-- breadcrumb start-->
-    <section class="breadcrumb breadcrumb_bg">
+    <section class="breadcrumb breadcrumb_bg_01">
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-lg-8">
