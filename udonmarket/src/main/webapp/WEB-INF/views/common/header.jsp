@@ -54,8 +54,6 @@
 <sec:authorize access="isAuthenticated()">
 	<sec:authentication property="principal.username" var="userId"/>
 </sec:authorize>
-
-
     <!--::header part start::-->
     <header class="main_menu home_menu">
         <div class="container">
@@ -103,19 +101,22 @@
                            	<!-- notiList -->
                             <a href="#" id="bell" onclick="showNoti();"><i class="ti-bell"></i></a>
                            	<!-- notiList -->
-<%--                             <a href="${pageContext.request.contextPath }/chat/chatListView"
-                               target = "_black"> --%>
-                            <a href="${pageContext.request.contextPath }/chat/chatListView">
+                           	
+                           	<!-- chatList 새창으로 열기-->
+                           	<sec:authorize access="isAuthenticated()">
+                            <a href="${pageContext.request.contextPath }/chat/chatListView?userId=${userId}" 
+                               target = "_black">
                             	<i class="ti-comments-smiley"></i>
                             </a>
+                            </sec:authorize>
+                           	<!-- chatList -->
                             
                             <sec:authorize access="isAnonymous()">
 	                        	<a href="${pageContext.request.contextPath }/member/loginForm"><i class="ti-power-off"></i></a>
 	                        </sec:authorize>
 	                        
 	                        <sec:authorize access="isAuthenticated()">
-	                        <sec:authentication property="principal.username" var="loggedInUserId" />
-                            <a href="${pageContext.request.contextPath }/member/mypage?userId=${loggedInUserId}"><i class="ti-user"></i></a>
+                            <a href="${pageContext.request.contextPath }/member/mypage?userId=${userId}"><i class="ti-user"></i></a>
                        
                             <form:form method="POST" action="${pageContext.request.contextPath }/member/logout">
                             	<button type="submit" style="background: none; border: none; margin-left: 1.8em; padding: 0px;"><i class="ti-power-off"></i></button>
@@ -167,7 +168,7 @@
 <script>
 //알림 리스트 띄우기
 function showNoti(){
-	var $userId = "${loggedInUserId}";
+	var $userId = "${userId}";
 
  	$.ajax({
 		url : "${pageContext.request.contextPath}/member/showNoti",

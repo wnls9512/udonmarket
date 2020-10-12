@@ -4,12 +4,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.savedrequest.SavedRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -56,6 +58,28 @@ public class MemberController {
 	
 	@Autowired
 	private Email emailVo;
+	
+	@RequestMapping(value="/memberLoginSuccess.do")
+	public ModelAndView memberLoginSuccess(ModelAndView mav, HttpSession session, @RequestParam String memberId, @RequestParam String password){
+		if(log.isDebugEnabled()) {
+			log.debug("/member/memberLoginSuccess.do");
+			log.debug("memberId = {}", memberId);
+			log.debug("password = {}", password);
+		}
+		//로그인전 이동하려던 페이지가 있던 경우, 이동할 페이지 처리
+		//SavedRequest는 
+		String loc = "";
+		SavedRequest savedRequest =
+			    (SavedRequest)session.getAttribute("SPRING_SECURITY_SAVED_REQUEST");
+		Optional<SavedRequest> maybeSavedRequest = Optional.ofNullable(savedRequest);
+		loc = maybeSavedRequest.map(o -> o.getRedirectUrl())
+							   .orElse("/");
+		log.debug("loc@loginSuccess="+loc);
+		//view단 지정
+//		mav.setViewName("redirect:"+loc);
+		mav.setViewName("redirect:/");
+		return mav;
+	}
 	
 	// 로그인
 	@RequestMapping("/loginForm")
@@ -107,30 +131,30 @@ public class MemberController {
 		return "redirect:/";
 	}
 
-	@RequestMapping(value="/login" ,method=RequestMethod.POST)
-	public String memberLogin(@RequestParam String userId, @RequestParam String password, Model model,
-			RedirectAttributes redirectAttr, HttpSession session) {
-
-		log.debug("userId = {}, password = {}", userId, password);
-		Member member = service.selectOneMember(userId);
-		log.debug("member = {}", member);
-
-		String location = "/";
-
-		// 로그인 성공
-		 if(member != null && bcryptPasswordEncoder.matches(password,member.getPassword())) { 
-			//세션처리 
-			model.addAttribute("loginMember", member);
-			
-			//세션에서 next값 가져오기 
-		    String next = (String)session.getAttribute("next");
-			location = next != null ? next : location; session.removeAttribute("next"); }
-		  //로그인 실패 
-		  else { 
-			  redirectAttr.addFlashAttribute("msg", "아이디 또는 비밀번호가 틀렸습니다.");
-		  }
-		return "redirect:" + location;
-	}
+//	@RequestMapping(value="/login" ,method=RequestMethod.POST)
+//	public String memberLogin(@RequestParam String userId, @RequestParam String password, Model model,
+//			RedirectAttributes redirectAttr, HttpSession session) {
+//
+//		log.debug("userId = {}, password = {}", userId, password);
+//		Member member = service.selectOneMember(userId);
+//		log.debug("member = {}", member);
+//
+//		String location = "/";
+//
+//		// 로그인 성공
+//		 if(member != null && bcryptPasswordEncoder.matches(password,member.getPassword())) { 
+//			//세션처리 
+//			model.addAttribute("loginMember", member);
+//			
+//			//세션에서 next값 가져오기 
+//		    String next = (String)session.getAttribute("next");
+//			location = next != null ? next : location; session.removeAttribute("next"); }
+//		  //로그인 실패 
+//		  else { 
+//			  redirectAttr.addFlashAttribute("msg", "아이디 또는 비밀번호가 틀렸습니다.");
+//		  }
+//		return "redirect:" + location;
+//	}
 
 	@PostMapping("/memberLoginFailure")
 	public String memberLoginFailure(RedirectAttributes redirectAttr) {

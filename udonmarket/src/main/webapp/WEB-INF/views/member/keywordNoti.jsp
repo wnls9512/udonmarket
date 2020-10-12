@@ -155,10 +155,10 @@ $(function(){
 	$("#idValid").val(0);
 	$("#btn-insert").attr('disabled', true);
 	
-	//키워드 30개 이상 추가 막기
-	if( $("#totalKeywordContents").val() >= 30 ){
+	//키워드 10개 이상 추가 막기
+	if( $("#totalKeywordContents").val() >= 10 ){
 		$("[name=keyword]").attr("readonly", true);
-		$("[name=keyword]").attr("placeholder", '키워드는 최대 30개까지 설정할 수 있어요');
+		$("[name=keyword]").attr("placeholder", '키워드는 최대 10개까지 설정할 수 있어요');
 	}
 
 	//키워드 중복 검사
