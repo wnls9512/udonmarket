@@ -204,7 +204,12 @@
             	<span style="color: gray;">관심 ${product.wish} · 채팅 ${product.chat }<br /></span>
             </div>
             <div class="card_area d-flex justify-content-between align-items-center">
+              <c:if test="${userId == product.seller }">
+              <button class="btn_3" style="background-color: lightgray; border: none; box-shadow: none;" disabled>채팅으로 거래하기</button>
+              </c:if>
+              <c:if test="${userId != product.seller }">
               <a href="#" class="btn_3">채팅으로 거래하기</a>
+              </c:if>
               <c:if test="${product.offer == 1 }">
               <a href="#" data-toggle="modal" data-target="#negoModal">가격제안하기</a>
               </c:if>
