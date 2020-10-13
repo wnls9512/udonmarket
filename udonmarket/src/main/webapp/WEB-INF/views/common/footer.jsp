@@ -21,12 +21,18 @@ function connectWS(){
     
     // 서버로부터 메시지를 받았을 때
     function onMessage(msg) {
-	
+
+        let myId = "${userId}";
+
+    	console.log("메세지를 받았습니다");
         //알림
         //console.log(typeof msg.data);
         //console.log((msg.data).includes('sendMsg'));
-        if((msg.data).includes('sendMsg')){
-        	$("#chatBox").append(msg.data);
+         if((msg.data).includes('sendMsg')){
+
+		
+		 $("#chatBox").append(msg.data);	
+
         }else{
 
         	let $socketAlert = $("#socketAlert");

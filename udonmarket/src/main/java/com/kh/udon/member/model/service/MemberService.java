@@ -92,4 +92,8 @@ public interface MemberService
 	List<Block> selectAllBlockUser(String userId);
 
 	int userIdCheck(String userId);
+
+	List<Noti> selectAllNoti(String userId, int limit, int offset);
+
+	int selectNotiTotalContents(String userId);
 }

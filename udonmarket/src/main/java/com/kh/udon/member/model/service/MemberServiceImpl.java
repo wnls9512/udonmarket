@@ -266,4 +266,14 @@ public class MemberServiceImpl implements MemberService
 	public int userIdCheck(String userId) {
 		return memberDao.userIdCheck(userId);
 	}
+
+	@Override
+	public List<Noti> selectAllNoti(String userId, int limit, int offset) {
+		return memberDao.selectAllNoti(userId, limit, offset);
+	}
+
+	@Override
+	public int selectNotiTotalContents(String userId) {
+		return memberDao.selectNotiTotalContents(userId);
+	}
 }
