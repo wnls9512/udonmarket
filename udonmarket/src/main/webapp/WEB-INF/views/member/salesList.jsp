@@ -130,11 +130,8 @@ a{text-decoration: none; color: black;}
 									      			  ${ sale.tradeStatus eq "R" ? '' : 'style="display:none;"'}>예약중</span>
 									      		<fmt:formatNumber value="${sale.price }" groupingUsed="true"/>원
 									      	</p>
-									      	<input id="toggle-heart${sale.wishCode}" name="toggle-heart" type="checkbox"/>
-											<label id="toggle-heart${sale.wishCode}-label" for="toggle-heart">❤</label> 
-									      	${sale.totalWish}
-									      	<!-- 열린 채팅방 수 -->
-									      	<i class="far fa-comments"></i> 2<br />
+									      	<i class="far fa-heart"></i> ${sale.totalWish}
+									      	<i class="far fa-comments"></i> ${sale.totalChat }<br />
 									      	<c:if test="${loggedInUserId == member.userId }">
 									      	<div style="margin:10px 0px;">
 										      	<c:if test="${sale.tradeStatus eq 'S' }">
@@ -200,11 +197,8 @@ a{text-decoration: none; color: black;}
 									      		<span class="badge badge-secondary">거래완료</span>
 									      		<fmt:formatNumber value="${c.price }" groupingUsed="true"/>원
 									      	</p>
-									      	<input id="toggle-heart${c.wishCode}" name="toggle-heart" type="checkbox"/>
-											<label id="toggle-heart${c.wishCode}-label" for="toggle-heart">❤</label> 
-									      	${c.totalWish}
-									      	<!-- 열린 채팅방 수 -->
-									      	<i class="far fa-comments"></i> 2<br />
+									      	<i class="far fa-heart"></i> ${c.totalWish}
+									      	<i class="far fa-comments"></i> ${c.totalChat }<br />
 									      	<c:if test="${loggedInUserId == member.userId }">
 									      	<div style="margin:10px 0px;">
 										      	<button type="button" class="btn btn-outline-secondary btn-sm"
@@ -262,11 +256,8 @@ a{text-decoration: none; color: black;}
 									      	<p style="font-weight: bold;">
 									      		<fmt:formatNumber value="${h.price }" groupingUsed="true"/>원
 									      	</p>
-									      	<input id="toggle-heart${h.wishCode}" name="toggle-heart" type="checkbox"/>
-											<label id="toggle-heart${h.wishCode}-label" for="toggle-heart">❤</label> 
-									      	${h.totalWish}
-									      	<!-- 열린 채팅방 수 -->
-									      	<i class="far fa-comments"></i> 2<br />
+									      	<i class="far fa-heart"></i> ${h.totalWish}
+									      	<i class="far fa-comments"></i> ${h.totalChat }<br />
 									      	<div style="margin:10px 0px;">
 									      	<button type="button" class="btn btn-outline-secondary btn-sm"
 									      			style="margin: 0px 0.15rem;">숨기기 해제</button>

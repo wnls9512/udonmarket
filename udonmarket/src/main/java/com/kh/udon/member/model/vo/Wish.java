@@ -25,6 +25,6 @@ public class Wish extends ProductVO implements Serializable {
 	private int totalWish; //하트 개수
 	private int reviewCode;
 	private String categoryName;
-//	private int totalChat; //열린 채팅방 개수
+	private int totalChat; //열린 채팅방 개수
 	
 }

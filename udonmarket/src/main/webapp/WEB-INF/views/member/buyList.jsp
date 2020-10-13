@@ -121,11 +121,8 @@ html { font-size: 16px; }
 								      		<span class="badge badge-secondary">거래완료</span>
 								      		<fmt:formatNumber value="${buy.price }" groupingUsed="true"/>원
 								      	</p>
-								      	<input id="toggle-heart${buy.wishCode}" name="toggle-heart" type="checkbox"/>
-										<label id="toggle-heart${buy.wishCode}-label" for="toggle-heart">❤</label> 
-								      	${buy.totalWish}
-								      	<!-- 열린 채팅방 수 -->
-								      	<i class="far fa-comments"></i> 2<br />
+								      	<i class="far fa-heart"></i> ${buy.totalWish}
+									      	<i class="far fa-comments"></i> ${buy.totalChat }<br />
 								      	<c:if test="${loggedInUserId == member.userId }">
 								      	<div style="margin:10px 0px;">
 								      	<!-- 작성 후기가 있다면 후기 보기 페이지로 -->
