@@ -28,6 +28,9 @@ public class Community implements Serializable
 	private int hashtagCode;
 	private int likeThis;
 	private int BoardphotoCount;
+	private String nickname;
+	private String address;
+	
 	
 	private List<Boardphoto> BoardphotoList;
 

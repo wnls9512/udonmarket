@@ -4,6 +4,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
 
 <fmt:requestEncoding value="utf-8"/>
@@ -11,6 +12,8 @@
 <jsp:include page="/WEB-INF/views/common/header.jsp">
 	<jsp:param value="게시글 상세보기" name="pageTitle"/>
 </jsp:include>
+
+<sec:authentication property="principal.username" var="userId"/>
 
 <script>
 
@@ -90,6 +93,7 @@ function deleteBoard(bCode)
 	            xhr.setRequestHeader("${_csrf.headerName}", "${_csrf.token}");
 	        },
 	        dataType: "json",
+	        async: false,
 			success: function(map)
 			{
 				alert(map.msg);
@@ -105,6 +109,37 @@ function deleteBoard(bCode)
 	else
 		return false;
 }
+
+// 좋아요
+function likeThis(bCode)
+{
+	if(confirm("이 게시글을 좋아하시겠습니까?"))
+	{
+		$.ajax
+		({
+			url: "${ pageContext.request.contextPath }/community/likeThis?bCode="+bCode+"&userId=${userId}",
+			method: "PUT",
+			beforeSend: function(xhr)
+			{
+	            xhr.setRequestHeader("${_csrf.headerName}", "${_csrf.token}");
+	        },
+	        dataType: "json",
+			success: function()
+			{
+				
+				location.href = "${ pageContext.request.contextPath }/community/communityDetailView?bCode=" + bCode;									
+			},
+			error: function(xhr, status, err)
+			{
+				location.href = "${ pageContext.request.contextPath }/community/communityDetailView?bCode=" + bCode;	
+			}
+		});
+	}
+	else
+		return false;
+}
+
+
 
 
 </script>
@@ -207,12 +242,14 @@ function deleteBoard(bCode)
                                 </c:if>
                      </ul>
                      
+                     <c:if test="${ community.userId eq userId }">
                      <div style="float: right;">
 	                     <a href="${pageContext.request.contextPath }/community/updateBoard?bCode=${community.BCode}<%-- &categoryCode=${community.categoryCode }&hashtagCode=${community.hashtagCode} --%>">수정</a>
 	                     &nbsp;
 	                     <a href="javascript:deleteBoard('${community.BCode }');">삭제</a>
 	                     
                      </div>
+                     </c:if>
                      <br /><br />
                      <a href="#">
                      <div class="blog-author" style="width: 100%;/*  margin:0 auto; */ margin-top: 5px; /* background-color: white; */">
@@ -220,9 +257,9 @@ function deleteBoard(bCode)
                      <img src="${pageContext.request.contextPath}/resources/img/blog/author.png" alt="">
                      <div class="media-body">
                         
-                           <h4>${ community.userId }</h4>
+                           <h4>${ community.nickname }</h4>
                         
-                        <p>서울시 강남구 논현동</p>
+                        <p>${ community.address }</p>
                      </div>
                   </div>
                </div>
@@ -232,13 +269,19 @@ function deleteBoard(bCode)
                </div>
                <div class="navigation-top">
                   <div class="d-sm-flex justify-content-between text-center">
-                     <p class="like-info"><span class="align-middle"><a href="#"><i class="far fa-heart"></i></a></span> 4명의 이웃이 이 게시글을 좋아합니다. </p>
+                     <%-- <p class="like-info"><span class="align-middle"><a href="${pageContext.request.contextPath }/community/likeThis?bCode=${community.BCode}&userId=${userId}" id="like_update"><i class="far fa-heart"></i></a></span> ${ community.likeThis }명의 이웃이 이 게시글을 좋아합니다. </p> --%>
+                     <%-- <p class="like-info"><span class="align-middle"><a data-like="${ community.BCode }"><i class="far fa-heart"></i></a></span> ${ community.likeThis }명의 이웃이 이 게시글을 좋아합니다. </p> --%>
+                      <p class="like-info"><span class="align-middle"><a href="javascript:likeThis('${community.BCode }');"><i class="far fa-heart"></i></a></span> ${ community.likeThis }명의 이웃이 이 게시글을 좋아합니다. </p>
                      <div class="col-sm-4 text-center my-2 my-sm-0">
                         <!-- <p class="comment-count"><span class="align-middle"><i class="far fa-comment"></i></span> 06 Comments</p> -->
                      </div>
+                     <c:if test="${ community.userId ne userId }">
                      <a class="genric-btn primary-border small">신고하기</a>
+                     </c:if>
                   </div>
-                  <div class="navigation-area">
+                  
+                  <!-- 이전 다음 게시글 -->
+                 <%--  <div class="navigation-area">
                      <div class="row">
                         <div
                            class="col-lg-6 col-md-6 col-12 nav-left flex-row d-flex justify-content-start align-items-center">
@@ -252,6 +295,7 @@ function deleteBoard(bCode)
                                  <span class="lnr text-white ti-arrow-left"></span>
                               </a>
                            </div>
+                           
                            <div class="detials">
                               <p>이전 게시글</p>
                               <a href="#">
@@ -279,7 +323,9 @@ function deleteBoard(bCode)
                            </div>
                         </div>
                      </div>
-                  </div>
+                  </div> --%>
+                  
+                  
                </div>
                
                <!-- 댓글 -->
@@ -341,15 +387,22 @@ function deleteBoard(bCode)
                               <div class="d-flex justify-content-between">
                                  <div class="d-flex align-items-center">
                                     <h5>
-                                       <a href="#">${r.userId}</a>
+                                       <a href="#">${r.nickname}</a>
                                     </h5>
                                     <p class="date"> <fmt:formatDate value="${r.regDate}" pattern="yyyy-MM-dd" /> </p>
                                       &nbsp;&nbsp; &nbsp;&nbsp;
-                                      <a href="#">수정</a>&nbsp;
-                                      <p>·</p>&nbsp;
-                                      <a  href="${pageContext.request.contextPath }/community/deleteReply?replyCode=${r.replyCode}&bCode=${community.BCode}">삭제</a>&nbsp;
-                                      <p>·</p>&nbsp;
-                                    <a href="#">신고하기</a>
+                                      
+                                      <c:if test="${ r.userId eq userId }">
+	                                      <a href="#">수정</a>&nbsp;
+	                                      <p>·</p>&nbsp;
+	                                      <a href="${pageContext.request.contextPath }/community/deleteReply?replyCode=${r.replyCode}&bCode=${community.BCode}">삭제</a>&nbsp;
+
+                                      
+                                      </c:if>
+                                      <c:if test="${ r.userId ne userId }">
+                                    	<a href="#">신고하기</a>
+                                      </c:if>
+                                      
                                  </div>
                                  
                               </div>
@@ -366,14 +419,14 @@ function deleteBoard(bCode)
                            <div class="form-group">
                            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                            <input type="hidden" id="bCode" name="bCode" value="${community.BCode}" />
-                           <input type="hidden" id="userId" name="userId" value="test" />
+                           <input type="hidden" id="userId" name="userId" value="${userId}" />
                               <textarea class="form-control w-100" name="content" id="content" cols="30" rows="5"
                                  placeholder="댓글 작성 시 타인에 대한 배려와 책임을 담아주세요."></textarea>
                            </div>
                         </div>
                      </div>
                      <div class="form-group mt-3">
-                        <a href='#' onClick='fn_addtoBoard()' class="btn_3" style="text-align: center; font-weight: bold; color: white;">작성</a>
+                        <a onClick='fn_addtoBoard()' class="btn_3" style="text-align: center;">작성</a>
                      </div>
                   </form>
                </div>

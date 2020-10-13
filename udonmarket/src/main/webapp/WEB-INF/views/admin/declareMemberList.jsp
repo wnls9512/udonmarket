@@ -53,7 +53,8 @@ a {
                                 <ul class="list">
                                     <li><a href="${pageContext.request.contextPath }/admin/memberList">회원 조회 / 등록 / 삭제</a></li>
                                     <li><a href="${pageContext.request.contextPath }/admin/declareMemberList">신고 관리(사용자)</a></li>
-									<li><a href="${pageContext.request.contextPath }/admin/declareBoardList">신고 관리(게시글)</a></li>
+									<li><a href="${pageContext.request.contextPath }/admin/declareBoardList">신고 관리(동네생활)</a></li>
+									<li><a href="${pageContext.request.contextPath }/admin/declareProductList">신고 관리(중고거래)</a></li>
 									<li><a href="${pageContext.request.contextPath }/admin/declareReplyList">신고 관리(댓글)</a></li>
 									<li><a href="${pageContext.request.contextPath }/admin/CouponList">쿠폰 관리</a></li>
                                 </ul>
@@ -62,44 +63,30 @@ a {
                     </div>
                 </div>
  			<div class="col-lg-9"> 
-                    <div class="row">
-                        <div class="col-lg-12">
-                            <div class="product_top_bar d-flex justify-content-between align-items-center">
-                                <div class="single_product_menu">
-                                    <p><span>${totalContents }</span>명의 회원</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                     <div class="row align-items-center latest_product_inner">
-                        <div class="col-lg-4 col-sm-6">
-                            <div class="single_product_item">
-                            	<form:form id="adminMemberSignupFrm" action="adminMemberEnroll" method="post">
-                            		<table id="tbl-member" class="table table-striped table-hover">
+                         <table id="tbl-member" class="table table-striped table-hover">
 										<tr>
-											<th>아이디</th>
-											<th>이메일</th>
-											<th>닉네임</th>
-											<th>가입날짜</th>
-											<th>삭제여부</th>
+											<th>신고번호</th>
+											<th>사유번호</th>
+											<th>신고자</th>
+											<th>신고대상자</th>
+											<th>사유내용</th>
 										</tr>
-										<c:forEach items="${ list }" var="member">
+										<c:forEach items="${ list }" var="report">
 											<tr>
-												<td>${ member.userId }</td>
-												<td>${ member.email }</td>
-												<td>${ member.nickName }</td>
-												<td><fmt:formatDate value="${ member.regDate }" type="both"/></td>
-												<td><button type="button" class="btn btn-outline-danger" onclick="adminMemberQuit('${ member.userId }')">탈퇴</button></td>
+												<td>${ report.reportCode }</td>
+												<td>${ report.reasonCode }</td>
+												<td>${ report.reportId }</td>
+												<td>${ report.shooterId }</td>
+												<td>${ report.reasonContent }</td>
 											</tr>
 										</c:forEach>
-									</table>
-							</form:form>
+							</table>
+
                             </div>
                         </div>
 					</div>
                 </div>
-            </div>
-        </div>
 	</section>
 	
 

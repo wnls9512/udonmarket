@@ -53,7 +53,8 @@ a {
                                 <ul class="list">
                                     <li><a href="${pageContext.request.contextPath }/admin/memberList">회원 조회 / 등록 / 삭제</a></li>
                                     <li><a href="${pageContext.request.contextPath }/admin/declareMemberList">신고 관리(사용자)</a></li>
-									<li><a href="${pageContext.request.contextPath }/admin/declareBoardList">신고 관리(게시글)</a></li>
+									<li><a href="${pageContext.request.contextPath }/admin/declareBoardList">신고 관리(동네생활)</a></li>
+									<li><a href="${pageContext.request.contextPath }/admin/declareProductList">신고 관리(중고거래)</a></li>
 									<li><a href="${pageContext.request.contextPath }/admin/declareReplyList">신고 관리(댓글)</a></li>
 									<li><a href="${pageContext.request.contextPath }/admin/CouponList">쿠폰 관리</a></li>
                                 </ul>
@@ -66,7 +67,7 @@ a {
                         <div class="col-lg-12">
                             <div class="product_top_bar d-flex justify-content-between align-items-center">
                                 <div class="single_product_menu">
-                                    <p><span>${totalContents }</span>명의 회원</p>
+                                    <p><span>${totalContents }</span>명 의 회원</p>
                                 </div>
                             </div>
                         </div>

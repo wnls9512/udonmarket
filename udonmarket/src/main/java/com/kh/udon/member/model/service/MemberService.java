@@ -5,6 +5,7 @@ import java.util.Map;
 import com.kh.udon.member.model.vo.Coupon;
 import com.kh.udon.community.model.vo.Community;
 import com.kh.udon.community.model.vo.Reply;
+import com.kh.udon.community.model.vo.Report;
 import com.kh.udon.member.model.vo.Block;
 import com.kh.udon.member.model.vo.Evaluate;
 import com.kh.udon.member.model.vo.Keyword;
@@ -93,7 +94,11 @@ public interface MemberService
 
 	int userIdCheck(String userId);
 
+
+	List<Report> selectDeclareMemberList(int limit, int offset);
+
 	List<Noti> selectAllNoti(String userId, int limit, int offset);
 
 	int selectNotiTotalContents(String userId);
+
 }

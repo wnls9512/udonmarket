@@ -119,7 +119,8 @@
                             <a href="${pageContext.request.contextPath }/member/mypage?userId=${userId}"><i class="ti-user"></i></a>
                        
                             <form:form method="POST" action="${pageContext.request.contextPath }/member/logout">
-                            	<button type="submit" style="background: none; border: none; margin-left: 1.8em; padding: 0px;"><i class="ti-power-off"></i></button>
+<!--                             	<button type="submit" style="background: none; border: none; margin-left: 1.8em; padding: 0px;"><i class="ti-power-off"></i></button> -->
+                            	<button type="submit" style="background: none; border: none; margin-left: 1.8em; padding: 0px;"><i class="fas fa-sign-in-alt"></i></button>
                             </form:form> 
 	                        </sec:authorize>
 							
