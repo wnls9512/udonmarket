@@ -141,6 +141,9 @@ public class WebSocketHandler extends TextWebSocketHandler{
 				int roomCode = Integer.parseInt(strs[3]);
 				String content = strs[4];
 				
+				log.debug("sender = {}", sender);
+				log.debug("receiver = {}", receiver);
+				
 				//현재 접속 중인 (로그인 중인) 사용자 중에 receiver가 있을때만 알림을 보낸다
 				WebSocketSession receiverSession = userSessions.get(receiver); 
 				
@@ -151,13 +154,15 @@ public class WebSocketHandler extends TextWebSocketHandler{
 					//fmt.format(now);
 					
 					String sendMsg = "<div name='sendMsg' class='media w-50 mb-3'><img src='https://res.cloudinary.com/mhmd/image/upload/v1564960395/avatar_usae7z.svg' alt='user' width='50' class='rounded-circle'>" +
-							"<div class='media-body ml-3'>" +
+							"<div class='media-body ml-3' name='sender_" + sender + "'>" +
 							"<div class='bg-light rounded py-2 px-3 mb-2'>" +
 							"<p class='text-small mb-0 text-muted'>" + content + "</p>" +
 							"</div>" +
 							"<p class='small text-muted'>" + fmt.format(now) + "</p>" +
 							"</div>" +
 							"</div>";
+					
+					//String sendMsg = sender + ":" + content + ":" + fmt.format(now);
 					
 					TextMessage tmpMsg = new TextMessage(sendMsg);
 					receiverSession.sendMessage(tmpMsg);									

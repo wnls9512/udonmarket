@@ -57,6 +57,7 @@
 			          	<c:forEach items="${list }" var="r">
 						    <a href="#" class="list-group-item list-group-item-action list-group-item-light rounded-0" name="chatRoom" >
 						      <input type="hidden" name="roomCode" value=${r.roomCode } />
+						      <input type="hidden" name="receiver" value=${r.sender } />
 				              <div class="media"><img src="https://res.cloudinary.com/mhmd/image/upload/v1564960395/avatar_usae7z.svg" alt="user" width="50" class="rounded-circle">
 				                <div class="media-body ml-4">
 				                  <div class="d-flex align-items-center justify-content-between mb-1">
@@ -85,8 +86,8 @@
 		        <div class="input-group">
 		          <input type="text" id="message" placeholder="Type a message" aria-describedby="button-addon2" class="form-control rounded-0 border-0 py-4 bg-light">
 		          <div class="input-group-append">
+		          	<input type="hidden" id="receiver" />
 		            <button id="sendBtn" type="button" class="btn btn-link">전송<i class="far fa-paper-plane"></i></button>
-		            <input type="hidden" id="receiver" />
 		          </div>
 		        </div>
 		      </form>
@@ -100,6 +101,7 @@
 <script>
 $("[name=chatRoom]").click(function(){
 	var $roomCode = $(this).find("[name=roomCode]").val();
+	var $receiver = $(this).find("[name=receiver]").val();
 	var $myId = "${userId}";
 	$("#chatBox").empty();
 
@@ -155,7 +157,7 @@ $("[name=chatRoom]").click(function(){
 			} 
 
 			$("#sendBtn").val($roomCode);
-			$("#receiver").val(msg[0].userId);
+			$("#receiver").val($receiver);
 			
 		},
 		error : function(xhr, status, err){
@@ -171,11 +173,13 @@ $("#sendBtn").click(function() {
 	let $msg = $("#message").val();
 	let roomCode = $(this).val();
 	let receiver = $("#receiver").val();
-	alert(roomCode);
+	let myId = "${userId}";
+	console.log("myId = " + myId);
+	console.log("receiver = " + receiver);
 
 	if(sock){
 		console.log("chat :: socket >> ", sock);
-		sock.send("chat,${userId}," +  receiver + "," + roomCode + "," + $msg); 
+		sock.send("chat," + myId + "," + receiver + "," + roomCode + "," + $msg); 
 
 		let myMsg = "<div class='media w-50 ml-auto mb-3'>" +
 				        "<div class='media-body'>" +
@@ -186,7 +190,8 @@ $("#sendBtn").click(function() {
 				        "</div>" +
 				      "</div>";
 
-		$("#chatBox").append(myMsg);	
+		$("#chatBox").append(myMsg);
+		$("#message").val("");
 		
 	}else{
 		console.log("Error on Chat", sock);
