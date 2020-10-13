@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.kh.udon.member.model.vo.announce;
+import com.kh.udon.product.model.service.ProductService;
+
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -41,6 +43,9 @@ public class AdminController {
 	
 	@Autowired
 	private BCryptPasswordEncoder bcryptPasswordEncoder;
+	
+    @Autowired
+    private ProductService productService;
 	
 	/**
 	 * 페이징의 컨텐츠영역에 대한 기능구현을 
@@ -149,6 +154,7 @@ public class AdminController {
 		
 		return "redirect:/member/announce";
 	}
+	
 	@GetMapping("/declareBoardList")
 	public ModelAndView declareBoardList(ModelAndView mav, @RequestParam(defaultValue = "1", value="cPage") int cPage) {
 		
@@ -202,4 +208,40 @@ public class AdminController {
 		return mav;
 		
 	}
+	
+	@RequestMapping("/declareProductList")
+	public ModelAndView declareProductList(ModelAndView mav, @RequestParam(defaultValue = "1", value = "cPage") int cPage) {
+		
+		final int limit = 10;
+		int offset = (cPage - 1) * limit;
+		
+		List<Report> list = productService.selectProductList(limit, offset);
+		
+		
+		mav.addObject("list", list);
+		mav.setViewName("admin/declareProductList");
+		
+		
+		return mav;
+	}
+	
+	@RequestMapping("/declareMemberList")
+	public ModelAndView declareMemberList(ModelAndView mav, @RequestParam(defaultValue = "1", value = "cPage") int cPage) {
+		
+		
+		final int limit = 10;
+		int offset = (cPage - 1) * limit;
+		
+		
+		List<Report> list = memberService.selectDeclareMemberList(limit, offset);
+		
+		mav.addObject("list", list);
+		mav.setViewName("admin/declareMemberList");
+		
+		
+		return mav;
+	}
+	
+	
+	
 }

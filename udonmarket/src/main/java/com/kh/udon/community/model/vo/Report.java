@@ -22,6 +22,7 @@ public class Report extends ReasonReport implements Serializable{
 	private String shooterId;
 	private int bCode;
 	private int replyCode;
+	private int pCode;
 	private boolean checked;
 		
 }

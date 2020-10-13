@@ -68,9 +68,12 @@
 
 	</delete>
 	
+	
+<!-- 	신고관리(댓글) -->
 	<select id="selectReplyList" resultType="report">
-		select R.report_code, R.reply_code, R.report_id, RR.reason_content
+		select R.report_code, R.reason_code, R.report_id, R.reply_code, RR.reason_content
 		from report R left join reason_report RR on R.reason_code = RR.reason_code
+		where R.reply_code is not null
 	</select>
 	
 	

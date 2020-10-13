@@ -6,6 +6,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.kh.udon.community.model.vo.Report;
 import com.kh.udon.member.model.vo.Wish;
 import com.kh.udon.product.model.dao.ProductDao;
 import com.kh.udon.product.model.vo.CategoryVO;
@@ -206,6 +207,13 @@ public class ProductServiceImpl implements ProductService
     {
         return dao.selectFile(photo);
     }
+
+	@Override
+	public List<Report> selectProductList(int limit, int offset) {
+		
+		return dao.selectProductList(limit, offset);
+		
+	}
 
 
 

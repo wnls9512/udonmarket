@@ -177,10 +177,11 @@
 	</delete>
 
 
-	
+<!-- 	신고관리(동네생활) -->
 	<select id="selectReportList" resultType="report">
-		select R.report_code, R.b_code, R.report_id, RR.reason_content
+		select R.report_code, R.reason_code,R.report_id, R.b_code, RR.reason_content
 		from report R left join reason_report RR on R.reason_code = RR.reason_code
+		where R.b_code is not null
 	</select>	
 	
 

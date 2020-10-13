@@ -10,7 +10,7 @@
 <fmt:requestEncoding value="utf-8"/>	
 	
 	<jsp:include page="/WEB-INF/views/common/header.jsp">
-		<jsp:param value="신고자관리(게시글)" name="pageTitle"/>
+		<jsp:param value="신고자관리(동네생활)" name="pageTitle"/>
 	</jsp:include>
 
 
@@ -53,9 +53,10 @@ a {
                                 <ul class="list">
                                     <li><a href="${pageContext.request.contextPath }/admin/memberList">회원 조회 / 등록 / 삭제</a></li>
                                     <li><a href="${pageContext.request.contextPath }/admin/declareMemberList">신고 관리(사용자)</a></li>
-									<li><a href="${pageContext.request.contextPath }/admin/declareBoardList">신고 관리(게시글)</a></li>
+									<li><a href="${pageContext.request.contextPath }/admin/declareBoardList">신고 관리(동네생활)</a></li>
+									<li><a href="${pageContext.request.contextPath }/admin/declareProductList">신고 관리(중고거래)</a></li>
 									<li><a href="${pageContext.request.contextPath }/admin/declareReplyList">신고 관리(댓글)</a></li>
-									<li><a href="${pageContext.request.contextPath }/admin/CouponListList">쿠폰 관리</a></li>
+									<li><a href="${pageContext.request.contextPath }/admin/CouponList">쿠폰 관리</a></li>
                                 </ul>
                             </div>
                         </aside>
@@ -63,22 +64,21 @@ a {
                 </div>
  			<div class="col-lg-9">
                     <div class="row align-items-center latest_product_inner">
-                        <div class="col-lg-4 col-sm-6">
-                            <div class="single_product_item">
                             		<table id="tbl-declareBoardList" class="table table-striped table-hover">
 										<tr>
 											<th>신고번호</th>
-											<th>게시판번호</th>
+											<th>사유번호</th>
 											<th>신고자</th>
-											<th>카테고리의 신고사유내용</th>
+											<th>게시판번호</th>
+											<th>신고사유내용</th>
 										</tr>
 										<c:forEach items="${ list }" var="report">
 											<tr>
 												<td>${ report.reportCode }</td>
-												<td>${ report.bCode }</td>
+												<td>${ report.reasonCode }</td>
 												<td>${ report.reportId }</td>
+												<td>${ report.bCode }</td>
 												<td>${ report.reasonContent }</td>
-												<td>${ report.content }</td>
 											</tr>
 										</c:forEach>			
 									</table>
@@ -86,8 +86,6 @@ a {
                         </div>
 					</div>
                 </div>
-            </div>
-        </div>
 	</section>
 
 	<jsp:include page="/WEB-INF/views/common/footer.jsp"/>

@@ -10,7 +10,7 @@
 <fmt:requestEncoding value="utf-8"/>	
 	
 	<jsp:include page="/WEB-INF/views/common/header.jsp">
-		<jsp:param value="쿠폰관리" name="pageTitle"/>
+		<jsp:param value="신고자관리(중고거래)" name="pageTitle"/>
 	</jsp:include>
 
 
@@ -63,40 +63,29 @@ a {
                     </div>
                 </div>
  			<div class="col-lg-9">
-                    <div class="row">
-                        <div class="col-lg-12">
-                            <div class="product_top_bar d-flex justify-content-between align-items-center">
-                                <div class="single_product_menu">
-                                    <p><span>${totalContents }</span> 개의 쿠폰</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                     <div class="row align-items-center latest_product_inner">
-                            		<table id="tbl-coupon" class="table table-bordered">
+                            		<table id="tbl-declareProductList" class="table table-striped table-hover">
 										<tr>
-											<th>쿠폰코드</th>
-											<th>쿠폰보유자</th>
-											<th>쿠폰명</th>
-											<th>유효기간</th>
-											<th>사용여부</th>
+											<th>신고번호</th>
+											<th>사유번호</th>
+											<th>신고자</th>
+											<th>상품번호</th>
+											<th>신고사유내용</th>
 										</tr>
-										<c:forEach items="${ list }" var="coupon">
+										<c:forEach items="${list}" var="report">
 											<tr>
-												<td>${ coupon.couponCode }</td>
-												<td>${ coupon.userId }</td>
-												<td>${ coupon.couponName }</td>
-												<td><fmt:formatDate value="${ coupon.expireDate }" type="both"/></td>
-												<td>${ coupon.usageStatus }</td>
+												<td>${ report.reportCode }</td>
+												<td>${ report.reasonCode }</td>
+												<td>${ report.reportId }</td>
+												<td>${ report.PCode }</td>
+												<td>${ report.reasonContent }</td>
 											</tr>
-										</c:forEach>
+										</c:forEach>			
 									</table>
                             </div>
                         </div>
 					</div>
                 </div>
-            </div>
-        </div>
 	</section>
-	
+
 	<jsp:include page="/WEB-INF/views/common/footer.jsp"/>
