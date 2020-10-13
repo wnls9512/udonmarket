@@ -76,9 +76,8 @@
 		    <!-- Chat Box-->
 		    <div class="col-7 px-0">
 		      <div class="px-4 py-5 chat-box bg-white" id="chatBox">
-		      
+		      	<input type="hidden" id="roomCode_" />
 		        <span>채팅방을 선택해주세요.</span>
-		
 		      </div>
 		
 		      <!-- Typing area -->
@@ -87,7 +86,7 @@
 		          <input type="text" id="message" placeholder="Type a message" aria-describedby="button-addon2" class="form-control rounded-0 border-0 py-4 bg-light">
 		          <div class="input-group-append">
 		          	<input type="hidden" id="receiver" />
-		            <button id="sendBtn" type="button" class="btn btn-link">전송<i class="far fa-paper-plane"></i></button>
+		            <button id="sendBtn" type="button" class="btn btn-link" disabled="disabled">전송<i class="far fa-paper-plane"></i></button>
 		          </div>
 		        </div>
 		      </form>
@@ -103,12 +102,16 @@ $("[name=chatRoom]").click(function(){
 	var $roomCode = $(this).find("[name=roomCode]").val();
 	var $receiver = $(this).find("[name=receiver]").val();
 	var $myId = "${userId}";
-	$("#chatBox").empty();
 
+	$("#chatBox").empty();
+	
 	//선택된 채팅방 색깔 바꾸기
 	$("[name=chatRoom]").attr('class', "list-group-item list-group-item-action list-group-item-light rounded-0");
 	$(this).attr('class', "list-group-item list-group-item-action list-group-item-light rounded-0");
 
+	//버튼 활성화
+	$("#sendBtn").attr("disabled", false);
+	
 	//대화 내용 가져오기
 	$.ajax({
 		url : "${pageContext.request.contextPath}/chat/selectChatMsg",
@@ -158,7 +161,9 @@ $("[name=chatRoom]").click(function(){
 
 			$("#sendBtn").val($roomCode);
 			$("#receiver").val($receiver);
+
 			
+			//console.log("sendBtn : " + $("#sendBtn").val());
 		},
 		error : function(xhr, status, err){
 			console.log("처리 실패", xhr, status, err);
@@ -196,8 +201,8 @@ $("#sendBtn").click(function() {
 	}else{
 		console.log("Error on Chat", sock);
 	}
-	
 });
+
 </script>
 
 <jsp:include page="/WEB-INF/views/common/footer.jsp"/>
