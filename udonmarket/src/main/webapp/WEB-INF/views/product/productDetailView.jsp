@@ -204,7 +204,9 @@
             	<span style="color: gray;">관심 ${product.wish} · 채팅 ${product.chat }<br /></span>
             </div>
             <div class="card_area d-flex justify-content-between align-items-center">
-              <a href="#" class="btn_3">채팅으로 거래하기</a>
+              <!-- 채팅방열기 -->
+              <a href="#" class="btn_3" onclick="openChatRoom();">채팅으로 거래하기</a>
+              <!-- 채팅방열기 -->
               <c:if test="${product.offer == 1 }">
               <a href="#" data-toggle="modal" data-target="#negoModal">가격제안하기</a>
               </c:if>
@@ -382,11 +384,37 @@
   </div>
 </div>
 <!-- ========== 가격제안 MODAL END ========== -->
-
-
-
 	
 <script>
+function openChatRoom(){
+	alert("클릭");
+	let $userId = "${userId}";
+	let $seller = "${product.seller}";
+	let $pCode = "${product.PCode}";
+
+	//이미 열려있는 채팅방이 있다면 이동
+	$.ajax({
+		url: "${pageContext.request.contextPath}/chat/openChatRoom",
+		method: "POST",
+		data: {
+			userId: $userId,
+			seller: $seller,
+			pCode: $pCode
+		},
+		beforeSend: function(xhr){
+            xhr.setRequestHeader("${_csrf.headerName}", "${_csrf.token}");
+        },
+        success: function(data){
+            /* alert(data); */
+        	window.open("${pageContext.request.contextPath}" + data);							
+		},
+		error: function(xhr, status, err){
+			alert("이미 관심목록에 추가되있어요 💘");
+		}
+	});
+}
+
+
 //제안 하기 버튼 막기 (최소 가격)
 $(function(){
 	$(".guide.error").hide();

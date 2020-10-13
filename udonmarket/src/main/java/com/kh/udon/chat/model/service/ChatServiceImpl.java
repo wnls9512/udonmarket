@@ -1,6 +1,7 @@
 package com.kh.udon.chat.model.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,6 +29,34 @@ public class ChatServiceImpl implements ChatService
 	@Override
 	public int insertMsg(ChatMessage m) {
 		return dao.insertMsg(m);
+	}
+
+	@Override
+	public ChatRoom selectChatRoom(Map<String, Object> map) {
+		return dao.selectChatRoom(map);
+	}
+
+	@Override
+	public int insertChatRoom(Map<String, Object> map) {
+		int result = 0;
+		
+		//채팅방 열기
+		//roomCode 리턴
+		result = dao.insertChatRoom(map);
+		System.out.println("roomCode = " + result);
+		
+		if(result > 0) { 
+			//참여인원 넣기 
+			map.put("roomCode", result); 
+			//구매자 userId 넣기
+			result = dao.insertChatUser(map); 
+			//seller 넣기 
+			result = dao.insertChatSeller(map);
+		}else { 
+			// throw new ChatException("채팅방 생성 오류!");
+		 }
+
+		return result;
 	}
 
 

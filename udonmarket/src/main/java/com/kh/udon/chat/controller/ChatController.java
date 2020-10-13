@@ -49,4 +49,29 @@ public class ChatController
     	return map;
     }
     
+    @PostMapping("/openChatRoom")
+    @ResponseBody
+    public String openChatRoom(@RequestParam("userId") String userId,
+							   @RequestParam("seller") String seller,
+							   @RequestParam("pCode") int pCode){
+
+    	Map<String, Object> map = new HashMap<>();
+    	map.put("userId", userId);
+    	map.put("seller", seller);
+    	map.put("pCode", pCode);
+    	
+    	//이미 열려있는 채팅방이 있는지 체크
+    	ChatRoom chatRoom = service.selectChatRoom(map);
+
+    	if(chatRoom == null) {
+    		//새로운 채팅방 만들기
+    		int result = service.insertChatRoom(map);
+    		System.out.println(result);
+    	}else {}
+    	
+    	String url = "/chat/chatListView?userId=" + userId;
+   
+    	return url;
+    }
+    
 }
