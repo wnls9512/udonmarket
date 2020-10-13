@@ -145,6 +145,7 @@ public class WebSocketHandler extends TextWebSocketHandler{
 				log.debug("receiver = {}", receiver);
 				
 				//현재 접속 중인 (로그인 중인) 사용자 중에 receiver가 있을때만 알림을 보낸다
+				//사용자가 해당 채팅방에 있을 때만 알림을 보내기.............
 				WebSocketSession receiverSession = userSessions.get(receiver); 
 				
 				if("chat".equals(cmd) && receiverSession != null) {

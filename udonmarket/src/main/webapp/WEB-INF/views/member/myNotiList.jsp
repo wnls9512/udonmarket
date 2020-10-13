@@ -192,6 +192,17 @@ html { font-size: 16px; }
 							</table>
 							</div>
 						</div>
+						<!-- 페이징처리 -->
+						<div class="col-lg-12">
+	                        <div class="pageination">
+	                            <nav aria-label="Page navigation example">
+	                                <ul class="pagination justify-content-center">
+	                                    ${pageBar }
+	                                </ul>
+	                            </nav>
+	                        </div>
+	                    </div>
+						<!-- 페이징처리 -->
 				        </nav>
 	                </div>
 	            </div>

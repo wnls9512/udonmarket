@@ -30,12 +30,9 @@ function connectWS(){
         //console.log((msg.data).includes('sendMsg'));
          if((msg.data).includes('sendMsg')){
 
- /*           console.log((msg.data).includes('sender_' + myId));
-			if((msg.data).includes('sender_' + myId)){
-				return;				
-			}else{
- */				$("#chatBox").append(msg.data);	
-//			}
+		
+		 $("#chatBox").append(msg.data);	
+
         }else{
 
         	let $socketAlert = $("#socketAlert");

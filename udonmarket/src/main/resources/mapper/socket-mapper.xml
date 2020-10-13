@@ -17,6 +17,16 @@
 		noti_code desc
 </select>
 
+<!-- 알림 전체 개수 -->
+<select id="selectNotiTotalContents" resultType="_int">
+	select 
+		count(*) 
+	from 
+		notification_test 
+	where 
+		receiver = #{userId}
+</select>
+
 <!-- 알림 저장 -->
 <insert id="insertNoti">
 	insert into 
