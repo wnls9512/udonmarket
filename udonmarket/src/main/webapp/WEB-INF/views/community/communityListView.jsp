@@ -61,7 +61,7 @@ $(function(){
                     <div class="breadcrumb_iner">
                         <div class="breadcrumb_iner_item">
                             <h2>동네생활</h2>
-							<h3>서울 강남구 논현동</h3>
+							<!-- <h3>서울 강남구 논현동</h3> -->
                         </div>
                     </div>
                 </div>
@@ -118,6 +118,7 @@ $(function(){
                             <%-- <c:if test="${ c.categoryCode == 22 }">
 								<a class="genric-btn success-border medium" style="border-color: red; font-weight: bold;">공지사항</a>
 							</c:if> --%>
+							
                             <c:if test="${ c.categoryCode == 17 }">
 								<a class="genric-btn success-border medium">동네생활이야기</a>
 							</c:if>
@@ -133,7 +134,10 @@ $(function(){
                             	
                             	<br/><br/>
                                 <a class="d-inline-block" data-board-no="${ c.BCode }" >
+                                
+                                	
                                     <h2>${ c.boardTitle }</h2>
+                                    <hr />
                                 	<p>${ c.boardContent }</p>
                                 </a>
                                 <ul class="blog-info-link">
@@ -165,6 +169,11 @@ $(function(){
                                 <c:if test="${ c.hashtagCode == 9 }">
                                     <li><i class="fa fa-hashtag"></i> 집꾸미기 </li>
                                 </c:if>
+                                <span class="align-middle"><i class="far fa-heart"></i></span> ${ c.likeThis }
+                               <br /><br />
+                               <div style="color: gray;">${ c.address }</div> 
+                               
+                               <div style="float: right; color: #ff3368; font-weight: bold; font-size: 12px">by ${ c.nickname }</div>
                                 
                                     <!-- <li><a href="#"><i class="far fa-comments"></i> 03 Comments</a></li> -->
                                 </ul>

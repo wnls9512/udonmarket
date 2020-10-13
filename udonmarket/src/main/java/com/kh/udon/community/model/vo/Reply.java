@@ -23,5 +23,6 @@ public class Reply implements Serializable {
 	private int bCode;
 	private int reply_ref;
 	private Date regDate;
+	private String nickname;
 	
 }

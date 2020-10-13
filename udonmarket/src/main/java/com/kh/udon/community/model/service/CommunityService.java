@@ -3,6 +3,7 @@ package com.kh.udon.community.model.service;
 import java.util.List;
 
 import com.kh.udon.community.model.vo.Community;
+import com.kh.udon.community.model.vo.LikeThis;
 import com.kh.udon.community.model.vo.Reply;
 import com.kh.udon.community.model.vo.Report;
 import com.kh.udon.community.model.vo.Search;
@@ -41,6 +42,8 @@ public interface CommunityService
 	int update(Community community);
 	
 	int delete(int bCode);
+	
+	int likeThis(LikeThis like);
 	
 //	int deleteReply(int replyCode);
 

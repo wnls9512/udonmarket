@@ -3,8 +3,11 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
 <fmt:requestEncoding value="utf-8"/>
+
+<sec:authentication property="principal.username" var="userId"/>
 
 <jsp:include page="/WEB-INF/views/common/header.jsp">
 	<jsp:param value="동네생활" name="pageTitle"/>
@@ -76,7 +79,7 @@ function fn_addtoBoard(){
 	                        <div class="login_part_form_iner">
 	                        <form id="writeForm" name="writeForm" method="post">
 	                        	<div class="col-md-12 form-group p_star" style="margin-top: 10%;">
-                                    <input type="hidden" id="userId" name="userId" value="test" required
+                                    <input type="hidden" id="userId" name="userId" value="${ userId }" required
 											class="single-input-primary" readonly required style="background-color: #f6f6f6; width: 50%">
                                 </div>
                                 <div class="col-md-12 form-group p_star">
@@ -116,7 +119,7 @@ function fn_addtoBoard(){
                                 </div>
                                 <div class="col-md-12 form-group p_star">
 	                               <!-- <input type="submit" value="게시글 등록" class="btn_1" /> -->
-	                                <a href='#' onClick='fn_addtoBoard()' class="btn_3" style="text-align: center;">게시글 등록</a>
+	                                <a onClick='fn_addtoBoard()' class="btn_3" style="text-align: center;">게시글 등록</a>
 	                                    
                            		 </div>
                            		 </form>
