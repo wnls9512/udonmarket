@@ -94,5 +94,11 @@ public interface MemberService
 
 	int userIdCheck(String userId);
 
+
 	List<Report> selectDeclareMemberList(int limit, int offset);
+
+	List<Noti> selectAllNoti(String userId, int limit, int offset);
+
+	int selectNotiTotalContents(String userId);
+
 }

@@ -272,4 +272,14 @@ public class MemberServiceImpl implements MemberService
 	public List<Report> selectDeclareMemberList(int limit, int offset) {
 		return memberDao.selectDeclareMemberList(limit,offset);
 	}
+	
+	@Override
+	public List<Noti> selectAllNoti(String userId, int limit, int offset) {
+		return memberDao.selectAllNoti(userId, limit, offset);
+	}
+
+	@Override
+	public int selectNotiTotalContents(String userId) {
+		return memberDao.selectNotiTotalContents(userId);
+	}
 }

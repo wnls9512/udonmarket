@@ -247,4 +247,15 @@ public class MemberDaoImpl implements MemberDao
 		RowBounds rowBounds = new RowBounds(offset, limit);
 		return session.selectList("member.selectDeclareMemberList", null, rowBounds);
 	}
+	
+	@Override
+	public List<Noti> selectAllNoti(String userId, int limit, int offset) {
+		RowBounds rowBounds = new RowBounds(offset, limit);
+		return session.selectList("socket.selectAllNoti", userId, rowBounds);
+	}
+
+	@Override
+	public int selectNotiTotalContents(String userId) {
+		return session.selectOne("socket.selectNotiTotalContents", userId);
+	}
 }

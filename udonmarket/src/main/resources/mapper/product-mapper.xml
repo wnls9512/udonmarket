@@ -11,19 +11,15 @@
 		from product p left join member m on(p.seller = m.user_id)
 		               left join (select a.p_code p_code, count(b.p_code) wish from product a left outer join wish b on(a.p_code = b.p_code) group by a.p_code) wc on(wc.p_code = p.p_code)
 		               left join (select a.p_code p_code, count(b.p_code) chat from product a left outer join chat_room b on(a.p_code = b.p_code) group by a.p_code) cc on(cc.p_code = p.p_code)
-		where p.open_status = 1 and (p.trade_status = 'S' or p.trade_status = 'R') and delete_yn = 'N'
+		where (p.open_status = 1 and (p.trade_status = 'S' or p.trade_status = 'R') and delete_yn = 'N'
 		      and p.seller in (
 		                        select l.user_id 
 		                        from location l,(select latitude, longitude, radius from location where user_id = #{userId}) a
 		                        where calc_distance(a.latitude, a.longitude, l.latitude, l.longitude) < a.radius
-		                        )
-        union
-        select p.p_code, p.seller, p.title, p.price, p.pull, trunc(sysdate - p.reg_date) reg_date, substr(m.address, instr(m.address, ' ', 1, 1), instr(m.address, ' ', 1, 2)) address, wc.wish, cc.chat
-		from product p left join member m on(p.seller = m.user_id)
-		               left join (select a.p_code p_code, count(b.p_code) wish from product a left outer join wish b on(a.p_code = b.p_code) group by a.p_code) wc on(wc.p_code = p.p_code)
-		               left join (select a.p_code p_code, count(b.p_code) chat from product a left outer join chat_room b on(a.p_code = b.p_code) group by a.p_code) cc on(cc.p_code = p.p_code)
-		where p.open_status = 1 and (p.trade_status = 'S' or p.trade_status = 'R') and delete_yn = 'N'
-		      and p.coupon = 1
+		                        ))
+               or
+			   (p.open_status = 1 and (p.trade_status = 'S' or p.trade_status = 'R') and delete_yn = 'N'
+		       and p.coupon = 1)
 		order by reg_date
 	]]>
 	</select>
@@ -35,19 +31,15 @@
 		from product p left join member m on(p.seller = m.user_id)
 		               left join (select a.p_code p_code, count(b.p_code) wish from product a left outer join wish b on(a.p_code = b.p_code) group by a.p_code) wc on(wc.p_code = p.p_code)
 		               left join (select a.p_code p_code, count(b.p_code) chat from product a left outer join chat_room b on(a.p_code = b.p_code) group by a.p_code) cc on(cc.p_code = p.p_code)
-		where p.open_status = 1 and (p.trade_status = 'S' or p.trade_status = 'R') and delete_yn = 'N' and p.category = #{categoryCode} 
+		where (p.open_status = 1 and (p.trade_status = 'S' or p.trade_status = 'R') and delete_yn = 'N' and p.category = #{categoryCode} 
 		      and p.seller in (
 		                        select l.user_id 
 		                        from location l,(select latitude, longitude, radius from location where user_id = #{userId}) a
 		                        where calc_distance(a.latitude, a.longitude, l.latitude, l.longitude) < a.radius
-		                        )
-		union
-		select p.p_code, p.seller, p.title, p.price, p.pull, trunc(sysdate - p.reg_date) reg_date, substr(m.address, instr(m.address, ' ', 1, 1), instr(m.address, ' ', 1, 2)) address, wc.wish, cc.chat
-		from product p left join member m on(p.seller = m.user_id)
-		               left join (select a.p_code p_code, count(b.p_code) wish from product a left outer join wish b on(a.p_code = b.p_code) group by a.p_code) wc on(wc.p_code = p.p_code)
-		               left join (select a.p_code p_code, count(b.p_code) chat from product a left outer join chat_room b on(a.p_code = b.p_code) group by a.p_code) cc on(cc.p_code = p.p_code)
-		where p.open_status = 1 and (p.trade_status = 'S' or p.trade_status = 'R') and delete_yn = 'N' and p.category = #{categoryCode} 
-		      and p.coupon = 1
+		                        ))
+              or
+			  (p.open_status = 1 and (p.trade_status = 'S' or p.trade_status = 'R') and delete_yn = 'N' and p.category = #{categoryCode} 
+		      and p.coupon = 1)
 		order by reg_date	
 	]]>
 	</select>
@@ -59,7 +51,7 @@
 		               left join (select a.p_code p_code, count(b.p_code) wish from product a left outer join wish b on(a.p_code = b.p_code) group by a.p_code) wc on(wc.p_code = p.p_code)
 		               left join (select a.p_code p_code, count(b.p_code) chat from product a left outer join chat_room b on(a.p_code = b.p_code) group by a.p_code) cc on(cc.p_code = p.p_code)
 		<where>
-			(p.title like '%'||#{keyword}||'%' or p.content like '%'||#{keyword}||'%')
+			((p.title like '%'||#{keyword}||'%' or p.content like '%'||#{keyword}||'%')
 			and p.open_status = 1 and (p.trade_status = 'S' or p.trade_status = 'R') and delete_yn = 'N'
 			and p.seller in (
 	        	                select l.user_id 
@@ -70,20 +62,14 @@
 	                        )
 			<if test="category != 0 ">
 			and p.category = #{category}
-			</if>
-		</where>
-		union
-		select p.p_code, p.seller, p.title, p.price, p.pull, trunc(sysdate - p.reg_date) reg_date, substr(m.address, instr(m.address, ' ', 1, 1), instr(m.address, ' ', 1, 2)) address, wc.wish, cc.chat
-		from product p left join member m on(p.seller = m.user_id)
-		               left join (select a.p_code p_code, count(b.p_code) wish from product a left outer join wish b on(a.p_code = b.p_code) group by a.p_code) wc on(wc.p_code = p.p_code)
-		               left join (select a.p_code p_code, count(b.p_code) chat from product a left outer join chat_room b on(a.p_code = b.p_code) group by a.p_code) cc on(cc.p_code = p.p_code)
-		<where>
-			(p.title like '%'||#{keyword}||'%' or p.content like '%'||#{keyword}||'%')
+			</if>)
+			or
+			((p.title like '%'||#{keyword}||'%' or p.content like '%'||#{keyword}||'%')
 			and p.open_status = 1 and (p.trade_status = 'S' or p.trade_status = 'R') and delete_yn = 'N'
 			and p.coupon = 1
 			<if test="category != 0 ">
 			and p.category = #{category}
-			</if>
+			</if>)
 		</where>
 		order by reg_date
 	</select>
