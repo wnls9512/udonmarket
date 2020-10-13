@@ -24,6 +24,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.kh.udon.community.model.service.CommunityService;
 import com.kh.udon.community.model.vo.Community;
+import com.kh.udon.community.model.vo.LikeThis;
 import com.kh.udon.community.model.vo.Reply;
 import com.kh.udon.community.model.vo.Search;
 
@@ -103,6 +104,8 @@ public class CommunityController
 		search.setSearchType(searchType);
 
 		search.setKeyword(keyword);
+		
+		
     	
     			Community community = service.selectOneCommunityCollection(bCode);
     			List<Community> list = service.selectCommunityList(search);
@@ -135,6 +138,20 @@ public class CommunityController
         return "redirect:/community/communityListView";
     }
     
+    //좋아요
+    @RequestMapping("/likeThis")
+    public String likeThis(@RequestParam int bCode, @RequestParam String userId, Model model) {
+    	
+    	LikeThis like = new LikeThis();
+    	
+    	like.setBCode(bCode);
+    	like.setUserId(userId);
+    	
+    	service.likeThis(like);
+    	
+    	return "redirect:/community/communityDetailView?bCode=" + bCode;
+    	
+    }
 
     // 댓글 작성
 	@RequestMapping(value="/saveReply", method = RequestMethod.POST)

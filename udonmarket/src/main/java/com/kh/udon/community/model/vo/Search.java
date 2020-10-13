@@ -15,6 +15,8 @@ import lombok.ToString;
 @ToString
 public class Search {
 	
+	private int bCode;
+	
 	private String searchType;
 
 	private String keyword;	
