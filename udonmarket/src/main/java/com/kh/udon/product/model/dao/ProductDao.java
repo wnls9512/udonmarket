@@ -3,6 +3,7 @@ package com.kh.udon.product.model.dao;
 import java.util.List;
 import java.util.Map;
 
+import com.kh.udon.community.model.vo.Report;
 import com.kh.udon.member.model.vo.Wish;
 import com.kh.udon.product.model.vo.CategoryVO;
 import com.kh.udon.product.model.vo.CouponDTO;
@@ -77,6 +78,8 @@ public interface ProductDao
     List<ProductPhotoVO> selectPhotos(int pCode);
 
     ProductPhotoVO selectFile(ProductPhotoVO photo);
+
+	List<Report> selectProductList(int limit, int offset);
 
 
 

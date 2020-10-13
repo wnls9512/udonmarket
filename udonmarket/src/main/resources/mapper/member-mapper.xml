@@ -410,4 +410,16 @@ where
 	and 
 		b.user_id = #{userId}
 </select>
+
+<select id="selectDeclareMemberList" resultType="report">
+	select R.report_code, R.reason_code,R.report_id, R.shooter_id, RR.reason_content
+	from report R left join reason_report RR on R.reason_code = RR.reason_code
+	where R.shooter_id is not null
+
+</select>
+
+
+
+
+
 </mapper>

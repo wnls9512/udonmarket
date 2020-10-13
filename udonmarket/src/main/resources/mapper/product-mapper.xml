@@ -326,4 +326,11 @@
 	<select id="selectPhotos" resultType="productPhotoVO">
 		select * from product_photo where p_code = #{pCode}
 	</select>
+	
+<!-- 	신고관리(중고거래) -->
+	<select id="selectProductList" resultType="report">
+		select R.report_code, R.reason_code, R.report_id, R.p_code, RR.reason_content
+		from report R left join reason_report RR on R.reason_code = RR.reason_code
+		where R.p_code is not null
+	</select>
 </mapper>

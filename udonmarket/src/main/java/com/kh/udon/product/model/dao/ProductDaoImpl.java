@@ -3,10 +3,12 @@ package com.kh.udon.product.model.dao;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.kh.udon.community.model.vo.Report;
 import com.kh.udon.member.model.vo.Wish;
 import com.kh.udon.product.model.vo.CategoryVO;
 import com.kh.udon.product.model.vo.CouponDTO;
@@ -209,6 +211,14 @@ public class ProductDaoImpl implements ProductDao
     {
         return session.selectOne("product.selectPhotos", photo);
     }
+
+	@Override
+	public List<Report> selectProductList(int limit, int offset) {
+		
+		RowBounds rowBounds = new RowBounds(offset, limit);
+		
+		return session.selectList("product.selectProductList", null,rowBounds);
+	}
 
 
 
