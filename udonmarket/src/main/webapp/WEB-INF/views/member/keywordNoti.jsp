@@ -126,7 +126,7 @@ html { font-size: 16px; }
 								<span class="guide error">이미 추가된 키워드예요 🤔 </span>
 							</form:form>
 							<br />
-							<p>등록된 키워드  <mark style="color: red; background: white;">${totalKeywordContents}</mark>/ 30</p>
+							<p>등록된 키워드  <mark style="color: red; background: white;">${totalKeywordContents}</mark>/ 10</p>
 							<input type="hidden" id="totalKeywordContents" value="${totalKeywordContents}" />
 							<div>
 								<c:if test="${ not empty list }">
