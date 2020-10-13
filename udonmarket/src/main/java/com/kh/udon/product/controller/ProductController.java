@@ -44,11 +44,13 @@ import com.kh.udon.member.model.vo.Wish;
 import com.kh.udon.product.model.service.ProductService;
 import com.kh.udon.product.model.vo.CategoryVO;
 import com.kh.udon.product.model.vo.CouponDTO;
+import com.kh.udon.product.model.vo.Evaluation;
 import com.kh.udon.product.model.vo.ProductDTO;
 import com.kh.udon.product.model.vo.ProductPhotoVO;
 import com.kh.udon.product.model.vo.ProductVO;
 import com.kh.udon.product.model.vo.ReasonReportVO;
 import com.kh.udon.product.model.vo.ReportVO;
+import com.kh.udon.product.model.vo.ReviewDTO;
 import com.kh.udon.product.model.vo.SellerDTO;
 
 import lombok.extern.slf4j.Slf4j;
@@ -201,7 +203,7 @@ public class ProductController
         return "redirect:/product/productListView";
     }
     
-    // 게시글 상세보기
+    /*      게시글 상세보기        */
     @RequestMapping("/productDetailView")
     public String productDetail(int pCode, String userId, Model model)
     {
@@ -212,6 +214,7 @@ public class ProductController
          *      4. 판매자 다른 상품
          *      5. 신고 목록
          *      6. 상품 사진
+         *      7. 채팅했던 이웃들
          */
         
         ProductDTO product = service.selectDTOByPCode(pCode);
@@ -228,6 +231,7 @@ public class ProductController
         map.put("category", category);
         map.put("pCode", pCode);
         map.put("userId", userId);
+        map.put("seller", product.getSeller());
         
         List<ProductVO> similar = service.selectSimilarProducts(map);
         
@@ -238,14 +242,18 @@ public class ProductController
         long timeMillis = System.currentTimeMillis() - product.getOriginalRegDate().getTime();
         product.setTimeMillis(timeMillis);
         
+        // --- 채팅했던 이웃들 ---
+        List<String> buyerList = service.selectBuyer(map);
+
         model.addAttribute("product", product);
         model.addAttribute("seller", seller);
         model.addAttribute("similar", similar);
         model.addAttribute("other", other);
         model.addAttribute("reasonReport", reasonReport);
         model.addAttribute("photos", photos);
+        model.addAttribute("buyerList", buyerList);
         if(product.isCoupon())
-            model.addAttribute("msg", "전국 노출 상품입니다 🐱‍🏍");        
+            model.addAttribute("msg", "전국 노출 상품입니다 🐱‍🏍");  
         return "product/productDetailView";
     }
     
@@ -591,8 +599,30 @@ public class ProductController
         response.setHeader("Content-Disposition", dispositionPrefix + encodedFilename + "\"");
     }
     
+    /* 평가 목록 불러오기 */
+    @GetMapping("/evaList/{score}")
+    @ResponseBody
+    private List<Evaluation> evaList(@PathVariable int score)
+    {
+        int kind = score > 36 ? 1 : 0;
+        
+        List<Evaluation> evaList = service.selectEvaList(kind);
+        
+        return evaList;
+    }
     
-    
+    /* 거래완료 - 리뷰 */
+    @PostMapping("/insertReview")
+    private String insertReview(ReviewDTO review, RedirectAttributes rttr)
+    {
+        int result = service.insertReview(review);
+        
+        rttr.addFlashAttribute("msg", result > 0 ? "리뷰 등록 성공 💛" : "리뷰 등록 실패 🤔");
+        rttr.addAttribute("pCode", review.getPCode());
+        rttr.addAttribute("userId", review.getSender());
+        
+        return "redirect:/product/productDetailView";
+    }
     
     
     

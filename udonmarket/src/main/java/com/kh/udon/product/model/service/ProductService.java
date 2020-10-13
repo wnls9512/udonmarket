@@ -7,11 +7,13 @@ import com.kh.udon.community.model.vo.Report;
 import com.kh.udon.member.model.vo.Wish;
 import com.kh.udon.product.model.vo.CategoryVO;
 import com.kh.udon.product.model.vo.CouponDTO;
+import com.kh.udon.product.model.vo.Evaluation;
 import com.kh.udon.product.model.vo.ProductDTO;
 import com.kh.udon.product.model.vo.ProductPhotoVO;
 import com.kh.udon.product.model.vo.ProductVO;
 import com.kh.udon.product.model.vo.ReasonReportVO;
 import com.kh.udon.product.model.vo.ReportVO;
+import com.kh.udon.product.model.vo.ReviewDTO;
 import com.kh.udon.product.model.vo.SellerDTO;
 
 public interface ProductService
@@ -80,6 +82,12 @@ public interface ProductService
     ProductPhotoVO selectFile(ProductPhotoVO photo);
 
 	List<Report> selectProductList(int limit, int offset);
+
+    List<String> selectBuyer(Map<String, Object> map);
+
+    List<Evaluation> selectEvaList(int kind);
+
+    int insertReview(ReviewDTO review);
 
 
 

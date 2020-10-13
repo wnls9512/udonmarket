@@ -188,7 +188,7 @@
 	<!-- 상품 조회 -->
 	<select id="selectDTOByPCode" resultType="productDTO">
 		select p.p_code, p.seller, p.title, p.content, p.price, p.pull, trunc(sysdate - p.reg_date) reg_date, substr(m.address, instr(m.address, ' ', 1, 1), instr(m.address, ' ', 1, 2)) address, 
-			   p.category categoryCode, c.category_name category, p.trade_status, p.offer, wc.wish, cc.chat, p.reg_date original_reg_date, p.coupon
+			   p.category categoryCode, c.category_name category, p.trade_status, p.offer, wc.wish, cc.chat, p.reg_date original_reg_date, p.coupon, p.buyer
 		from product p left join member m on(p.seller = m.user_id)
 					   left join category c on(p.category = c.category_code)
 		               left join (select a.p_code p_code, count(b.p_code) wish from product a left outer join wish b on(a.p_code = b.p_code) group by a.p_code) wc on(wc.p_code = p.p_code)
@@ -313,10 +313,42 @@
 		select * from product_photo where p_code = #{pCode}
 	</select>
 	
-<!-- 	신고관리(중고거래) -->
+	<!-- 신고관리(중고거래) -->
 	<select id="selectProductList" resultType="report">
 		select R.report_code, R.reason_code, R.report_id, R.p_code, RR.reason_content
 		from report R left join reason_report RR on R.reason_code = RR.reason_code
 		where R.p_code is not null
 	</select>
+	
+	<!-- 채팅했던 이웃들 -->
+	<select id="selectBuyer" resultType="string">
+		select user_id from chat_user
+		where room_code = (select room_code from chat_room where p_code = #{pCode})
+			  and user_id != #{seller} 
+	</select>
+	
+	<!-- 평가 하기 리스트 -->
+	<select id="selectEvaList" resultType="evaluation">
+		select * from evaluation where kind = #{kind} and (member = 'S' or member = 'C')
+	</select>
+	
+	<!-- 리뷰 -->
+	<update id="insertEva" parameterType="reviewDTO">
+		<foreach collection="evaCode" item="eva" separator=";" open="declare begin" close="; end;">
+			update evaluate set count =  nvl(count, 0) + 1 where user_id = #{receiver} and eva_code = #{eva}
+		</foreach>
+	</update>
+
+	
+	
+	<update id="insertScore">
+		update score set (total_score, count) = (select nvl(total_score, 0) + #{score}, nvl(count, 0) + 1 from score where user_id = #{receiver}) 
+		where user_id = #{receiver}
+	</update>
+	<insert id="insertReview">
+		insert into review values(seq_review.nextval, #{sender}, #{receiver}, #{content}, 'S',  #{pCode})
+	</insert>
+	<update id="updateBuyer">
+		update product set buyer = #{receiver} where p_code = #{pCode}
+	</update>
 </mapper>

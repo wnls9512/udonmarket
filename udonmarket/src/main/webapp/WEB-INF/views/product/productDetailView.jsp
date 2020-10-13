@@ -33,8 +33,8 @@
                 <div class="col-lg-8">
                     <div class="breadcrumb_iner">
                         <div class="breadcrumb_iner_item">
-                            <!-- <h2>게시글 제목</h2>
-							<h3>카테고리</h3> -->
+                            <h2>${product.title }</h2>
+							<h3>${product.category }</h3>
                         </div>
                     </div>
                 </div>
@@ -148,7 +148,7 @@
             ${product.title }
             </h3>
             <span style="color: gray;">${product.category} · <c:if test="${product.pull }">끌올 &nbsp;</c:if>
-                   										     <c:if test="${product.regDate != 0}">${p.regDate} days ago</c:if>
+                   										     <c:if test="${product.regDate != 0}">${product.regDate} days ago</c:if>
                    										     <c:if test="${product.regDate == 0}">today</c:if></span>
             <!-- kebab START -->
             <c:if test="${product.seller ne userId }">
@@ -213,7 +213,12 @@
               <!-- 채팅방열기 -->
               </c:if>
               <c:if test="${product.offer == 1 }">
+              <c:if test="${userId != product.seller }">
               <a href="#" data-toggle="modal" data-target="#negoModal">가격제안하기</a>
+              </c:if>
+              <c:if test="${userId == product.seller }">
+              <a href="javascript:void(0);" data-toggle="modal" data-target="#negoModal" style="color: gray;">가격제안하기</a>
+              </c:if>
               </c:if>
               <c:if test="${product.offer == 0 }">
               <a href="javascript:void(0);">가격제안 불가</a>
@@ -389,6 +394,72 @@
   </div>
 </div>
 <!-- ========== 가격제안 MODAL END ========== -->
+
+<!-- ========== 구매자 선택 MODAL START ========== -->
+<div class="modal fade" id="selectModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle"><strong>구매자 선택</strong></h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+	   <div class="row text-center align-items-end">
+	      <div class="mb-5 mb-lg-0" style="float:none; margin:0 auto;">
+	        <div class="bg-white rounded-lg">
+				<div class="p-4 text-left" id="body">
+					<span><strong>거래가 완료되었습니다</strong></span><br/>
+					<span>구매자를 선택해주세요.</span>
+					<hr/>
+					<div class="left_sidebar_area">
+						<aside class="left_widgets p_filter_widgets">
+							<div class="widgets_inner pb-0" id="productReport">
+                                <ul class="list">
+                                
+                                	<!-- test -->
+                                    <li>
+                                        <a href="javascript:updateBuyer('eunju')">eunju</a>
+                                        <span>></span>
+                                    </li>
+                                    
+                   					<c:forEach items="${buyerList }" var="b">
+                                    <li>
+                                        <a href="javascript:updateBuyer(${b })">${b }</a>
+                                        <span>></span>
+                                    </li>
+                                    </c:forEach>
+                                </ul>
+							</div>
+						</aside>
+					</div>
+					<hr/><br/>
+				</div>
+	        </div>
+	      </div>
+      	</div>
+	  </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">지금 안할래요</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<form id="reviewFrm" method="post" action="${pageContext.request.contextPath }/product/insertReview">
+	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+	<input type="hidden" name="sender" value="${userId }"/>
+	<input type="hidden" name="receiver"/>
+	<input type="hidden" name="pCode" value="${product.PCode }"/>
+	<input type="hidden" name="score" />
+	<input type="hidden" name="content" />
+</form>
+
+
+
+
+<!-- ========== 구매자 선택 MODAL END ========== -->
 	
 <script>
 function openChatRoom(){
@@ -410,7 +481,6 @@ function openChatRoom(){
             xhr.setRequestHeader("${_csrf.headerName}", "${_csrf.token}");
         },
         success: function(data){
-            /* alert(data); */
         	window.open("${pageContext.request.contextPath}" + data);							
 		},
 		error: function(xhr, status, err){
@@ -430,7 +500,6 @@ $(function(){
 
 	$("[name=nego_price]").keyup(function(){
 		let $nego_price = $("[name=nego_price]").val(); //제안 가격
-		/* console.log($lowest_price); */
 
 		if($nego_price < 1){
 			$("#btn-nego").attr('class', 'genric-btn disable');
@@ -500,7 +569,7 @@ function addToWish(userId, pCode)
 
 $(function()
 {
-	// 거래 상태 변경
+	/* 거래 상태 변경 */
 	$("#status_select").on("change", function()
 	{
 		var selected = $("#status_select option:selected").val();
@@ -520,7 +589,7 @@ $(function()
 			{
 	            xhr.setRequestHeader("${_csrf.headerName}", "${_csrf.token}");
 	        },
-				success: function(result)
+			success: function(result)
 			{
 				alert(result);										
 			},
@@ -529,10 +598,102 @@ $(function()
 				alert("상태 변경에 실패했어요 💧");
 			}
 		});
+
+		// 거래 완료시 후기(판매자)
+		if(selected == 'C')
+		{
+			if(${product.buyer == null} )
+			{
+				$("#selectModal").modal('show');
+			}
+		}		
 	});
 });
 
-// 삭제
+/* 거래 후기 보내기 */
+function updateBuyer(buyer)
+{
+	$("input[name=receiver]").val(buyer);
+	
+	var str = "";
+
+	str += "<span><strong>" + buyer + "님과 거래가 어떠셨나요?</strong></span><br/>";
+	str += "<span>선택 항목은 상대방이 알 수 없어요.</span><hr/>";
+	str += "<div class='left_sidebar_area'>";
+	str += "<aside class='left_widgets p_filter_widgets'>";
+	// 온도
+	str += "<div class='widgets_inner pb-0'>";
+	str += "<a href='javascript:score(35.5)' class='genric-btn danger circle mr-2'>별로예요</a>";
+	str += "<a href='javascript:score(37.5)' class='genric-btn warning circle mr-2'>좋아요!</a>";
+	str += "<a href='javascript:score(37.5)' class='genric-btn primary circle mr-2'>최고예요!</a><hr/>";
+	// 평가
+	str += "<div class='widgets_inner pb-0' id='eva'>";
+	str += "</div><hr/>";
+	str += "<textarea class='single-textarea' placeholder='감사인사를 남겨주세요' style='height: 134px;' name='content'></textarea>";
+	str += "</div></aside></div><hr/><br/>";
+
+	$("#body").html(str);
+
+
+};
+
+/* score click fn */
+function score(score)
+{
+	$("input[name=score]").val(score);
+
+	var str = "";
+
+	$.ajax
+	({
+		url: "${pageContext.request.contextPath}/product/evaList/" + score,
+		method: "GET",
+		beforeSend: function(xhr)
+		{
+            xhr.setRequestHeader("${_csrf.headerName}", "${_csrf.token}");
+        },
+        dataType: "json",
+		success: function(list)
+		{
+			$.each(list,function(i,v)
+			{
+				str += "<div class='switch-wrap d-flex justify-content-between'>";
+				str += "<p>" + v.content + "</p>";
+				str += "<div class='primary-checkbox'>";
+				str += "<input type='checkbox' name='eva' id='primary-checkbox" + i + "' value='" + v.evaCode + "'>";
+				str += "<label for='primary-checkbox" + i + "'></label>";
+				str += "</div>";
+				str += "</div>";
+			});
+
+			var btn = "<button type='button' class='btn btn-primary float-right' onclick='reviewSubmit()'>완료</button>";
+			
+			$("#body").after(btn);
+			$("#eva").html(str);
+		},
+		error: function(xhr, status, err)
+		{
+			alert("평가목록 불러오기에 실패했어요 💧");
+			console.log(xhr, status, err);
+		}
+	});
+}
+
+/* review submit */
+function reviewSubmit()
+{
+	var $frm = $("#reviewFrm");
+	
+	$("input[name=eva]:checked").each(function() 
+	{
+		$frm.append($('<input/>', {type: 'hidden', name: 'evaCode', value: $(this).val()}))
+	});
+
+	$("input[name=content]").val($("textarea[name=content]").val());
+	$frm.submit();
+}
+
+/* 삭제 */
 function deleteProduct(pCode)
 {
 	if(confirm("삭제할까요?"))
