@@ -419,13 +419,29 @@ where
 		b.user_id = #{userId}
 </select>
 
+<!-- 차단사용자 추가하기 -->
+<insert id="insertBlockUser">
+	insert into
+		block
+	values(#{userId}, #{blockUserId})
+</insert>
+
+<!-- 차단사용자 해제하기 -->
+<delete id="deleteBlockUser">
+	delete
+		block
+	where 
+		user_id = #{userId}
+	and
+		block_id = #{blockUserId}
+</delete>
+
 <select id="selectDeclareMemberList" resultType="report">
 	select R.report_code, R.reason_code,R.report_id, R.shooter_id, RR.reason_content
 	from report R left join reason_report RR on R.reason_code = RR.reason_code
 	where R.shooter_id is not null
 
 </select>
-
 
 
 

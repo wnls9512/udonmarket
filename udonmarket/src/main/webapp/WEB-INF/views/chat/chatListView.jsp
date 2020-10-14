@@ -55,7 +55,7 @@
 		          <div class="list-group rounded-0">
 		          	<c:if test="${not empty list }">
 			          	<c:forEach items="${list }" var="r">
-						    <a href="#" class="list-group-item list-group-item-action list-group-item-light rounded-0" name="chatRoom" >
+						    <a href="javascript:void(0);" class="list-group-item list-group-item-action list-group-item-light rounded-0" name="chatRoom" >
 						      <input type="hidden" name="roomCode" value=${r.roomCode } />
 						      <input type="hidden" name="receiver" value=${r.sender } />
 				              <div class="media"><img src="https://res.cloudinary.com/mhmd/image/upload/v1564960395/avatar_usae7z.svg" alt="user" width="50" class="rounded-circle">
@@ -67,6 +67,9 @@
 				                </div>
 				              </div>
 				            </a>
+				            <button type="button" class="btn btn-outline-secondary" name="leaveChatRoom"
+				            		value="${r.roomCode }"
+				            		style="z-index: 1;">나가기</button>
 			          	</c:forEach>
 		          	</c:if>
 		          </div>
@@ -75,11 +78,6 @@
 		    </div>
 		    <!-- Chat Box-->
 		    <div class="col-7 px-0">
-		      <div class="px-4 py-5 chat-box bg-white" id="chatBox">
-		      	<input type="hidden" id="roomCode_" />
-		        <span>채팅방을 선택해주세요.</span>
-		      </div>
-		
 		      <!-- Typing area -->
 		      <form action="#" class="bg-light">
 		        <div class="input-group">
@@ -90,6 +88,11 @@
 		          </div>
 		        </div>
 		      </form>
+
+		      <div class="px-4 py-5 chat-box bg-white" id="chatBox">
+		      	<input type="hidden" id="roomCode_" />
+		        <span>채팅방을 선택해주세요.</span>
+		      </div>		
 		
 		    </div>
 		  </div>
@@ -98,6 +101,37 @@
   </div>
 </div>
 <script>
+//채팅방 나가기
+$("[name=leaveChatRoom]").click(function(){
+
+	if(!confirm("정말 나갈까요?")) return;
+	
+	var $roomCode = $(this).val();
+	var $myId = "${userId}";
+
+	$.ajax({
+		url : "${pageContext.request.contextPath}/chat/leaveChatRoom",
+		method : "POST",
+		data : {
+				roomCode : $roomCode,
+				userId : $myId
+		},
+		beforeSend : function(xhr){
+            xhr.setRequestHeader("${_csrf.headerName}", "${_csrf.token}");
+        },
+		success : function(url){
+			//alert("성공" + url);
+			location.href = "${pageContext.request.contextPath}" + url;
+		},
+		error : function(xhr, status, err){
+			console.log("처리 실패", xhr, status, err);
+			alert("채팅방 나가기에 실패했어요 다시 시도해주세요 💦");
+		}
+	});
+	
+});
+
+//채팅방 누르면 채팅 내용 가져오기
 $("[name=chatRoom]").click(function(){
 	var $roomCode = $(this).find("[name=roomCode]").val();
 	var $receiver = $(this).find("[name=receiver]").val();
@@ -154,6 +188,7 @@ $("[name=chatRoom]").click(function(){
 								          "</div>" +
 								        "</div>";
 
+					
 					$("#chatBox").append(recieverMsg);		
 				}
 				
@@ -174,6 +209,7 @@ $("[name=chatRoom]").click(function(){
 	
 });
 
+//메세지 보내기
 $("#sendBtn").click(function() {
 	let $msg = $("#message").val();
 	let roomCode = $(this).val();
@@ -195,7 +231,8 @@ $("#sendBtn").click(function() {
 				        "</div>" +
 				      "</div>";
 
-		$("#chatBox").append(myMsg);
+		//$("#chatBox").append(myMsg);
+		$("#chatBox").prepend(myMsg);
 		$("#message").val("");
 		
 	}else{
