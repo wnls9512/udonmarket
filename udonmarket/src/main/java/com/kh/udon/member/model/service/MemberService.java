@@ -41,8 +41,6 @@ public interface MemberService
 
 	List<Review> selectAllReview(String userId);
 
-	List<announce> selectAnnounceList(int limit, int offset);
-	
 	int insertMemberLocAuth(Member member);
 	
 	int insertMemberLocAuthScoreEvaluate(Map<String, Object> map);
@@ -67,11 +65,11 @@ public interface MemberService
 
 	int announceEnroll(announce announce);
 
-	announce selectOneAnnounce(int bCode);
+	announce selectOneAnnounce(int bCode,String userId);
 
 	int updateQuitMember(String userId);
 
-	void updateNick(Member member);
+	int updateNick(Member member);
 
 	List<Community> selectPostList(String userId);
 
@@ -94,6 +92,9 @@ public interface MemberService
 
 	int userIdCheck(String userId);
 
+	List<announce> selectAnnounceList(String userId);
+
+	int delete(int bCode);
 
 	List<Report> selectDeclareMemberList(int limit, int offset);
 
