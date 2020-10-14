@@ -34,3 +34,5 @@ exception
   when others then
     return 999;
 end calc_distance;
+
+create or replace trigger trig_like_this after insert on like_this for each row begin update board set like_this = like_this + 1 where b_code = :new.b_code; end;
