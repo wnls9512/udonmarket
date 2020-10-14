@@ -104,8 +104,8 @@ public class MemberServiceImpl implements MemberService
 	}
 
 	@Override
-	public List<announce> selectAnnounceList(int limit, int offset) {
-		return memberDao.selectAnnounceList(limit, offset);
+	public List<announce> selectAnnounceList(String userId) {
+		return memberDao.selectAnnounceList(userId);
 	}
 		
 	@Transactional(rollbackFor = { Exception.class })
@@ -183,8 +183,8 @@ public class MemberServiceImpl implements MemberService
 	}
 
 	@Override
-	public announce selectOneAnnounce(int bCode) {
-		return memberDao.selectOneAnnounce(bCode);
+	public announce selectOneAnnounce(int bCode,String userId) {
+		return memberDao.selectOneAnnounce(bCode,userId);
 	}
 
 	@Override
@@ -265,5 +265,10 @@ public class MemberServiceImpl implements MemberService
 	@Override
 	public int userIdCheck(String userId) {
 		return memberDao.userIdCheck(userId);
+	}
+
+	@Override
+	public int delete(int bCode) {
+		return memberDao.delete(bCode);
 	}
 }

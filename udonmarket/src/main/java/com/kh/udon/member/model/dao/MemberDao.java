@@ -44,8 +44,6 @@ public interface MemberDao
 
 	List<Review> selectAllReview(String userId);
 
-	List<announce> selectAnnounceList(int limit, int offset);
-	
 	int insertMember(Member member);
 	
 	int insertMember(Map<String, Object> map);
@@ -76,7 +74,7 @@ public interface MemberDao
 
 	int announceEnroll(announce announce);
 
-	announce selectOneAnnounce(int bCode);
+	announce selectOneAnnounce(int bCode, String userId);
 
     int insertEvaluate(Map<String, Object> map);
 
@@ -105,4 +103,8 @@ public interface MemberDao
 	List<Block> selectAllBlockUser(String userId);
 
 	int userIdCheck(String userId);
+
+	List<announce> selectAnnounceList(String userId);
+
+	int delete(int bCode);
 }

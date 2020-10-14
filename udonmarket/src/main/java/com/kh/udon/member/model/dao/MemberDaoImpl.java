@@ -89,9 +89,8 @@ public class MemberDaoImpl implements MemberDao
 	}
 
 	@Override
-	public List<announce> selectAnnounceList(int limit, int offset) {
-		RowBounds rowBounds = new RowBounds(offset, limit);
-		return session.selectList("member.selectAnnounceList", null , rowBounds );
+	public List<announce> selectAnnounceList(String userId) {
+		return session.selectList("member.selectAnnounceList", userId);
 	}
 
 	@Override
@@ -169,7 +168,7 @@ public class MemberDaoImpl implements MemberDao
 	}
 
 	@Override
-	public announce selectOneAnnounce(int bCode) {
+	public announce selectOneAnnounce(int bCode,String userId) {
 		return session.selectOne("member.selectOneAnnounce",bCode);
 	}
 	
@@ -239,5 +238,10 @@ public class MemberDaoImpl implements MemberDao
 	@Override
 	public int userIdCheck(String userId) {
 		return session.selectOne("member.userIdCheck", userId);
+	}
+
+	@Override
+	public int delete(int bCode) {
+		return session.delete("member.delete", bCode);
 	}
 }

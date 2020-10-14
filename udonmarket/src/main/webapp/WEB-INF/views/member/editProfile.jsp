@@ -71,8 +71,7 @@ a{text-decoration: none; color: black;}
 				        <nav class="nav flex-column bg-white shadow-sm rounded p-3">
 						  <div class="form-row">
 						    <div class="col">
-						      <input type="text" name="nickName" class="form-control" placeholder="${member.nickName}">
-						      <input type="hidden" name="userId" class="form-control" placeholder="${member.userId}">
+						      <input type="text" name="nickName" class="form-control" value="${member.nickName}">
 						    </div>
 						  </div>
 				        </nav>

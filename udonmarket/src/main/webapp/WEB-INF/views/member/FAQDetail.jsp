@@ -3,17 +3,17 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 
 <fmt:requestEncoding value="utf-8"/>
 
 <jsp:include page="/WEB-INF/views/common/header.jsp">
-	<jsp:param value="FAQ" name="pageTitle"/>
+	<jsp:param value="공지사항" name="pageTitle"/>
 </jsp:include>
 
 <!-- mypage css -->
 <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/mypage.css">
-<link href="//cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.4.0/css/bootstrap4-toggle.min.css" rel="stylesheet">  
-<script src="//cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.4.0/js/bootstrap4-toggle.min.js"></script>
 <style>
 a{text-decoration: none; color: black;}
 html { font-size: 16px; }
@@ -56,7 +56,35 @@ html { font-size: 16px; }
 tr[data-board-no] {
 	cursor: pointer;
 </style>
- <script>
+<script>
+function deleteBoard(bCode)
+{
+	if(confirm("삭제할까요?"))
+	{
+		$.ajax
+		({
+			url: "${pageContext.request.contextPath}/community/" + bCode,
+			method: "PUT",
+			beforeSend: function(xhr)
+			{
+	            xhr.setRequestHeader("${_csrf.headerName}", "${_csrf.token}");
+	        },
+	        dataType: "json",
+			success: function(map)
+			{
+				alert(map.msg);
+				location.href = "${pageContext.request.contextPath}/member/FAQ?userId=${member.userId}";									
+			},
+			error: function(xhr, status, err)
+			{
+				alert("공지사항 삭제에 실패했어요 💧");
+				console.log(xhr, status, err);
+			}
+		});
+	}
+	else
+		return false;
+}
 </script>
     <!--================Home Banner Area =================-->
     <!-- breadcrumb start-->
@@ -66,7 +94,6 @@ tr[data-board-no] {
                 <div class="col-lg-8">
                     <div class="breadcrumb_iner">
                         <div class="breadcrumb_iner_item">
-							<!-- <h3>서울 강남구 논현동</h3> -->
                             <h2 style="display: inline-block;">공지사항</h2>
 					       <img src="${pageContext.request.contextPath }/resources/img/banner/mypage3.png" 
 			                                    	 alt="" 
@@ -89,15 +116,13 @@ tr[data-board-no] {
 	            <div class="px-4 pt-0 pb-4 cover">
 	                <div class="media align-items-end profile-head">
 	                    <div class="profile mr-3">
-	                    	<!-- LoggdeInUser 정보 가져오기  -->
-	                        <sec:authentication property="principal" var="loggedInUser" />
+	                     <sec:authentication property="principal" var="loggedInUser" />
 	                    	<img src="${pageContext.request.contextPath }/resources/img/member/${member.renamedFileName == null 
 	                    															 ? member.originalFileName:member.renamedFileName}" 
 	                    		 alt="..." 
 	                    		 width="130" 
 	                    		 class="rounded mb-2 img-thumbnail">
-	                    	<a href="${pageContext.request.contextPath }/member/mypage?userId=${member.userId}"
-	                    	 class="btn btn-outline-dark btn-sm btn-block">Mypage</a>
+	                    	<a href="${pageContext.request.contextPath }/member/mypage?userId=${member.userId}" class="btn btn-outline-dark btn-sm btn-block">Mypage</a>
 	                    </div>
 	                    <div class="media-body mb-5 text-white">
 	                        <h4 class="mt-0 mb-0" style="color:white;">${member.nickName}</h4>
@@ -136,42 +161,36 @@ tr[data-board-no] {
 							<div style="text-align: center; ">
 								<h5 style="font-weight: bold;
 									  		color: #575757;">공지사항</h5> 		
-							    <p id="myLocal" style=" color: #575757;"></p>
 							</div>
-							<hr />
-							
-							<sec:authorize access="hasRole('ADMIN')">
+							<hr />			
+				        <nav class="nav flex-column bg-white shadow-sm rounded p-3">
+				        
+	                	<table class="table table-borderless">
+						  <thead>
+						    <tr>
+						      <th scope="col"><h2>${ announce.boardTitle }</h2></th>
+						      <th scope="col"><p>${ announce.regDate }</p></th>
+						    </tr>
+						  </thead>
+						  <tbody>
+						    <tr>
+						      <th scope="row">작성자 : ${ announce.userId }</th>
+						    </tr>
+						    <tr>
+						      <th scope="row">${ announce.boardContent }</th>
+						      
+						    </tr>
+						    
+						  </tbody>
+						</table> 
+						<sec:authorize access="hasRole('ADMIN')">
 							<c:if test="${member.userId == 'admin' }">
 							<ul class="nav justify-content-end">
-                               	<a class="btn btn-primary" href="${pageContext.request.contextPath }/member/announceForm?userId=${member.userId}"
-                               	 role="button">글쓰기</a>
+                               	<a class="btn btn-primary" href="javascript:deleteBoard('${announce.BCode }');">삭제</a>
                             </ul>
                             </c:if>
                             </sec:authorize>
-							
-				        <nav class="nav flex-column bg-white shadow-sm rounded p-3">
-						<div class="tab-content" id="pills-tabContent">
-						  <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
-						  <table id="tbl-board" class="table table-striped table-hover">
-								<tr>
-									<th>번호</th>
-									<th>제목</th>
-									<th>작성자</th>
-									<th>작성일</th>
-								</tr>
-								<c:forEach items="${list}" var="announce">
-								<c:if test="${announce.categoryCode eq '22' }">
-									<tr data-board-no="${ announce.BCode }"
-									onclick="location.href='${ pageContext.request.contextPath }/member/announceDetail?bCode=${announce.BCode}&userId=${member.userId}';">
-										<td>${ announce.BCode }</td>
-										<td>${ announce.boardTitle }</td>
-										<td>${ announce.userId }</td>
-										<td><fmt:formatDate value="${ announce.regDate }" type="both"/></td>
-									</tr>
-									</c:if>
-									</c:forEach>
-							</table>
-							</div>		
+						  	
 				        </nav>
 	                </div>
 	            </div>

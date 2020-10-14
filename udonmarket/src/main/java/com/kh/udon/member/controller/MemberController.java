@@ -16,7 +16,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -260,6 +262,7 @@ public class MemberController {
 		
 		int result = service.updateNick(member);
 		rttr.addFlashAttribute("msg", result > 0 ? "닉네임 수정 성공" : "닉네임 수정 실패");
+		rttr.addAttribute("userId", member.getUserId());
 		
 		return "redirect:/member/mypage";
 		
@@ -425,36 +428,78 @@ public class MemberController {
     
     //자주 묻는 질문
     @RequestMapping("/FAQ")
-    public String FAQ(@RequestParam("userId") String userId,Model model)
+    public String FAQ(@RequestParam String userId,Model model)
     {
     	log.debug("loginMemberId = {} ", userId);
     	Member member = service.selectOneMember(userId);
     	
+    	//2.업무로직
+    	List<announce> list = service.selectAnnounceList(userId);
+    	log.debug("list = {}",list);
+    	
+    	//3.view단처리
     	model.addAttribute("member",member);
+    	model.addAttribute("list",list);
     	return "member/FAQ";
+    }
+    
+    //FAQ등록폼
+    @RequestMapping("/FAQForm")
+  	public ModelAndView FAQForm(ModelAndView mav,
+  									@RequestParam("userId") String userId) {
+  		
+  		Member member = service.selectOneMember(userId);
+  		
+  		mav.addObject("member",member);
+  		mav.setViewName("member/FAQForm");
+  		return mav;
+  	}
+    
+    @RequestMapping("/FAQEnroll")
+  	public String FAQEnroll(@ModelAttribute("announce") announce announce, 
+  								 RedirectAttributes rttr, 
+  								 Model model,
+  								@RequestParam(value="userId", required=false) String userId)throws Exception
+	{
+  		log.debug("userId = {}", userId);
+  		Member member = service.selectOneMember(userId);
+  		int result = service.announceEnroll(announce);
+  		
+  		rttr.addFlashAttribute("msg",result > 0  ? "FAQ 등록 성공!" : "FAQ 등록 실패!");
+		rttr.addAttribute("userId", announce.getUserId());
+  		
+  		return "redirect:/member/FAQ";
+  	}
+    
+    //FAQ 상세보기
+    @GetMapping("/FAQDetail")
+    public String FAQDetail(@RequestParam int bCode,
+    							@RequestParam("userId") String userId,
+    							Model model) {
+    	
+    	Member member = service.selectOneMember(userId);
+    	log.debug("[{}]번 공지사항 조회",bCode);
+    	announce announce = service.selectOneAnnounce(bCode,userId);
+    	model.addAttribute("announce",announce);
+    	model.addAttribute("member", member);
+    	return "member/FAQDetail";
     }
     
     //공지 사항
     @RequestMapping("/announce")
-    public ModelAndView announce(ModelAndView mav,
-    							@RequestParam("userId") String userId,
-    							@RequestParam(defaultValue="1")int cPage)
+    public String announce(@RequestParam String userId,Model model)
     {
     	log.debug("loginMemberId = {} ", userId);
     	Member member = service.selectOneMember(userId);
-    	//1.사용자 입력값
-    	final int limit = 10;
-    	int offset = (cPage -1) * limit;
     	
     	//2.업무로직
-    	List<announce> list = service.selectAnnounceList(limit,offset);
+    	List<announce> list = service.selectAnnounceList(userId);
     	log.debug("list = {}",list);
     	
     	//3.view단처리
-    	mav.addObject("member",member);
-    	mav.addObject("list",list);
-    	mav.setViewName("member/announce");
-    	return mav;
+    	model.addAttribute("member",member);
+    	model.addAttribute("list",list);
+    	return "member/announce";
     }
 
     //관심 주제 목록
@@ -614,13 +659,70 @@ public class MemberController {
     
     //공지사항 디테일
     @GetMapping("/announceDetail")
-    public String announceDetail(@RequestParam int bCode,Model model) {
+    public String announceDetail(@RequestParam int bCode,
+    							@RequestParam("userId") String userId,
+    							Model model) {
     	
+    	Member member = service.selectOneMember(userId);
     	log.debug("[{}]번 공지사항 조회",bCode);
-    	announce announce = service.selectOneAnnounce(bCode);
+    	announce announce = service.selectOneAnnounce(bCode,userId);
     	model.addAttribute("announce",announce);
-    	
+    	model.addAttribute("member", member);
     	return "member/announceDetail";
+    }
+    
+  //공지사항 글쓰기 폼
+  	@RequestMapping("/announceForm")
+  	public ModelAndView announceForm(ModelAndView mav,
+  									@RequestParam("userId") String userId) {
+  		
+  		Member member = service.selectOneMember(userId);
+  		
+  		mav.addObject("member",member);
+  		mav.setViewName("member/announceForm");
+  		return mav;
+  	}
+    
+  //공지사항 등록
+  	@RequestMapping("/announceEnroll")
+  	public String announceEnroll(@ModelAttribute("announce") announce announce, 
+  								 RedirectAttributes rttr, 
+  								 Model model,
+  								@RequestParam(value="userId", required=false) String userId)throws Exception
+	{
+  		log.debug("userId = {}", userId);
+  		Member member = service.selectOneMember(userId);
+  		int result = service.announceEnroll(announce);
+  		
+  		rttr.addFlashAttribute("msg",result > 0  ? "공지사항 등록 성공!" : "공지사항 등록 실패!");
+		rttr.addAttribute("userId", announce.getUserId());
+  		
+  		return "redirect:/member/announce";
+  	}
+  	
+  	//공지사항 삭제
+  	@PutMapping("/{bCode}")
+    @ResponseBody
+    public Map<String, Object> deleteBoard(@PathVariable int bCode)
+    {
+        Map<String, Object> map = new HashMap<>();
+        
+        String msg = "삭제되었습니다 😄";
+        
+        try 
+        {
+            int result = service.delete(bCode);
+        } 
+        catch(Exception e) 
+        {
+        	e.printStackTrace();
+            log.error("공지사항 삭제 오류", e);
+            msg = "삭제에 실패했어요 💧";
+        }
+        
+        map.put("msg", msg);
+        
+        return map;
     }
 
     //알림 띄우기 (헤더)
