@@ -37,7 +37,8 @@ function connectWS(){
 				//console.log($("#sendBtn").val());
 				//console.log(msgArr[0] == $("#sendBtn").val());
 				if(msgArr[0] == $("#sendBtn").val()){     	 
-					$("#chatBox").append(msgArr[1]);       	 
+					//$("#chatBox").append(msgArr[1]);       	 
+					$("#chatBox").prepend(msgArr[1]);       	 
 				}
 				
             // $("#chatBox").append(msg.data);	

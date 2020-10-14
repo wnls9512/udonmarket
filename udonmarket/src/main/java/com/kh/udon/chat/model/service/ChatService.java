@@ -19,4 +19,6 @@ public interface ChatService
 
 	int insertChatRoom(Map<String, Object> map);
 
+	int leaveChatRoom(Map<String, Object> map);
+
 }

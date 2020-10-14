@@ -261,4 +261,14 @@ public class MemberDaoImpl implements MemberDao
 	public int selectNotiTotalContents(String userId) {
 		return session.selectOne("socket.selectNotiTotalContents", userId);
 	}
+
+	@Override
+	public int insertBlockUser(Map<String, Object> map) {
+		return session.insert("member.insertBlockUser", map);
+	}
+
+	@Override
+	public int deleteBlockUser(Map<String, Object> map) {
+		return session.delete("member.deleteBlockUser", map);
+	}
 }

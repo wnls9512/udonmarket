@@ -474,7 +474,7 @@
 	
 <script>
 function openChatRoom(){
-	alert("클릭");
+	//alert("클릭");
 	let $userId = "${userId}";
 	let $seller = "${product.seller}";
 	let $pCode = "${product.PCode}";
@@ -495,7 +495,7 @@ function openChatRoom(){
         	window.open("${pageContext.request.contextPath}" + data);							
 		},
 		error: function(xhr, status, err){
-			alert("이미 관심목록에 추가되있어요 💘");
+			console.log("openChatRoom 실패");
 		}
 	});
 }

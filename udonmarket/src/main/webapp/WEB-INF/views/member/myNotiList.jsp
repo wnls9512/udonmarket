@@ -41,7 +41,7 @@ html { font-size: 16px; }
     </section>
     <!-- breadcrumb start-->
     
-    
+    <sec:authentication property="principal.username" var="userId"/>
     
     <div class="row py-5 px-4">
 	    <div class="col-md-5 mx-auto">
@@ -50,8 +50,6 @@ html { font-size: 16px; }
 	            <div class="px-4 pt-0 pb-4 cover">
 	                <div class="media align-items-end profile-head">
 	                    <div class="profile mr-3">
-	                    	<!-- LoggdeInUser 정보 가져오기  -->
-	                        <sec:authentication property="principal" var="loggedInUser" />
 	                    	<img src="${pageContext.request.contextPath }/resources/img/member/${member.renamedFileName == null 
 	                    															 ? member.originalFileName:member.renamedFileName}" 
 	                    		 alt="..." 
@@ -177,7 +175,7 @@ html { font-size: 16px; }
 														<a href="${pageContext.request.contextPath }/product/productDetailView?pCode=${noti.PCode }"
 														   onclick='updateCheck(${noti.notiCode})'>'${noti.PTitle}'</a>
 															 의 가격을  [<fmt:formatNumber value="${ noti.notiContent }" groupingUsed="true"/>]원으로 제안했어요
-															 [<a href="#">수락하기</a>] 💌
+															 [<a href="#" onclick="openChatRoom('${noti.PCode}','${noti.sender}','${noti.notiCode}')">수락하기</a>] 💌
 														</span>
 													</td>
 											</c:when>
@@ -212,6 +210,38 @@ html { font-size: 16px; }
 
 <jsp:include page="/WEB-INF/views/common/footer.jsp"/>
 	
-	
+<script>
+
+function openChatRoom(pCode, userId, notiCode){
+	//alert("클릭");
+	let $userId = "${userId}";
+	let $buyer = userId;
+	let $pCode = pCode;
+
+	//이미 열려있는 채팅방이 있다면 이동
+	$.ajax({
+		url: "${pageContext.request.contextPath}/chat/openChatRoom",
+		method: "POST",
+		data: {
+			userId: $userId,
+			seller: $buyer,
+			pCode: $pCode
+		},
+		beforeSend: function(xhr){
+            xhr.setRequestHeader("${_csrf.headerName}", "${_csrf.token}");
+        },
+        success: function(data){
+        	window.open("${pageContext.request.contextPath}" + data);			
+
+        	updateCheck(notiCode);
+        					
+		},
+		error: function(xhr, status, err){
+			console.log("openChatRoom 실패");
+		}
+	});
+}
+
+</script>	
 	
 	
