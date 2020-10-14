@@ -253,6 +253,26 @@ public class ProductServiceImpl implements ProductService
         return result;
     }
     
+    @Override
+    public int insertReviewByBuyer(ReviewDTO review)
+    {
+        int result = 0;
+        
+        result = dao.insertEva(review);
+        result = dao.insertScore(review);
+        result = dao.insertReviewByBuyer(review);
+        result = dao.updateSeller(review);
+        
+        return result;
+    }
+
+    @Override
+    public List<Evaluation> selectEvaListforBuyer(int kind)
+    {
+        return dao.selectEvaListforBuyer(kind);
+    }
+
+    
     
     
     

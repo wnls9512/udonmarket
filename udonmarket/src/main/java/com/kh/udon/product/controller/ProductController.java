@@ -626,6 +626,16 @@ public class ProductController
         
         return evaList;
     }
+    @GetMapping("/evaListforBuyer/{score}")
+    @ResponseBody
+    private List<Evaluation> evaListforBuyer(@PathVariable int score)
+    {
+        int kind = score > 36 ? 1 : 0;
+        
+        List<Evaluation> evaList = service.selectEvaListforBuyer(kind);
+        
+        return evaList;
+    }
     
     /* 거래완료 - 리뷰 */
     @PostMapping("/insertReview")
@@ -638,6 +648,16 @@ public class ProductController
         rttr.addAttribute("userId", review.getSender());
         
         return "redirect:/product/productDetailView";
+    }
+    @PostMapping("/insertReviewByBuyer")
+    private String insertReviewByBuyer(ReviewDTO review, RedirectAttributes rttr)
+    {
+        int result = service.insertReviewByBuyer(review);
+        
+        rttr.addFlashAttribute("msg", result > 0 ? "리뷰 등록 성공 💛" : "리뷰 등록 실패 🤔");
+        rttr.addAttribute("userId", review.getSender());
+        
+        return "redirect:/member/buyList";
     }
     
     

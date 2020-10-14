@@ -267,6 +267,7 @@
 <select id="selectAllBuyPro" resultType="wish">
 	select 
 		P.buyer,
+		P.seller,
 	    P.p_code,
 	    P.title,
 	    M.address sellerAddr,

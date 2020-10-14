@@ -370,8 +370,8 @@ create sequence seq_location;
 --            FUNCTION
 --========================================
 -- 거리 구하기 함수
--- 따로
-create or replace trigger trig_like_this after insert on like_this for each row begin update board set like_this = like_this + 1 where b_code = :new.b_code; end;
+-- 좋아요 트리거
+
 
 --========================================
 --            DATA
@@ -578,5 +578,15 @@ insert into keyword values(SEQ_KEYWORD.nextval, 'juwon', '갤럭시');
 --==========================================================================================
 update product set buyer = null where p_code = 63;
 commit;
-select * from review;
-delete from review where review_code = 43;
+select * from product;
+delete from review where review_code = 43
+
+
+
+
+
+
+
+
+
+;

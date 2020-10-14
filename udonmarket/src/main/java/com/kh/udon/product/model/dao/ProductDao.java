@@ -97,6 +97,13 @@ public interface ProductDao
 
     int updateBuyer(ReviewDTO review);
 
+    List<Evaluation> selectEvaListforBuyer(int kind);
+
+    int insertReviewByBuyer(ReviewDTO review);
+
+    int updateSeller(ReviewDTO review);
+
+
 
 
 

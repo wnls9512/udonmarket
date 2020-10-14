@@ -335,6 +335,9 @@
 	<select id="selectEvaList" resultType="evaluation">
 		select * from evaluation where kind = #{kind} and (member = 'S' or member = 'C')
 	</select>
+	<select id="selectEvaListForBuyer" resultType="evaluation">
+		select * from evaluation where kind = #{kind} and (member = 'B' or member = 'C')
+	</select>
 	
 	<!-- 리뷰 -->
 	<update id="insertEva" parameterType="reviewDTO">
@@ -342,9 +345,6 @@
 			update evaluate set count =  nvl(count, 0) + 1 where user_id = #{receiver} and eva_code = #{eva}
 		</foreach>
 	</update>
-
-	
-	
 	<update id="insertScore">
 		update score set (total_score, count) = (select nvl(total_score, 0) + #{score}, nvl(count, 0) + 1 from score where user_id = #{receiver}) 
 		where user_id = #{receiver}
@@ -355,4 +355,10 @@
 	<update id="updateBuyer">
 		update product set buyer = #{receiver} where p_code = #{pCode}
 	</update>
+	<update id="updateSeller">
+		update product set seller = #{receiver} where p_code = #{pCode}
+	</update>
+	<insert id="insertReivewByBuyer">
+		insert into review values(seq_review.nextval, #{sender}, #{receiver}, #{content}, 'B',  #{pCode})
+	</insert>
 </mapper>

@@ -466,10 +466,6 @@
 	<input type="hidden" name="score" />
 	<input type="hidden" name="content" />
 </form>
-
-
-
-
 <!-- ========== 구매자 선택 MODAL END ========== -->
 	
 <script>

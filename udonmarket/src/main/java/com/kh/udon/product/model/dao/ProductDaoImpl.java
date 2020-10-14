@@ -269,6 +269,25 @@ public class ProductDaoImpl implements ProductDao
         return session.update("product.updateBuyer", review);
     }
 
+    @Override
+    public List<Evaluation> selectEvaListforBuyer(int kind)
+    {
+        return session.selectList("product.selectEvaListForBuyer", kind);
+    }
+
+    @Override
+    public int insertReviewByBuyer(ReviewDTO review)
+    {
+        return session.insert("product.insertReivewByBuyer", review);
+    }
+
+    @Override
+    public int updateSeller(ReviewDTO review)
+    {
+        return session.update("product.updateSeller", review);
+    }
+
+
 
 
 

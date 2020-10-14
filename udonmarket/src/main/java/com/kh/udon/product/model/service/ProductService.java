@@ -90,6 +90,10 @@ public interface ProductService
 
     List<ProductDTO> selectAll(PageInfo pi, String userId);
 
+    List<Evaluation> selectEvaListforBuyer(int kind);
+
+    int insertReviewByBuyer(ReviewDTO review);
+
 
 
 
