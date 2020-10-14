@@ -6,98 +6,102 @@
 	<!-- 게시글 조회 & 검색 -->
 	<select id="selectCommunityList" resultType="community">
 		select 
-			*
+			b.*,
+		    m.nickname,
+            m.address
 		from 
-			board
+		    board b
+		   		left join
+    				member m on(b.user_id = m.user_id)
 		<trim prefix="WHERE" prefixOverrides="AND|OR">
 
 			<if test="searchType=='board_title' and keyword != null and keyword != '' ">
 
-				AND board_title like CONCAT('%' || #{keyword}, '%')
+				AND b.board_title like CONCAT('%' || #{keyword}, '%')
 
 			</if>
 
 			<if test="searchType=='board_content' and keyword != null and keyword != '' ">
 
-				AND board_content like CONCAT('%' || #{keyword}, '%')
+				AND b.board_content like CONCAT('%' || #{keyword}, '%')
 
 			</if>
 			
 			<if test="categoryCode==17">
 
-				AND category_code = 17
+				AND b.category_code = 17
 
 			</if>
 			
 			<if test="categoryCode==18">
 
-				AND category_code = 18
+				AND b.category_code = 18
 
 			</if>
 			
 			<if test="categoryCode==19">
 
-				AND category_code = 19
+				AND b.category_code = 19
 
 			</if>
 			
 			<if test="categoryCode==20">
 
-				AND category_code = 20
+				AND b.category_code = 20
 
 			</if>
 			
 			<if test="hashtagCode==1">
 
-				AND hashtag_code = 1
+				AND b.hashtag_code = 1
 
 			</if>
 			
 			<if test="hashtagCode==2">
 
-				AND hashtag_code = 2
+				AND b.hashtag_code = 2
 
 			</if>
 			
 			<if test="hashtagCode==3">
 
-				AND hashtag_code = 3
+				AND b.hashtag_code = 3
 
 			</if>
 			
 			<if test="hashtagCode==4">
 
-				AND hashtag_code = 4
+				AND b.hashtag_code = 4
 
 			</if>
 			
 			<if test="hashtagCode==5">
 
-				AND hashtag_code = 5
+				AND b.hashtag_code = 5
 
 			</if>
 			
 			<if test="hashtagCode==6">
 
-				AND hashtag_code = 6
+				AND b.hashtag_code = 6
 
 			</if>
 			
 			<if test="hashtagCode==7">
 
-				AND hashtag_code = 7
+				AND b.hashtag_code = 7
 
 			</if>
 			
 			<if test="hashtagCode==8">
 
-				AND hashtag_code = 8
+				AND b.hashtag_code = 8
 
 			</if>
 			
 			<if test="hashtagCode==9">
 
-				AND hashtag_code = 9
+				AND b.hashtag_code = 9
 
 			</if>
 			
@@ -109,17 +113,28 @@
 			
 
 		</trim> 
-		order by b_code desc
+		order by b.b_code desc
 	</select>
 	
 	<!-- 게시글 상세 -->
 	<select id="selectOneCommunityCollection" resultMap="communityCollectionMap">
 		select 
-		    B.*
+		    b.b_code,
+            b.user_id,
+            b.category_code,
+            b.board_title,
+            b.board_content,
+            b.reg_date,
+            b.hashtag_code,
+           	b.like_this,
+		    m.nickname,
+            m.address
 		from 
-		    board B
+		    board b
+		   		left join
+    				member m on(b.user_id = m.user_id)
 		where 
-		    B.b_code = #{ bCode }
+		    b.b_code = #{ bCode }
 	</select>
 	<resultMap type="community" id="communityCollectionMap">
 		<id column="b_code" property="bCode"/>
@@ -175,12 +190,39 @@
 	<delete id="delete">
 		delete from board where b_code = #{bCode}
 	</delete>
-
-
 	
+	<!-- 좋아요 -->
+	<insert id="createBoardLike">
+            INSERT INTO like_this VALUES(
+		#{bCode}, 
+		#{userId}
+		)
+        </insert>
+
+       <!--  <delete id="deleteBoardLike">
+            DELETE FROM like_this
+            WHERE b_code = #{bCode} AND user_id = #{userId}
+        </delete>
+
+        <select id="updateBoardLike">
+            UPDATE board
+            SET
+            like_this = (SELECT COUNT(*)
+            FROM like_this
+            WHERE b_code = #{bCode})
+            WHERE b_code = #{bCode}
+        </select>
+
+        <select id="getBoardLike" resultType="int">
+            SELECT COUNT(like_id) FROM like_this WHERE b_code = #{bCode} AND user_id = #{userId}
+        </select> -->
+
+
+<!-- 	신고관리(동네생활) -->
 	<select id="selectReportList" resultType="report">
-		select R.report_code, R.b_code, R.report_id, RR.reason_content
+		select R.report_code, R.reason_code,R.report_id, R.b_code, RR.reason_content
 		from report R left join reason_report RR on R.reason_code = RR.reason_code
+		where R.b_code is not null
 	</select>	
 	
 

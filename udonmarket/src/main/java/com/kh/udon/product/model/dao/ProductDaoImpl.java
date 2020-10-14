@@ -3,18 +3,22 @@ package com.kh.udon.product.model.dao;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.kh.udon.community.model.vo.Report;
 import com.kh.udon.member.model.vo.Wish;
 import com.kh.udon.product.model.vo.CategoryVO;
 import com.kh.udon.product.model.vo.CouponDTO;
+import com.kh.udon.product.model.vo.Evaluation;
 import com.kh.udon.product.model.vo.ProductDTO;
 import com.kh.udon.product.model.vo.ProductPhotoVO;
 import com.kh.udon.product.model.vo.ProductVO;
 import com.kh.udon.product.model.vo.ReasonReportVO;
 import com.kh.udon.product.model.vo.ReportVO;
+import com.kh.udon.product.model.vo.ReviewDTO;
 import com.kh.udon.product.model.vo.SellerDTO;
 
 @Repository
@@ -209,6 +213,51 @@ public class ProductDaoImpl implements ProductDao
     {
         return session.selectOne("product.selectPhotos", photo);
     }
+
+	@Override
+	public List<Report> selectProductList(int limit, int offset) {
+		
+		RowBounds rowBounds = new RowBounds(offset, limit);
+		
+		return session.selectList("product.selectProductList", null,rowBounds);
+	}
+
+    @Override
+    public List<String> selectBuyer(Map<String, Object> map)
+    {
+        return session.selectList("product.selectBuyer", map);
+    }
+
+    @Override
+    public List<Evaluation> selectEvaList(int kind)
+    {
+        return session.selectList("product.selectEvaList", kind);
+    }
+
+    @Override
+    public int insertEva(ReviewDTO review)
+    {
+        return session.update("product.insertEva", review);
+    }
+
+    @Override
+    public int insertScore(ReviewDTO review)
+    {
+        return session.update("product.insertScore", review);
+    }
+
+    @Override
+    public int insertReview(ReviewDTO review)
+    {
+        return session.insert("product.insertReview", review);
+    }
+
+    @Override
+    public int updateBuyer(ReviewDTO review)
+    {
+        return session.update("product.updateBuyer", review);
+    }
+
 
 
 

@@ -5,16 +5,20 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import com.kh.udon.community.model.vo.Report;
 import com.kh.udon.member.model.vo.Wish;
 import com.kh.udon.product.model.dao.ProductDao;
 import com.kh.udon.product.model.vo.CategoryVO;
 import com.kh.udon.product.model.vo.CouponDTO;
+import com.kh.udon.product.model.vo.Evaluation;
 import com.kh.udon.product.model.vo.ProductDTO;
 import com.kh.udon.product.model.vo.ProductPhotoVO;
 import com.kh.udon.product.model.vo.ProductVO;
 import com.kh.udon.product.model.vo.ReasonReportVO;
 import com.kh.udon.product.model.vo.ReportVO;
+import com.kh.udon.product.model.vo.ReviewDTO;
 import com.kh.udon.product.model.vo.SellerDTO;
 
 @Service
@@ -206,6 +210,47 @@ public class ProductServiceImpl implements ProductService
     {
         return dao.selectFile(photo);
     }
+
+	@Override
+	public List<Report> selectProductList(int limit, int offset) {
+		
+		return dao.selectProductList(limit, offset);
+		
+	}
+
+    @Override
+    public List<String> selectBuyer(Map<String, Object> map)
+    {
+        return dao.selectBuyer(map);
+    }
+
+    @Override
+    public List<Evaluation> selectEvaList(int kind)
+    {
+        return dao.selectEvaList(kind);
+    }
+
+    @Override
+    @Transactional
+    public int insertReview(ReviewDTO review)
+    {
+        /*
+         *      1. 평가
+         *      2. score(거래온도)
+         *      3. review
+         *      4. product buyer update
+         */
+        
+        int result = 0;
+        
+        result = dao.insertEva(review);
+        result = dao.insertScore(review);
+        result = dao.insertReview(review);
+        result = dao.updateBuyer(review);
+                
+        return result;
+    }
+
 
 
 

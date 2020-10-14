@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.kh.udon.community.model.vo.Community;
 import com.kh.udon.community.model.vo.Reply;
+import com.kh.udon.community.model.vo.Report;
 import com.kh.udon.member.model.dao.MemberDao;
 
 import com.kh.udon.member.model.vo.Coupon;
@@ -270,5 +271,20 @@ public class MemberServiceImpl implements MemberService
 	@Override
 	public int delete(int bCode) {
 		return memberDao.delete(bCode);
+	}
+	
+	@Override
+	public List<Report> selectDeclareMemberList(int limit, int offset) {
+		return memberDao.selectDeclareMemberList(limit,offset);
+	}
+	
+	@Override
+	public List<Noti> selectAllNoti(String userId, int limit, int offset) {
+		return memberDao.selectAllNoti(userId, limit, offset);
+	}
+
+	@Override
+	public int selectNotiTotalContents(String userId) {
+		return memberDao.selectNotiTotalContents(userId);
 	}
 }

@@ -3,14 +3,17 @@ package com.kh.udon.product.model.dao;
 import java.util.List;
 import java.util.Map;
 
+import com.kh.udon.community.model.vo.Report;
 import com.kh.udon.member.model.vo.Wish;
 import com.kh.udon.product.model.vo.CategoryVO;
 import com.kh.udon.product.model.vo.CouponDTO;
+import com.kh.udon.product.model.vo.Evaluation;
 import com.kh.udon.product.model.vo.ProductDTO;
 import com.kh.udon.product.model.vo.ProductPhotoVO;
 import com.kh.udon.product.model.vo.ProductVO;
 import com.kh.udon.product.model.vo.ReasonReportVO;
 import com.kh.udon.product.model.vo.ReportVO;
+import com.kh.udon.product.model.vo.ReviewDTO;
 import com.kh.udon.product.model.vo.SellerDTO;
 
 public interface ProductDao
@@ -77,6 +80,20 @@ public interface ProductDao
     List<ProductPhotoVO> selectPhotos(int pCode);
 
     ProductPhotoVO selectFile(ProductPhotoVO photo);
+
+	List<Report> selectProductList(int limit, int offset);
+
+    List<String> selectBuyer(Map<String, Object> map);
+
+    List<Evaluation> selectEvaList(int kind);
+
+    int insertEva(ReviewDTO review);
+
+    int insertScore(ReviewDTO review);
+
+    int insertReview(ReviewDTO review);
+
+    int updateBuyer(ReviewDTO review);
 
 
 

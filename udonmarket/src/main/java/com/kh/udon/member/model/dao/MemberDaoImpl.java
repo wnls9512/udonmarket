@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 import com.kh.udon.member.model.vo.Coupon;
 import com.kh.udon.community.model.vo.Community;
 import com.kh.udon.community.model.vo.Reply;
+import com.kh.udon.community.model.vo.Report;
 import com.kh.udon.member.model.vo.Block;
 import com.kh.udon.member.model.vo.Evaluate;
 import com.kh.udon.member.model.vo.Keyword;
@@ -243,5 +244,21 @@ public class MemberDaoImpl implements MemberDao
 	@Override
 	public int delete(int bCode) {
 		return session.delete("member.delete", bCode);
+	}
+	
+	public List<Report> selectDeclareMemberList(int limit, int offset) {
+		RowBounds rowBounds = new RowBounds(offset, limit);
+		return session.selectList("member.selectDeclareMemberList", null, rowBounds);
+	}
+	
+	@Override
+	public List<Noti> selectAllNoti(String userId, int limit, int offset) {
+		RowBounds rowBounds = new RowBounds(offset, limit);
+		return session.selectList("socket.selectAllNoti", userId, rowBounds);
+	}
+
+	@Override
+	public int selectNotiTotalContents(String userId) {
+		return session.selectOne("socket.selectNotiTotalContents", userId);
 	}
 }

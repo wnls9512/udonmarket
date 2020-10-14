@@ -17,6 +17,16 @@
 		noti_code desc
 </select>
 
+<!-- 알림 전체 개수 -->
+<select id="selectNotiTotalContents" resultType="_int">
+	select 
+		count(*) 
+	from 
+		notification_test 
+	where 
+		receiver = #{userId}
+</select>
+
 <!-- 알림 저장 -->
 <insert id="insertNoti">
 	insert into 
@@ -65,6 +75,45 @@
 	                    where user_id = #{userId})
 	order by room_code desc
 </select>
+
+<!-- 채팅 방 존재 여부 -->
+<select id="selectChatRoomOne" resultType="chatRoom">
+	select 
+		* 
+	from 
+		chat_room R, chat_user U
+	where 
+		R.room_code = U.room_code
+	and 
+		p_code = #{pCode}
+	and 
+		user_id = #{userId}
+</select>
+
+<!-- 채팅방 추가 -->
+<insert id="insertChatRoom">
+	insert into 
+		chat_room 
+	values(SEQ_CHAT_ROOM.nextval, #{pCode}, sysdate)
+	<selectKey keyProperty="roomCode" resultType="_int" order="AFTER">
+		select 
+			seq_chat_room.currval
+		from
+			dual
+	</selectKey>
+</insert>
+
+<!-- 채팅방 참여자 추가 -->
+<insert id="insertChatUser">
+	insert into 
+		chat_user 
+	values(#{userId}, #{roomCode}, default)
+</insert>
+<insert id="insertChatSeller">
+	insert into 
+		chat_user 
+	values(#{seller}, #{roomCode}, default)
+</insert>
 
 <!-- 대화 내용 가져오기 -->
 <select id="selectChatMsg" resultType="chatMessage">
