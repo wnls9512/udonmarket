@@ -72,9 +72,9 @@ public class ProductServiceImpl implements ProductService
     }
 
     @Override
-    public List<ProductDTO> selectCategoryProducts(Map<String, Object> map)
+    public List<ProductDTO> selectCategoryProducts(Map<String, Object> map, PageInfo pi)
     {
-        return dao.selectCategoryProducts(map);
+        return dao.selectCategoryProducts(map, pi);
     }
 
     @Override
@@ -84,9 +84,9 @@ public class ProductServiceImpl implements ProductService
     }
 
     @Override
-    public List<ProductDTO> search(Map<String, Object> map)
+    public List<ProductDTO> search(Map<String, Object> map, PageInfo pi)
     {
-        return dao.search(map);
+        return dao.search(map, pi);
     }
 
     @Override

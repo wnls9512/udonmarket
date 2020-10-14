@@ -61,12 +61,12 @@
                                 	<c:forEach items="${category }" var="c" varStatus="status">
                                     <li>
                                     	<c:if test="${selectedCategory == c.categoryCode}">
-                                        <a href="${pageContext.request.contextPath }/product/categoryList?category=${c.categoryCode }&userId=${userId}"
+                                        <a href="${pageContext.request.contextPath }/product/categoryList?category=${c.categoryCode }&userId=${userId}&currentPage=1"
                                            style="color: red;">
                                         			${c.categoryName }</a>
                                     	</c:if>
                                     	<c:if test="${selectedCategory != c.categoryCode}">
-                                        <a href="${pageContext.request.contextPath }/product/categoryList?category=${c.categoryCode }&userId=${userId}">
+                                        <a href="${pageContext.request.contextPath }/product/categoryList?category=${c.categoryCode }&userId=${userId}&currentPage=1">
                                         			${c.categoryName }</a>
                                     	</c:if>
                                         <span>(${categoryCount[status.index] })</span>
@@ -272,7 +272,7 @@ function addToWish(userId, pCode)
 function search(keyword) 
 {
 	location.href 
-		= "${pageContext.request.contextPath}/product/search?keyword=" + keyword + "&category=${selectedCategory}&userId=${userId}";
+		= "${pageContext.request.contextPath}/product/search?keyword=" + keyword + "&category=${selectedCategory}&userId=${userId}&currentPage=1";
 }
 
 

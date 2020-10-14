@@ -77,9 +77,12 @@ public class ProductDaoImpl implements ProductDao
     }
 
     @Override
-    public List<ProductDTO> selectCategoryProducts(Map<String, Object> map)
+    public List<ProductDTO> selectCategoryProducts(Map<String, Object> map, PageInfo pi)
     {
-        return session.selectList("product.selectCategoryProducts", map);
+        int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
+        RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+        
+        return session.selectList("product.selectCategoryProducts", map, rowBounds);
     }
 
     @Override
@@ -89,9 +92,12 @@ public class ProductDaoImpl implements ProductDao
     }
 
     @Override
-    public List<ProductDTO> search(Map<String, Object> map)
+    public List<ProductDTO> search(Map<String, Object> map, PageInfo pi)
     {
-        return session.selectList("product.search", map);
+        int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
+        RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+        
+        return session.selectList("product.search", map, rowBounds);
     }
 
     @Override

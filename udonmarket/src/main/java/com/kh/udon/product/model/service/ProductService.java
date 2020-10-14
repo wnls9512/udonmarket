@@ -32,11 +32,11 @@ public interface ProductService
 
     int insert(ProductVO product);
 
-    List<ProductDTO> selectCategoryProducts(Map<String, Object> map);
+    List<ProductDTO> selectCategoryProducts(Map<String, Object> map, PageInfo pi);
 
     int addToWish(Wish wish);
 
-    List<ProductDTO> search(Map<String, Object> map);
+    List<ProductDTO> search(Map<String, Object> map, PageInfo pi);
 
     int selectSearchCount(Map<String, Object> map);
 

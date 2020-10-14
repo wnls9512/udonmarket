@@ -98,8 +98,7 @@ public class ProductController
     // 카테고리별 리스트
     @GetMapping("/categoryList")
     public String categoryList(@RequestParam("category") String categoryCode, 
-                               @RequestParam String userId,
-                               Model model)
+                               String userId, int currentPage, Model model)
     {
         /*
          *      1. 카테고리 목록
@@ -115,20 +114,24 @@ public class ProductController
         List<CategoryVO> category = service.selectAllCategory();
         List<Integer> categoryCount = service.selectAllCategoryCount(userId);
         int totalCount = service.selectCategoryCount(map);
-        List<ProductDTO> products = service.selectCategoryProducts(map);
+        
+        // --- pagination ---
+        PageInfo pi = Pagination.getPageInfo(totalCount, currentPage, 10, 9);
+        List<ProductDTO> products = service.selectCategoryProducts(map, pi);
         
         model.addAttribute("category", category);
         model.addAttribute("categoryCount", categoryCount);
         model.addAttribute("totalCount", totalCount);
         model.addAttribute("products", products);
         model.addAttribute("selectedCategory", categoryCode);
+        model.addAttribute("pi", pi);
         
         return "product/productListView";
     }
     
     // 검색
     @GetMapping("/search")
-    public String search(String keyword, int category, String userId, Model model)
+    public String search(String keyword, int category, String userId, int currentPage, Model model)
     {
         /*
          *      1. 카테고리 목록
@@ -145,13 +148,17 @@ public class ProductController
         List<CategoryVO> categoryList = service.selectAllCategory();
         List<Integer> categoryCount = service.selectAllCategoryCount(userId);
         int totalCount = service.selectSearchCount(map);
-        List<ProductDTO> products = service.search(map);
+        
+        // --- pagination ---
+        PageInfo pi = Pagination.getPageInfo(totalCount, currentPage, 10, 9);
+        List<ProductDTO> products = service.search(map, pi);
         
         model.addAttribute("category", categoryList);
         model.addAttribute("categoryCount", categoryCount);
         model.addAttribute("totalCount", totalCount);
         model.addAttribute("products", products);
         model.addAttribute("selectedCategory", category);
+        model.addAttribute("pi", pi);
         
         return "product/productListView";
     }
