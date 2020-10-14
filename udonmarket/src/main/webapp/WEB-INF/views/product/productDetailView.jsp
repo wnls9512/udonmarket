@@ -109,7 +109,7 @@
 				<c:when test="${seller.score le '50' }">#FFAD13</c:when>
 				<c:otherwise>#F76707</c:otherwise>
 				</c:choose>        	
-				;">${seller.score }℃ &nbsp;</strong></span>
+				;"><fmt:formatNumber value="${seller.score }" pattern=".0" />℃ &nbsp;</strong></span>
 				<!-- 온도bar 시작 -->
 				<c:choose>
 				<c:when test="${seller.score le '20' }">
@@ -203,7 +203,11 @@
             ${product.content }
             </p>
             <div class="card_area d-flex justify-content-between" style="border: none;">
-            	<span style="color: gray;">관심 ${product.wish} · 채팅 ${product.chat }<br /></span>
+            	<span style="color: gray;">
+            		<c:if test="${product.wish != 0 }">관심 ${product.wish}</c:if>
+            		<c:if test="${product.wish != 0 && product.chat !=  0}"> · </c:if>
+            		<c:if test="${product.chat != 0 }">채팅 ${product.chat }</c:if><br />
+            	</span>
             </div>
             <div class="card_area d-flex justify-content-between align-items-center">
               <c:if test="${userId == product.seller }">
@@ -248,6 +252,7 @@
             </div>
             <div class="row align-items-center justify-content-between">
                 <div class="col-lg-12">
+	            	<c:if test="${other != null }">
                     <div class="best_product_slider owl-carousel">
                     	<c:forEach items="${other }" var="p">
                         <div class="single_product_item">
@@ -259,10 +264,14 @@
                         </div>
                         </c:forEach>
                     </div>
+	                </c:if>
+	                <c:if test="${other != null }">
+	                <h4>판매자의 다른 상품이 없어요 💦</h4>
+	                </c:if>
                 </div>
             </div>
         </div>
-        <br/>
+        <br/><br/>
         <!-- 비슷한 상품 -->
         <div class="container">
             <div class="row justify-content-center">

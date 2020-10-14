@@ -819,5 +819,4 @@ public class MemberController {
     	return msg;
     }
     
-
 }
