@@ -779,5 +779,5 @@ public class MemberController {
     	
     	return model;
     }
-
+    
 }
