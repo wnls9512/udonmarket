@@ -255,7 +255,8 @@
         (select count(*) from wish where wish.p_code = p.p_code) totalWish,
         (select review_code from review where sender = P.buyer and review.p_code = P.p_code) reviewCode,
         P.trade_status,
-        p.open_status
+        p.open_status,
+        (select count(*) from chat_room where chat_room.p_code = P.p_code) totalChat
 	from product P
     	join member M
         	on P.seller = M.user_id
@@ -279,7 +280,8 @@
 	    trade_status,
 	    P.price,
 	    (select count(*) from wish where wish.p_code = p.p_code) totalWish,
-	    (select review_code from review where sender = P.buyer and review.p_code = P.p_code) reviewCode
+	    (select review_code from review where sender = P.buyer and review.p_code = P.p_code) reviewCode,
+	    (select count(*) from chat_room where chat_room.p_code = P.p_code) totalChat
 	from product P
 	    join member M
 	        on P.seller = M.user_id

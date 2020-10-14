@@ -25,16 +25,25 @@ function connectWS(){
         let myId = "${userId}";
 
     	console.log("메세지를 받았습니다");
-        //알림
+        //채팅
         //console.log(typeof msg.data);
         //console.log((msg.data).includes('sendMsg'));
          if((msg.data).includes('sendMsg')){
 
-		
-		 $("#chatBox").append(msg.data);	
+        		let msgArr = (msg.data).split("@");
+				//console.log(msgArr[0]); //roomCode
+				//console.log(msgArr[1]); //msg
 
+				//console.log($("#sendBtn").val());
+				//console.log(msgArr[0] == $("#sendBtn").val());
+				if(msgArr[0] == $("#sendBtn").val()){     	 
+					$("#chatBox").append(msgArr[1]);       	 
+				}
+				
+            // $("#chatBox").append(msg.data);	
+
+		 //알림
         }else{
-
         	let $socketAlert = $("#socketAlert");
 	        $socketAlert.html(msg.data);
 	        $socketAlert.css('display', 'block');

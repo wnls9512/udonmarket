@@ -154,7 +154,7 @@ public class WebSocketHandler extends TextWebSocketHandler{
 					SimpleDateFormat fmt = new SimpleDateFormat ("yyyy/MM/dd HH:mm");
 					//fmt.format(now);
 					
-					String sendMsg = "<div name='sendMsg' class='media w-50 mb-3'><img src='https://res.cloudinary.com/mhmd/image/upload/v1564960395/avatar_usae7z.svg' alt='user' width='50' class='rounded-circle'>" +
+					String sendMsg = roomCode + "@<div name='sendMsg' class='media w-50 mb-3'><img src='https://res.cloudinary.com/mhmd/image/upload/v1564960395/avatar_usae7z.svg' alt='user' width='50' class='rounded-circle'>" +
 							"<div class='media-body ml-3' name='sender_" + sender + "'>" +
 							"<div class='bg-light rounded py-2 px-3 mb-2'>" +
 							"<p class='text-small mb-0 text-muted'>" + content + "</p>" +
@@ -166,7 +166,7 @@ public class WebSocketHandler extends TextWebSocketHandler{
 					//String sendMsg = sender + ":" + content + ":" + fmt.format(now);
 					
 					TextMessage tmpMsg = new TextMessage(sendMsg);
-					receiverSession.sendMessage(tmpMsg);									
+					receiverSession.sendMessage(tmpMsg);
 				}
 				
 				//insert Chat
