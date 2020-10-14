@@ -338,6 +338,15 @@ create table report
     constraint fk_report_p_code foreign key (p_code) references product(p_code)
 );
 
+create table like_this
+(
+    b_code number not null, 
+    user_id varchar2(20) not null, 
+    constraints pk_like_this primary key(b_code, user_id), 
+    constraints fk_board_b_code foreign key(b_code) references board(b_code) on delete cascade, 
+    constraints fk_member_user_id foreign key(user_id) references member(user_id) 
+);
+
 create sequence seq_category;
 create sequence seq_hashtag;
 create sequence seq_board_photo;
@@ -361,8 +370,8 @@ create sequence seq_location;
 --            FUNCTION
 --========================================
 -- 거리 구하기 함수
-
-
+-- 따로
+create or replace trigger trig_like_this after insert on like_this for each row begin update board set like_this = like_this + 1 where b_code = :new.b_code; end;
 
 --========================================
 --            DATA
@@ -567,3 +576,7 @@ insert into keyword values(SEQ_KEYWORD.nextval, 'test', '아이폰');
 insert into keyword values(SEQ_KEYWORD.nextval, 'juwon', '삼성');
 insert into keyword values(SEQ_KEYWORD.nextval, 'juwon', '갤럭시');
 --==========================================================================================
+update product set buyer = null where p_code = 63;
+commit;
+select * from review;
+delete from review where review_code = 43;
