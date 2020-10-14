@@ -141,7 +141,7 @@ $(function(){
 					<hr />
 							<div style="text-align: center; ">
 								<h5 style="font-weight: bold;
-									  		color: #575757;">동네 생활 나의 댓글</h5> 		
+									  		color: #575757;">동네 생활 댓글</h5> 		
 							</div>
 							<hr />			
 				        <nav class="nav flex-column bg-white shadow-sm rounded p-3">
