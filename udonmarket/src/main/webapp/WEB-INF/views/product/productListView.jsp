@@ -240,6 +240,12 @@
 	
 	
 <script>
+// 검색결과 없을 시 이전페이지로 이동
+$(function()
+{
+	if(${products == null || products.size() == 0})
+		history.back();
+});
 // 관심 목록 추가
 function addToWish(userId, pCode)
 {
