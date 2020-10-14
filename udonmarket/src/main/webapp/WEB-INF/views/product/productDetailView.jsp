@@ -265,7 +265,7 @@
                         </c:forEach>
                     </div>
 	                </c:if>
-	                <c:if test="${other != null }">
+	                <c:if test="${other == null || other.size() == 0}">
 	                <h4>판매자의 다른 상품이 없어요 💦</h4>
 	                </c:if>
                 </div>
