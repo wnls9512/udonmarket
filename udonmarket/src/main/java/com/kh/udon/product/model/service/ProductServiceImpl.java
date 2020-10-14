@@ -150,9 +150,9 @@ public class ProductServiceImpl implements ProductService
     }
 
     @Override
-    public List<ProductVO> selectOtherProducts(String seller)
+    public List<ProductVO> selectOtherProducts(Map<String, Object> map)
     {
-        return dao.selectOtherProducts(seller);
+        return dao.selectOtherProducts(map);
     }
 
     public List<ReasonReportVO> selectReasonReport()

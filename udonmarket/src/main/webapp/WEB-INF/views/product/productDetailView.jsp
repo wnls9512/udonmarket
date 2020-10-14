@@ -248,6 +248,7 @@
             </div>
             <div class="row align-items-center justify-content-between">
                 <div class="col-lg-12">
+	            	<c:if test="${other != null }">
                     <div class="best_product_slider owl-carousel">
                     	<c:forEach items="${other }" var="p">
                         <div class="single_product_item">
@@ -259,10 +260,14 @@
                         </div>
                         </c:forEach>
                     </div>
+	                </c:if>
+	                <c:if test="${other != null }">
+	                <h4>판매자의 다른 상품이 없어요 💦</h4>
+	                </c:if>
                 </div>
             </div>
         </div>
-        <br/>
+        <br/><br/>
         <!-- 비슷한 상품 -->
         <div class="container">
             <div class="row justify-content-center">

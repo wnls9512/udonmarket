@@ -159,6 +159,8 @@ public class ProductController
         model.addAttribute("products", products);
         model.addAttribute("selectedCategory", category);
         model.addAttribute("pi", pi);
+        if(products == null || products.size() == 0)
+            model.addAttribute("msg", "검색된 상품이 없습니다.");
         
         return "product/productListView";
     }
@@ -250,7 +252,7 @@ public class ProductController
         List<ProductVO> similar = service.selectSimilarProducts(map);
         
         // --- 판매자 다른 상품 ---
-        List<ProductVO> other = service.selectOtherProducts(product.getSeller());
+        List<ProductVO> other = service.selectOtherProducts(map);
         
         // --- 시간 차 구하기 ---
         long timeMillis = System.currentTimeMillis() - product.getOriginalRegDate().getTime();

@@ -58,7 +58,7 @@ public interface ProductService
 
     List<ProductVO> selectSimilarProducts(Map<String, Object> map);
 
-    List<ProductVO> selectOtherProducts(String seller);
+    List<ProductVO> selectOtherProducts(Map<String, Object> map);
 
     List<ReasonReportVO> selectReasonReport();
 

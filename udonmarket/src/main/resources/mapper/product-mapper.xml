@@ -255,7 +255,8 @@
 	<!-- 판매자 다른 상품 -->
 	<select id="selectOtherProducts" resultType="productVO">
 		select p_code, title, price from product
-		where seller = #{seller} and open_status = 1 and (trade_status = 'S' or trade_status = 'R') and delete_yn = 'N'
+		where seller = #{seller} and p_code != #{pCode} 
+			  and open_status = 1 and (trade_status = 'S' or trade_status = 'R') and delete_yn = 'N'
 	</select>
 	
 	<!-- 신고목록 -->
@@ -323,7 +324,7 @@
 	<!-- 채팅했던 이웃들 -->
 	<select id="selectBuyer" resultType="string">
 		select user_id from chat_user
-		where room_code = (select room_code from chat_room where p_code = #{pCode})
+		where room_code in (select room_code from chat_room where p_code = #{pCode})
 			  and user_id != #{seller} 
 	</select>
 	
