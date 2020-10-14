@@ -203,7 +203,11 @@
             ${product.content }
             </p>
             <div class="card_area d-flex justify-content-between" style="border: none;">
-            	<span style="color: gray;">관심 ${product.wish} · 채팅 ${product.chat }<br /></span>
+            	<span style="color: gray;">
+            		<c:if test="${product.wish != 0 }">관심 ${product.wish}</c:if>
+            		<c:if test="${product.wish != 0 && product.chat !=  0}"> · </c:if>
+            		<c:if test="${product.chat != 0 }">채팅 ${product.chat }</c:if><br />
+            	</span>
             </div>
             <div class="card_area d-flex justify-content-between align-items-center">
               <c:if test="${userId == product.seller }">

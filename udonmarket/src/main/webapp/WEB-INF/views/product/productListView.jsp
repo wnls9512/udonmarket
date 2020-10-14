@@ -110,7 +110,11 @@
                                     										   <c:if test="${p.regDate != 0}">${p.regDate} days ago</c:if>
                                     										   <c:if test="${p.regDate == 0}">today</c:if></span>
                                     <h3><fmt:formatNumber type="number" maxFractionDigits="3" value="${p.price}" />원</h3>
-                                    <span class="float-right" style="color: gray;"><i class="far fa-heart"></i> ${p.wish}  <i class="far fa-comments"></i> ${p.chat }<br /></span>
+                                    <span class="float-right" style="color: gray;">
+                                    	<c:if test="${p.wish != 0 }"><i class="far fa-heart"></i> ${p.wish}  </c:if>
+                                    	<c:if test="${p.chat != 0 }"><i class="far fa-heart"></i> ${p.wish}  </c:if>
+                                    	<br />
+                                    </span>
         	                            <a href="javascript:addToWish('${userId}', '${p.PCode}')" class="add_cart">
                                     	+ add to favorite<i class="ti-heart"></i>
                                    	</a>
