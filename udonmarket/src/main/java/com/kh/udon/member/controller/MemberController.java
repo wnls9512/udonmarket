@@ -30,7 +30,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.kh.email.Email;
 import com.kh.email.EmailSender;
-import com.kh.udon.common.util.Utils;
 import com.kh.udon.community.model.vo.Community;
 import com.kh.udon.community.model.vo.Reply;
 import com.kh.udon.member.model.service.MemberService;
@@ -742,30 +741,13 @@ public class MemberController {
     //알림 모아보기 (마이페이지)
     @RequestMapping("/myNotiList")
     public Model myNotiList(@RequestParam("userId") String userId,
-			    		 	@RequestParam(defaultValue = "1", 
-			    		 				  value="cPage") int cPage,
-    						Model model,
-    						HttpServletRequest request){
+    						Model model){
     	
-    	//사용자 입력값 
-		final int limit = 10; //numPerPage
-		int offset = (cPage - 1) * limit;
-    		
     	Member member = service.selectOneMember(userId);
-//    	List<Noti> list = service.selectAllNoti(userId);
-    	List<Noti> list = service.selectAllNoti(userId, limit, offset);
+    	List<Noti> list = service.selectAllNoti(userId);
     	
-    	//전체컨텐츠수 구하기
-		int totalContents = service.selectNotiTotalContents(userId);
-    	
-		//페이지 바
-		String url = request.getRequestURI() + "?userId=" + userId + "&";
-		String pageBar = Utils.getPageBarHtml(cPage, limit, totalContents, url);
-		
     	model.addAttribute("member", member);
     	model.addAttribute("list", list);
-    	model.addAttribute("pageBar", pageBar);
-    	model.addAttribute("totalContents", totalContents);
     	
     	return model;
     }
