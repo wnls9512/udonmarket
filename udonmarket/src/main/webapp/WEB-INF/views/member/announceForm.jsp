@@ -64,6 +64,15 @@ function boardValidate(){
 	return true;
 }
 
+function fn_addtoBoard(){
+    
+    var form = document.getElementById("writeForm");
+    
+    form.action = "<c:url value='/member/announceEnroll'/>";
+    form.submit();
+    
+}
+
 </script>
     <!--================Home Banner Area =================-->
     <!-- breadcrumb start-->
@@ -141,29 +150,31 @@ function boardValidate(){
 							</div>
 							<hr />
 						
-						<form:form name="boardFrm" 
-							  action="${pageContext.request.contextPath}/admin/announceEnroll" 
-							  method="post" 
-							  onsubmit="return boardValidate();"
-							 >
+						<form id="writeForm" name="writeForm" method="post">
 						  <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+						  <input type="hidden" id="userId" name="userId" value="admin" required
+											class="single-input-primary" readonly required style="background-color: #f6f6f6; width: 50%">
+						   <input type="hidden" name="categoryCode" id="categoryCode" class="form-control" value="22">
+						   <input type="hidden" name="hashtagCode" id="hashtagCode" class="form-control" value="100">
+						   <input type="hidden" name="likeThis" id="likeThis" class="form-control" value="0">
 						  <div class="form-group row">
 						    <label for="staticEmail" class="col-sm-2 col-form-label">제목</label>
 						    <div class="col-sm-10">
-						     <input type="text" class="form-control" id="boardTitle" >
+						     <input type="text" class="form-control" name="boardTitle" id="boardTitle" >
 						    </div>
 						  </div>
 						  <div class="form-group row">
 						    <label for="inputPassword" class="col-sm-2 col-form-label">내용</label>
 						    <div class="col-sm-10">
-						       <textarea class="form-control" id="boardContent" rows="3"></textarea>
+						       <textarea class="form-control" name="boardContent" id="boardContent" rows="3"></textarea>
 						    </div>
 						  </div>
 						  <div style="text-align: center; ">
-						   <button type="submit" class="btn btn-primary">등록</button>
+						   <<!-- button type="submit" class="btn btn-primary">등록</button> -->
+						    <a href='#' onClick='fn_addtoBoard()' class="btn btn-primary">등록</a>
 						  </div>
 						  
-						</form:form>
+						</form>
 					</div>
 	                </div>
 	            </div>

@@ -3,6 +3,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 
 <fmt:requestEncoding value="utf-8"/>
 
@@ -12,8 +14,6 @@
 
 <!-- mypage css -->
 <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/mypage.css">
-<link href="//cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.4.0/css/bootstrap4-toggle.min.css" rel="stylesheet">  
-<script src="//cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.4.0/js/bootstrap4-toggle.min.js"></script>
 <style>
 a{text-decoration: none; color: black;}
 html { font-size: 16px; }
@@ -52,30 +52,42 @@ html { font-size: 16px; }
   background: #4CAF50;
   cursor: pointer;
 }
-
-tr[data-board-no] {
-	cursor: pointer;
 </style>
- <script>
+<script>
+/* textarea에도 required속성을 적용가능하지만, 공백이 입력된 경우 대비 유효성검사를 실시함. */
+function boardValidate(){
+	var $content = $("[name=content]");
+	if(/^(.|\n)+$/.test($content.val()) == false){
+		alert("내용을 입력하세요");
+		return false;
+	}
+	return true;
+}
+
+function fn_addtoFAQ(){
+    
+    var form = document.getElementById("writeForm");
+    
+    form.action = "<c:url value='/member/FAQEnroll'/>";
+    form.submit();
+    
+}
+
 </script>
     <!--================Home Banner Area =================-->
     <!-- breadcrumb start-->
-	<section class="breadcrumb" style="background-color : #ecfdff;">
+    <section class="breadcrumb breadcrumb_bg">
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-lg-8">
                     <div class="breadcrumb_iner">
                         <div class="breadcrumb_iner_item">
-							<!-- <h3>서울 강남구 논현동</h3> -->
-                            <h2 style="display: inline-block;">공지사항</h2>
-					       <img src="${pageContext.request.contextPath }/resources/img/banner/mypage3.png" 
-			                                    	 alt="" 
-			                                    	 style="max-width: 590px;position: relative; left: 115px;">  	 
+                            <h2>FAQ 글쓰기</h2>
                         </div>
                     </div>
                 </div>
             </div>
-         </div>
+        </div>
     </section>
     <!-- breadcrumb start-->
     
@@ -89,17 +101,15 @@ tr[data-board-no] {
 	            <div class="px-4 pt-0 pb-4 cover">
 	                <div class="media align-items-end profile-head">
 	                    <div class="profile mr-3">
-	                    	<!-- LoggdeInUser 정보 가져오기  -->
-	                        <sec:authentication property="principal" var="loggedInUser" />
-	                    	<img src="${pageContext.request.contextPath }/resources/img/member/${member.renamedFileName == null 
+	                    <sec:authentication property="principal" var="loggedInUser"/>
+	                    <img src="${pageContext.request.contextPath }/resources/img/member/${member.renamedFileName == null 
 	                    															 ? member.originalFileName:member.renamedFileName}" 
 	                    		 alt="..." 
 	                    		 width="130" 
 	                    		 class="rounded mb-2 img-thumbnail">
-	                    	<a href="${pageContext.request.contextPath }/member/mypage?userId=${member.userId}"
-	                    	 class="btn btn-outline-dark btn-sm btn-block">Mypage</a>
+	                    		<a href="${pageContext.request.contextPath }/member/mypage?userId=${member.userId}" class="btn btn-outline-dark btn-sm btn-block">Mypage</a>
 	                    </div>
-	                    <div class="media-body mb-5 text-white">
+	                   <div class="media-body mb-5 text-white">
 	                        <h4 class="mt-0 mb-0" style="color:white;">${member.nickName}</h4>
 	                        <p class="small mb-4" id="addr" style="color:white;"> <i class="fas fa-map-marker-alt mr-2"></i>${member.address}</p>
 	                    </div>
@@ -133,50 +143,50 @@ tr[data-board-no] {
 	            <div class="px-4 py-3">
 	                <div class="p-4 rounded shadow-sm bg-light">
 					<hr />
-							<div style="text-align: center; ">
+							
+						
+						<form id="writeForm" name="writeForm" method="post">
+						<div style="text-align: center; ">
 								<h5 style="font-weight: bold;
-									  		color: #575757;">공지사항</h5> 		
+									  		color: #575757;">FAQ</h5>
 							    <p id="myLocal" style=" color: #575757;"></p>
 							</div>
 							<hr />
+							<div class="form-group row">
+							      	<select id="categoryCode" name="categoryCode">
+						    <option value="">카테고리 선택</option>
+						    <option value="61">사기/허위 대처</option>
+						    <option value="62">거래 매너</option>
+						    <option value="63">기타</option>
+						</select> 
+						</div>
 							
-							<sec:authorize access="hasRole('ADMIN')">
-							<c:if test="${member.userId == 'admin' }">
-							<ul class="nav justify-content-end">
-                               	<a class="btn btn-primary" href="${pageContext.request.contextPath }/member/announceForm?userId=${member.userId}"
-                               	 role="button">글쓰기</a>
-                            </ul>
-                            </c:if>
-                            </sec:authorize>
-							
-				        <nav class="nav flex-column bg-white shadow-sm rounded p-3">
-						<div class="tab-content" id="pills-tabContent">
-						  <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
-						  <table id="tbl-board" class="table table-striped table-hover">
-								<tr>
-									<th>번호</th>
-									<th>제목</th>
-									<th>작성자</th>
-									<th>작성일</th>
-								</tr>
-								<c:forEach items="${list}" var="announce">
-								<c:if test="${announce.categoryCode eq '22' }">
-									<tr data-board-no="${ announce.BCode }"
-									onclick="location.href='${ pageContext.request.contextPath }/member/announceDetail?bCode=${announce.BCode}&userId=${member.userId}';">
-										<td>${ announce.BCode }</td>
-										<td>${ announce.boardTitle }</td>
-										<td>${ announce.userId }</td>
-										<td><fmt:formatDate value="${ announce.regDate }" type="both"/></td>
-									</tr>
-									</c:if>
-									</c:forEach>
-							</table>
-							</div>		
-				        </nav>
+						  <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+						  <input type="hidden" id="userId" name="userId" value="admin" required
+											class="single-input-primary" readonly required style="background-color: #f6f6f6; width: 50%">
+						   <input type="hidden" name="hashtagCode" id="hashtagCode" class="form-control" value="100">
+						   <input type="hidden" name="likeThis" id="likeThis" class="form-control" value="0">
+						  <div class="form-group row">
+						    <label for="staticEmail" class="col-sm-2 col-form-label">제목</label>
+						    <div class="col-sm-10">
+						     <input type="text" class="form-control" name="boardTitle" id="boardTitle" >
+						    </div>
+						  </div>
+						  <div class="form-group row">
+						    <label for="inputPassword" class="col-sm-2 col-form-label">내용</label>
+						    <div class="col-sm-10">
+						       <textarea class="form-control" name="boardContent" id="boardContent" rows="3"></textarea>
+						    </div>
+						  </div>
+						  <div style="text-align: center; ">
+						   <!-- button type="submit" class="btn btn-primary">등록</button> -->
+						    <a href='#' onClick='fn_addtoFAQ()' class="btn btn-primary">등록</a>
+						  </div>
+						</form>
+					</div>
 	                </div>
 	            </div>
 	        </div>
 	    </div>
 	</div>
 <jsp:include page="/WEB-INF/views/common/footer.jsp"/>
-	

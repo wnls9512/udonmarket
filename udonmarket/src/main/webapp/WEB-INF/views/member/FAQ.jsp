@@ -52,6 +52,10 @@ html { font-size: 16px; }
   background: #4CAF50;
   cursor: pointer;
 }
+
+tr[data-board-no] {
+	cursor: pointer;
+	}
 </style>
     <!--================Home Banner Area =================-->
     <!-- breadcrumb start-->
@@ -154,9 +158,27 @@ html { font-size: 16px; }
 									<th>제목</th>
 									<th>작성자</th>
 									<th>작성일</th>
-									<th>조회수</th>
 								</tr>
+									<c:forEach items="${list}" var="announce">
+								<c:if test="${announce.categoryCode eq '61' }">
+									<tr data-board-no="${ announce.BCode }"
+									onclick="location.href='${ pageContext.request.contextPath }/member/FAQDetail?bCode=${announce.BCode}&userId=${member.userId}';">
+										<td>${ announce.BCode }</td>
+										<td>${ announce.boardTitle }</td>
+										<td>${ announce.userId }</td>
+										<td><fmt:formatDate value="${ announce.regDate }" type="both"/></td>
+									</tr>
+									</c:if>
+									</c:forEach>
 							</table>
+							<sec:authorize access="hasRole('ADMIN')">
+							<c:if test="${member.userId == 'admin' }">
+							<ul class="nav justify-content-end">
+                               	<a class="btn btn-primary" href="${pageContext.request.contextPath }/member/FAQForm?userId=${member.userId}"
+                               	 role="button">글쓰기</a>
+                            </ul>
+                            </c:if>
+                            </sec:authorize>
 							</div>
 						  
 						  <!-- 거래 매너 -->		
@@ -167,10 +189,27 @@ html { font-size: 16px; }
 									<th>제목</th>
 									<th>작성자</th>
 									<th>작성일</th>
-									<th>조회수</th>
-									
 								</tr>
+									<c:forEach items="${list}" var="announce">
+								<c:if test="${announce.categoryCode eq '62' }">
+									<tr data-board-no="${ announce.BCode }"
+									onclick="location.href='${ pageContext.request.contextPath }/member/FAQDetail?bCode=${announce.BCode}&userId=${member.userId}';">
+										<td>${ announce.BCode }</td>
+										<td>${ announce.boardTitle }</td>
+										<td>${ announce.userId }</td>
+										<td><fmt:formatDate value="${ announce.regDate }" type="both"/></td>
+									</tr>
+									</c:if>
+									</c:forEach>
 							</table>
+							<sec:authorize access="hasRole('ADMIN')">
+							<c:if test="${member.userId == 'admin' }">
+							<ul class="nav justify-content-end">
+                               	<a class="btn btn-primary" href="${pageContext.request.contextPath }/member/FAQForm?userId=${member.userId}"
+                               	 role="button">글쓰기</a>
+                            </ul>
+                            </c:if>
+                            </sec:authorize>
 							</div>
 					      <!-- 기타 -->
 						  <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">
@@ -180,9 +219,27 @@ html { font-size: 16px; }
 									<th>제목</th>
 									<th>작성자</th>
 									<th>작성일</th>
-									<th>조회수</th>
 								</tr>
+									<c:forEach items="${list}" var="announce">
+								<c:if test="${announce.categoryCode eq '63' }">
+									<tr data-board-no="${ announce.BCode }"
+									onclick="location.href='${ pageContext.request.contextPath }/member/FAQDetail?bCode=${announce.BCode}&userId=${member.userId}';">
+										<td>${ announce.BCode }</td>
+										<td>${ announce.boardTitle }</td>
+										<td>${ announce.userId }</td>
+										<td><fmt:formatDate value="${ announce.regDate }" type="both"/></td>
+									</tr>
+									</c:if>
+									</c:forEach>
 							</table>
+							<sec:authorize access="hasRole('ADMIN')">
+							<c:if test="${member.userId == 'admin' }">
+							<ul class="nav justify-content-end">
+                               	<a class="btn btn-primary" href="${pageContext.request.contextPath }/member/FAQForm?userId=${member.userId}"
+                               	 role="button">글쓰기</a>
+                            </ul>
+                            </c:if>
+                            </sec:authorize>
 							</div>
 						</div>		
 				        </nav>

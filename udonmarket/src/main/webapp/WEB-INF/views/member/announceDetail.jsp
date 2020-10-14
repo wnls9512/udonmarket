@@ -3,6 +3,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 
 <fmt:requestEncoding value="utf-8"/>
 
@@ -50,7 +52,41 @@ html { font-size: 16px; }
   background: #4CAF50;
   cursor: pointer;
 }
+
+tr[data-board-no] {
+	cursor: pointer;
+	}
 </style>
+<script>
+function deleteBoard(bCode)
+{
+	if(confirm("삭제할까요?"))
+	{
+		$.ajax
+		({
+			url: "${pageContext.request.contextPath}/community/" + bCode,
+			method: "PUT",
+			beforeSend: function(xhr)
+			{
+	            xhr.setRequestHeader("${_csrf.headerName}", "${_csrf.token}");
+	        },
+	        dataType: "json",
+			success: function(map)
+			{
+				alert(map.msg);
+				location.href = "${pageContext.request.contextPath}/member/announce?userId=${member.userId}";									
+			},
+			error: function(xhr, status, err)
+			{
+				alert("공지사항 삭제에 실패했어요 💧");
+				console.log(xhr, status, err);
+			}
+		});
+	}
+	else
+		return false;
+}
+</script>
     <!--================Home Banner Area =================-->
     <!-- breadcrumb start-->
 	<section class="breadcrumb" style="background-color : #ecfdff;">
@@ -80,12 +116,18 @@ html { font-size: 16px; }
 	        <div class="bg-white shadow rounded overflow-hidden">
 	            <div class="px-4 pt-0 pb-4 cover">
 	                <div class="media align-items-end profile-head">
-	                    <div class="profile mr-3"><img src="https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=80" alt="..." width="130" class="rounded mb-2 img-thumbnail">
-	                    	<a href="${pageContext.request.contextPath }/member/mypage" class="btn btn-outline-dark btn-sm btn-block">Mypage</a>
+	                    <div class="profile mr-3">
+	                     <sec:authentication property="principal" var="loggedInUser" />
+	                    	<img src="${pageContext.request.contextPath }/resources/img/member/${member.renamedFileName == null 
+	                    															 ? member.originalFileName:member.renamedFileName}" 
+	                    		 alt="..." 
+	                    		 width="130" 
+	                    		 class="rounded mb-2 img-thumbnail">
+	                    	<a href="${pageContext.request.contextPath }/member/mypage?userId=${member.userId}" class="btn btn-outline-dark btn-sm btn-block">Mypage</a>
 	                    </div>
 	                    <div class="media-body mb-5 text-white">
-	                        <h4 class="mt-0 mb-0" style="color:white;">Mark Williams</h4>
-	                        <p class="small mb-4" style="color:white;"> <i class="fas fa-map-marker-alt mr-2"></i>New York</p>
+	                        <h4 class="mt-0 mb-0" style="color:white;">${member.nickName}</h4>
+	                        <p class="small mb-4" id="addr" style="color:white;"> <i class="fas fa-map-marker-alt mr-2"></i>${member.address}</p>
 	                    </div>
 	                </div>
 	            </div>
@@ -93,21 +135,21 @@ html { font-size: 16px; }
 	                <ul class="list-inline mb-0">
 	                    <li class="list-inline-item">            
 	                       <h6 class="font-weight-bold mb-0 d-block">	                       	
-	                       	<a href="${pageContext.request.contextPath }/member/salesList">
+	                       	<a href="${pageContext.request.contextPath }/member/salesList?userId=${member.userId}">
 	                       		<i class="fas fa-receipt fa-2x" ></i> <br /> 판매목록
 	                       	</a>
 	                       </h6>
 	                    </li>
 	                    <li class="list-inline-item">
 	                    	<h6 class="font-weight-bold mb-0 d-block">	                       	
-	                       	<a href="#">
+	                       	<a href="${pageContext.request.contextPath }/member/buyList?userId=${member.userId}">
 	                       		<i class="fas fa-shopping-bag fa-2x" ></i> <br /> 구매목록
 	                       	</a>
 	                       </h6>
 	                    </li>
 	                    <li class="list-inline-item">
 	                    	<h6 class="font-weight-bold mb-0 d-block">	                       	
-	                       	<a href="${pageContext.request.contextPath }/member/wishList">
+	                       	<a href="${pageContext.request.contextPath }/member/wishList?userId=${member.userId}">
 	                       		<i class="fas fa-heart fa-2x" ></i> <br /> 관심목록
 	                       	</a>
 	                       </h6>
@@ -119,7 +161,7 @@ html { font-size: 16px; }
 					<hr />
 							<div style="text-align: center; ">
 								<h5 style="font-weight: bold;
-									  		color: #575757;">공지사항 상세정보</h5> 		
+									  		color: #575757;">공지사항</h5> 		
 							</div>
 							<hr />			
 				        <nav class="nav flex-column bg-white shadow-sm rounded p-3">
@@ -127,22 +169,28 @@ html { font-size: 16px; }
 	                	<table class="table table-borderless">
 						  <thead>
 						    <tr>
-						      <th scope="col"><h2>제목 : 공지사항입니다</h2></th>
-						      <th scope="col"><p>작성일 : 2020 20 20</p></th>
+						      <th scope="col"><h2>${ announce.boardTitle }</h2></th>
+						      <th scope="col"><p>${ announce.regDate }</p></th>
 						    </tr>
 						  </thead>
 						  <tbody>
 						    <tr>
-						      <th scope="row">작성자 : 관리자</th>
+						      <th scope="row">작성자 : ${ announce.userId }</th>
 						    </tr>
 						    <tr>
-						      <th scope="row">공지사항입니담니ㅏ치나ㅣ암;ㅣ나치나아너아</th>
+						      <th scope="row">${ announce.boardContent }</th>
 						      
 						    </tr>
 						    
 						  </tbody>
 						</table> 
-						
+						<sec:authorize access="hasRole('ADMIN')">
+							<c:if test="${member.userId == 'admin' }">
+							<ul class="nav justify-content-end">
+                               	<a class="btn btn-primary" href="javascript:deleteBoard('${announce.BCode }');">삭제</a>
+                            </ul>
+                            </c:if>
+                            </sec:authorize>
 						  	
 				        </nav>
 	                </div>
