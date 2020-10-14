@@ -115,4 +115,8 @@ public interface MemberDao
 
 	int selectNotiTotalContents(String userId);
 
+	int insertBlockUser(Map<String, Object> map);
+
+	int deleteBlockUser(Map<String, Object> map);
+
 }

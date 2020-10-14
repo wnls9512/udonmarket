@@ -287,4 +287,14 @@ public class MemberServiceImpl implements MemberService
 	public int selectNotiTotalContents(String userId) {
 		return memberDao.selectNotiTotalContents(userId);
 	}
+
+	@Override
+	public int insertBlockUser(Map<String, Object> map) {
+		return memberDao.insertBlockUser(map);
+	}
+
+	@Override
+	public int deleteBlockUser(Map<String, Object> map) {
+		return memberDao.deleteBlockUser(map);
+	}
 }

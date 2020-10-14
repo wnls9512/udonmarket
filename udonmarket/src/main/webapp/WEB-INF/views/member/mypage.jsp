@@ -57,7 +57,7 @@ a{text-decoration: none; color: black;}
 		                    	<a href="${pageContext.request.contextPath}/member/editprofile?userId=${member.userId}" class="btn btn-outline-dark btn-sm btn-block">Edit profile</a>
 	                    	</c:if>
 	                    	<c:if test="${loggedInUserId ne member.userId }">
-	                    		<a href="${pageContext.request.contextPath}/member/addBlockUser" class="btn btn-outline-dark btn-sm btn-block">차단하기</a>
+	                    		<a href="${pageContext.request.contextPath}/member/addBlockUser?userId=${loggedInUserId }&blockUserId=${member.userId}" class="btn btn-outline-dark btn-sm btn-block">차단하기</a>
 	                    	</c:if>                	
 		                   </div>
 	                    <div class="media-body mb-5 text-white">

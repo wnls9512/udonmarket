@@ -119,6 +119,12 @@ public class WebSocketHandler extends TextWebSocketHandler{
 					
 					receiverSession.sendMessage(tmpMsg);
 				}
+				else if("like".equals(cmd) && receiverSession != null) {
+					TextMessage tmpMsg = new TextMessage("[좋아요] 이웃이 "
+							+ "<a href='/udon/community/communityDetailView?bCode=" + pCode + "'>" + title +" 을/를 ' 좋아합니다");
+					
+					receiverSession.sendMessage(tmpMsg);
+				}
 			
 				//insert Noti
 				Noti n = new Noti(0, cmd, sender, receiver, pCode, title, noti, false, null);

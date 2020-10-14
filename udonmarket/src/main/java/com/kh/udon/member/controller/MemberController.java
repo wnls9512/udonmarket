@@ -779,5 +779,45 @@ public class MemberController {
     	
     	return model;
     }
+    
+    //차단하기
+    @GetMapping("/addBlockUser")
+    public String addBlockUser(@RequestParam("userId") String userId,
+    						   @RequestParam("blockUserId") String blockUserId){
+    	
+    	Map<String, Object> map = new HashMap<>();
+    	map.put("userId", userId);
+    	map.put("blockUserId", blockUserId);
+
+    	try {
+    		int result = service.insertBlockUser(map);    		
+    	}catch (Exception e) {
+			e.printStackTrace();
+		}
+    	
+    	return "redirect:/member/blockUser?userId=" + userId;
+    }
+    
+    //차단하기
+    @PostMapping("/deleteBlockUser")
+    @ResponseBody
+    public String deleteBlockUser(@RequestParam("userId") String userId,
+    							  @RequestParam("blockUserId") String blockUserId){
+    	
+    	Map<String, Object> map = new HashMap<>();
+    	map.put("userId", userId);
+    	map.put("blockUserId", blockUserId);
+    	
+    	String msg = "차단 해제 했어요 💗";
+    	try {
+    		int result = service.deleteBlockUser(map);    		
+    	}catch (Exception e) {
+    		e.printStackTrace();
+    		msg = "차단 해제 실패했어요 😥 ";
+    	}
+    	
+    	return msg;
+    }
+    
 
 }
