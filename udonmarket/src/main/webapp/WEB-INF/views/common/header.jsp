@@ -75,7 +75,7 @@
                                     <a class="nav-link" href="${pageContext.request.contextPath }">HOME</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="${pageContext.request.contextPath }/product/productListView?userId=${userId}">중고거래</a>
+                                    <a class="nav-link" href="${pageContext.request.contextPath }/product/productListView?userId=${userId}&currentPage=1">중고거래</a>
                                 </li>
                                 <li class="nav-item dropdown">
                                     <a class="nav-link dropdown-toggle" href="${pageContext.request.contextPath }/community/communityListView" id="navbarDropdown_1"

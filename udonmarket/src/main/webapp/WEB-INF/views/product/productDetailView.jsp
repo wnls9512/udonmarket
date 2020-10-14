@@ -107,7 +107,7 @@
 				<c:when test="${seller.score le '50' }">#FFAD13</c:when>
 				<c:otherwise>#F76707</c:otherwise>
 				</c:choose>        	
-				;">${seller.score }℃ &nbsp;</strong></span>
+				;"><fmt:formatNumber value="${seller.score }" pattern=".0" />℃ &nbsp;</strong></span>
 				<!-- 온도bar 시작 -->
 				<c:choose>
 				<c:when test="${seller.score le '20' }">

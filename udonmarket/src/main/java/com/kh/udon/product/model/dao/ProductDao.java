@@ -1,8 +1,10 @@
 package com.kh.udon.product.model.dao;
 
 import java.util.List;
+
 import java.util.Map;
 
+import com.kh.udon.common.model.vo.PageInfo;
 import com.kh.udon.community.model.vo.Report;
 import com.kh.udon.member.model.vo.Wish;
 import com.kh.udon.product.model.vo.CategoryVO;
@@ -31,7 +33,7 @@ public interface ProductDao
     
     int insert(ProductVO product);
 
-    List<ProductDTO> selectAll(String userId);
+    List<ProductDTO> selectAll(PageInfo pi, String userId);
 
     List<ProductDTO> selectCategoryProducts(Map<String, Object> map);
 

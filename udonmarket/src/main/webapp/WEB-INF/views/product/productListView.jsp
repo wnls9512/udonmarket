@@ -123,22 +123,52 @@
                         <div class="pageination">
                             <nav aria-label="Page navigation example">
                                 <ul class="pagination justify-content-center">
-                                    <li class="page-item">
+                                
+								<c:choose>
+		                		<c:when test="${ pi.currentPage eq 1 }">
+									<li class="page-item disabled">
                                         <a class="page-link" href="#" aria-label="Previous">
                                             <i class="ti-angle-double-left"></i>
                                         </a>
-                                    </li>
-                                    <li class="page-item"><a class="page-link" href="#">1</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">4</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">5</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">6</a></li>
-                                    <li class="page-item">
+                                    </li>     
+			                    </c:when>
+			                    <c:otherwise>
+									<li class="page-item">
+                                        <a class="page-link" href="${pageContext.request.contextPath }/product/productListView?currentPage=${pi.currentPage-1}&userId=${userId}" aria-label="Previous">
+                                            <i class="ti-angle-double-left"></i>
+                                        </a>
+                                    </li>     
+		                    	</c:otherwise>
+		                    	</c:choose>
+		                    	
+			                    <c:forEach var="p" begin="${ pi.startPage }" end="${ pi.endPage }">
+		                    	<c:choose>
+	                    		<c:when test="${ p eq pi.currentPage }">
+		                    		<li class="page-item disabled"><a class="page-link" href="#">${ p }</a></li>
+		                    	</c:when>
+		                    	<c:otherwise>
+		                    		<li class="page-item"><a class="page-link" href="${pageContext.request.contextPath }/product/productListView?currentPage=${ p }&userId=${userId}">${ p }</a></li>
+	                    		</c:otherwise>
+		                    	</c:choose>
+			                    </c:forEach>
+		                    	
+			                    <c:choose>
+		                    	<c:when test="${ pi.currentPage eq pi.maxPage }">
+                                    <li class="page-item disabled">
                                         <a class="page-link" href="#" aria-label="Next">
                                             <i class="ti-angle-double-right"></i>
                                         </a>
                                     </li>
+			                    </c:when>
+			                    <c:otherwise>
+                                    <li class="page-item">
+                                        <a class="page-link" href="${pageContext.request.contextPath }/product/productListView?currentPage=${pi.currentPage + 1}&userId=${userId}" aria-label="Next">
+                                            <i class="ti-angle-double-right"></i>
+                                        </a>
+                                    </li>
+		                    	</c:otherwise>
+			                    </c:choose>
+			                    
                                 </ul>
                             </nav>
                         </div>

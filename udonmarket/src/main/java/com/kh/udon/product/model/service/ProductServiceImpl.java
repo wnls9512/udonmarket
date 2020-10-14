@@ -1,12 +1,14 @@
 package com.kh.udon.product.model.service;
 
 import java.util.List;
+
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.kh.udon.common.model.vo.PageInfo;
 import com.kh.udon.community.model.vo.Report;
 import com.kh.udon.member.model.vo.Wish;
 import com.kh.udon.product.model.dao.ProductDao;
@@ -64,9 +66,9 @@ public class ProductServiceImpl implements ProductService
     }
 
     @Override
-    public List<ProductDTO> selectAll(String userId)
+    public List<ProductDTO> selectAll(PageInfo pi, String userId)
     {
-        return dao.selectAll(userId);
+        return dao.selectAll(pi, userId);
     }
 
     @Override
@@ -250,13 +252,6 @@ public class ProductServiceImpl implements ProductService
                 
         return result;
     }
-
-
-
-
-
-
-
     
     
     

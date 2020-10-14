@@ -1,6 +1,7 @@
 package com.kh.udon.product.model.dao;
 
 import java.util.List;
+
 import java.util.Map;
 
 import org.apache.ibatis.session.RowBounds;
@@ -8,6 +9,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.kh.udon.common.model.vo.PageInfo;
 import com.kh.udon.community.model.vo.Report;
 import com.kh.udon.member.model.vo.Wish;
 import com.kh.udon.product.model.vo.CategoryVO;
@@ -66,9 +68,12 @@ public class ProductDaoImpl implements ProductDao
     }
 
     @Override
-    public List<ProductDTO> selectAll(String userId)
+    public List<ProductDTO> selectAll(PageInfo pi, String userId)
     {
-        return session.selectList("product.selectAll", userId);
+        int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
+        RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+        
+        return session.selectList("product.selectAll", userId, rowBounds);
     }
 
     @Override
