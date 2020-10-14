@@ -23,4 +23,6 @@ public interface ChatDao
 
 	int insertChatSeller(Map<String, Object> map);
 
+	int leaveChatRoom(Map<String, Object> map);
+
 }

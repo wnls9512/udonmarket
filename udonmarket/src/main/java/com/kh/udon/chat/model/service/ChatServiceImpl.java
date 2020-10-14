@@ -59,5 +59,10 @@ public class ChatServiceImpl implements ChatService
 		return result;
 	}
 
+	@Override
+	public int leaveChatRoom(Map<String, Object> map) {
+		return dao.leaveChatRoom(map);
+	}
+
 
 }
