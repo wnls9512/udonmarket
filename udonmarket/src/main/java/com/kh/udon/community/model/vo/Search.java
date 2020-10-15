@@ -24,5 +24,7 @@ public class Search {
 	private String categoryCode;
 	
 	private String hashtagCode;
+	
+	private String userId;
 
 }

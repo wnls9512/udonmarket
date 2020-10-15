@@ -133,6 +133,20 @@ function fn_updatetoBoard(){
                                 </div>
                                 <div class="col-md-12 form-group p_star">
                                 
+                                	<c:if test="${ community.hashtagCode == 0 }">
+                                    	<select id="hashtagCode" name="hashtagCode">
+										    <option value="100" >태그 선택</option>
+										    <option value="1">#강아지</option>
+										    <option value="2">#고양이</option>
+										    <option value="3">#건강</option>
+										    <option value="4">#동네맛집</option>
+										    <option value="5">#동네카페</option>
+										    <option value="6">#살림/청소/정리</option>
+										    <option value="7">#식물</option>
+										    <option value="8">#임신/출산/육아</option>
+										    <option value="9">#집꾸미기</option>
+										</select>
+									</c:if>
                                 	<c:if test="${ community.hashtagCode == 1 }">
                                     	<select id="hashtagCode" name="hashtagCode">
 										    <option value="100" >태그 선택</option>

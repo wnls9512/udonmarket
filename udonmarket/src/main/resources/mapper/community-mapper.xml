@@ -5,6 +5,7 @@
 
 	<!-- 게시글 조회 & 검색 -->
 	<select id="selectCommunityList" resultType="community">
+	<![CDATA[
 		select 
 			b.*,
 		    m.nickname,
@@ -13,17 +14,26 @@
 		    board b
 		   		left join
     				member m on(b.user_id = m.user_id)
-		<trim prefix="WHERE" prefixOverrides="AND|OR">
+    	where b.user_id in (
+		                        select l.user_id 
+		                        from location l,(select latitude, longitude, radius from location where user_id = #{userId}) a
+		                        where calc_distance(a.latitude, a.longitude, l.latitude, l.longitude) < a.radius
+		                        ) 
+    	]]>
 
+			
+					
+			
 			<if test="searchType=='board_title' and keyword != null and keyword != '' ">
 
-				AND b.board_title like CONCAT('%' || #{keyword}, '%')
+				<![CDATA[AND b.board_title like '%${keyword}%' ]]>
 
 			</if>
 
 			<if test="searchType=='board_content' and keyword != null and keyword != '' ">
 
-				AND b.board_content like CONCAT('%' || #{keyword}, '%')
+				<!-- AND b.board_content like CONCAT('%' || #{keyword}, '%') -->
+				<![CDATA[AND b.board_content like '%${keyword}%' ]]>
 
 			</if>
 			
@@ -112,7 +122,6 @@
 			</if> -->
 			
 
-		</trim> 
 		order by b.b_code desc
 	</select>
 	
@@ -128,7 +137,8 @@
             b.hashtag_code,
            	b.like_this,
 		    m.nickname,
-            m.address
+            m.address,
+            (SELECT COUNT(reply_code) FROM reply WHERE b_code = #{bCode}) as reply_count
 		from 
 		    board b
 		   		left join
