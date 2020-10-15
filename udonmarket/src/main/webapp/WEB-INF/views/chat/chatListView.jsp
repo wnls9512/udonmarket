@@ -58,6 +58,7 @@
 						    <a href="javascript:void(0);" class="list-group-item list-group-item-action list-group-item-light rounded-0" name="chatRoom" >
 						      <input type="hidden" name="roomCode" value=${r.roomCode } />
 						      <input type="hidden" name="receiver" value=${r.sender } />
+						      <input type="hidden" name="enabled" value=${r.senderEnabled } />
 				              <div class="media"><img src="https://res.cloudinary.com/mhmd/image/upload/v1564960395/avatar_usae7z.svg" alt="user" width="50" class="rounded-circle">
 				                <div class="media-body ml-4">
 				                  <div class="d-flex align-items-center justify-content-between mb-1">
@@ -135,6 +136,7 @@ $("[name=leaveChatRoom]").click(function(){
 $("[name=chatRoom]").click(function(){
 	var $roomCode = $(this).find("[name=roomCode]").val();
 	var $receiver = $(this).find("[name=receiver]").val();
+	var $enabled = $(this).find("[name=enabled]").val();
 	var $myId = "${userId}";
 
 	$("#chatBox").empty();
@@ -193,6 +195,12 @@ $("[name=chatRoom]").click(function(){
 				}
 				
 			} 
+
+			if($enabled == 'false'){
+				$("#chatBox").prepend("<p>상대방이 채팅방을 나갔습니다. 대화가 종료됩니다.</p>");
+				$("#sendBtn").attr("disabled", "disabled");
+				console.log("sdfgf");
+			}
 
 			$("#sendBtn").val($roomCode);
 			$("#receiver").val($receiver);
