@@ -97,7 +97,7 @@ function deleteBoard(bCode)
 			success: function(map)
 			{
 				alert(map.msg);
-				location.href = "${pageContext.request.contextPath}/community/communityListView";									
+				location.href = "${pageContext.request.contextPath}/community/communityListView?userId=${userId}";									
 			},
 			error: function(xhr, status, err)
 			{
@@ -148,6 +148,15 @@ function likeThis(bCode)
 			},
 			error: function(xhr, status, err)
 			{
+			//알림보내기
+				if(sock) {
+					console.log("like :: socket >> ", sock);
+						//webSocket에 보내기
+						//cmd/발신인/수신인/게시글코드/게시글제목/하트 갯수
+					sock.send("like," + $sender + "," + $bWriter + "," + $bCode + "," + $title + "," + $countLike);
+				}else{
+					console.log("Error on Like ", sock);
+				}
 				location.href = "${ pageContext.request.contextPath }/community/communityDetailView?bCode=" + bCode;	
 			}
 		});
@@ -261,7 +270,7 @@ function likeThis(bCode)
                      
                      <c:if test="${ community.userId eq userId }">
                      <div style="float: right;">
-	                     <a href="${pageContext.request.contextPath }/community/updateBoard?bCode=${community.BCode}<%-- &categoryCode=${community.categoryCode }&hashtagCode=${community.hashtagCode} --%>">수정</a>
+	                     <a href="${pageContext.request.contextPath }/community/updateBoard?userId=${userId}&bCode=${community.BCode}<%-- &categoryCode=${community.categoryCode }&hashtagCode=${community.hashtagCode} --%>">수정</a>
 	                     &nbsp;
 	                     <a href="javascript:deleteBoard('${community.BCode }');">삭제</a>
 	                     
@@ -389,7 +398,16 @@ function likeThis(bCode)
 			</div>  --%>
 
 	<div class="comments-area">
-                  <h4>댓글 <span style="color: red"></span></h4>
+	
+				<c:if test="${ community.replyCount != 0}">
+                  <h4>댓글 <span style="color: red">${ community.replyCount }</span></h4>
+                  </c:if>
+                  
+                  <c:if test="${ community.replyCount == 0}">
+                  <h4 style="color: gray; text-align: center;">아직 등록된 댓글이 없습니다</h4>
+                  <!-- <h5>이웃에게 관심을 표현해주세요</h5> -->
+                  </c:if>
+                  
 				<c:forEach items="${replyList}" var="r">
                   <div class="comment-list">
                      <div class="single-comment justify-content-between d-flex">

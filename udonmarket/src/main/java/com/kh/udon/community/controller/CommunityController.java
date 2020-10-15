@@ -51,7 +51,8 @@ public class CommunityController
     						, @RequestParam(required = false, defaultValue = "board_title") String searchType
     						, @RequestParam(required = false) String keyword
     						, @RequestParam(required = false) String categoryCode
-    						, @RequestParam(required = false) String hashtagCode) {
+    						, @RequestParam(required = false) String hashtagCode
+    						, @RequestParam(required = false) String userId) {
 //							, @RequestParam(defaultValue = "1", 
 //								value = "cPage") int cPage) {
 				//1.사용자 입력값 
@@ -68,6 +69,8 @@ public class CommunityController
 				search.setCategoryCode(categoryCode);
 				
 				search.setHashtagCode(hashtagCode);
+				
+				search.setUserId(userId);
 				
 				
 				/* community.setCategoryCode(categoryCode); */
@@ -127,7 +130,7 @@ public class CommunityController
     	
     }
     @RequestMapping("/communityFormDone")
-    public String register(@ModelAttribute("community") Community community, RedirectAttributes rttr, Model model) throws Exception
+    public String register(@ModelAttribute("community") Community community, @RequestParam String userId, RedirectAttributes rttr, Model model) throws Exception
     {
         int result = service.insert(community);
         
@@ -135,7 +138,7 @@ public class CommunityController
 		rttr.addFlashAttribute("msg", result > 0 ? "게시글 등록 성공 💛" : "게시글 등록 실패 🤔");
 		 
         
-        return "redirect:/community/communityListView";
+        return "redirect:/community/communityListView?userId=" + userId;
     }
     
     //좋아요
@@ -228,15 +231,16 @@ public class CommunityController
         return "community/communityUpdateForm";
     }
     @PostMapping("/update")
-    public String update(Community community, RedirectAttributes rttr)
+    public String update(Community community, @RequestParam String userId, RedirectAttributes rttr)
     {
         log.debug("community = {}", community);
         
         int result = service.update(community);
         
+        
         rttr.addFlashAttribute("msg", result > 0 ? "게시글 수정 성공 💛" : "게시글 수정 실패 🤔");
         
-        return "redirect:/community/communityListView";
+        return "redirect:/community/communityListView?userId=" + userId;
     }
     
 }

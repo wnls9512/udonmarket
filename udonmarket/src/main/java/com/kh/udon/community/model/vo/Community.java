@@ -30,6 +30,7 @@ public class Community implements Serializable
 	private int BoardphotoCount;
 	private String nickname;
 	private String address;
+	private int replyCount;
 	
 	
 	private List<Boardphoto> BoardphotoList;
