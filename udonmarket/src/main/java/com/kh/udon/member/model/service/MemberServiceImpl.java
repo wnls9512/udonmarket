@@ -105,8 +105,8 @@ public class MemberServiceImpl implements MemberService
 	}
 
 	@Override
-	public List<announce> selectAnnounceList(int limit, int offset) {
-		return memberDao.selectAnnounceList(limit, offset);
+	public List<announce> selectAnnounceList(String userId) {
+		return memberDao.selectAnnounceList(userId);
 	}
 		
 	@Transactional(rollbackFor = { Exception.class })
@@ -184,8 +184,8 @@ public class MemberServiceImpl implements MemberService
 	}
 
 	@Override
-	public announce selectOneAnnounce(int bCode) {
-		return memberDao.selectOneAnnounce(bCode);
+	public announce selectOneAnnounce(int bCode,String userId) {
+		return memberDao.selectOneAnnounce(bCode,userId);
 	}
 
 	@Override
@@ -201,8 +201,8 @@ public class MemberServiceImpl implements MemberService
 	}
 
 	@Override
-	public void updateNick(Member member) {
-		memberDao.updateNick(member);
+	public int updateNick(Member member) {
+		return memberDao.updateNick(member);
 		
 	}
 
@@ -269,6 +269,11 @@ public class MemberServiceImpl implements MemberService
 	}
 
 	@Override
+	public int delete(int bCode) {
+		return memberDao.delete(bCode);
+	}
+	
+	@Override
 	public List<Report> selectDeclareMemberList(int limit, int offset) {
 		return memberDao.selectDeclareMemberList(limit,offset);
 	}
@@ -281,5 +286,15 @@ public class MemberServiceImpl implements MemberService
 	@Override
 	public int selectNotiTotalContents(String userId) {
 		return memberDao.selectNotiTotalContents(userId);
+	}
+
+	@Override
+	public int insertBlockUser(Map<String, Object> map) {
+		return memberDao.insertBlockUser(map);
+	}
+
+	@Override
+	public int deleteBlockUser(Map<String, Object> map) {
+		return memberDao.deleteBlockUser(map);
 	}
 }

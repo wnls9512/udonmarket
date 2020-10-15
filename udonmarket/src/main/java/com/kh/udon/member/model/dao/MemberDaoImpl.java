@@ -90,9 +90,8 @@ public class MemberDaoImpl implements MemberDao
 	}
 
 	@Override
-	public List<announce> selectAnnounceList(int limit, int offset) {
-		RowBounds rowBounds = new RowBounds(offset, limit);
-		return session.selectList("member.selectAnnounceList", null , rowBounds );
+	public List<announce> selectAnnounceList(String userId) {
+		return session.selectList("member.selectAnnounceList", userId);
 	}
 
 	@Override
@@ -170,7 +169,7 @@ public class MemberDaoImpl implements MemberDao
 	}
 
 	@Override
-	public announce selectOneAnnounce(int bCode) {
+	public announce selectOneAnnounce(int bCode,String userId) {
 		return session.selectOne("member.selectOneAnnounce",bCode);
 	}
 	
@@ -181,8 +180,8 @@ public class MemberDaoImpl implements MemberDao
     }
 
 	@Override
-	public void updateNick(Member member) {
-		session.update("member.updateNick",member);
+	public int updateNick(Member member) {
+		return session.update("member.updateNick",member);
 	}
 	
 	public List<Noti> selectAllNoti(String userId) {
@@ -243,6 +242,10 @@ public class MemberDaoImpl implements MemberDao
 	}
 
 	@Override
+	public int delete(int bCode) {
+		return session.delete("member.delete", bCode);
+	}
+	
 	public List<Report> selectDeclareMemberList(int limit, int offset) {
 		RowBounds rowBounds = new RowBounds(offset, limit);
 		return session.selectList("member.selectDeclareMemberList", null, rowBounds);
@@ -257,5 +260,15 @@ public class MemberDaoImpl implements MemberDao
 	@Override
 	public int selectNotiTotalContents(String userId) {
 		return session.selectOne("socket.selectNotiTotalContents", userId);
+	}
+
+	@Override
+	public int insertBlockUser(Map<String, Object> map) {
+		return session.insert("member.insertBlockUser", map);
+	}
+
+	@Override
+	public int deleteBlockUser(Map<String, Object> map) {
+		return session.delete("member.deleteBlockUser", map);
 	}
 }

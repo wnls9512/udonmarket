@@ -225,21 +225,14 @@
 </select>
 
 <!-- 공지사항 조회 -->
-<select id="selectAnnounceList" resultMap="announceMap">
+<select id="selectAnnounceList" resultType="com.kh.udon.member.model.vo.announce">
 	select
 		*
 	from 
 		board
+	order by
+		b_code desc
 </select>
-	<resultMap type="announce" id="announceMap">
-		<id column="b_code" property="bCode"/>
-		<result column="user_id" property="userId"/>
-		<result column="board_title" property="boardTitle"/>
-		<result column="board_content" property="boardContent"/>
-		<result column="reg_date" property="regDate"/>
-		<result column="hashtag_code" property="hashtagCode"/>
-		<result column="like_this" property="likeThis"/>
-	</resultMap>
 
 <!-- 판매 내역 조회하기 -->
 <select id="selectAllSalesPro" resultType="wish">
@@ -274,6 +267,7 @@
 <select id="selectAllBuyPro" resultType="wish">
 	select 
 		P.buyer,
+		P.seller,
 	    P.p_code,
 	    P.title,
 	    M.address sellerAddr,
@@ -345,19 +339,32 @@
 	insert into
 		board
 	values(
-		seq_board_no.nextval,
+		SEQ_BOARD_NO.nextval,
 		#{userId},
-		'22',
+		#{categoryCode},
 		#{boardTitle},
 		#{boardContent},
 		sysdate ,
 		null,
-		'0'
+		0
 	)
 </insert>
 
-<select id="selectOneAnnounce">
-	
+<!-- 공지사항 삭제 -->
+<delete id="delete">
+	delete from 
+		board 
+	where 
+		b_code = #{bCode}
+</delete>
+
+<select id="selectOneAnnounce" resultType="com.kh.udon.member.model.vo.announce">
+	select
+		*
+	from 
+		board
+	where 
+		Board.b_code = #{ bCode }
 </select>
 
 <!-- 회원 닉네임 변경 -->
@@ -367,7 +374,7 @@ update
 set 
     nickname=#{nickName}
 where 
-	user_id=#{userId}
+	user_id=#{ userId }
 </update>
 
 <select id="selectPostList" resultMap="PostMap">
@@ -376,7 +383,7 @@ where
 	from 
 		board
 	where 
-		user_id = #{userId}
+		user_id=#{userId}
 </select>
 
 	<resultMap type="community" id="PostMap">
@@ -413,13 +420,29 @@ where
 		b.user_id = #{userId}
 </select>
 
+<!-- 차단사용자 추가하기 -->
+<insert id="insertBlockUser">
+	insert into
+		block
+	values(#{userId}, #{blockUserId})
+</insert>
+
+<!-- 차단사용자 해제하기 -->
+<delete id="deleteBlockUser">
+	delete
+		block
+	where 
+		user_id = #{userId}
+	and
+		block_id = #{blockUserId}
+</delete>
+
 <select id="selectDeclareMemberList" resultType="report">
 	select R.report_code, R.reason_code,R.report_id, R.shooter_id, RR.reason_content
 	from report R left join reason_report RR on R.reason_code = RR.reason_code
 	where R.shooter_id is not null
 
 </select>
-
 
 
 

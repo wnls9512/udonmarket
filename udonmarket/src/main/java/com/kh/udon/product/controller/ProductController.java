@@ -1,6 +1,7 @@
 package com.kh.udon.product.controller;
 
 import java.io.BufferedInputStream;
+
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -39,6 +40,8 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.kh.udon.common.model.vo.PageInfo;
+import com.kh.udon.common.template.Pagination;
 import com.kh.udon.common.util.ResourceCloseHelper;
 import com.kh.udon.member.model.vo.Wish;
 import com.kh.udon.product.model.service.ProductService;
@@ -65,7 +68,7 @@ public class ProductController
 
     // 전체 리스트
     @RequestMapping("/productListView")
-    public String productList(@RequestParam String userId, Model model)
+    public String productList(String userId, int currentPage, Model model)
     {
         /*
          *      1. 카테고리 목록
@@ -77,13 +80,17 @@ public class ProductController
         List<CategoryVO> category = service.selectAllCategory();
         List<Integer> categoryCount = service.selectAllCategoryCount(userId);
         int totalCount = service.selectTotalCount(userId);
-        List<ProductDTO> products = service.selectAll(userId);
+        
+        // --- pagination ---
+        PageInfo pi = Pagination.getPageInfo(totalCount, currentPage, 10, 9);
+        List<ProductDTO> products = service.selectAll(pi, userId);
         
         model.addAttribute("category", category);
         model.addAttribute("categoryCount", categoryCount);
         model.addAttribute("totalCount", totalCount);
         model.addAttribute("products", products);
         model.addAttribute("selectedCategory", 0);
+        model.addAttribute("pi", pi);
         
         return "product/productListView";
     }
@@ -91,8 +98,7 @@ public class ProductController
     // 카테고리별 리스트
     @GetMapping("/categoryList")
     public String categoryList(@RequestParam("category") String categoryCode, 
-                               @RequestParam String userId,
-                               Model model)
+                               String userId, int currentPage, Model model)
     {
         /*
          *      1. 카테고리 목록
@@ -108,20 +114,24 @@ public class ProductController
         List<CategoryVO> category = service.selectAllCategory();
         List<Integer> categoryCount = service.selectAllCategoryCount(userId);
         int totalCount = service.selectCategoryCount(map);
-        List<ProductDTO> products = service.selectCategoryProducts(map);
+        
+        // --- pagination ---
+        PageInfo pi = Pagination.getPageInfo(totalCount, currentPage, 10, 9);
+        List<ProductDTO> products = service.selectCategoryProducts(map, pi);
         
         model.addAttribute("category", category);
         model.addAttribute("categoryCount", categoryCount);
         model.addAttribute("totalCount", totalCount);
         model.addAttribute("products", products);
         model.addAttribute("selectedCategory", categoryCode);
+        model.addAttribute("pi", pi);
         
         return "product/productListView";
     }
     
     // 검색
     @GetMapping("/search")
-    public String search(String keyword, int category, String userId, Model model)
+    public String search(String keyword, int category, String userId, int currentPage, Model model)
     {
         /*
          *      1. 카테고리 목록
@@ -138,13 +148,19 @@ public class ProductController
         List<CategoryVO> categoryList = service.selectAllCategory();
         List<Integer> categoryCount = service.selectAllCategoryCount(userId);
         int totalCount = service.selectSearchCount(map);
-        List<ProductDTO> products = service.search(map);
+        
+        // --- pagination ---
+        PageInfo pi = Pagination.getPageInfo(totalCount, currentPage, 10, 9);
+        List<ProductDTO> products = service.search(map, pi);
         
         model.addAttribute("category", categoryList);
         model.addAttribute("categoryCount", categoryCount);
         model.addAttribute("totalCount", totalCount);
         model.addAttribute("products", products);
         model.addAttribute("selectedCategory", category);
+        model.addAttribute("pi", pi);
+        if(products == null || products.size() == 0)
+            model.addAttribute("msg", "검색된 상품이 없습니다.");
         
         return "product/productListView";
     }
@@ -236,7 +252,7 @@ public class ProductController
         List<ProductVO> similar = service.selectSimilarProducts(map);
         
         // --- 판매자 다른 상품 ---
-        List<ProductVO> other = service.selectOtherProducts(product.getSeller());
+        List<ProductVO> other = service.selectOtherProducts(map);
         
         // --- 시간 차 구하기 ---
         long timeMillis = System.currentTimeMillis() - product.getOriginalRegDate().getTime();
@@ -610,6 +626,16 @@ public class ProductController
         
         return evaList;
     }
+    @GetMapping("/evaListforBuyer/{score}")
+    @ResponseBody
+    private List<Evaluation> evaListforBuyer(@PathVariable int score)
+    {
+        int kind = score > 36 ? 1 : 0;
+        
+        List<Evaluation> evaList = service.selectEvaListforBuyer(kind);
+        
+        return evaList;
+    }
     
     /* 거래완료 - 리뷰 */
     @PostMapping("/insertReview")
@@ -622,6 +648,16 @@ public class ProductController
         rttr.addAttribute("userId", review.getSender());
         
         return "redirect:/product/productDetailView";
+    }
+    @PostMapping("/insertReviewByBuyer")
+    private String insertReviewByBuyer(ReviewDTO review, RedirectAttributes rttr)
+    {
+        int result = service.insertReviewByBuyer(review);
+        
+        rttr.addFlashAttribute("msg", result > 0 ? "리뷰 등록 성공 💛" : "리뷰 등록 실패 🤔");
+        rttr.addAttribute("userId", review.getSender());
+        
+        return "redirect:/member/buyList";
     }
     
     

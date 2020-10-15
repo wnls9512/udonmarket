@@ -45,8 +45,6 @@ public interface MemberDao
 
 	List<Review> selectAllReview(String userId);
 
-	List<announce> selectAnnounceList(int limit, int offset);
-	
 	int insertMember(Member member);
 	
 	int insertMember(Map<String, Object> map);
@@ -77,11 +75,11 @@ public interface MemberDao
 
 	int announceEnroll(announce announce);
 
-	announce selectOneAnnounce(int bCode);
+	announce selectOneAnnounce(int bCode, String userId);
 
     int insertEvaluate(Map<String, Object> map);
 
-	void updateNick(Member member);
+	int updateNick(Member member);
 
 	List<Community> selectPostList(String userId);
 
@@ -107,11 +105,18 @@ public interface MemberDao
 
 	int userIdCheck(String userId);
 
+	List<announce> selectAnnounceList(String userId);
+
+	int delete(int bCode);
 
 	List<Report> selectDeclareMemberList(int limit, int offset);
 
 	List<Noti> selectAllNoti(String userId, int limit, int offset);
 
 	int selectNotiTotalContents(String userId);
+
+	int insertBlockUser(Map<String, Object> map);
+
+	int deleteBlockUser(Map<String, Object> map);
 
 }

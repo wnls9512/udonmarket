@@ -54,10 +54,10 @@ a{text-decoration: none; color: black;}
 	                    		 width="130" 
 	                    		 class="rounded mb-2 img-thumbnail">
 	                    	<c:if test="${loggedInUserId == member.userId }">
-		                    	<a href="${pageContext.request.contextPath}/member/editprofile" class="btn btn-outline-dark btn-sm btn-block">Edit profile</a>
+		                    	<a href="${pageContext.request.contextPath}/member/editprofile?userId=${member.userId}" class="btn btn-outline-dark btn-sm btn-block">Edit profile</a>
 	                    	</c:if>
 	                    	<c:if test="${loggedInUserId ne member.userId }">
-	                    		<a href="${pageContext.request.contextPath}/member/addBlockUser" class="btn btn-outline-dark btn-sm btn-block">차단하기</a>
+	                    		<a href="${pageContext.request.contextPath}/member/addBlockUser?userId=${loggedInUserId }&blockUserId=${member.userId}" class="btn btn-outline-dark btn-sm btn-block">차단하기</a>
 	                    	</c:if>                	
 		                   </div>
 	                    <div class="media-body mb-5 text-white">
@@ -153,13 +153,7 @@ a{text-decoration: none; color: black;}
 	                <div class="p-4 rounded shadow-sm bg-light">
 				        <!-- Vertical Menu-->
 				        <nav class="nav flex-column bg-white shadow-sm rounded p-3">
-				          <a href="#" class="nav-link px-4 rounded-pill">
-	                           <i class="far fa-envelope"></i>&nbsp; 친구초대
-	                      </a>
-				          <a href="#" class="nav-link px-4 rounded-pill">
-		                      <i class="fas fa-share-alt"></i>&nbsp; 당근마켓 공유
-	                      </a>
-				          <a href="${pageContext.request.contextPath}/member/announce" class="nav-link px-4 rounded-pill">
+				          <a href="${pageContext.request.contextPath}/member/announce?userId=${member.userId}" class="nav-link px-4 rounded-pill">
 		                      <i class="far fa-flag"></i>&nbsp; 공지사항
 	                      </a>
 				          <a href="${pageContext.request.contextPath}/member/FAQ?userId=${member.userId}" class="nav-link px-4 rounded-pill">

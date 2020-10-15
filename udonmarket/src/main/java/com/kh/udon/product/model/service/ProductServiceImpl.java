@@ -1,12 +1,14 @@
 package com.kh.udon.product.model.service;
 
 import java.util.List;
+
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.kh.udon.common.model.vo.PageInfo;
 import com.kh.udon.community.model.vo.Report;
 import com.kh.udon.member.model.vo.Wish;
 import com.kh.udon.product.model.dao.ProductDao;
@@ -64,15 +66,15 @@ public class ProductServiceImpl implements ProductService
     }
 
     @Override
-    public List<ProductDTO> selectAll(String userId)
+    public List<ProductDTO> selectAll(PageInfo pi, String userId)
     {
-        return dao.selectAll(userId);
+        return dao.selectAll(pi, userId);
     }
 
     @Override
-    public List<ProductDTO> selectCategoryProducts(Map<String, Object> map)
+    public List<ProductDTO> selectCategoryProducts(Map<String, Object> map, PageInfo pi)
     {
-        return dao.selectCategoryProducts(map);
+        return dao.selectCategoryProducts(map, pi);
     }
 
     @Override
@@ -82,9 +84,9 @@ public class ProductServiceImpl implements ProductService
     }
 
     @Override
-    public List<ProductDTO> search(Map<String, Object> map)
+    public List<ProductDTO> search(Map<String, Object> map, PageInfo pi)
     {
-        return dao.search(map);
+        return dao.search(map, pi);
     }
 
     @Override
@@ -148,9 +150,9 @@ public class ProductServiceImpl implements ProductService
     }
 
     @Override
-    public List<ProductVO> selectOtherProducts(String seller)
+    public List<ProductVO> selectOtherProducts(Map<String, Object> map)
     {
-        return dao.selectOtherProducts(seller);
+        return dao.selectOtherProducts(map);
     }
 
     public List<ReasonReportVO> selectReasonReport()
@@ -250,12 +252,25 @@ public class ProductServiceImpl implements ProductService
                 
         return result;
     }
+    
+    @Override
+    public int insertReviewByBuyer(ReviewDTO review)
+    {
+        int result = 0;
+        
+        result = dao.insertEva(review);
+        result = dao.insertScore(review);
+        result = dao.insertReviewByBuyer(review);
+        result = dao.updateSeller(review);
+        
+        return result;
+    }
 
-
-
-
-
-
+    @Override
+    public List<Evaluation> selectEvaListforBuyer(int kind)
+    {
+        return dao.selectEvaListforBuyer(kind);
+    }
 
     
     

@@ -48,8 +48,6 @@ html { font-size: 16px; }
 	            <div class="px-4 pt-0 pb-4 cover">
 	                <div class="media align-items-end profile-head">
 	                    <div class="profile mr-3">
-	                    	<!-- LoggdeInUser 정보 가져오기  -->
-	                        <sec:authentication property="principal" var="loggedInUser" />
 	                    	<img src="${pageContext.request.contextPath }/resources/img/member/${member.renamedFileName == null 
 	                    															 ? member.originalFileName:member.renamedFileName}" 
 	                    		 alt="..." 
@@ -135,7 +133,7 @@ html { font-size: 16px; }
 								      	<c:if test="${ buy.reviewCode eq 0}">
 								      		<button type="button" class="btn btn-outline-secondary btn-sm"
 									      			style="margin: 0px 0.15rem;"
-									      			onclick="insertReview('${buy.PCode}','${member.userId}')">후기 작성하러 가기</button>
+									      			onclick="insertReview('${buy.PCode}', '${buy.seller }')">후기 작성하러 가기</button>
 								      	</c:if>
 								      	</div>
 								      	</c:if>
@@ -157,6 +155,63 @@ html { font-size: 16px; }
 	        </div>
 	    </div>
 	</div>
+	
+	
+<!-- ========== 구매자 선택 MODAL START ========== -->
+<div class="modal fade" id="selectModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle"><strong>구매자 선택</strong></h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+	   <div class="row text-center align-items-end">
+	      <div class="mb-5 mb-lg-0" style="float:none; margin:0 auto;">
+	        <div class="bg-white rounded-lg">
+				<div class="p-4 text-left" id="body">
+					<span><strong><span id="seller"></span>님과 거래가 어떠셨나요?</strong></span><br/>
+					<span>선택 항목은 상대방이 알 수 없어요.</span><hr/>
+					<div class="left_sidebar_area">
+						<aside class="left_widgets p_filter_widgets">
+							<div class="widgets_inner pb-0">
+								<!-- 온도 -->
+								<a href="javascript:score(35.5)" class="genric-btn danger circle mr-2">별로예요</a>
+								<a href="javascript:score(37.5)" class="genric-btn warning circle mr-2">좋아요!</a>
+								<a href="javascript:score(37.5)" class="genric-btn primary circle mr-2">최고예요!</a><hr/>
+								<!-- 평가 -->
+								<div class="widgets_inner pb-0" id="eva">
+								</div><hr/>
+								<textarea class="single-textarea" placeholder="감사인사를 남겨주세요" style="height: 134px;" name="content"></textarea>
+							</div>
+						</aside>
+					</div><hr/><br/>
+				</div>
+	        </div>
+	      </div>
+      	</div>
+	  </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">지금 안할래요</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<form id="reviewFrm" method="post" action="${pageContext.request.contextPath }/product/insertReviewByBuyer">
+	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+	<input type="hidden" name="sender" value="${loggedInUserId }"/>
+	<input type="hidden" name="receiver"/> 
+	<input type="hidden" name="pCode"/>
+	<input type="hidden" name="score" />
+	<input type="hidden" name="content" />
+</form>
+<!-- ========== 구매자 선택 MODAL END ========== -->
+	
+	
+	
 <script>
 $(function(){
 
@@ -169,9 +224,69 @@ function reviewInfo(reviewCode){
 	
 }
 
-function insertReview(pCode, userId){
-	alert("상품코드는" + pCode +"사용자 아이디는" + userId);
+function insertReview(pCode, seller)
+{
+	$("#seller").text(seller);
+	$("input[name=pCode]").val(pCode);
+	$("input[name=receiver]").val(seller);
 	
+	$("#selectModal").modal('show');
+}
+
+/* score click fn */
+function score(score)
+{
+	$("input[name=score]").val(score);
+
+	var str = "";
+
+	$.ajax
+	({
+		url: "${pageContext.request.contextPath}/product/evaListforBuyer/" + score,
+		method: "GET",
+		beforeSend: function(xhr)
+		{
+            xhr.setRequestHeader("${_csrf.headerName}", "${_csrf.token}");
+        },
+        dataType: "json",
+		success: function(list)
+		{
+			$.each(list,function(i,v)
+			{
+				str += "<div class='switch-wrap d-flex justify-content-between'>";
+				str += "<p>" + v.content + "</p>";
+				str += "<div class='primary-checkbox'>";
+				str += "<input type='checkbox' name='eva' id='primary-checkbox" + i + "' value='" + v.evaCode + "'>";
+				str += "<label for='primary-checkbox" + i + "'></label>";
+				str += "</div>";
+				str += "</div>";
+			});
+
+			var btn = "<button type='button' class='btn btn-primary float-right' onclick='reviewSubmit()'>완료</button>";
+			
+			$("#body").after(btn);
+			$("#eva").html(str);
+		},
+		error: function(xhr, status, err)
+		{
+			alert("평가목록 불러오기에 실패했어요 💧");
+			console.log(xhr, status, err);
+		}
+	});
+}
+
+/* review submit */
+function reviewSubmit()
+{
+	var $frm = $("#reviewFrm");
+	
+	$("input[name=eva]:checked").each(function() 
+	{
+		$frm.append($('<input/>', {type: 'hidden', name: 'evaCode', value: $(this).val()}))
+	});
+
+	$("input[name=content]").val($("textarea[name=content]").val());
+	$frm.submit();
 }
 
 </script>

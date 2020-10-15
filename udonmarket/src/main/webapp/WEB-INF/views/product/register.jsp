@@ -177,6 +177,7 @@ body
 	      <!-- Coupon Table START -->
 	      <div class="mb-5 mb-lg-0" style="float:none; margin:0 auto;">
 	        <div class="bg-white p-5 rounded-lg shadow">
+        	  <c:if test="${coupon != null }">
 	          <h1 class="h6 text-uppercase font-weight-bold mb-4">${coupon.couponName }</h1>
 	          <h2 class="h1 font-weight-bold">${coupon.amount }<span class="text-small font-weight-normal ml-2">개</span></h2>
 	
@@ -200,6 +201,10 @@ body
 	          </ul>
 	          <a href="javascript:void(0);" class="btn btn-primary btn-block p-2 shadow rounded-pill coupon">적용</a>
 	          <input type="hidden" name="coupon" value="0"/>
+	          </c:if>
+        	  <c:if test="${coupon == null }">
+        	  <h4 class="h4 font-weight-bold">사용 가능한 쿠폰이 없습니다.</h4>
+        	  </c:if>
 	        </div>
 	      </div>
 	      <!-- Coupon Table END -->

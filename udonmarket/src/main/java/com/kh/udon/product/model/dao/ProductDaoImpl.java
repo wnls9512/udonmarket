@@ -1,6 +1,7 @@
 package com.kh.udon.product.model.dao;
 
 import java.util.List;
+
 import java.util.Map;
 
 import org.apache.ibatis.session.RowBounds;
@@ -8,6 +9,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.kh.udon.common.model.vo.PageInfo;
 import com.kh.udon.community.model.vo.Report;
 import com.kh.udon.member.model.vo.Wish;
 import com.kh.udon.product.model.vo.CategoryVO;
@@ -66,15 +68,21 @@ public class ProductDaoImpl implements ProductDao
     }
 
     @Override
-    public List<ProductDTO> selectAll(String userId)
+    public List<ProductDTO> selectAll(PageInfo pi, String userId)
     {
-        return session.selectList("product.selectAll", userId);
+        int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
+        RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+        
+        return session.selectList("product.selectAll", userId, rowBounds);
     }
 
     @Override
-    public List<ProductDTO> selectCategoryProducts(Map<String, Object> map)
+    public List<ProductDTO> selectCategoryProducts(Map<String, Object> map, PageInfo pi)
     {
-        return session.selectList("product.selectCategoryProducts", map);
+        int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
+        RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+        
+        return session.selectList("product.selectCategoryProducts", map, rowBounds);
     }
 
     @Override
@@ -84,9 +92,12 @@ public class ProductDaoImpl implements ProductDao
     }
 
     @Override
-    public List<ProductDTO> search(Map<String, Object> map)
+    public List<ProductDTO> search(Map<String, Object> map, PageInfo pi)
     {
-        return session.selectList("product.search", map);
+        int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
+        RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+        
+        return session.selectList("product.search", map, rowBounds);
     }
 
     @Override
@@ -150,9 +161,9 @@ public class ProductDaoImpl implements ProductDao
     }
 
     @Override
-    public List<ProductVO> selectOtherProducts(String seller)
+    public List<ProductVO> selectOtherProducts(Map<String, Object> map)
     {
-        return session.selectList("product.selectOtherProducts", seller);
+        return session.selectList("product.selectOtherProducts", map);
     }
 
     @Override
@@ -257,6 +268,25 @@ public class ProductDaoImpl implements ProductDao
     {
         return session.update("product.updateBuyer", review);
     }
+
+    @Override
+    public List<Evaluation> selectEvaListforBuyer(int kind)
+    {
+        return session.selectList("product.selectEvaListForBuyer", kind);
+    }
+
+    @Override
+    public int insertReviewByBuyer(ReviewDTO review)
+    {
+        return session.insert("product.insertReivewByBuyer", review);
+    }
+
+    @Override
+    public int updateSeller(ReviewDTO review)
+    {
+        return session.update("product.updateSeller", review);
+    }
+
 
 
 

@@ -64,6 +64,7 @@
           <div class="s_product_text">
              <div class="media">
               <div class="d-flex" style="width: 17%;">
+              <a href="${pageContext.request.contextPath}/member/mypage?userId=${product.seller}">
                 <img class="rounded-circle" 
                 	 src="${pageContext.request.contextPath }/resources/img/member/${seller.renamedFilename == null ? seller.originalFilename:seller.renamedFilename}"  
                 	 alt="" />
@@ -71,6 +72,7 @@
               <div class="my-2 ml-2" style="width: 37%;">
                 <h4>${seller.nickname }</h4>
                 <span>${product.address }</span>
+                </a>
               </div>
               <!-- ==== 매너온도 START ==== -->
 			  <div class="my-2" style="width: 40%;">
@@ -107,7 +109,7 @@
 				<c:when test="${seller.score le '50' }">#FFAD13</c:when>
 				<c:otherwise>#F76707</c:otherwise>
 				</c:choose>        	
-				;">${seller.score }℃ &nbsp;</strong></span>
+				;"><fmt:formatNumber value="${seller.score }" pattern=".0" />℃ &nbsp;</strong></span>
 				<!-- 온도bar 시작 -->
 				<c:choose>
 				<c:when test="${seller.score le '20' }">
@@ -201,7 +203,11 @@
             ${product.content }
             </p>
             <div class="card_area d-flex justify-content-between" style="border: none;">
-            	<span style="color: gray;">관심 ${product.wish} · 채팅 ${product.chat }<br /></span>
+            	<span style="color: gray;">
+            		<c:if test="${product.wish != 0 }">관심 ${product.wish}</c:if>
+            		<c:if test="${product.wish != 0 && product.chat !=  0}"> · </c:if>
+            		<c:if test="${product.chat != 0 }">채팅 ${product.chat }</c:if><br />
+            	</span>
             </div>
             <div class="card_area d-flex justify-content-between align-items-center">
               <c:if test="${userId == product.seller }">
@@ -246,6 +252,7 @@
             </div>
             <div class="row align-items-center justify-content-between">
                 <div class="col-lg-12">
+	            	<c:if test="${other != null }">
                     <div class="best_product_slider owl-carousel">
                     	<c:forEach items="${other }" var="p">
                         <div class="single_product_item">
@@ -257,10 +264,14 @@
                         </div>
                         </c:forEach>
                     </div>
+	                </c:if>
+	                <c:if test="${other == null || other.size() == 0}">
+	                <h4>판매자의 다른 상품이 없어요 💦</h4>
+	                </c:if>
                 </div>
             </div>
         </div>
-        <br/>
+        <br/><br/>
         <!-- 비슷한 상품 -->
         <div class="container">
             <div class="row justify-content-center">
@@ -455,15 +466,11 @@
 	<input type="hidden" name="score" />
 	<input type="hidden" name="content" />
 </form>
-
-
-
-
 <!-- ========== 구매자 선택 MODAL END ========== -->
 	
 <script>
 function openChatRoom(){
-	alert("클릭");
+	//alert("클릭");
 	let $userId = "${userId}";
 	let $seller = "${product.seller}";
 	let $pCode = "${product.PCode}";
@@ -484,7 +491,7 @@ function openChatRoom(){
         	window.open("${pageContext.request.contextPath}" + data);							
 		},
 		error: function(xhr, status, err){
-			alert("이미 관심목록에 추가되있어요 💘");
+			console.log("openChatRoom 실패");
 		}
 	});
 }

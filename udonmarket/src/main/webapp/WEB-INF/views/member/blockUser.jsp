@@ -41,7 +41,8 @@ html { font-size: 16px; }
     </section>
     <!-- breadcrumb start-->
     
-    
+    <!-- LoggdeInUser 정보 가져오기  -->
+    <sec:authentication property="principal.username" var="loggedInUser" />	
     
     <div class="row py-5 px-4">
 	    <div class="col-md-5 mx-auto">
@@ -50,8 +51,6 @@ html { font-size: 16px; }
 	            <div class="px-4 pt-0 pb-4 cover">
 	                <div class="media align-items-end profile-head">
 	                    <div class="profile mr-3">
-	                    	<!-- LoggdeInUser 정보 가져오기  -->
-	                        <sec:authentication property="principal" var="loggedInUser" />
 	                    	<img src="${pageContext.request.contextPath }/resources/img/member/${member.renamedFileName == null 
 	                    															 ? member.originalFileName:member.renamedFileName}" 
 	                    		 alt="..." 
@@ -112,6 +111,9 @@ html { font-size: 16px; }
 											<td><a href="${pageContext.request.contextPath }/member/mypage?userId=${member.userId}">
 											<h5>${b.blockUserNickName }</h5></a>
 											${b.blockUserAddr}</td>
+											<td style="vertical-align: middle;">
+												<button name="btn" class="btn btn-outline-secondary" value="${b.blockUserId }">차단 해제</button>
+											</td>
 										</tr>
 									</c:forEach>
 								</c:if>
@@ -131,6 +133,32 @@ html { font-size: 16px; }
 
 <jsp:include page="/WEB-INF/views/common/footer.jsp"/>
 	
+<script>
+$("[name=btn]").click(function(){
+	let $myId = "${loggedInUser}";
+	let $blockUserId = $(this).val();
+
+	$.ajax({
+		url : "${pageContext.request.contextPath}/member/deleteBlockUser",
+		method : "POST",
+		data : {
+				userId : $myId,
+				blockUserId : $blockUserId
+		},
+		beforeSend : function(xhr){
+            xhr.setRequestHeader("${_csrf.headerName}", "${_csrf.token}");
+        },
+		success : function(data){
+			alert("차단 해제 했어요 💗");
+			location.href = "${pageContext.request.contextPath}/member/blockUser?userId=" + $myId;
+		},
+		error : function(xhr, status, err){
+			console.log("처리 실패", xhr, status, err);
+			alert("차단 해제 실패했어요 😥");
+		}
+	}); 
 	
+});
+</script>
 	
 	

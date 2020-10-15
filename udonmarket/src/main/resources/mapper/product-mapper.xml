@@ -16,7 +16,8 @@
 		                        select l.user_id 
 		                        from location l,(select latitude, longitude, radius from location where user_id = #{userId}) a
 		                        where calc_distance(a.latitude, a.longitude, l.latitude, l.longitude) < a.radius
-		                        ))
+		                        )
+			   and p.seller not in (select block_id from block where user_id = #{userId}))
                or
 			   (p.open_status = 1 and (p.trade_status = 'S' or p.trade_status = 'R') and delete_yn = 'N'
 		       and p.coupon = 1)
@@ -36,7 +37,8 @@
 		                        select l.user_id 
 		                        from location l,(select latitude, longitude, radius from location where user_id = #{userId}) a
 		                        where calc_distance(a.latitude, a.longitude, l.latitude, l.longitude) < a.radius
-		                        ))
+		                        )
+			  and p.seller not in (select block_id from block where user_id = #{userId}))
               or
 			  (p.open_status = 1 and (p.trade_status = 'S' or p.trade_status = 'R') and delete_yn = 'N' and p.category = #{categoryCode} 
 		      and p.coupon = 1)
@@ -60,6 +62,7 @@
 		                        where calc_distance(a.latitude, a.longitude, l.latitude, l.longitude) < a.radius
 								]]>
 	                        )
+			and p.seller not in (select block_id from block where user_id = #{userId})
 			<if test="category != 0 ">
 			and p.category = #{category}
 			</if>)
@@ -255,7 +258,8 @@
 	<!-- 판매자 다른 상품 -->
 	<select id="selectOtherProducts" resultType="productVO">
 		select p_code, title, price from product
-		where seller = #{seller} and open_status = 1 and (trade_status = 'S' or trade_status = 'R') and delete_yn = 'N'
+		where seller = #{seller} and p_code != #{pCode} 
+			  and open_status = 1 and (trade_status = 'S' or trade_status = 'R') and delete_yn = 'N'
 	</select>
 	
 	<!-- 신고목록 -->
@@ -323,13 +327,16 @@
 	<!-- 채팅했던 이웃들 -->
 	<select id="selectBuyer" resultType="string">
 		select user_id from chat_user
-		where room_code = (select room_code from chat_room where p_code = #{pCode})
+		where room_code in (select room_code from chat_room where p_code = #{pCode})
 			  and user_id != #{seller} 
 	</select>
 	
 	<!-- 평가 하기 리스트 -->
 	<select id="selectEvaList" resultType="evaluation">
 		select * from evaluation where kind = #{kind} and (member = 'S' or member = 'C')
+	</select>
+	<select id="selectEvaListForBuyer" resultType="evaluation">
+		select * from evaluation where kind = #{kind} and (member = 'B' or member = 'C')
 	</select>
 	
 	<!-- 리뷰 -->
@@ -338,9 +345,6 @@
 			update evaluate set count =  nvl(count, 0) + 1 where user_id = #{receiver} and eva_code = #{eva}
 		</foreach>
 	</update>
-
-	
-	
 	<update id="insertScore">
 		update score set (total_score, count) = (select nvl(total_score, 0) + #{score}, nvl(count, 0) + 1 from score where user_id = #{receiver}) 
 		where user_id = #{receiver}
@@ -351,4 +355,10 @@
 	<update id="updateBuyer">
 		update product set buyer = #{receiver} where p_code = #{pCode}
 	</update>
+	<update id="updateSeller">
+		update product set seller = #{receiver} where p_code = #{pCode}
+	</update>
+	<insert id="insertReivewByBuyer">
+		insert into review values(seq_review.nextval, #{sender}, #{receiver}, #{content}, 'B',  #{pCode})
+	</insert>
 </mapper>

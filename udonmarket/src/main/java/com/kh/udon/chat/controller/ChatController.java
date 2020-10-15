@@ -73,5 +73,23 @@ public class ChatController
    
     	return url;
     }
-    
+
+    @PostMapping("/leaveChatRoom")
+    @ResponseBody
+    public String leaveChatRoom(@RequestParam("roomCode") int roomCode,
+    							@RequestParam("userId") String userId){
+    	
+    	Map<String, Object> map = new HashMap<>();
+    	map.put("userId", userId);
+    	map.put("roomCode", roomCode);
+    	
+    	String url = "/chat/chatListView?userId=" + userId;
+    	try {
+    		int result = service.leaveChatRoom(map);
+    	}catch (Exception e) {
+    		e.printStackTrace();
+    	}
+
+    	return url;
+    }    
 }
