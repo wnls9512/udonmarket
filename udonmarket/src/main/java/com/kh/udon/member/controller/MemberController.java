@@ -128,9 +128,9 @@ public class MemberController {
 		
 		log.debug("result@controller = {}", result);
 
-		String msg = (result > 0) ? "회원가입성공!" : "회원가입실패!";
+		String msg = (result > 0) ? "회원가입성공! 마이페이지 들어가서 동네설정을 먼저 해주시기 바랍니다." : "회원가입실패!";
 		log.debug("msg@controller = " + msg);
-		redirectAttr.addFlashAttribute("msg", msg);
+		redirectAttr.addAttribute("msg", msg);
 
 		return "redirect:/";
 	}

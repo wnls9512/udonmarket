@@ -43,8 +43,8 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.3.0/sockjs.min.js"></script>
 <script>
 <%-- RedirectAttribute에 등록된 msg값 존재 여부 확인 후 출력 --%>
-<c:if test="${not empty msg }">
-	alert('${ msg }');
+<c:if test="${ not empty msg }">
+ 	alert('${ msg }');
 </c:if>
 </script>
 </head>
