@@ -469,6 +469,7 @@
 <!-- ========== 구매자 선택 MODAL END ========== -->
 	
 <script>
+//채팅방 열기
 function openChatRoom(){
 	//alert("클릭");
 	let $userId = "${userId}";
@@ -488,7 +489,8 @@ function openChatRoom(){
             xhr.setRequestHeader("${_csrf.headerName}", "${_csrf.token}");
         },
         success: function(data){
-        	window.open("${pageContext.request.contextPath}" + data);							
+        	window.open('${pageContext.request.contextPath }'+data, 'chatting', 'width=800px, height=560px');
+        	//window.open("${pageContext.request.contextPath}" + data);							
 		},
 		error: function(xhr, status, err){
 			console.log("openChatRoom 실패");
