@@ -132,6 +132,31 @@ $("[name=leaveChatRoom]").click(function(){
 	
 });
 
+//날짜포맷
+function formatDate(day){
+
+	let date = new Date(day);
+	
+    let yyyy = date.getFullYear();
+    let mm = get2digit(date.getMonth()+1);
+    let dd = get2digit(date.getDate());
+
+    let hh = get2digit(date.getHours());
+    let mi = get2digit(date.getMinutes());
+
+    let fmt = yyyy + "/" + mm + "/" + dd + " " + hh + ":" + mi;
+
+    return fmt;
+}
+
+//시간포맷
+function get2digit(num){
+    if(num<10)
+        return "0"+num;
+    else
+        return num;
+}
+
 //채팅방 누르면 채팅 내용 가져오기
 $("[name=chatRoom]").click(function(){
 	var $roomCode = $(this).find("[name=roomCode]").val();
@@ -172,7 +197,7 @@ $("[name=chatRoom]").click(function(){
 							            "<div class='bg-light rounded py-2 px-3 mb-2'>" +
 							              "<p class='text-small mb-0 text-muted'>" + msg[i].chatContent + "</p>" +
 							            "</div>" +
-							            "<p class='small text-muted'>" + msg[i].chatDate + "</p>" +
+							            "<p class='small text-muted'>" + formatDate(msg[i].chatDate) + "</p>" +
 							          "</div>" +
 							        "</div>";
 
@@ -186,7 +211,7 @@ $("[name=chatRoom]").click(function(){
 								            "<div class='bg-primary rounded py-2 px-3 mb-2'>" +
 								              "<p class='text-small mb-0 text-white'>" + msg[i].chatContent + "</p>" +
 								            "</div>" +
-								            "<p class='small text-muted'>" + msg[i].chatDate +"</p>" +
+								            "<p class='small text-muted'>" + formatDate(msg[i].chatDate) +"</p>" +
 								          "</div>" +
 								        "</div>";
 
@@ -235,7 +260,7 @@ $("#sendBtn").click(function() {
 				          "<div class='bg-primary rounded py-2 px-3 mb-2'>" +
 				            "<p class='text-small mb-0 text-white'>" + $msg + "</p>" +
 				          "</div>" +
-				          "<p class='small text-muted'> </p>" +
+				          "<p class='small text-muted'>" + formatDate(new Date()) + "</p>" +
 				        "</div>" +
 				      "</div>";
 
