@@ -113,6 +113,12 @@ function deleteBoard(bCode)
 // 좋아요
 function likeThis(bCode)
 {
+	let $bCode = $("#bCode").val();
+    let $title = "${ community.boardTitle }";
+    let $sender = $("#userId").val();
+    let $bWriter = "${ community.userId }";
+    let $countLike = "${ community.likeThis }";
+    
 	if(confirm("이 게시글을 좋아하시겠습니까?"))
 	{
 		$.ajax
@@ -126,6 +132,17 @@ function likeThis(bCode)
 	        dataType: "json",
 			success: function()
 			{
+				$countLike++;
+				
+				//알림보내기
+				if(sock) {
+					console.log("like :: socket >> ", sock);
+						//webSocket에 보내기
+						//cmd/발신인/수신인/게시글코드/게시글제목/하트 갯수
+					sock.send("like," + $sender + "," + $bWriter + "," + $bCode + "," + $title + "," + $countLike);
+				}else{
+					console.log("Error on Like ", sock);
+				}
 				
 				location.href = "${ pageContext.request.contextPath }/community/communityDetailView?bCode=" + bCode;									
 			},

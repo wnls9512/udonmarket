@@ -22,5 +22,6 @@ public class ChatRoom implements Serializable{
 		private Date regDate;
 		private String sender;
 		private String senderNickName;
+		private boolean senderEnabled;
 		
 }
