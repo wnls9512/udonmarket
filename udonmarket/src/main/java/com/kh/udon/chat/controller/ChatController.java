@@ -66,13 +66,13 @@ public class ChatController
     	if(chatRoom == null) {
     		//새로운 채팅방 만들기
     		int result = service.insertChatRoom(map);
-    		System.out.println(result);
+    		//System.out.println(result);
     	}else {
     		//활성화 여부를 모두 true로 바꾸기 (혹시 나갔을 지도 모르니까)
     		map.put("roomCode", chatRoom.getRoomCode());
     		
     		int enabled = service.enterChatRoom(map);
-    		System.out.println(enabled);
+    		//System.out.println(enabled);
     	}
     	
     	String url = "/chat/chatListView?userId=" + userId;

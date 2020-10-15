@@ -105,7 +105,7 @@
                            	<!-- chatList 새창으로 열기-->
                            	<sec:authorize access="isAuthenticated()">
                             <a href="#" 
-                               onclick="window.open('${pageContext.request.contextPath }/chat/chatListView?userId=${userId}', 'chatting', 'width=800px, height=560px')">
+                               onclick="window.open('${pageContext.request.contextPath }/chat/chatListView?userId=${userId}', 'chatting', 'width=1000px, height=800px')">
                             	<i class="ti-comments-smiley"></i>
                             </a>
                             </sec:authorize>

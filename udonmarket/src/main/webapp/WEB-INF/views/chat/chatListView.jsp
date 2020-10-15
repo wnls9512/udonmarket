@@ -80,15 +80,31 @@
 		    <!-- Chat Box-->
 		    <div class="col-7 px-0">
 		      <!-- Typing area -->
-		      <form action="#" class="bg-light">
+	          <form action="" class="bg-light">
 		        <div class="input-group">
-		          <input type="text" id="message" placeholder="Type a message" aria-describedby="button-addon2" class="form-control rounded-0 border-0 py-4 bg-light">
-		          <div class="input-group-append">
+		        
+		          <!-- 사진보내기 START -->
+		          <input type="file" name="file" id="file" 
+		          		 accept="image/jpeg, image/png" style="display:none"/>
+	              <button id="fileBtn" 
+	              	      type="button" 
+	              	      class="btn btn-link" 
+	              	      disabled="disabled"
+	              	      onclick="onclick=document.all.file.click()">➕</button>
+			       <!-- 사진보내기 END -->
+		          
+		          <input type="text" 
+		          	     id="message" 
+		          	     placeholder="Type a message" 
+		          	     aria-describedby="button-addon2" 
+		          	     class="form-control rounded-0 border-0 py-4 bg-light"
+		          	     disabled="disabled">
+		          <div class="input-group-append" >
 		          	<input type="hidden" id="receiver" />
-		            <button id="sendBtn" type="button" class="btn btn-link" disabled="disabled">전송<i class="far fa-paper-plane"></i></button>
+		            <button id="sendBtn" type="button" class="btn btn-link" disabled="disabled">전송</button>
 		          </div>
 		        </div>
-		      </form>
+		       </form>
 
 		      <div class="px-4 py-5 chat-box bg-white" id="chatBox">
 		      	<input type="hidden" id="roomCode_" />
@@ -102,6 +118,16 @@
   </div>
 </div>
 <script>
+//사진 업로드
+$("#file").bind('change', function(){
+	var $file = $(this).prop("files")[0];
+	console.log($file);
+	
+	$("#chatBox").prepend(senderMsg);	
+	
+	
+});
+
 //채팅방 나가기
 $("[name=leaveChatRoom]").click(function(){
 
@@ -172,6 +198,9 @@ $("[name=chatRoom]").click(function(){
 
 	//버튼 활성화
 	$("#sendBtn").attr("disabled", false);
+	$("#fileBtn").attr("disabled", false);
+	//input:text 활성화
+	$("#message").attr("disabled", false);
 	
 	//대화 내용 가져오기
 	$.ajax({

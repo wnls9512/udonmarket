@@ -489,7 +489,7 @@ function openChatRoom(){
             xhr.setRequestHeader("${_csrf.headerName}", "${_csrf.token}");
         },
         success: function(data){
-        	window.open('${pageContext.request.contextPath }'+data, 'chatting', 'width=800px, height=560px');
+        	window.open('${pageContext.request.contextPath }'+data, 'chatting', 'width=1000px, height=800px');
         	//window.open("${pageContext.request.contextPath}" + data);							
 		},
 		error: function(xhr, status, err){
