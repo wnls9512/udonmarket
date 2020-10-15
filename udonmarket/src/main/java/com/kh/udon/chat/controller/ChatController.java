@@ -62,12 +62,18 @@ public class ChatController
     	
     	//이미 열려있는 채팅방이 있는지 체크
     	ChatRoom chatRoom = service.selectChatRoom(map);
-
+    	
     	if(chatRoom == null) {
     		//새로운 채팅방 만들기
     		int result = service.insertChatRoom(map);
-    		System.out.println(result);
-    	}else {}
+    		//System.out.println(result);
+    	}else {
+    		//활성화 여부를 모두 true로 바꾸기 (혹시 나갔을 지도 모르니까)
+    		map.put("roomCode", chatRoom.getRoomCode());
+    		
+    		int enabled = service.enterChatRoom(map);
+    		//System.out.println(enabled);
+    	}
     	
     	String url = "/chat/chatListView?userId=" + userId;
    

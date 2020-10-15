@@ -21,4 +21,6 @@ public interface ChatService
 
 	int leaveChatRoom(Map<String, Object> map);
 
+	int enterChatRoom(Map<String, Object> map);
+
 }

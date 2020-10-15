@@ -58,6 +58,7 @@
 						    <a href="javascript:void(0);" class="list-group-item list-group-item-action list-group-item-light rounded-0" name="chatRoom" >
 						      <input type="hidden" name="roomCode" value=${r.roomCode } />
 						      <input type="hidden" name="receiver" value=${r.sender } />
+						      <input type="hidden" name="enabled" value=${r.senderEnabled } />
 				              <div class="media"><img src="https://res.cloudinary.com/mhmd/image/upload/v1564960395/avatar_usae7z.svg" alt="user" width="50" class="rounded-circle">
 				                <div class="media-body ml-4">
 				                  <div class="d-flex align-items-center justify-content-between mb-1">
@@ -79,15 +80,31 @@
 		    <!-- Chat Box-->
 		    <div class="col-7 px-0">
 		      <!-- Typing area -->
-		      <form action="#" class="bg-light">
+	          <form action="" class="bg-light">
 		        <div class="input-group">
-		          <input type="text" id="message" placeholder="Type a message" aria-describedby="button-addon2" class="form-control rounded-0 border-0 py-4 bg-light">
-		          <div class="input-group-append">
+		        
+		          <!-- 사진보내기 START -->
+		          <input type="file" name="file" id="file" 
+		          		 accept="image/jpeg, image/png" style="display:none"/>
+	              <button id="fileBtn" 
+	              	      type="button" 
+	              	      class="btn btn-link" 
+	              	      disabled="disabled"
+	              	      onclick="onclick=document.all.file.click()">➕</button>
+			       <!-- 사진보내기 END -->
+		          
+		          <input type="text" 
+		          	     id="message" 
+		          	     placeholder="Type a message" 
+		          	     aria-describedby="button-addon2" 
+		          	     class="form-control rounded-0 border-0 py-4 bg-light"
+		          	     disabled="disabled">
+		          <div class="input-group-append" >
 		          	<input type="hidden" id="receiver" />
-		            <button id="sendBtn" type="button" class="btn btn-link" disabled="disabled">전송<i class="far fa-paper-plane"></i></button>
+		            <button id="sendBtn" type="button" class="btn btn-link" disabled="disabled">전송</button>
 		          </div>
 		        </div>
-		      </form>
+		       </form>
 
 		      <div class="px-4 py-5 chat-box bg-white" id="chatBox">
 		      	<input type="hidden" id="roomCode_" />
@@ -101,6 +118,16 @@
   </div>
 </div>
 <script>
+//사진 업로드
+$("#file").bind('change', function(){
+	var $file = $(this).prop("files")[0];
+	console.log($file);
+	
+	$("#chatBox").prepend(senderMsg);	
+	
+	
+});
+
 //채팅방 나가기
 $("[name=leaveChatRoom]").click(function(){
 
@@ -131,10 +158,36 @@ $("[name=leaveChatRoom]").click(function(){
 	
 });
 
+//날짜포맷
+function formatDate(day){
+
+	let date = new Date(day);
+	
+    let yyyy = date.getFullYear();
+    let mm = get2digit(date.getMonth()+1);
+    let dd = get2digit(date.getDate());
+
+    let hh = get2digit(date.getHours());
+    let mi = get2digit(date.getMinutes());
+
+    let fmt = yyyy + "/" + mm + "/" + dd + " " + hh + ":" + mi;
+
+    return fmt;
+}
+
+//시간포맷
+function get2digit(num){
+    if(num<10)
+        return "0"+num;
+    else
+        return num;
+}
+
 //채팅방 누르면 채팅 내용 가져오기
 $("[name=chatRoom]").click(function(){
 	var $roomCode = $(this).find("[name=roomCode]").val();
 	var $receiver = $(this).find("[name=receiver]").val();
+	var $enabled = $(this).find("[name=enabled]").val();
 	var $myId = "${userId}";
 
 	$("#chatBox").empty();
@@ -145,6 +198,9 @@ $("[name=chatRoom]").click(function(){
 
 	//버튼 활성화
 	$("#sendBtn").attr("disabled", false);
+	$("#fileBtn").attr("disabled", false);
+	//input:text 활성화
+	$("#message").attr("disabled", false);
 	
 	//대화 내용 가져오기
 	$.ajax({
@@ -170,7 +226,7 @@ $("[name=chatRoom]").click(function(){
 							            "<div class='bg-light rounded py-2 px-3 mb-2'>" +
 							              "<p class='text-small mb-0 text-muted'>" + msg[i].chatContent + "</p>" +
 							            "</div>" +
-							            "<p class='small text-muted'>" + msg[i].chatDate + "</p>" +
+							            "<p class='small text-muted'>" + formatDate(msg[i].chatDate) + "</p>" +
 							          "</div>" +
 							        "</div>";
 
@@ -184,7 +240,7 @@ $("[name=chatRoom]").click(function(){
 								            "<div class='bg-primary rounded py-2 px-3 mb-2'>" +
 								              "<p class='text-small mb-0 text-white'>" + msg[i].chatContent + "</p>" +
 								            "</div>" +
-								            "<p class='small text-muted'>" + msg[i].chatDate +"</p>" +
+								            "<p class='small text-muted'>" + formatDate(msg[i].chatDate) +"</p>" +
 								          "</div>" +
 								        "</div>";
 
@@ -193,6 +249,12 @@ $("[name=chatRoom]").click(function(){
 				}
 				
 			} 
+
+			if($enabled == 'false'){
+				$("#chatBox").prepend("<p>상대방이 채팅방을 나갔습니다. 대화가 종료됩니다.</p>");
+				$("#sendBtn").attr("disabled", "disabled");
+				console.log("sdfgf");
+			}
 
 			$("#sendBtn").val($roomCode);
 			$("#receiver").val($receiver);
@@ -227,7 +289,7 @@ $("#sendBtn").click(function() {
 				          "<div class='bg-primary rounded py-2 px-3 mb-2'>" +
 				            "<p class='text-small mb-0 text-white'>" + $msg + "</p>" +
 				          "</div>" +
-				          "<p class='small text-muted'> </p>" +
+				          "<p class='small text-muted'>" + formatDate(new Date()) + "</p>" +
 				        "</div>" +
 				      "</div>";
 
