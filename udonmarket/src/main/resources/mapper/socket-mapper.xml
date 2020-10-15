@@ -132,6 +132,16 @@
 		room_code = #{roomCode}
 </update>
 
+<!-- 채팅방 다시 활성화 -->
+<update id="enterChatRoom">
+	update 
+		chat_user 
+	set 
+		enabled = 1 
+	where 
+		room_code = #{roomCode}
+</update>
+
 <!-- 대화 내용 가져오기 -->
 <select id="selectChatMsg" resultType="chatMessage">
 	select MSG.*, 
