@@ -64,11 +64,16 @@
                                 </div>
                                 <div class="col-md-12 form-group">
                                     <button type="submit" value="submit" class="btn_3">로그인</button>
-                                    <a href=""><img src=""/></a>
-                                    <a class="lost_pass" href="${pageContext.request.contextPath }/member/passwordFind">비밀번호 찾기</a>
-                                    <a href="https://kauth.kakao.com/oauth/authorize?client_id=91a359c6f4f2628b3f78a34ef78b9d82&redirect_uri=http://localhost:9090/udon/kakaologin&response_type=code"><img src="${pageContext.request.contextPath }/img/kakao_login_page.png" /></a>
+                                    <a class="lost_pass" href="${pageContext.request.contextPath }/member/passwordFind" style="font-size: large; font-weight: 800">비밀번호 찾기</a>
                                 </div>
                             </form:form>
+	                             	<div class="col-md-12 form-group">                            
+<%--                                     	<a href="https://kauth.kakao.com/oauth/authorize?client_id=91a359c6f4f2628b3f78a34ef78b9d82&redirect_uri=http://localhost:9090/udon/kakaologin&response_type=code"><img src="${pageContext.request.contextPath }/resources/img/kakao_login_page.png" style="width: 100%; border-radius: 2rem; padding-bottom: 1rem;"/></a> --%>
+                                    	<a href="https://kauth.kakao.com/oauth/authorize?client_id=91a359c6f4f2628b3f78a34ef78b9d82&redirect_uri=http://localhost:9090/udon/kakaologin&response_type=code"><img src="${pageContext.request.contextPath }/resources/img/kakao_login_page.png" style="width: 100%; border-radius: 2rem; padding-bottom: 1rem;"/></a>
+ 									</div> 
+<%--                             	<form:form class="row contact_form" action="https://kauth.kakao.com/oauth/authorize?client_id=91a359c6f4f2628b3f78a34ef78b9d82&redirect_uri=http://localhost:9090/udon/kakaologin&response_type=code" method="GET"> --%>
+<%-- 										<button type="submit" style="border-color: transparent; width: 100%"><img src="${pageContext.request.contextPath }/resources/img/kakao_login_page.png" style="width: 100%; border-radius: 2rem; padding-bottom: 1rem;"/></button> --%>
+<%-- 								</form:form> --%>
                         </div>
                     </div>
                 </div>

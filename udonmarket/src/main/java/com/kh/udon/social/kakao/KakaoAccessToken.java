@@ -25,6 +25,9 @@ public class KakaoAccessToken {
 		final String RequestUrl = "https://kauth.kakao.com/oauth/token";
 		final List<NameValuePair> postParams = new ArrayList<NameValuePair>();
 		
+		String CLIENT_ID = "91a359c6f4f2628b3f78a34ef78b9d82";
+		String REDIRECT_URI = "http://localhost:9090/udon/kakaologin";
+		
 		postParams.add(new BasicNameValuePair("grant_type", "authorization_code"));
 		postParams.add(new BasicNameValuePair("client_id", "91a359c6f4f2628b3f78a34ef78b9d82"));
 		postParams.add(new BasicNameValuePair("redirect_uri", "http://localhost:9090/udon/kakaologin"));

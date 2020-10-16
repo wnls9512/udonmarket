@@ -5,28 +5,27 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.servlet.ModelAndView;
-
-import com.kh.udon.member.model.vo.announce;
-import com.kh.udon.product.model.service.ProductService;
-
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.kh.udon.common.util.Utils;
 import com.kh.udon.community.model.service.CommunityService;
 import com.kh.udon.community.model.vo.Report;
 import com.kh.udon.member.model.service.MemberService;
 import com.kh.udon.member.model.vo.Coupon;
 import com.kh.udon.member.model.vo.Member;
+import com.kh.udon.member.model.vo.announce;
+import com.kh.udon.product.model.service.ProductService;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -61,7 +60,7 @@ public class AdminController {
 	 */
 	
 	@GetMapping("/memberList")
-	public ModelAndView memberList(ModelAndView mav,@RequestParam(defaultValue = "1", value = "cPage") int cPage) {
+	public ModelAndView memberList(ModelAndView mav, @RequestParam(defaultValue = "1", value = "cPage") int cPage, HttpServletRequest request) {
 	
 		
 		final int limit = 10;
@@ -73,6 +72,12 @@ public class AdminController {
 		//전체 컨텐츠 수
 		int totalContents = memberService.selectMemberTotalContents();
 		
+		String userId = "admin";
+		
+		String url = request.getRequestURI() + "?userId=" + userId + "&";
+		String pageBar = Utils.getPageBarHtml(cPage, limit, totalContents, url);
+		
+		mav.addObject("pageBar", pageBar);
 		mav.addObject("totalContents", totalContents);
 		mav.addObject("list", list);
 		mav.setViewName("admin/memberList");
@@ -189,7 +194,7 @@ public class AdminController {
 	
 	
 	@RequestMapping("/CouponList")
-	public ModelAndView CouponList(ModelAndView mav,@RequestParam(defaultValue = "1", value = "cPage") int cPage) {
+	public ModelAndView CouponList(ModelAndView mav,@RequestParam(defaultValue = "1", value = "cPage") int cPage, HttpServletRequest request) {
 	
 		
 		final int limit = 10;
@@ -201,6 +206,12 @@ public class AdminController {
 		//전체 컨텐츠 수
 		int totalContents = memberService.selectCouponTotalContents();
 		
+		String userId = "admin";
+		
+		String url = request.getRequestURI() + "?userId=" + userId + "&";
+		String pageBar = Utils.getPageBarHtml(cPage, limit, totalContents, url);
+		
+		mav.addObject("pageBar", pageBar);
 		mav.addObject("totalContents", totalContents);
 		mav.addObject("list", list);
 		mav.setViewName("admin/CouponList");

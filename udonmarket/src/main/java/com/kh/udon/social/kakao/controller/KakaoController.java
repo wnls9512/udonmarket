@@ -34,7 +34,7 @@ public class KakaoController {
 	
 	JsonNode accessToken;
 	
-	@RequestMapping(value = "/kakaoLogin", produces="application/json", method= RequestMethod.GET)
+	@RequestMapping(value = "/kakaologin", produces="application/json", method= RequestMethod.GET)
 	public String kakaoLogin(@RequestParam("code") String code, RedirectAttributes redirectAttr, HttpSession session, HttpServletResponse response) throws IOException{
 		
 		log.debug("kakao code : ", code);
@@ -48,6 +48,8 @@ public class KakaoController {
 		
 		//access_token을 통해 사용자 정보 요청
 		JsonNode userInfo = KakaoUserInfo.getKakaoUserInfo(accessToken);
+		
+		log.debug("userInfo = ", userInfo);
 		
 		//Get id
 		String userId = userInfo.path("id").asText();
@@ -67,6 +69,7 @@ public class KakaoController {
 		log.debug("userId = ", userId);
 		log.debug("nickName = ", nickName);
 		log.debug("email = ", email);
+		log.debug("result = ", result);
 		
 		//사용할 카카오 아이디를 세션에 저장
 		session.setAttribute("userId", userId);
