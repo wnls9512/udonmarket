@@ -78,14 +78,14 @@
                                     <a class="nav-link" href="${pageContext.request.contextPath }/product/productListView?userId=${userId}&currentPage=1">중고거래</a>
                                 </li>
                                 <li class="nav-item dropdown">
-                                    <a class="nav-link dropdown-toggle" href="${pageContext.request.contextPath }/community/communityListView" id="navbarDropdown_1"
+                                    <a class="nav-link dropdown-toggle" href="${pageContext.request.contextPath }/community/communityListView?userId=${userId}" id="navbarDropdown_1"
                                         role="button" aria-haspopup="true" aria-expanded="false">동네생활
                                     </a>
                                     <div class="dropdown-menu" aria-labelledby="navbarDropdown_1">
-                                        <a class="dropdown-item" href="/udon/community/communityListView?categoryCode=17">동네생활이야기</a>
-                                        <a class="dropdown-item" href="/udon/community/communityListView?categoryCode=18">우리동네질문</a>
-										<a class="dropdown-item" href="/udon/community/communityListView?categoryCode=19">분실/실종센터</a>
-										<a class="dropdown-item" href="/udon/community/communityListView?categoryCode=20">동네사건사고</a>
+                                        <a class="dropdown-item" href="/udon/community/communityListView?userId=${userId}&categoryCode=17">동네생활이야기</a>
+                                        <a class="dropdown-item" href="/udon/community/communityListView?userId=${userId}&categoryCode=18">우리동네질문</a>
+										<a class="dropdown-item" href="/udon/community/communityListView?userId=${userId}&categoryCode=19">분실/실종센터</a>
+										<a class="dropdown-item" href="/udon/community/communityListView?userId=${userId}&categoryCode=20">동네사건사고</a>
                                     </div>
                                 </li>
 								<!--관리자메뉴 -->

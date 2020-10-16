@@ -10,7 +10,8 @@
 		    r.content,
 		    r.user_id, 
 		    r.reg_date,
-		    m.nickname
+		    m.nickname,
+		    (SELECT COUNT(reply_code) FROM reply WHERE b_code = #{bCode}) as reply_count
 		FROM
 		    reply r
 		        left join
