@@ -23,7 +23,7 @@ $(function(){
 });
 $(document).on('click', '#btnSearch', function(e){
 		e.preventDefault();
-		var url = "${pageContext.request.contextPath}/community/communityListView?userId=${userId}";
+		var url = "${pageContext.request.contextPath}/community/communityListView?userId=${userId}&currentPage=1";
 		url = url + "&searchType=" + $('#searchType').val();
 		url = url + "&keyword=" + $('#keyword').val();
 		location.href = url;
@@ -32,7 +32,7 @@ $(document).on('click', '#btnSearch', function(e){
 $(function(){
 	$("a[data-category-code]").click(function(){
 		var categoryCode = $(this).attr("data-category-code");
-		location.href = "${ pageContext.request.contextPath }/community/communityListView?userId=${userId}&categoryCode=" + categoryCode;
+		location.href = "${ pageContext.request.contextPath }/community/communityListView?userId=${userId}&currentPage=1&categoryCode=" + categoryCode;
 	});
 	
 });
@@ -170,7 +170,60 @@ $(function(){
 						</c:if>
                        </c:forEach>
                        
-
+						<div class="col-lg-12">
+                        <div class="pageination">
+                            <nav aria-label="Page navigation example">
+                                <ul class="pagination justify-content-center">
+                                
+								<c:choose>
+		                		<c:when test="${ pi.currentPage eq 1 }">
+									<li class="page-item disabled">
+                                        <a class="page-link" href="#" aria-label="Previous">
+                                            <i class="ti-angle-double-left"></i>
+                                        </a>
+                                    </li>     
+			                    </c:when>
+			                    <c:otherwise>
+									<li class="page-item">
+                                        <a class="page-link" href="${pageContext.request.contextPath }/community/communityListView?userId=${userId}&currentPage=${pi.currentPage-1}" aria-label="Previous">
+                                            <i class="ti-angle-double-left"></i>
+                                        </a>
+                                    </li>     
+		                    	</c:otherwise>
+		                    	</c:choose>
+		                    	
+			                    <c:forEach var="p" begin="${ pi.startPage }" end="${ pi.endPage }">
+		                    	<c:choose>
+	                    		<c:when test="${ p eq pi.currentPage }">
+		                    		<li class="page-item disabled"><a class="page-link" href="#">${ p }</a></li>
+		                    	</c:when>
+		                    	<c:otherwise>
+		                    		<li class="page-item"><a class="page-link" href="${pageContext.request.contextPath }/community/communityListView?userId=${userId}&currentPage=${ p }">${ p }</a></li>
+	                    		</c:otherwise>
+		                    	</c:choose>
+			                    </c:forEach>
+		                    	
+			                    <c:choose>
+		                    	<c:when test="${ pi.currentPage eq pi.maxPage }">
+                                    <li class="page-item disabled">
+                                        <a class="page-link" href="#" aria-label="Next">
+                                            <i class="ti-angle-double-right"></i>
+                                        </a>
+                                    </li>
+			                    </c:when>
+			                    <c:otherwise>
+                                    <li class="page-item">
+                                        <a class="page-link" href="${pageContext.request.contextPath }/community/communityListView?userId=${userId}&currentPage=${pi.currentPage + 1}" aria-label="Next">
+                                            <i class="ti-angle-double-right"></i>
+                                        </a>
+                                    </li>
+		                    	</c:otherwise>
+			                    </c:choose>
+			                    
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
 						<!-- 페이징 바  -->
                         <!-- <nav class="blog-pagination justify-content-center d-flex">
                             <ul class="pagination">
@@ -268,31 +321,31 @@ $(function(){
                             <h4 class="widget_title">태그</h4>
                             <ul class="list">
                                 <li>
-                                    <a href="communityListView?userId=${userId}&hashtagCode=1">강아지</a>
+                                    <a href="communityListView?userId=${userId}&hashtagCode=1&currentPage=1">강아지</a>
                                 </li>
                                 <li>
-                                    <a href="communityListView?userId=${userId}&hashtagCode=2">고양이</a>
+                                    <a href="communityListView?userId=${userId}&hashtagCode=2&currentPage=1">고양이</a>
                                 </li>
                                 <li>
-                                    <a href="communityListView?userId=${userId}&hashtagCode=3">건강</a>
+                                    <a href="communityListView?userId=${userId}&hashtagCode=3&currentPage=1">건강</a>
                                 </li>
                                 <li>
-                                    <a href="communityListView?userId=${userId}&hashtagCode=4">동네맛집</a>
+                                    <a href="communityListView?userId=${userId}&hashtagCode=4&currentPage=1">동네맛집</a>
                                 </li>
                                 <li>
-                                    <a href="communityListView?userId=${userId}&hashtagCode=5">동네카페</a>
+                                    <a href="communityListView?userId=${userId}&hashtagCode=5&currentPage=1">동네카페</a>
                                 </li>
                                 <li>
-                                    <a href="communityListView?userId=${userId}&hashtagCode=6">살림/청소/정리</a>
+                                    <a href="communityListView?userId=${userId}&hashtagCode=6&currentPage=1">살림/청소/정리</a>
                                 </li>
                                 <li>
-                                    <a href="communityListView?userId=${userId}&hashtagCode=7">식물</a>
+                                    <a href="communityListView?userId=${userId}&hashtagCode=7&currentPage=1">식물</a>
                                 </li>
                                 <li>
-                                    <a href="communityListView?userId=${userId}&hashtagCode=8">임신/출산/육아</a>
+                                    <a href="communityListView?userId=${userId}&hashtagCode=8&currentPage=1">임신/출산/육아</a>
                                 </li>
                                 <li>
-                                    <a href="communityListView?userId=${userId}&hashtagCode=9">집꾸미기</a>
+                                    <a href="communityListView?userId=${userId}&hashtagCode=9&currentPage=1">집꾸미기</a>
                                 </li>
                             </ul>
                         </aside>

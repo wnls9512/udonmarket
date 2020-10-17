@@ -15,7 +15,10 @@
 
 <sec:authentication property="principal.username" var="userId"/>
 
+
+
 <script>
+
 
 
 
@@ -23,7 +26,7 @@ $(function(){
 
 	$("a[data-board-no]").click(function(){
 		var bCode = $(this).attr("data-board-no");
-		location.href = "${ pageContext.request.contextPath }/community/communityDetailView?bCode=" + bCode;
+		location.href = "${ pageContext.request.contextPath }/community/communityDetailView?userId=${userId}&bCode=" + bCode;
 	});
 	
 });
@@ -33,9 +36,9 @@ $(document).on('click', '#btnSearch', function(e){
 
 		e.preventDefault();
 
-		var url = "${pageContext.request.contextPath}/community/communityListView";
+		var url = "${pageContext.request.contextPath}/community/communityListView?userId=${userId}&currentPage=1";
 
-		url = url + "?searchType=" + $('#searchType').val();
+		url = url + "&searchType=" + $('#searchType').val();
 
 		url = url + "&keyword=" + $('#keyword').val();
 
@@ -97,7 +100,7 @@ function deleteBoard(bCode)
 			success: function(map)
 			{
 				alert(map.msg);
-				location.href = "${pageContext.request.contextPath}/community/communityListView?userId=${userId}";									
+				location.href = "${pageContext.request.contextPath}/community/communityListView?userId=${userId}&currentPage=1";									
 			},
 			error: function(xhr, status, err)
 			{
@@ -118,6 +121,7 @@ function likeThis(bCode)
     let $sender = $("#userId").val();
     let $bWriter = "${ community.userId }";
     let $countLike = "${ community.likeThis }";
+    
     
 	if(confirm("이 게시글을 좋아하시겠습니까?"))
 	{
@@ -144,7 +148,7 @@ function likeThis(bCode)
 					console.log("Error on Like ", sock);
 				}
 				
-				location.href = "${ pageContext.request.contextPath }/community/communityDetailView?bCode=" + bCode;									
+				location.href = "${ pageContext.request.contextPath }/community/communityDetailView?userId=${userId}&bCode=" + bCode;									
 			},
 			error: function(xhr, status, err)
 			{
@@ -157,7 +161,7 @@ function likeThis(bCode)
 				}else{
 					console.log("Error on Like ", sock);
 				}
-				location.href = "${ pageContext.request.contextPath }/community/communityDetailView?bCode=" + bCode;	
+				location.href = "${ pageContext.request.contextPath }/community/communityDetailView?userId=${userId}&bCode=" + bCode;	
 			}
 		});
 	}
@@ -165,6 +169,307 @@ function likeThis(bCode)
 		return false;
 }
 
+
+// 게시글 신고하기
+function reportList(reasonCode)
+{
+	var $board = $("#boardReport");
+	
+	$.ajax
+	({
+		url: "${pageContext.request.contextPath}/community/report/" + reasonCode,
+        dataType: "json",
+		success: function(list)
+		{
+			// 게시글 신고
+			if(reasonCode != 2)
+			{
+			 	$("#boardReport").html("");
+				var str = "";
+		
+				str += "<ul class='list'>";
+		
+				for(var i in list)
+				{
+					if(list[i].parentCode == reasonCode)
+					{
+						str += "<li>";
+						
+						if(list[i].leaf == 0)
+						{
+							str += "<a href='javascript:reportList(" + list[i].reasonCode + ")'>" + list[i].reasonContent + "</a>";
+							str += "<span>></span>";
+						}
+						else
+						{
+							str += "<a href='javascript:reportBoard(" + list[i].reasonCode + ", ${community.BCode}, \"${userId}\")'>";
+							str += list[i].reasonContent + "</a>";
+						}
+							
+						str += "</li>";
+					} 
+				}
+				
+				str += "</ul>";
+				$("#boardReport").html(str); 
+			}
+			// 사용자 신고
+			else
+			{
+		 		$("#userReport").html("");
+				var str = "";
+		
+				str += "<ul class='list'>";
+		
+				for(var i in list)
+				{
+					if(list[i].parentCode == reasonCode)
+					{
+						str += "<li>";
+						
+						if(list[i].leaf == 0)
+						{
+							str += "<a href='javascript:reportList(" + list[i].reasonCode + ")'>" + list[i].reasonContent + "</a>";
+							str += "<span>></span>";
+						}
+						else
+						{
+							str += "<a href='javascript:reportUser(" + list[i].reasonCode + ", \"${community.userId}\", \"${userId}\")'>";
+							str += list[i].reasonContent + "</a>";
+						}
+							
+						str += "</li>";
+					}
+				}
+				
+				str += "</ul>";
+				$("#userReport").html(str); 
+		
+			}
+		},
+		error: function(xhr, status, err)
+		{
+			console.log("목록 불러오기 실패");
+		}
+	});
+}
+// 게시글 신고
+function reportBoard(reasonCode, bCode, userId)
+{
+	if(confirm("신고하시겠습니까?"))
+	{
+		$.ajax
+		({
+			url: "${pageContext.request.contextPath}/community/reportBoard",
+			method: "POST",
+			data:
+			{
+				reasonCode: reasonCode,
+				bCode: bCode,
+				reportId: userId
+			},
+	        dataType: "text",
+			success: function(result)
+			{
+				alert(result);
+				$("#reportModal").modal('hide');
+			},
+			error: function(xhr, status, err)
+			{
+				alert("신고에 실패했습니다.");
+				console.log(xhr, status, err);
+				$("#reportModal").modal('hide');
+			}
+		});
+	}
+}
+// 사용자 신고
+function reportUser(reasonCode, suspectId, userId)
+{
+	if(confirm("신고하시겠습니까?"))
+	{
+		$.ajax
+		({
+			url: "${pageContext.request.contextPath}/community/reportUser",
+			method: "POST",
+			data:
+			{
+				reasonCode: reasonCode,
+				shooterId: suspectId,
+				reportId: userId
+			},
+	        dataType: "text",
+			success: function(result)
+			{
+				alert(result);
+				$("#reportModal").modal('hide');
+			},
+			error: function(xhr, status, err)
+			{
+				alert("신고에 실패했습니다.");
+				console.log(xhr, status, err);
+				$("#reportModal").modal('hide');
+			}
+		});
+	}
+}
+
+
+// 댓글 신고하기
+function reportList2(reasonCode)
+{
+	var $reply = $("#replyReport");
+	
+	let $replyCode = $("#replyCodeH").val();
+//	let $replyCode2 = $("#replyCodeHH").val();
+	
+	//alert($replyCode);
+//	alert($replyCode2);
+	
+	$.ajax
+	({
+		url: "${pageContext.request.contextPath}/community/report2/" + reasonCode,
+        dataType: "json",
+		success: function(list)
+		{
+			// 댓글 신고
+			if(reasonCode != 2)
+			{
+			 	$("#replyReport").html("");
+				var str = "";
+		
+				str += "<ul class='list'>";
+		
+				for(var i in list)
+				{
+					if(list[i].parentCode == reasonCode)
+					{
+						str += "<li>";
+						
+						if(list[i].leaf == 0)
+						{
+							str += "<a href='javascript:reportList2(" + list[i].reasonCode + ")'>" + list[i].reasonContent + "</a>";
+							str += "<span>></span>";
+						}
+						else
+						{
+							str += "<a href='javascript:reportReply(" + list[i].reasonCode + ", " +$replyCode +", \"${userId}\")'>";
+							str += list[i].reasonContent + "</a>";
+						}
+							
+						str += "</li>";
+					} 
+				}
+				
+				str += "</ul>";
+				$("#replyReport").html(str); 
+			}
+			// 사용자 신고
+			else
+			{
+		 		$("#userReport2").html("");
+				var str = "";
+		
+				str += "<ul class='list'>";
+		
+				for(var i in list)
+				{
+					if(list[i].parentCode == reasonCode)
+					{
+						str += "<li>";
+						
+						if(list[i].leaf == 0)
+						{
+							str += "<a href='javascript:reportList2(" + list[i].reasonCode + ")'>" + list[i].reasonContent + "</a>";
+							str += "<span>></span>";
+						}
+						else
+						{
+							str += "<a href='javascript:reportUser(" + list[i].reasonCode + ", \"${community.userId}\", \"${userId}\")'>";
+							str += list[i].reasonContent + "</a>";
+						}
+							
+						str += "</li>";
+					}
+				}
+				
+				str += "</ul>";
+				$("#userReport2").html(str); 
+		
+			}
+		},
+		error: function(xhr, status, err)
+		{
+			console.log("목록 불러오기 실패");
+		}
+	});
+}
+
+
+
+// 댓글 신고
+function reportReply(reasonCode, replyCode, userId)
+{
+
+	
+
+	if(confirm("신고하시겠습니까?"))
+	{
+		$.ajax
+		({
+			url: "${pageContext.request.contextPath}/community/reportReply",
+			method: "POST",
+			data:
+			{
+				reasonCode: reasonCode,
+				replyCode: replyCode,
+				reportId: userId
+			},
+	        dataType: "text",
+			success: function(result)
+			{
+				alert(result);
+				$("#reportModal2").modal('hide');
+			},
+			error: function(xhr, status, err)
+			{
+				alert("신고에 실패했습니다.");
+				console.log(xhr, status, err);
+				$("#reportModal2").modal('hide');
+			}
+		});
+	}
+}
+// 사용자 신고
+function reportUser(reasonCode, suspectId, userId)
+{
+	if(confirm("신고하시겠습니까?"))
+	{
+		$.ajax
+		({
+			url: "${pageContext.request.contextPath}/community/reportUser",
+			method: "POST",
+			data:
+			{
+				reasonCode: reasonCode,
+				shooterId: suspectId,
+				reportId: userId
+			},
+	        dataType: "text",
+			success: function(result)
+			{
+				alert(result);
+				$("#reportModal2").modal('hide');
+			},
+			error: function(xhr, status, err)
+			{
+				alert("신고에 실패했습니다.");
+				console.log(xhr, status, err);
+				$("#reportModal2").modal('hide');
+			}
+		});
+	}
+}
 
 
 
@@ -233,7 +538,7 @@ function likeThis(bCode)
                      <h2>
                      	${ community.boardTitle }
                      </h2>
-                     <h6><fmt:formatDate value="${ community.regDate }"/></h6>
+                     <h6><fmt:formatDate value="${ community.regDate }" pattern="yyyy.MM.dd"/>&nbsp;&nbsp;<fmt:formatDate value="${ community.regDate }" pattern="HH:mm"/></h6>
                      <br />
                      <p class="excert">
                         ${ community.boardContent }
@@ -280,7 +585,7 @@ function likeThis(bCode)
                      <a href="${pageContext.request.contextPath}/member/mypage?userId=${community.userId}">
                      <div class="blog-author" style="width: 100%;/*  margin:0 auto; */ margin-top: 5px; /* background-color: white; */">
                   <div class="media align-items-center" >
-                     <img src="${pageContext.request.contextPath}/resources/img/blog/author.png" alt="">
+                     <img src="${pageContext.request.contextPath}/resources/img/member/default_profile.jpg" alt="">
                      <div class="media-body">
                         
                            <h4>${ community.nickname }</h4>
@@ -302,7 +607,7 @@ function likeThis(bCode)
                         <!-- <p class="comment-count"><span class="align-middle"><i class="far fa-comment"></i></span> 06 Comments</p> -->
                      </div>
                      <c:if test="${ community.userId ne userId }">
-                     <a class="genric-btn primary-border small">신고하기</a>
+                     <a class="genric-btn primary-border small" href="javascript:void(0);" data-toggle="modal" data-target="#reportModal">신고하기</a>
                      </c:if>
                   </div>
                   
@@ -413,7 +718,7 @@ function likeThis(bCode)
                      <div class="single-comment justify-content-between d-flex">
                         <div class="user justify-content-between d-flex">
                            <div class="thumb">
-                              <img src="${pageContext.request.contextPath}/resources/img/comment/comment_1.png" alt="">
+                              <a href="${pageContext.request.contextPath }/member/mypage?userId=${r.userId}"><img src="${pageContext.request.contextPath}/resources/img/member/default_profile.jpg" alt=""></a>
                            </div>
                            <div class="desc">
                               <p class="comment">
@@ -424,18 +729,18 @@ function likeThis(bCode)
                                     <h5>
                                        <a href="#">${r.nickname}</a>
                                     </h5>
-                                    <p class="date"> <fmt:formatDate value="${r.regDate}" pattern="yyyy-MM-dd" /> </p>
+                                    <p class="date"> <fmt:formatDate value="${r.regDate}" pattern="yyyy-MM-dd" />&nbsp;&nbsp; <fmt:formatDate value="${r.regDate}" pattern="HH:mm" /> </p>
                                       &nbsp;&nbsp; &nbsp;&nbsp;
                                       
                                       <c:if test="${ r.userId eq userId }">
 	                                      <a href="#">수정</a>&nbsp;
 	                                      <p>·</p>&nbsp;
-	                                      <a href="${pageContext.request.contextPath }/community/deleteReply?replyCode=${r.replyCode}&bCode=${community.BCode}">삭제</a>&nbsp;
+	                                      <a href="${pageContext.request.contextPath }/community/deleteReply?replyCode=${r.replyCode}&bCode=${community.BCode}&userId=${userId}">삭제</a>&nbsp;
 
                                       
                                       </c:if>
                                       <c:if test="${ r.userId ne userId }">
-                                    	<a href="#">신고하기</a>
+                                    	<a href="javascript:void(0);" data-toggle="modal" data-target="#reportModal2">신고하기 <input type="hidden" id="replyCodeH" name="replyCodeH" value="${r.replyCode}" /></a>
                                       </c:if>
                                       
                                  </div>
@@ -461,7 +766,7 @@ function likeThis(bCode)
                         </div>
                      </div>
                      <div class="form-group mt-3">
-                        <a onClick='fn_addtoBoard()' class="btn_3" style="text-align: center;">작성</a>
+                        <button onClick='fn_addtoBoard()' class="genric-btn primary radius" style="text-align: center; font-weight: bold;">등록</button>
                      </div>
                   </form>
                </div>
@@ -512,22 +817,22 @@ function likeThis(bCode)
                                     </a>
                                 </li> -->
                                 <li>
-                                    <a href="communityListView?categoryCode=17" class="d-flex">
+                                    <a href="communityListView?userId=${userId }&categoryCode=17&currentPage=1" class="d-flex">
                                         <p>동네생활이야기</p>
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="communityListView?categoryCode=18" class="d-flex">
+                                    <a href="communityListView?userId=${userId }&categoryCode=18&currentPage=1" class="d-flex">
                                         <p>우리동네질문</p>
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="communityListView?categoryCode=19" class="d-flex">
+                                    <a href="communityListView?userId=${userId }&categoryCode=19&currentPage=1" class="d-flex">
                                         <p>분실/실종센터</p>
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="communityListView?categoryCode=20" class="d-flex">
+                                    <a href="communityListView?userId=${userId }&categoryCode=20&currentPage=1" class="d-flex">
                                         <p>동네사건사고</p>
                                     </a>
                                 </li>
@@ -557,31 +862,31 @@ function likeThis(bCode)
                             <h4 class="widget_title">태그</h4>
                             <ul class="list">
                                 <li>
-                                    <a href="communityListView?hashtagCode=1">강아지</a>
+                                    <a href="communityListView?userId=${userId }&hashtagCode=1&currentPage=1">강아지</a>
                                 </li>
                                 <li>
-                                    <a href="communityListView?hashtagCode=2">고양이</a>
+                                    <a href="communityListView?userId=${userId }&hashtagCode=2&currentPage=1">고양이</a>
                                 </li>
                                 <li>
-                                    <a href="communityListView?hashtagCode=3">건강</a>
+                                    <a href="communityListView?userId=${userId }&hashtagCode=3&currentPage=1">건강</a>
                                 </li>
                                 <li>
-                                    <a href="communityListView?hashtagCode=4">동네맛집</a>
+                                    <a href="communityListView?userId=${userId }&hashtagCode=4&currentPage=1">동네맛집</a>
                                 </li>
                                 <li>
-                                    <a href="communityListView?hashtagCode=5">동네카페</a>
+                                    <a href="communityListView?userId=${userId }&hashtagCode=5&currentPage=1">동네카페</a>
                                 </li>
                                 <li>
-                                    <a href="communityListView?hashtagCode=6">살림/청소/정리</a>
+                                    <a href="communityListView?userId=${userId }&hashtagCode=6&currentPage=1">살림/청소/정리</a>
                                 </li>
                                 <li>
-                                    <a href="communityListView?hashtagCode=7">식물</a>
+                                    <a href="communityListView?userId=${userId }&hashtagCode=7&currentPage=1">식물</a>
                                 </li>
                                 <li>
-                                    <a href="communityListView?hashtagCode=8">임신/출산/육아</a>
+                                    <a href="communityListView?userId=${userId }&hashtagCode=8&currentPage=1">임신/출산/육아</a>
                                 </li>
                                 <li>
-                                    <a href="communityListView?hashtagCode=9">집꾸미기</a>
+                                    <a href="communityListView?userId=${userId }&hashtagCode=9&currentPage=1">집꾸미기</a>
                                 </li>
                             </ul>
                         </aside>
@@ -592,6 +897,129 @@ function likeThis(bCode)
       </div>
    </section>
    <!--================Blog Area end =================-->
+   
+   <!-- ========== REPORT MODAL START ========== -->
+<div class="modal fade" id="reportModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle"><strong>게시글 신고</strong></h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+	   <div class="row text-center align-items-end">
+	      <div class="mb-5 mb-lg-0" style="float:none; margin:0 auto;">
+	        <div class="bg-white rounded-lg">
+				<div class="p-4 text-left">
+					<span><strong>'${community.boardTitle }'</strong></span><br/>
+					<span><strong>게시글을 신고하는 이유를 선택해주세요.</strong></span>
+					<hr/>
+					<div class="left_sidebar_area">
+						<aside class="left_widgets p_filter_widgets">
+							<div class="widgets_inner pb-0" id="boardReport">
+                                <ul class="list">
+                   					<c:forEach items="${reasonReport }" var="r">
+                                    <li>
+                                        <a href="javascript:reportList(${r.reasonCode })">${r.reasonContent }</a>
+                                        <span>></span>
+                                    </li>
+                                    </c:forEach>
+                                </ul>
+							</div>
+						</aside>
+					</div>
+					<hr/><br/>
+					<span><strong>혹시 '${community.nickname }'님을 신고하고 싶으신가요?</strong></span>
+					<hr/>
+					<div class="left_sidebar_area">
+						<aside class="left_widgets p_filter_widgets">
+							<div class="widgets_inner pb-0" id="userReport">
+                                <ul class="list">
+                                    <li>
+                                        <a href="javascript:reportList(2)">사용자 신고하러 가기</a>
+                                        <span>></span>
+                                    </li>
+                                </ul>
+							</div>
+						</aside>
+					</div>
+					<hr/>
+				</div>
+	        </div>
+	      </div>
+      	</div>
+	  </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- ========== REPORT MODAL END ========== -->
+
+  <!-- ========== REPORT MODAL START ========== -->
+<div class="modal fade" id="reportModal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle"><strong>댓글 신고</strong></h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+	   <div class="row text-center align-items-end">
+	      <div class="mb-5 mb-lg-0" style="float:none; margin:0 auto;">
+	        <div class="bg-white rounded-lg">
+				<div class="p-4 text-left">
+					<span><strong></strong></span><br/>
+					<span><strong>해당 댓글을 신고하는 이유를 선택해주세요.</strong></span>
+					<hr/>
+					<div class="left_sidebar_area">
+						<aside class="left_widgets p_filter_widgets">
+							<div class="widgets_inner pb-0" id="replyReport">
+                                <ul class="list">
+                   					<c:forEach items="${reasonReport2 }" var="r">
+                                    <li>
+                                        <a href="javascript:reportList2(${r.reasonCode })">${r.reasonContent }</a>
+                                        <span>></span>
+                                    </li>
+                                    </c:forEach>
+                                </ul>
+							</div>
+						</aside>
+					</div>
+					<hr/><br/>
+					<span><strong>혹시 '${community.nickname }'님을 신고하고 싶으신가요?</strong></span>
+					<hr/>
+					<div class="left_sidebar_area">
+						<aside class="left_widgets p_filter_widgets">
+							<div class="widgets_inner pb-0" id="userReport2">
+                                <ul class="list">
+                                    <li>
+                                        <a href="javascript:reportList2(2)">사용자 신고하러 가기</a>
+                                        <span>></span>
+                                    </li>
+                                </ul>
+							</div>
+						</aside>
+					</div>
+					<hr/>
+				</div>
+	        </div>
+	      </div>
+      	</div>
+	  </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- ========== REPORT MODAL END ========== -->
+
 
 
 
