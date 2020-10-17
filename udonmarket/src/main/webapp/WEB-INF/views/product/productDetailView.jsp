@@ -53,8 +53,8 @@
           <div class="product_slider_img">
             <div id="vertical">
             	<c:forEach items="${photos }" var="photo">
-				<div data-thumb="${pageContext.request.contextPath }/resources/upload/${photo.uploadPath}/${photo.uuid}_${photo.originalFilename}">
-				  <img src="${pageContext.request.contextPath }/resources/upload/${photo.uploadPath}/${photo.uuid}_${photo.originalFilename}" />
+				<div data-thumb="${pageContext.request.contextPath }/resources/upload/${photo.uploadPath}/${photo.uuid}/${photo.originalFilename}">
+				  <img src="${pageContext.request.contextPath }/resources/upload/${photo.uploadPath}/${photo.uuid}/${photo.originalFilename}" />
 				</div>
 				</c:forEach>
             </div>
@@ -565,7 +565,7 @@ function addToWish(userId, pCode)
 		{
             xhr.setRequestHeader("${_csrf.headerName}", "${_csrf.token}");
         },
-			success: function(result)
+		success: function(result)
 		{
 			alert(result);										
 		},
@@ -707,6 +707,21 @@ function deleteProduct(pCode)
 {
 	if(confirm("삭제할까요?"))
 	{
+		// 파일 삭제
+		<c:forEach var="photo" items="${photos}">
+		$.ajax
+		({
+			url: "${pageContext.request.contextPath}/product/boardDeleteFile.do?fileId=${photo.uuid}",
+			method: "POST",
+			beforeSend: function(xhr)
+			{
+	            xhr.setRequestHeader("${_csrf.headerName}", "${_csrf.token}");
+	        },
+			success: function(result){},
+			error: function(xhr, status, err){}
+		});
+		</c:forEach>
+		
 		$.ajax
 		({
 			url: "${pageContext.request.contextPath}/product/" + pCode,
@@ -719,7 +734,7 @@ function deleteProduct(pCode)
 			success: function(map)
 			{
 				alert(map.msg);
-				location.href = "${pageContext.request.contextPath}/product/productListView?userId=${userId}";									
+				location.href = "${pageContext.request.contextPath}/product/productListView?userId=${userId}&currentPage=1";									
 			},
 			error: function(xhr, status, err)
 			{
@@ -727,6 +742,7 @@ function deleteProduct(pCode)
 				console.log(xhr, status, err);
 			}
 		});
+
 	}
 	else
 		return false;

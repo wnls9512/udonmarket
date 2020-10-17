@@ -48,7 +48,7 @@ public interface ProductService
 
     ProductVO selectVOByPCode(int pCode);
 
-    int update(ProductVO product);
+    int update(Map<String, Object> map);
 
     int delete(int pCode);
 
@@ -93,6 +93,7 @@ public interface ProductService
     List<Evaluation> selectEvaListforBuyer(int kind);
 
     int insertReviewByBuyer(ReviewDTO review);
+
 
 
 

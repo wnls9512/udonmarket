@@ -104,16 +104,10 @@ $(function(){
 	                    <div class="login_part_form" style="padding: 70px 0;">
 	                        <div class="login_part_form_iner">
                         	    <!-- 첨부파일의 갯수는 최대 4개로 하고 각 파일ID를 저장하기 위해 만든다. -->
-							    <!-- 4개 미만인 경우에는 4개로 맞추어 주기 위해 비어 있는 필드를 생성한다. -->
-							    <c:set var="fileListSize" value="${fn:length(photos)}"/>
-							    <c:forEach var="photo" items="${photos}" varStatus="status">
-							        <input type="hidden" name="uploadFile" value="${photo.uuid}" />
-							    </c:forEach>
-							    <c:if test="${fileListSize lt 4}">
-							        <c:forEach begin="0" end="${3-fileListSize}">
-							            <input type="hidden" name="uploadFile"/>
-							        </c:forEach>
-							    </c:if>
+						        <input type="hidden" name="uploadFile"/>
+						        <input type="hidden" name="uploadFile"/>
+						        <input type="hidden" name="uploadFile"/>
+						        <input type="hidden" name="uploadFile"/>
 	                        	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 	                        	<input type="hidden" name="pCode" value="${product.PCode }" />
 	                        	<input type="hidden" name="seller" id="seller" value="${product.seller }"/>
@@ -344,26 +338,14 @@ $(function()
 
 
 <!-- ================ filepond ================  -->
-<%-- <script src="https://unpkg.com/filepond-plugin-file-metadata/dist/filepond-plugin-file-metadata.js"></script>
-<script src="https://unpkg.com/filepond-plugin-image-crop/dist/filepond-plugin-image-crop.js"></script>
-
-<script src="${pageContext.request.contextPath }/resources/js/filepond-plugin-image-preview.js"></script> --%>
-<script src="https://unpkg.com/filepond/dist/filepond.min.js"></script>
+<script src="https://unpkg.com/filepond-plugin-file-metadata/dist/filepond-plugin-file-metadata.js"></script>
+<script src="https://unpkg.com/filepond/dist/filepond.js"></script>
 <script src="https://unpkg.com/jquery-filepond/filepond.jquery.js"></script>
 
 <script>
 
-/* 업로드된 파일 filepond에 보여주기 */
-var ufiles = [];
-var ufileIds = document.getElementsByName("uploadFile");
-for(let i = 0; i < ufileIds.length; i++)
-{
-	if(ufileIds[i].value != '')
-	{
-		// restore를 사용할 때는 limbo 타입이다.
-		ufiles.push({source: ufileIds[i].value, option: {type: "limbo"}}); 
-	}
-}
+
+
 const f = document.querySelector('input[type="file"]');
 const pond = FilePond.create
 			(f, { 
@@ -371,22 +353,44 @@ const pond = FilePond.create
                    	allowMultiple: true,
                    	acceptedFileTypes: ['image/*'],
                    	server: { 
-                   				url: "<c:url value='/product'/>",
+                       			url: "${pageContext.request.contextPath}/product",
                    	        	process: {url: "/boardSaveFile.do?${_csrf.parameterName}=${_csrf.token}" },
                    	        	revert: function (fileId, load, error) { fn_revertFile(fileId); load(); },
-                   	         	restore: {url: "/fileList.do?fileId="}
-							}, files: ufiles
+							}
                     }
 			);
 
+
+/* 업로드된 파일 filepond에 보여주기 */
+var ufiles = [];
+
+<c:forEach var="photo" items="${photos}">
+	$('.my-pond').filepond('addFile', '${pageContext.request.contextPath}/resources/upload/${photo.uploadPath}/${photo.uuid}/${photo.originalFilename}').then(function(file)
+	{
+		// 원래 파일은 지우기
+		$.ajax
+		({
+			url: "${pageContext.request.contextPath}/product/boardDeleteFile.do?fileId=${photo.uuid}",
+			method: "POST",
+			beforeSend: function(xhr)
+			{
+	            xhr.setRequestHeader("${_csrf.headerName}", "${_csrf.token}");
+	        },
+			success: function(result){},
+			error: function(xhr, status, err){}
+		});
+	 });
+</c:forEach>
+
+var uploadedfiles = [];
 //업로드가 모두 처리된 후 호출되는 callback
 //filepond에 파일이 표시 되면 이 함수가 호출된다. 결과적으로 신규등록과 같은 상태가 된다.
-var uploadedfiles = [];
 pond.on('processfile', function (e, f) 
 {
     console.log(f.serverId);
     uploadedfiles.push(f.serverId);
 });
+
 
 var x = new XMLHttpRequest();
 var handleStateChange = function () 

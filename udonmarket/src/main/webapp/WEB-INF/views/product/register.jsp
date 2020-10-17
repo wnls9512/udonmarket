@@ -25,9 +25,6 @@
 
 <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/upload.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/modal.css">
-<!-- filepond -->
-<link href="https://unpkg.com/filepond/dist/filepond.css" rel="stylesheet">
-<link href="${pageContext.request.contextPath }/resources/css/filepond-plugin-image-preview.css" rel="stylesheet">
 <style>
 body
 {
@@ -273,9 +270,6 @@ $(function()
 
 <!-- ================ filepond ================  -->
 <script src="https://unpkg.com/filepond-plugin-file-metadata/dist/filepond-plugin-file-metadata.js"></script>
-<script src="https://unpkg.com/filepond-plugin-image-crop/dist/filepond-plugin-image-crop.js"></script>
-
-<script src="${pageContext.request.contextPath }/resources/js/filepond-plugin-image-preview.js"></script>
 <script src="https://unpkg.com/filepond/dist/filepond.js"></script>
     
 <script>
@@ -285,12 +279,13 @@ const pond = FilePond.create
 					maxFiles: 4,
                    	allowMultiple: true,
                    	acceptedFileTypes: ['image/*'],
-                   	server: { 
-	                   			url: "<c:url value='/product' />",
-                   	        	process: {url: "/boardSaveFile.do?${_csrf.parameterName}=${_csrf.token}" },
-                   	        	revert: function (fileId, load, error) { fn_revertFile(fileId); load(); }
-							}
-                    }
+                   	server: 
+                   	{ 
+                       	url: "${pageContext.request.contextPath}/product",
+          	        	process: {url: "/boardSaveFile.do?${_csrf.parameterName}=${_csrf.token}" },
+           	        	revert: function (fileId, load, error) { fn_revertFile(fileId); load(); }
+					}
+                }
 			);
 
 
@@ -299,7 +294,6 @@ const pond = FilePond.create
 var uploadedfiles = [];
 pond.on('processfile', function (e, f) 
 {
-    console.log(f.serverId);
     uploadedfiles.push(f.serverId);
 });
 
@@ -331,14 +325,16 @@ function fn_revertFile(fileId)
 	let p = uploadedfiles.indexOf(fileId);
 	uploadedfiles.splice(p,1);
 
+	console.log(fileId);
+	
 	// 고전적인 AJAX
 	if (window.XMLHttpRequest) 
 	{
 	    x = new XMLHttpRequest();
-		x.open("POST", "<c:url value='/product/boardDeleteFile.do?${_csrf.parameterName}=${_csrf.token}'/>", true); // async 
+		x.open("POST", "<c:url value='/product/boardDeleteFile.do'/>", true); // async 
 		x.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 		x.onreadystatechange = handleStateChange;
-		x.send("fileId=" + fileId); //POST방식일때 send()를 사용하여 querystring형태로 전달한다.
+		x.send("${_csrf.parameterName}=${_csrf.token}&fileId=" + fileId); //POST방식일때 send()를 사용하여 querystring형태로 전달한다.
    		//str = x.responseText;	//sync일때는 여기서 결과를 받을 수 있다.
 		//x=null;
 	}
