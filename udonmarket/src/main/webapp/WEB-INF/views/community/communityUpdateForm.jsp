@@ -42,14 +42,14 @@ function fn_updatetoBoard(){
         </div>
     </section>
     <!-- breadcrumb start-->
-<section class="login_part padding_top">
+<section class="login_part">
         <div class="container">
             <div class="row align-items-center">
-                <div class="col-lg-6 col-md-6">
+                <%-- <div class="col-lg-6 col-md-6">
                     <div class="login_part_text text-center" style="background-image:none; border: 1px solid #ff3368; width:100%;">
                         <div class="login_part_text_iner">
 	                        	<!-- upload image start -->
-	                        	<main class="main_full">
+	                        	<!-- <main class="main_full">
 									<div class="container">
 										<div class="panel">
 											<div class="button_outer">
@@ -66,13 +66,21 @@ function fn_updatetoBoard(){
 											<span class="file_remove">X</span>
 										</div>
 									</div>
-								</main>
+								</main> -->
 								<!-- upload image end -->
+								<c:if test="${ community.uuid == null }">
+                        		 <img class="card-img rounded-0" style="height: 400px; width: 400px; text-align: center;" src="${pageContext.request.contextPath}/resources/img/blog/no_img.png" alt="">
+								</c:if>
+								<c:if test="${ community.uuid != null }">
+								<img style="height: 400px; width: 400px; text-align: center;" class="card-img rounded-0" src="${pageContext.request.contextPath }/resources/upload/${community.uploadPath}/${community.uuid}_${community.originalFilename}" alt="">
+								</c:if>
+								<br />
+								<p style="color: red;">* 이미지는 수정이 불가능합니다  *</p>
 	                        </div>
 	                    </div>
-	                </div>
-	                <div class="col-lg-6 col-md-6">
-	                    <div class="login_part_form">
+	                </div> --%>
+	                <div class="col-lg-6 col-md-6" style="width: 1000px;">
+	                    <div class="login_part_form" style="width: 1000px;">
 	                        <div class="login_part_form_iner">
 	                        <form id="writeForm" name="writeForm" method="post">
 	                        	<div class="col-md-12 form-group p_star" style="margin-top: 10%;">

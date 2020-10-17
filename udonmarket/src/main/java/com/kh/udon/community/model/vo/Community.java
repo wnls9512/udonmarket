@@ -2,20 +2,11 @@ package com.kh.udon.community.model.vo;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
+
+import lombok.Data;
 
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
-
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@ToString
+@Data
 public class Community implements Serializable
 {
 	
@@ -30,9 +21,13 @@ public class Community implements Serializable
 	private int BoardphotoCount;
 	private String nickname;
 	private String address;
+	private String uploadPath;
+	private String uuid;
+	private String originalFilename;
+	
 	private int replyCount;
 	
 	
-	private List<Boardphoto> BoardphotoList;
+	String photoId;
 
 }

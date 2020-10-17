@@ -36,6 +36,14 @@ $(function(){
 	});
 	
 });
+
+$(function(){
+	$("a[data-hashtag-code]").click(function(){
+		var hashtagCode = $(this).attr("data-hashtag-code");
+		location.href = "${ pageContext.request.contextPath }/community/communityListView?userId=${userId}&currentPage=1&hashtagCode=" + hashtagCode;
+	});
+	
+});
 </script>
 
     <!--================Home Banner Area =================-->
@@ -91,8 +99,13 @@ $(function(){
                     	
                     	<c:if test="${ c.categoryCode == 17 || c.categoryCode == 18 || c.categoryCode == 19 || c.categoryCode == 20}">
                         <article class="blog_item">
-                            <div class="blog_item_img">
-                                <img class="card-img rounded-0" src="${pageContext.request.contextPath}/resources/img/blog/no_img.png" alt="">
+                            <div class="blog_item_img" style="background-color: #fffafa; text-align: center;">
+								<c:if test="${ c.uuid == null }">
+                        		 <img class="card-img rounded-0" style="height: 400px; width: 400px; text-align: center;" src="${pageContext.request.contextPath}/resources/img/blog/no_img.png" alt="">
+								</c:if>
+								<c:if test="${ c.uuid != null }">
+                                <img style="height: 400px; width: 400px; text-align: center;" class="card-img rounded-0" src="${pageContext.request.contextPath }/resources/upload/${c.uploadPath}/${c.uuid}_${c.originalFilename}" alt="">
+								</c:if>
                                 <a href="#" class="blog_item_date">
                                     <h3></h3>
                                     <p><fmt:formatDate value="${ c.regDate }" type="both"/></p>
@@ -321,7 +334,8 @@ $(function(){
                             <h4 class="widget_title">태그</h4>
                             <ul class="list">
                                 <li>
-                                    <a href="communityListView?userId=${userId}&hashtagCode=1&currentPage=1">강아지</a>
+                                    <%-- <a href="communityListView?userId=${userId}&hashtagCode=1&currentPage=1">강아지</a> --%>
+                                    <a data-hashtag-code="1">강아지</a>
                                 </li>
                                 <li>
                                     <a href="communityListView?userId=${userId}&hashtagCode=2&currentPage=1">고양이</a>
