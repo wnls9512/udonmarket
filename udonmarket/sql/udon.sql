@@ -95,13 +95,14 @@ create table board
 );
 
 create table board_photo
-(  
-    photo_code number,
-    b_code number not null,
-    original_filename varchar2(50) not null,
-    renamed_filename varchar2(50) not null,
-    constraint pk_board_photo primary key(photo_code),
-    constraint fk_board_photo_b_code foreign key(b_code) references board(b_code)
+(
+    photo_code number not null, 
+    b_code number,
+    original_filename varchar2(100) not null,
+    uuid varchar2(100) not null,
+    upload_path varchar2(100),
+    constraints pk_board_photo_code primary key(photo_code),
+    constraints fk_photo_board_b_code foreign key(b_code) references board(b_code) on delete cascade
 );
 
 create table product
@@ -290,13 +291,19 @@ create table evaluation
 create table notification
 (
     noti_code number,
-    user_id varchar2(50) not null,
-    noti_kind varchar2(2) not null,
-    noti_check number default 0 not null,
-    constraint pk_notification primary key(noti_code),
-    constraint fk_notification_user_id foreign key(user_id) references member(user_id),
-    constraint ck_notification_noti_kind check(noti_kind in('PC', 'K', 'PS')),
-    constraint ck_notification_noti_check check(noti_check in(1,0))
+    p_code number,
+    p_title varchar2(100),
+    receiver varchar2(50),
+    sender varchar2(50),
+    kind varchar2(10),
+    noti_content varchar2(200),
+    noti_check number,
+    constraint pk_notification_noti_code primary key(noti_code),
+    constraint fk_notification_p_code foreign key(p_code) references product(p_code),
+    constraint fk_notification_receiver foreign key(receiver) references member(user_id),
+    constraint fk_notification_sender foreign key(sender) references member(user_id),
+    constraint ck_notification_kind check (kind in('reply', 'price', 'nego', 'keyword', 'like')),
+    constraint ck_notification_noti_check check(noti_check in(1, 0))
 );
 
 create table keyword
@@ -513,6 +520,7 @@ insert into reason_report values(seq_reason_report.nextval, '이웃을 비방하
 insert into reason_report values(seq_reason_report.nextval, '중복/도배 댓글이에요', 4);
 insert into reason_report values(seq_reason_report.nextval, '셀카나 개인정보가 포함되어 있어요', 4);
 insert into reason_report values(seq_reason_report.nextval, '분쟁/논란이 될 만한 댓글이에요', 4);
+select * from reason_report;
 --========================================
 --            DUMMY DATA
 --========================================
@@ -576,17 +584,3 @@ insert into keyword values(SEQ_KEYWORD.nextval, 'test', '아이폰');
 insert into keyword values(SEQ_KEYWORD.nextval, 'juwon', '삼성');
 insert into keyword values(SEQ_KEYWORD.nextval, 'juwon', '갤럭시');
 --==========================================================================================
-update product set buyer = null where p_code = 63;
-commit;
-select * from product;
-delete from review where review_code = 43
-
-
-
-
-
-
-
-
-
-;
