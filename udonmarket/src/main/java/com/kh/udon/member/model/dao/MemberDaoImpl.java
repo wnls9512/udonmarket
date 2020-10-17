@@ -271,4 +271,9 @@ public class MemberDaoImpl implements MemberDao
 	public int deleteBlockUser(Map<String, Object> map) {
 		return session.delete("member.deleteBlockUser", map);
 	}
+
+	@Override
+	public List<Keyword> selectAllkeywordList() {
+		return session.selectList("member.selectAllkeywordList");
+	}
 }

@@ -99,6 +99,11 @@
 		key_code = #{keyCode}
 </delete>
 
+<!-- 키워드 모두 가져오기 -->
+<select id="selectAllkeywordList" resultType="keyword">
+	select * from keyword
+</select>
+
 <!-- 회원가입 -->
 <insert id="insertMember">
 	insert into member

@@ -1,7 +1,6 @@
 package com.kh.udon.product.controller;
 
 import java.io.BufferedInputStream;
-
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -9,6 +8,7 @@ import java.io.IOException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -39,10 +39,15 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.socket.TextMessage;
+import org.springframework.web.socket.WebSocketMessage;
+import org.springframework.web.socket.WebSocketSession;
 
 import com.kh.udon.common.model.vo.PageInfo;
 import com.kh.udon.common.template.Pagination;
 import com.kh.udon.common.util.ResourceCloseHelper;
+import com.kh.udon.common.websocket.WebSocketHandler;
+import com.kh.udon.member.model.vo.Keyword;
 import com.kh.udon.member.model.vo.Wish;
 import com.kh.udon.product.model.service.ProductService;
 import com.kh.udon.product.model.vo.CategoryVO;
@@ -180,7 +185,9 @@ public class ProductController
     @PostMapping("/register")
     public String register(ProductVO product,
                            HttpServletRequest req,
-                           RedirectAttributes rttr)
+                           RedirectAttributes rttr,
+                           HttpSession session,
+                           WebSocketSession ws)
     {
         int result = 0;
         
@@ -211,10 +218,43 @@ public class ProductController
             result = service.updateProductCode(map);
         }
         
-        
-        
         rttr.addFlashAttribute("msg", result > 0 ? "상품 등록 성공 💛" : "상품 등록 실패 🤔");
         rttr.addAttribute("userId", product.getSeller());
+
+        //키워드 알림 START /////////////////////////////////////////////////////////////////////
+        //세션에 있는 모든 키워드를 꺼내서 (login 성공 시 세션에 저장함)
+        //해당 상품 제목과 비교한뒤 websocketHandler에 sendMsg 하기
+//        List<Keyword> keyWordAllList = (List<Keyword>) session.getAttribute("keywordList");
+//        log.debug("keywordAlList = {}", keyWordAllList);
+//        
+//        String title = product.getTitle();
+//        List<String> keyHasUserId = new ArrayList<>();
+//        
+//        for(Keyword k : keyWordAllList) {
+//        	if(title.contains(k.getKeyContent())) {
+//        		keyHasUserId.add(k.getUserId());
+//        	}
+//        }
+//        log.debug("keyHasUserId List = {}", keyHasUserId);
+//        
+//        WebSocketHandler webSocketHandler = new WebSocketHandler();
+//
+//        //UserId 개수만큼 ws에 메세지 전송
+//        for(int i=0; i<keyHasUserId.size(); i++) {
+//        	
+//        	//keyword/발신인/수신인/상품코드/상품제목/
+//        	String msg = "keyword," + product.getSeller() + "," + keyHasUserId.get(i) + ","
+//        				  + pCode + "," + product.getTitle();
+//        	
+//			WebSocketMessage<String> message = new TextMessage(msg);
+//			try {
+//				webSocketHandler.handleMessage(ws, message);
+//			} catch (Exception e) {
+//				e.printStackTrace();
+//			}
+//        	
+//        }        
+        //키워드 알림  END ////////////////////////////////////////////////////////////////////////
         
         return "redirect:/product/productListView";
     }
