@@ -847,6 +847,10 @@ function reportProduct(reasonCode, pCode, userId)
 				reportId: userId
 			},
 	        dataType: "text",
+			beforeSend: function(xhr)
+			{
+	            xhr.setRequestHeader("${_csrf.headerName}", "${_csrf.token}");
+	        },
 			success: function(result)
 			{
 				alert(result);
@@ -877,6 +881,10 @@ function reportUser(reasonCode, suspectId, userId)
 				reportId: userId
 			},
 	        dataType: "text",
+			beforeSend: function(xhr)
+			{
+	            xhr.setRequestHeader("${_csrf.headerName}", "${_csrf.token}");
+	        },
 			success: function(result)
 			{
 				alert(result);
