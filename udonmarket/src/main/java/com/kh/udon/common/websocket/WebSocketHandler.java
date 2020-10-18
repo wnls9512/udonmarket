@@ -121,7 +121,7 @@ public class WebSocketHandler extends TextWebSocketHandler{
 				}
 				else if("like".equals(cmd) && receiverSession != null) {
 					TextMessage tmpMsg = new TextMessage("[좋아요] 이웃이 "
-							+ "<a href='/udon/community/communityDetailView?bCode=" + pCode + "'>" + title +" 을/를 ' 좋아합니다 ♡ " + noti + "개");
+							+ "<a href='/udon/community/communityDetailView?bCode=" + pCode + "'>" + title +" 을/를 ' 좋아합니다 ♡");
 					
 					receiverSession.sendMessage(tmpMsg);
 				}
@@ -147,6 +147,18 @@ public class WebSocketHandler extends TextWebSocketHandler{
 				int roomCode = Integer.parseInt(strs[3]);
 				String content = strs[4];
 				
+				String renamedFileName = null;
+				
+				String[] fileArr = content.split("/");
+				
+				ChatMessage m = new ChatMessage(0, roomCode, sender, content, null, null, renamedFileName, null);
+				
+				if(fileArr != null && fileArr.length == 2) {					
+					m.setOriginalFileName(fileArr[0]);
+					m.setRenamedFileName(fileArr[1]);
+				}
+				
+				System.out.println("cmd = " + cmd);
 				log.debug("sender = {}", sender);
 				log.debug("receiver = {}", receiver);
 				
@@ -154,29 +166,45 @@ public class WebSocketHandler extends TextWebSocketHandler{
 				//사용자가 해당 채팅방에 있을 때만 알림을 보내기.............
 				WebSocketSession receiverSession = userSessions.get(receiver); 
 				
+				Date now = new Date();
+				SimpleDateFormat fmt = new SimpleDateFormat ("yyyy/MM/dd HH:mm");
+				//fmt.format(now);
+
+
 				if("chat".equals(cmd) && receiverSession != null) {
-					
-					Date now = new Date();
-					SimpleDateFormat fmt = new SimpleDateFormat ("yyyy/MM/dd HH:mm");
-					//fmt.format(now);
-					
-					String sendMsg = roomCode + "@<div name='sendMsg' class='media w-50 mb-3'><img src='https://res.cloudinary.com/mhmd/image/upload/v1564960395/avatar_usae7z.svg' alt='user' width='50' class='rounded-circle'>" +
-							"<div class='media-body ml-3' name='sender_" + sender + "'>" +
-							"<div class='bg-light rounded py-2 px-3 mb-2'>" +
-							"<p class='text-small mb-0 text-muted'>" + content + "</p>" +
-							"</div>" +
-							"<p class='small text-muted'>" + fmt.format(now) + "</p>" +
-							"</div>" +
+						
+					String sendMsg = roomCode + 
+							"@<div name='sendMsg' class='media w-50 mb-3'><img src='https://res.cloudinary.com/mhmd/image/upload/v1564960395/avatar_usae7z.svg' alt='user' width='50' class='rounded-circle'>" +
+								"<div class='media-body ml-3' name='sender_" + sender + "'>" +
+									"<div class='bg-light rounded py-2 px-3 mb-2'>" +
+										"<p class='text-small mb-0 text-muted'>" + content + "</p>" +
+									"</div>" +
+									"<p class='small text-muted'>" + fmt.format(now) + "</p>" +
+								"</div>" +
 							"</div>";
-					
-					//String sendMsg = sender + ":" + content + ":" + fmt.format(now);
 					
 					TextMessage tmpMsg = new TextMessage(sendMsg);
 					receiverSession.sendMessage(tmpMsg);
 				}
 				
+				else if("file".equals(cmd) && receiverSession != null) {
+					
+					String sendMsg = roomCode + 
+							"@<div name='sendMsg' class='media w-50 mb-3'><img src='https://res.cloudinary.com/mhmd/image/upload/v1564960395/avatar_usae7z.svg' alt='user' width='50' class='rounded-circle'>" +
+								"<div class='media-body ml-3' name='sender_" + sender + "'>" +
+									"<div class='bg-light rounded py-2 px-3 mb-2'>" +
+									"<img src='/udon/resources/upload/chat/" + fileArr[1] +"' width='150'>" +
+									"</div>" +
+									"<p class='small text-muted'>" + fmt.format(now) + "</p>" +
+								"</div>" +
+							"</div>";
+					
+					TextMessage tmpMsg = new TextMessage(sendMsg);
+					receiverSession.sendMessage(tmpMsg);
+					
+				}
+				
 				//insert Chat
-				ChatMessage m = new ChatMessage(0, roomCode, sender, content, null, null, null, null);
 				log.debug("m = {}", m);
 				try {
 					int result = chatService.insertMsg(m);

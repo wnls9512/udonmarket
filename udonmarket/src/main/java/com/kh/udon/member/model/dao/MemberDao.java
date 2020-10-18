@@ -119,4 +119,6 @@ public interface MemberDao
 
 	int deleteBlockUser(Map<String, Object> map);
 
+	List<Keyword> selectAllkeywordList();
+
 }

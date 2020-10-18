@@ -51,7 +51,7 @@ public interface ProductDao
 
     ProductVO selectVOByPCode(int pCode);
     
-    int update(ProductVO product);
+    int update(ProductVO productVO);
 
     int delete(int pCode);
 
@@ -102,6 +102,13 @@ public interface ProductDao
     int insertReviewByBuyer(ReviewDTO review);
 
     int updateSeller(ReviewDTO review);
+
+    String reviewIsent(int reviewCode);
+
+    List<ProductDTO> oneToTen();
+
+    List<ProductDTO> elevenToTwenty();
+
 
 
 

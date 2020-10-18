@@ -1,7 +1,7 @@
 package com.kh.udon.product.model.service;
 
+import java.util.HashMap;
 import java.util.List;
-
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -120,9 +120,23 @@ public class ProductServiceImpl implements ProductService
     }
 
     @Override
-    public int update(ProductVO product)
+    @Transactional
+    public int update(Map<String, Object> map)
     {
-        return dao.update(product);
+        /*
+         *      1. 수정 사진 pCode 업데이트
+         *      2. 게시판 수정
+         */
+        int result = 0;
+        
+        Map<String, Object> param = new HashMap<String, Object>();
+        param.put("uuids", (String[])map.get("uuids"));
+        param.put("pCode", ((ProductVO) map.get("product")).getPCode());
+        
+        result = dao.updateProductCode(param);
+        result = dao.update((ProductVO) map.get("product"));
+        
+        return result;
     }
 
     @Override
@@ -271,6 +285,26 @@ public class ProductServiceImpl implements ProductService
     {
         return dao.selectEvaListforBuyer(kind);
     }
+
+    @Override
+    public String reviewISent(int reviewCode)
+    {
+        return dao.reviewIsent(reviewCode);
+    }
+
+    @Override
+    public List<ProductDTO> oneToTen()
+    {
+        return dao.oneToTen();
+    }
+
+    @Override
+    public List<ProductDTO> elevenToTwenty()
+    {
+        return dao.elevenToTwenty();
+    }
+
+
 
     
     

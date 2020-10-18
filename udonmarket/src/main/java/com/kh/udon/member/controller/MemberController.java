@@ -80,7 +80,13 @@ public class MemberController {
 		Optional<SavedRequest> maybeSavedRequest = Optional.ofNullable(savedRequest);
 		loc = maybeSavedRequest.map(o -> o.getRedirectUrl())
 							   .orElse("/");
-		log.debug("loc@loginSuccess="+loc);
+		//log.debug("loc@loginSuccess="+loc);
+		
+		//모든 keyword들을 가져와서 세션에 저장해두기
+		List<Keyword> keywordList = service.selectAllKeywordList();
+		session.setAttribute("keywordList", keywordList);
+		//log.debug("session:keywordList = {}", session.getAttribute("keywordList"));
+		
 		//view단 지정
 //		mav.setViewName("redirect:"+loc);
 		mav.setViewName("redirect:/");

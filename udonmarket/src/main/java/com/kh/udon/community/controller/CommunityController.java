@@ -1,18 +1,26 @@
 package com.kh.udon.community.controller;
 
-import java.util.ArrayList;
+import java.io.File;
+import java.net.URLDecoder;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
+import java.util.Map.Entry;
 
-import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ResourceLoader;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -20,12 +28,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.kh.udon.common.model.vo.PageInfo;
 import com.kh.udon.common.template.Pagination;
 import com.kh.udon.community.model.service.CommunityService;
+import com.kh.udon.community.model.vo.Boardphoto;
 import com.kh.udon.community.model.vo.Community;
 import com.kh.udon.community.model.vo.LikeThis;
 import com.kh.udon.community.model.vo.Reply;
@@ -80,7 +90,7 @@ public class CommunityController
 				int totalCount = service.selectCount(map);
 				
 			
-				PageInfo pi = Pagination.getPageInfo(totalCount, currentPage, 5, 4);
+				PageInfo pi = Pagination.getPageInfo(totalCount, currentPage, 10, 6);
 				List<Community> list = service.selectCommunityList(search, pi);
 
 				log.debug("list = {}", list);
@@ -93,7 +103,7 @@ public class CommunityController
     
     // 게시글 상세보기
     @RequestMapping("/communityDetailView")
-    public String communityDetail(@RequestParam int bCode, @RequestParam String userId,
+    public String communityDetail(@RequestParam(value="bCode") int bCode, @RequestParam(value="userId") String userId,
 			  Model model,
 			  @RequestParam(required = false, defaultValue = "board_title") String searchType
 				, @RequestParam(required = false) String keyword) throws Exception {
@@ -112,6 +122,7 @@ public class CommunityController
     			List<Reply> replyList = service.ReplyList(bCode);
     			List<ReasonReportVO> reasonReport = service.selectReasonReport();
     			List<ReasonReportVO> reasonReport2 = service.selectReasonReport2();
+    			List<Boardphoto> photos = service.selectPhotos(bCode);
     			log.debug("Community = {}", community);
 				log.debug("list = {}", list);
 
@@ -120,26 +131,57 @@ public class CommunityController
     			model.addAttribute("replyList", replyList);
     			model.addAttribute("reasonReport", reasonReport);
     			model.addAttribute("reasonReport2", reasonReport2);
+    			model.addAttribute("photos", photos);
     			return "community/communityDetailView";
     }
     
+    /* 사진 불러오기 */
+    @GetMapping(value = "/getPhotos", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ResponseBody
+    public ResponseEntity<List<Boardphoto>> getPhotos(int bCode)
+    {
+        return new ResponseEntity<List<Boardphoto>>(service.selectPhotos(bCode), HttpStatus.OK);
+    }
+    
     // 게시글 작성
-    @RequestMapping("/communityForm")
+    @GetMapping("/communityForm")
 	public String communityForm(/* @RequestParam String userId */) {
     	
     	return "community/communityForm";
     	
     }
-    @RequestMapping("/communityFormDone")
-    public String register(@ModelAttribute("community") Community community, @RequestParam String userId, RedirectAttributes rttr, Model model) throws Exception
+    @PostMapping("/communityForm")
+    public String register(Community community, HttpServletRequest req, RedirectAttributes rttr)
     {
-        int result = service.insert(community);
+    	
+    	 int result = 0;
+         
+         // -------------------- uuid 배열 --------------------
+         String[] uuid = req.getParameterValues("uploadFile"); 
+         
+         for(String s : uuid)
+             log.debug("uuid = {}", s);
+         
+         int bCode = service.insert(community);
+         
+         if (uuid.length > 0) 
+         {
+             Map<String, Object> map = new HashMap<>();
+             map.put("bCode", bCode);
+             map.put("uuids", uuid);
+             
+             result = service.updateCommunityCode(map);
+
+         }
+         
         
 		
-		rttr.addFlashAttribute("msg", result > 0 ? "게시글 등록 성공 💛" : "게시글 등록 실패 🤔");
+//		rttr.addFlashAttribute("msg", result > 0 ? "게시글 등록 성공 💛" : "게시글 등록 실패 🤔");
+		rttr.addFlashAttribute("msg", "게시글 등록 성공 💛");
+		rttr.addAttribute("userId", community.getUserId());
 		 
         
-        return "redirect:/community/communityListView?userId=" + userId;
+        return "redirect:/community/communityListView?currentPage=1";
     }
     
     //좋아요
@@ -308,6 +350,110 @@ public class CommunityController
 	 * 
 	 * return list; }
 	 */
+    
+    
+    
+    
+    /* 업로드 로컬 폴더 만들기 */
+    private String getFolder()
+    {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        Date date = new Date();
+        String str = sdf.format(date);
+        
+        return str.replace("-", File.separator);
+    }
+    
+    /*
+     *      파일업로드만 처리
+     *      filepond는 파일을 하나씩 즉시 업로드하는 형태(디폴트)이므로 파일만 처리하는 메소드를 만들기로 한다.
+     */
+    @RequestMapping("/boardSaveFile.do")
+    @ResponseBody
+    public String boardSaveFile(MultipartHttpServletRequest multipartReq,
+                                HttpServletRequest request,
+                                Model model, 
+                                HttpSession session) throws Exception 
+    {
+    	 UUID uuid = UUID.randomUUID();
+
+         // ------ make folder(yyyy/MM/dd) ------
+         String uploadFolder = request.getServletContext().getRealPath("/resources/upload/");
+         String uploadFolderPath = getFolder();
+         File uploadPath = new File(uploadFolder, uploadFolderPath+File.separator+uuid);
+         
+         if(uploadPath.exists() == false)
+             uploadPath.mkdirs();
+         
+         // 한 번에 파일이 여러 개 업로드되는 경우
+         // filepond에서 하나씩 전송되므로 실제로는 파일이 1개만 전송된다.
+         Map<String, MultipartFile> files = multipartReq.getFileMap();
+
+         String uploadFileName = ""; // 화면으로 리턴해주는 파일ID, filepond는 이 정보가 필요하다.
+         
+         if (!files.isEmpty()) 
+         {
+               Boardphoto boardphoto = new Boardphoto();
+              
+             if (files != null) 
+             {
+                 // ---------- iterator로 MultipartFile 꺼내기 ----------
+                 Iterator<Entry<String, MultipartFile>> itr = files.entrySet().iterator();
+                 MultipartFile multipartFile = null;
+                 
+                 while(itr.hasNext())
+                 {
+                     Entry<String, MultipartFile> entry = itr.next();
+                     multipartFile = entry.getValue();
+                 }
+                 
+                 // --------------- UUID ---------------
+                 uploadFileName = multipartFile.getOriginalFilename();
+                 uploadFileName = uploadFileName.substring(uploadFileName.lastIndexOf("\\") + 1);
+                 
+                 boardphoto.setOriginalFilename(uploadFileName);
+                 boardphoto.setUuid(uuid.toString());
+                 boardphoto.setUploadPath(uploadFolderPath);
+                 
+                 // 파일 정보 테이블에 insert
+                 // 나중에 이 파일 정보와 게시글 정보를 연결
+                 service.insert(boardphoto);
+                 
+                 // local에 저장
+                 File saveFile = new File(uploadPath, uploadFileName);
+                 multipartFile.transferTo(saveFile);
+             }
+         }
+         
+         return uuid.toString();
+    }
+    
+    /*
+     *      신규등록 업로드된 파일삭제
+     *      아직 마스터 데이터는 인서트되지 않은 상태에서 파일정보만 삭제
+     *      파일ID만 있으면 되므로 @RequestParam을 사용하기로 한다. 
+     */
+    @PostMapping("/boardDeleteFile.do")
+    @ResponseBody
+    public String boardDeleteFiles(@RequestParam(value="fileId", required=true) String fileId, 
+                                   Model model,
+                                   HttpServletRequest request,
+                                   HttpSession session) throws Exception 
+    {
+        // 물리 파일 삭제
+        String uploadFolder = request.getServletContext().getRealPath("/resources/upload/");
+        File file = new File(uploadFolder + getFolder() +"\\" + URLDecoder.decode(fileId, "UTF-8"));
+        
+        file.delete();
+
+        // DB 삭제
+        String uuid = fileId.substring(0, fileId.indexOf("_"));
+        service.deleteFile(uuid);
+
+        return "File removed!";
+    }
+    
+   
     
 }
 

@@ -131,9 +131,9 @@ public class ProductDaoImpl implements ProductDao
     }
 
     @Override
-    public int update(ProductVO product)
+    public int update(ProductVO productVO)
     {
-        return session.update("product.update", product);
+        return session.update("product.update", productVO);
     }
 
     @Override
@@ -286,6 +286,25 @@ public class ProductDaoImpl implements ProductDao
     {
         return session.update("product.updateSeller", review);
     }
+
+    @Override
+    public String reviewIsent(int reviewCode)
+    {
+        return session.selectOne("product.reviewISent", reviewCode);
+    }
+
+    @Override
+    public List<ProductDTO> oneToTen()
+    {
+        return session.selectList("product.oneToTen");
+    }
+
+    @Override
+    public List<ProductDTO> elevenToTwenty()
+    {
+        return session.selectList("product.elevenToTwenty");
+    }
+
 
 
 

@@ -231,7 +231,7 @@ function openChatRoom(pCode, userId, notiCode){
             xhr.setRequestHeader("${_csrf.headerName}", "${_csrf.token}");
         },
         success: function(data){
-        	window.open("${pageContext.request.contextPath}" + data);			
+        	window.open("${pageContext.request.contextPath}" + data, 'chatting', 'width=1000px, height=800px');			
 
         	updateCheck(notiCode);
         					
