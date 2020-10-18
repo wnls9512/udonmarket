@@ -127,7 +127,7 @@ html { font-size: 16px; }
 								      	<c:if test="${ buy.reviewCode ne 0}">
 									      	<button type="button" class="btn btn-outline-secondary btn-sm"
 									      			style="margin: 0px 0.15rem;"
-									      			onclick="reviewInfo('${buy.reviewCode}')">작성한 후기 보기</button>
+									      			onclick="reviewInfo('${buy.reviewCode}', '${buy.seller }')">작성한 후기 보기</button>
 								      	</c:if>
 								      	<!-- 작성 후기 없다면 후기 작성 페이지로 이동 -->
 								      	<c:if test="${ buy.reviewCode eq 0}">
@@ -209,6 +209,43 @@ html { font-size: 16px; }
 	<input type="hidden" name="content" />
 </form>
 <!-- ========== 구매자 선택 MODAL END ========== -->
+
+<!-- ========== 남긴 거래후기 MODAL START ========== -->
+<div class="modal fade" id="reviewModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle"><strong>내가 남긴 거래 후기</strong></h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+	   <div class="row text-center align-items-end">
+	      <div class="mb-5 mb-lg-0" style="float:none; margin:0 auto;">
+	        <div class="bg-white rounded-lg">
+				<div class="p-4 text-left" id="body">
+					<span><strong><span id="seller2"></span>님에게 따뜻한 후기를 보냈어요.</strong></span><br/>
+					<span>남겨주신 거래후기는 상대방의 프로필에 공개됩니다.</span><hr/>
+					<div class="left_sidebar_area">
+						<aside class="left_widgets p_filter_widgets">
+							<div class="widgets_inner pb-0">
+								<!-- 평가 -->
+								<div class="widgets_inner pb-0" id="eva2"></div>
+								<textarea class="single-textarea" placeholder="감사인사를 남겨주세요" style="height: 134px;" 
+										  name="content" id="reviewISent" disabled></textarea>
+							</div>
+						</aside>
+					</div><hr/><br/>
+				</div>
+	        </div>
+	      </div>
+      	</div>
+	  </div>
+    </div>
+  </div>
+</div>
+<!-- ========== 남긴 거래후기 MODAL END ========== -->
 	
 	
 	
@@ -219,9 +256,34 @@ $(function(){
 	
 });
 
-function reviewInfo(reviewCode){
-	alert("리뷰코드는" + reviewCode);
+function reviewInfo(reviewCode, seller)
+{
+	$("#seller2").text(seller);
+
+	var str = "";
+
+	$.ajax
+	({
+		url: "${pageContext.request.contextPath}/product/" + reviewCode,
+		method: "GET",
+		beforeSend: function(xhr)
+		{
+            xhr.setRequestHeader("${_csrf.headerName}", "${_csrf.token}");
+        },
+        dataType: "text",
+		success: function(content)
+		{
+			console.log(content);
+			$("#reviewISent").html(content);
+		},
+		error: function(xhr, status, err)
+		{
+			alert("리뷰 불러오기에 실패했어요 💧");
+			console.log(xhr, status, err);
+		}
+	});
 	
+	$("#reviewModal").modal('show');
 }
 
 function insertReview(pCode, seller)

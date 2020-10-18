@@ -286,6 +286,13 @@ public class ProductServiceImpl implements ProductService
         return dao.selectEvaListforBuyer(kind);
     }
 
+    @Override
+    public String reviewISent(int reviewCode)
+    {
+        return dao.reviewIsent(reviewCode);
+    }
+
+
 
     
     

@@ -592,6 +592,14 @@ public class ProductController
         
         return evaList;
     }
+    @GetMapping(value = "/{reviewCode}", produces = "application/text; charset=utf8")
+    @ResponseBody
+    private String reviewISent(@PathVariable int reviewCode)
+    {
+        String review = service.reviewISent(reviewCode);
+        
+        return review;
+    }
     
     /* 거래완료 - 리뷰 */
     @PostMapping("/insertReview")

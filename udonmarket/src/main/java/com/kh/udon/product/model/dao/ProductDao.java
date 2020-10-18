@@ -103,6 +103,8 @@ public interface ProductDao
 
     int updateSeller(ReviewDTO review);
 
+    String reviewIsent(int reviewCode);
+
 
 
 

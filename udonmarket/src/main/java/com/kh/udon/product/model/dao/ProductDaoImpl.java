@@ -287,6 +287,12 @@ public class ProductDaoImpl implements ProductDao
         return session.update("product.updateSeller", review);
     }
 
+    @Override
+    public String reviewIsent(int reviewCode)
+    {
+        return session.selectOne("product.reviewISent", reviewCode);
+    }
+
 
 
 

@@ -94,6 +94,9 @@ public interface ProductService
 
     int insertReviewByBuyer(ReviewDTO review);
 
+    String reviewISent(int reviewCode);
+
+
 
 
 

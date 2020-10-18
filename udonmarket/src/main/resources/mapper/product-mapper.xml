@@ -361,4 +361,7 @@
 	<insert id="insertReivewByBuyer">
 		insert into review values(seq_review.nextval, #{sender}, #{receiver}, #{content}, 'B',  #{pCode})
 	</insert>
+	<select id="reviewISent" resultType="string">
+		select content from review where review_code = #{reviewCode}
+	</select>
 </mapper>
