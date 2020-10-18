@@ -9,11 +9,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.kh.udon.common.model.vo.PageInfo;
+import com.kh.udon.community.model.vo.Boardphoto;
 import com.kh.udon.community.model.vo.Community;
 import com.kh.udon.community.model.vo.LikeThis;
 import com.kh.udon.community.model.vo.Reply;
 import com.kh.udon.community.model.vo.Report;
 import com.kh.udon.community.model.vo.Search;
+import com.kh.udon.product.model.vo.ProductPhotoVO;
 import com.kh.udon.product.model.vo.ReasonReportVO;
 import com.kh.udon.product.model.vo.ReportVO;
 
@@ -103,7 +105,26 @@ public class CommunityDaoImpl implements CommunityDao
 	 @Override
 	    public int insert(Community community)
 	    {
-	        return session.insert("community.insert", community);
+	        session.insert("community.insert", community);
+	        return community.getBCode();
+	    }
+	 
+	 @Override
+	    public int insert(Boardphoto boardphoto)
+	    {
+	        return session.insert("community.insertPhoto", boardphoto);
+	    }
+	 
+	 @Override
+	    public List<Boardphoto> selectPhotos(int bCode)
+	    {
+	        return session.selectList("community.selectPhotos", bCode);
+	    }
+	 
+	 @Override
+	    public void deleteFile(String uuid)
+	    {
+	        session.delete("community.deletePhoto", uuid);
 	    }
 	 
 	 @Override
@@ -128,6 +149,12 @@ public class CommunityDaoImpl implements CommunityDao
 	    public int likeThis(LikeThis like)
 	    {
 	        return session.insert("community.createBoardLike", like);
+	    }
+	 
+	 @Override
+	    public int updateCommunityCode(Map<String, Object> map)
+	    {
+	        return session.update("community.updateCommunityCode", map);
 	    }
 
 	 

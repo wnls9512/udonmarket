@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.kh.udon.common.model.vo.PageInfo;
 import com.kh.udon.community.model.dao.CommunityDao;
+import com.kh.udon.community.model.vo.Boardphoto;
 import com.kh.udon.community.model.vo.Community;
 import com.kh.udon.community.model.vo.LikeThis;
 import com.kh.udon.community.model.vo.Reply;
@@ -90,6 +91,12 @@ public class CommunityServiceImpl implements CommunityService
 		return dao.deleteReply(replyCode);
 
 	}
+	
+	@Override
+    public int updateCommunityCode(Map<String, Object> map)
+    {
+        return dao.updateCommunityCode(map);
+    }
 
 	@Override
 	
@@ -114,6 +121,24 @@ public class CommunityServiceImpl implements CommunityService
 	    public int insert(Community community)
 	    {
 	        return dao.insert(community);
+	    }
+	 
+	 @Override
+	    public int insert(Boardphoto boardphoto)
+	    {
+	        return dao.insert(boardphoto);
+	    }
+	 
+	 @Override
+	    public List<Boardphoto> selectPhotos(int bCode)
+	    {
+	        return dao.selectPhotos(bCode);
+	    }
+	 
+	 @Override
+	    public void deleteFile(String uuid)
+	    {
+	        dao.deleteFile(uuid);
 	    }
 	 
 	 

@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.kh.udon.common.model.vo.PageInfo;
+import com.kh.udon.community.model.vo.Boardphoto;
 import com.kh.udon.community.model.vo.Community;
 import com.kh.udon.community.model.vo.LikeThis;
 import com.kh.udon.community.model.vo.Reply;
@@ -44,11 +45,19 @@ public interface CommunityService
 	
 	int insert(Community community);
 	
+	int insert(Boardphoto boardphoto);
+	
+	List<Boardphoto> selectPhotos(int bCode);
+	
+	void deleteFile(String uuid);
+	
 	Community selectByBCode(int bCode);
 	
 	int update(Community community);
 	
 	int delete(int bCode);
+	
+	int updateCommunityCode(Map<String, Object> map);
 	
 	int likeThis(LikeThis like);
 	

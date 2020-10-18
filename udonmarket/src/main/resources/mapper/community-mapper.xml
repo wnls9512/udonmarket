@@ -9,11 +9,16 @@
 		select 
 			b.*,
 		    m.nickname,
-            m.address
+            m.address,
+            p.upload_path,
+            p.uuid,
+            p.original_filename
 		from 
 		    board b
 		   		left join
     				member m on(b.user_id = m.user_id)
+                left join
+                    board_photo p on(b.b_code = p.b_code)
     	where b.user_id in (
 		                        select l.user_id 
 		                        from location l,(select latitude, longitude, radius from location where user_id = #{userId}) a
@@ -420,6 +425,34 @@
 		#{userId}
 		)
         </insert>
+        
+        
+        <!-- 게시글 사진 bCode update -->
+	<update id="updateCommunityCode" parameterType="java.util.Map">
+		update board_photo set b_code = #{bCode}
+		where uuid in
+		<foreach collection="uuids" item="item" index="i" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</update>
+	
+	<!--  사진 추가 -->
+	<insert id="insertPhoto">
+		insert into board_photo values
+		(
+			seq_board_photo.nextval, null, #{originalFilename}, #{uuid}, #{uploadPath}
+		)
+	</insert>
+	
+	<!--  사진 삭제(게시글 등록 페이지) -->
+	<delete id="deletePhoto">
+		delete from board_photo where uuid = #{uuid}
+	</delete>
+	
+	<!--  사진 불러오기 -->
+	<select id="selectPhotos" resultType="boardphoto">
+		select * from board_photo where b_code = #{bCode}
+	</select>
 
        <!--  <delete id="deleteBoardLike">
             DELETE FROM like_this
