@@ -18,7 +18,7 @@
 		                        select l.user_id 
 		                        from location l,(select latitude, longitude, radius from location where user_id = #{userId}) a
 		                        where calc_distance(a.latitude, a.longitude, l.latitude, l.longitude) < a.radius
-		                        ) 
+		                        ) and b.user_id not in (select block_id from block where user_id = #{userId})
     	]]>
 
 			
@@ -125,6 +125,218 @@
 		order by b.b_code desc
 	</select>
 	
+	<!-- 게시글 조회 & 검색 -->
+	<select id="selectCommunityNewList" resultType="community">
+	<![CDATA[
+		select 
+			b.*,
+		    m.nickname,
+            m.address
+		from 
+		    board b
+		   		left join
+    				member m on(b.user_id = m.user_id)
+    	where b.user_id in (
+		                        select l.user_id 
+		                        from location l,(select latitude, longitude, radius from location where user_id = #{userId}) a
+		                        where calc_distance(a.latitude, a.longitude, l.latitude, l.longitude) < a.radius
+		                        ) and b.user_id not in (select block_id from block where user_id = #{userId})
+    	]]>
+
+			
+					
+			
+			<if test="searchType=='board_title' and keyword != null and keyword != '' ">
+
+				<![CDATA[AND b.board_title like '%${keyword}%' ]]>
+
+			</if>
+
+			<if test="searchType=='board_content' and keyword != null and keyword != '' ">
+
+				<!-- AND b.board_content like CONCAT('%' || #{keyword}, '%') -->
+				<![CDATA[AND b.board_content like '%${keyword}%' ]]>
+
+			</if>
+			
+			<if test="categoryCode==17">
+
+				AND b.category_code = 17
+
+			</if>
+			
+			<if test="categoryCode==18">
+
+				AND b.category_code = 18
+
+			</if>
+			
+			<if test="categoryCode==19">
+
+				AND b.category_code = 19
+
+			</if>
+			
+			<if test="categoryCode==20">
+
+				AND b.category_code = 20
+
+			</if>
+			
+			<if test="hashtagCode==1">
+
+				AND b.hashtag_code = 1
+
+			</if>
+			
+			<if test="hashtagCode==2">
+
+				AND b.hashtag_code = 2
+
+			</if>
+			
+			<if test="hashtagCode==3">
+
+				AND b.hashtag_code = 3
+
+			</if>
+			
+			<if test="hashtagCode==4">
+
+				AND b.hashtag_code = 4
+
+			</if>
+			
+			<if test="hashtagCode==5">
+
+				AND b.hashtag_code = 5
+
+			</if>
+			
+			<if test="hashtagCode==6">
+
+				AND b.hashtag_code = 6
+
+			</if>
+			
+			<if test="hashtagCode==7">
+
+				AND b.hashtag_code = 7
+
+			</if>
+			
+			<if test="hashtagCode==8">
+
+				AND b.hashtag_code = 8
+
+			</if>
+			
+			<if test="hashtagCode==9">
+
+				AND b.hashtag_code = 9
+
+			</if>
+			
+			<!-- <if test="categoryCode==22">
+
+				AND category_code = 22
+
+			</if> -->
+			
+
+		order by b.b_code desc
+	</select>
+	
+	<!-- 페이징 용 카운트 -->
+	<select id="selectCount" resultType="_int">
+	<![CDATA[
+		select count(b.b_code) from board b
+		where (b.user_id in (
+		                        select l.user_id 
+		                        from location l,(select latitude, longitude, radius from location where user_id = #{userId}) a
+		                        where calc_distance(a.latitude, a.longitude, l.latitude, l.longitude) < a.radius
+		                        ) and b.user_id not in (select block_id from block where user_id = #{userId})
+              
+	]]>
+		<if test="categoryCode==17">
+
+				AND b.category_code = 17
+
+			</if>
+			
+			<if test="categoryCode==18">
+
+				AND b.category_code = 18
+
+			</if>
+			
+			<if test="categoryCode==19">
+
+				AND b.category_code = 19
+
+			</if>
+			
+			<if test="categoryCode==20">
+
+				AND b.category_code = 20
+
+			</if>
+			<if test="hashtagCode==1">
+
+				AND b.hashtag_code = 1
+
+			</if>
+			
+			<if test="hashtagCode==2">
+
+				AND b.hashtag_code = 2
+
+			</if>
+			
+			<if test="hashtagCode==3">
+
+				AND b.hashtag_code = 3
+
+			</if>
+			
+			<if test="hashtagCode==4">
+
+				AND b.hashtag_code = 4
+
+			</if>
+			
+			<if test="hashtagCode==5">
+
+				AND b.hashtag_code = 5
+
+			</if>
+			
+			<if test="hashtagCode==6">
+
+				AND b.hashtag_code = 6
+
+			</if>
+			
+			<if test="hashtagCode==7">
+
+				AND b.hashtag_code = 7
+
+			</if>
+			
+			<if test="hashtagCode==8">
+
+				AND b.hashtag_code = 8
+
+			</if>
+			
+			<if test="hashtagCode==9">
+
+				AND b.hashtag_code = 9
+
+			</if>
+             <![CDATA[ ) ]]>
+	</select>
+	
 	<!-- 게시글 상세 -->
 	<select id="selectOneCommunityCollection" resultMap="communityCollectionMap">
 		select 
@@ -226,6 +438,44 @@
         <select id="getBoardLike" resultType="int">
             SELECT COUNT(like_id) FROM like_this WHERE b_code = #{bCode} AND user_id = #{userId}
         </select> -->
+        
+     <!-- 신고목록 -->
+	<select id="reasonReport" resultType="reasonReportVO">
+		select * from reason_report where parent_code = 3
+	</select>
+	
+	<select id="reasonReport2" resultType="reasonReportVO">
+		select * from reason_report where parent_code = 4
+	</select>
+	
+	<select id="reportListByRCode" resultType="reasonReportVO">
+		select r.* ,connect_by_isleaf leaf
+        from  reason_report r
+        start with reason_code = #{reasonCode}
+        connect by prior reason_code=parent_code
+	</select>
+	
+	<select id="reportListByRCode2" resultType="reasonReportVO">
+		select r.* ,connect_by_isleaf leaf
+        from  reason_report r
+        start with reason_code = #{reasonCode}
+        connect by prior reason_code=parent_code
+	</select>
+	
+	<!-- 신고하기 -->
+	<insert id="reportBoard">
+		insert into report values 
+		(seq_report.nextval, #{reasonCode}, #{reportId}, null, #{bCode}, null, 0, null)
+	</insert>
+	
+	<insert id="reportReply">
+		insert into report values 
+		(seq_report.nextval, #{reasonCode}, #{reportId}, null, null, #{replyCode}, 0, null)
+	</insert>
+	<insert id="reportUser">
+		insert into report values 
+		(seq_report.nextval, #{reasonCode}, #{reportId}, #{shooterId}, null, null, 0, null)
+	</insert>
 
 
 <!-- 	신고관리(동네생활) -->

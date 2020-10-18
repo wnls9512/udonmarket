@@ -131,9 +131,9 @@ public class ProductDaoImpl implements ProductDao
     }
 
     @Override
-    public int update(ProductVO product)
+    public int update(ProductVO productVO)
     {
-        return session.update("product.update", product);
+        return session.update("product.update", productVO);
     }
 
     @Override
@@ -286,6 +286,7 @@ public class ProductDaoImpl implements ProductDao
     {
         return session.update("product.updateSeller", review);
     }
+
 
 
 

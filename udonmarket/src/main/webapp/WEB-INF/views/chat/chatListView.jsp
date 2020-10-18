@@ -48,7 +48,7 @@
 		      <div class="bg-white">
 		
 		        <div class="bg-gray px-4 py-2 bg-light">
-		          <p class="h5 mb-0 py-1">채팅방</p>
+		          <p class="h5 mb-0 py-1">채팅</p>
 		        </div>
 		
 		        <div class="messages-box">
@@ -80,17 +80,20 @@
 		    <!-- Chat Box-->
 		    <div class="col-7 px-0">
 		      <!-- Typing area -->
-	          <form action="" class="bg-light">
+		      <div class="bg-light">
+	          <%-- <form action="" class="bg-light"> --%>
 		        <div class="input-group">
 		        
 		          <!-- 사진보내기 START -->
-		          <input type="file" name="file" id="file" 
-		          		 accept="image/jpeg, image/png" style="display:none"/>
-	              <button id="fileBtn" 
-	              	      type="button" 
-	              	      class="btn btn-link" 
-	              	      disabled="disabled"
-	              	      onclick="onclick=document.all.file.click()">➕</button>
+		          <form action="" method="post" id="fileForm">
+			          <input type="file" name="file" id="file" 
+			          		 accept="image/jpeg, image/png" style="display:none"/>
+		              <button id="fileBtn" 
+		              	      type="button" 
+		              	      class="btn btn-link" 
+		              	      disabled="disabled"
+		              	      onclick="onclick=document.all.file.click()">➕</button>
+		          </form>
 			       <!-- 사진보내기 END -->
 		          
 		          <input type="text" 
@@ -104,7 +107,9 @@
 		            <button id="sendBtn" type="button" class="btn btn-link" disabled="disabled">전송</button>
 		          </div>
 		        </div>
-		       </form>
+		        <!-- Typing area -->
+		      </div>
+		       <%-- </form> --%>
 
 		      <div class="px-4 py-5 chat-box bg-white" id="chatBox">
 		      	<input type="hidden" id="roomCode_" />
@@ -122,8 +127,31 @@
 $("#file").bind('change', function(){
 	var $file = $(this).prop("files")[0];
 	console.log($file);
+
+	var form = $("#fileForm");
+	var formData = new FormData(form);
+	formData.append("file", $file);
+
+	$.ajax({
+		 url: "${pageContext.request.contextPath}/chat/sendPhoto",
+         processData: false,
+         contentType: false,
+         data: formData,
+         type: 'POST',
+         beforeSend : function(xhr){
+             xhr.setRequestHeader("${_csrf.headerName}", "${_csrf.token}");
+         },
+         success: function(result){
+             alert("업로드 성공!!");
+         },
+         error : function(xhr, status, err){
+ 			console.log("처리 실패", xhr, status, err);
+ 			alert("실패");
+ 		}
+	});
 	
-	$("#chatBox").prepend(senderMsg);	
+	
+	//$("#chatBox").prepend(senderMsg);	
 	
 	
 });

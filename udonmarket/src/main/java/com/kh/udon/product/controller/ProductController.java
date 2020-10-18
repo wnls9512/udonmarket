@@ -192,28 +192,18 @@ public class ProductController
         int result = 0;
         
         // -------------------- uuid 배열 --------------------
-        String[] tmp = req.getParameterValues("uploadFile");
-        String[] uploadFiles = new String[tmp.length];
+        String[] uuid = req.getParameterValues("uploadFile"); 
         
-        
-        for(int i = 0; i < tmp.length; i++)
-        {
-            if(!tmp[i].equals(""))
-                uploadFiles[i] = tmp[i].substring(0, tmp[i].indexOf("_"));
-            else
-                uploadFiles[i] = "";
-        }
-        
-        for(String s : uploadFiles)
-            log.debug("uploadFile = {}", s);
+        for(String s : uuid)
+            log.debug("uuid = {}", s);
         
         int pCode = service.insert(product);
         
-        if (uploadFiles.length > 0) 
+        if (uuid.length > 0) 
         {
             Map<String, Object> map = new HashMap<>();
             map.put("pCode", pCode);
-            map.put("uuids", uploadFiles);
+            map.put("uuids", uuid);
             
             result = service.updateProductCode(map);
         }
@@ -255,10 +245,31 @@ public class ProductController
 //        	
 //        }        
         //키워드 알림  END ////////////////////////////////////////////////////////////////////////
+
+        rttr.addAttribute("currentPage", 1);
+
         
         return "redirect:/product/productListView";
     }
     
+    @PostMapping("/update")
+    public String update(ProductVO product, HttpServletRequest req, RedirectAttributes rttr)
+    {
+        String[] uuid = req.getParameterValues("uploadFile");
+        Map<String, Object> map = new HashMap<String, Object>();
+        
+        map.put("uuids", uuid);
+        map.put("product", product);
+        
+        int result = service.update(map);
+        
+        rttr.addFlashAttribute("msg", result > 0 ? "상품 수정 성공 💛" : "상품 등록 실패 🤔");
+        rttr.addAttribute("userId", product.getSeller());
+        rttr.addAttribute("currentPage", 1);
+        
+        return "redirect:/product/productListView";
+    }
+
     /*      게시글 상세보기        */
     @RequestMapping("/productDetailView")
     public String productDetail(int pCode, String userId, Model model)
@@ -354,6 +365,9 @@ public class ProductController
         List<CategoryVO> category = service.selectAllCategory();
         List<ProductPhotoVO> photos = service.selectPhotos(pCode);
         
+        for(ProductPhotoVO photo : photos)
+            photo.setUploadPath(photo.getUploadPath().replace(File.separator, "/"));
+        
         //해당 상품을 관심목록 지정한 사용자 아이디
         List<String> userIdList = service.selectWishUserId(pCode);
         
@@ -368,20 +382,10 @@ public class ProductController
         model.addAttribute("category", category);
         model.addAttribute("categoryName", categoryName);
         model.addAttribute("photos", photos);
+        model.addAttribute("pCode", pCode);
         
         return "product/update";
     }
-    @PostMapping("/update")
-    public String update(ProductVO product, RedirectAttributes rttr)
-    {
-        int result = service.update(product);
-        
-        rttr.addFlashAttribute("msg", result > 0 ? "상품 수정 성공 💛" : "상품 등록 실패 🤔");
-        rttr.addAttribute("userId", product.getSeller());
-        
-        return "redirect:/product/productListView";
-    }
-    
     // 상품 삭제
     @PutMapping("/{pCode}")
     @ResponseBody
@@ -476,18 +480,12 @@ public class ProductController
                                 Model model, 
                                 HttpSession session) throws Exception 
     {
-        String newName = null;
-
-        /*
-         * String userId = ""; LoginVO loginVO =
-         * (LoginVO)session.getAttribute("userInfo"); if (loginVO != null) {
-         * userId = loginVO.getMberId(); }
-         */
+        UUID uuid = UUID.randomUUID();
 
         // ------ make folder(yyyy/MM/dd) ------
         String uploadFolder = request.getServletContext().getRealPath("/resources/upload/");
         String uploadFolderPath = getFolder();
-        File uploadPath = new File(uploadFolder, uploadFolderPath);
+        File uploadPath = new File(uploadFolder, uploadFolderPath+File.separator+uuid);
         
         if(uploadPath.exists() == false)
             uploadPath.mkdirs();
@@ -518,8 +516,6 @@ public class ProductController
                 uploadFileName = multipartFile.getOriginalFilename();
                 uploadFileName = uploadFileName.substring(uploadFileName.lastIndexOf("\\") + 1);
                 
-                UUID uuid = UUID.randomUUID();
-                
                 photoDTO.setOriginalFilename(uploadFileName);
                 photoDTO.setUuid(uuid.toString());
                 photoDTO.setUploadPath(uploadFolderPath);
@@ -528,23 +524,13 @@ public class ProductController
                 // 나중에 이 파일 정보와 게시글 정보를 연결
                 service.insert(photoDTO);
                 
-                newName = uuid.toString() + "_" + uploadFileName;
-                
                 // local에 저장
-                File saveFile = new File(uploadPath, newName);
+                File saveFile = new File(uploadPath, uploadFileName);
                 multipartFile.transferTo(saveFile);
-
-                
-                /*
-                 * f.setUploadUserId(userId);
-                 * 
-                 * // 파일 정보 테이블에 인서트한다. // 나중에 이 파일 정보와 게시물 정보를 연결시켜 줄 것이다.
-                 * fileMngService.insertFile(f); uniqueFileId = f.getFileId();
-                 */
             }
         }
         
-        return newName;
+        return uuid.toString();
     }
     
     /*
@@ -563,11 +549,14 @@ public class ProductController
         String uploadFolder = request.getServletContext().getRealPath("/resources/upload/");
         File file = new File(uploadFolder + getFolder() +"\\" + URLDecoder.decode(fileId, "UTF-8"));
         
+        File[] childFile = file.listFiles();
+        for(File f : childFile)
+            f.delete();
+        
         file.delete();
 
         // DB 삭제
-        String uuid = fileId.substring(0, fileId.indexOf("_"));
-        service.deleteFile(uuid);
+        service.deleteFile(fileId);
 
         return "File removed!";
     }
@@ -580,79 +569,6 @@ public class ProductController
         String str = sdf.format(date);
         
         return str.replace("-", File.separator);
-    }
-    
-    /* 사진 목록 불러오기 */
-    @RequestMapping(value = "/fileList.do", method = {RequestMethod.POST, RequestMethod.GET})
-    @ResponseBody
-    public void fileList(@RequestParam(value="fileId", required=true) String uuid, HttpServletRequest request, HttpServletResponse response) throws Exception 
-    {
-        log.debug("uuid = {}", uuid);
-        
-        ProductPhotoVO photo = new ProductPhotoVO();
-        photo.setUuid(uuid);
-        photo = service.selectFile(photo);
-        
-        String uploadFolder = request.getServletContext().getRealPath("/resources/upload/");
-        String uploadFolderPath = getFolder();
-        File uploadPath = new File(uploadFolder, uploadFolderPath);
-        
-        File uFile = new File(uploadPath, photo.getUuid()+"_"+photo.getOriginalFilename());
-
-        //filepond에서는 inline으로 설정하여 전송
-        setDisposition(photo.getOriginalFilename(), "inline", request, response);
-
-        //String dispositionPrefix = "inline; filename=\"";
-        //String fileName = fvo.getOrignlFileNm(); //한글이 없는 경우
-        //response.setHeader("Content-Disposition", dispositionPrefix + fileName + "\"");
-
-        BufferedInputStream in = null;
-        BufferedOutputStream out = null;
-
-        try 
-        {
-            in = new BufferedInputStream(new FileInputStream(uFile));
-            out = new BufferedOutputStream(response.getOutputStream());
-
-            FileCopyUtils.copy(in, out);
-            out.flush();
-        } 
-        catch (IOException ex) 
-        {
-            ex.printStackTrace();
-        } 
-        finally 
-        {
-            ResourceCloseHelper.close(in, out);
-        }
-
-    }
-
-    private void setDisposition(String filename, String prefix,
-            HttpServletRequest request, HttpServletResponse response) throws Exception 
-    {
-        //크롬에서 쉼표가 들어간 파일명이 중복헤더 오류를 내므로 다음과 같이 처리한다.
-        String dispositionPrefix = prefix + "; filename=\"";
-        String encodedFilename = null;
-        
-        StringBuffer sb = new StringBuffer();
-        
-        for (int i = 0; i < filename.length(); i++) 
-        {
-            char c = filename.charAt(i);
-            //ASCII문자코드에서 마지막 문자 ~(126)
-            //이 문자보다 크다면 URL인코딩을 수행한다. 한글이 인코딩된다.
-            if (c > '~') 
-                sb.append(URLEncoder.encode("" + c, "UTF-8"));
-            else 
-                sb.append(c);
-        }
-        
-        encodedFilename = sb.toString();
-        
-        //크롬에서 쉼표가 들어간 파일명이 중복헤더 오류를 내므로 다음과 같이 처리한다.
-        //response.setHeader("Content-Disposition", dispositionPrefix + encodedFilename);
-        response.setHeader("Content-Disposition", dispositionPrefix + encodedFilename + "\"");
     }
     
     /* 평가 목록 불러오기 */
