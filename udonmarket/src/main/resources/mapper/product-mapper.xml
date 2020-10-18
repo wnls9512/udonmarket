@@ -2,6 +2,31 @@
 <!DOCTYPE mapper PUBLIC "//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="product">
 
+	<!-- 메인 -->
+	<select id="oneToTen" resultType="productDTO">
+		select x.*
+		from
+		(
+		    select p.p_code, p.seller, p.title, p.price, p.pull, trunc(sysdate - p.reg_date) reg_date, substr(m.address, instr(m.address, ' ', 1, 1), instr(m.address, ' ', 1, 2)) address, wc.wish, cc.chat, row_number()over(order by wc.wish desc) rnum
+		    from product p left join member m on(p.seller = m.user_id)
+		        left join (select a.p_code p_code, count(b.p_code) wish from product a left outer join wish b on(a.p_code = b.p_code) group by a.p_code) wc on(wc.p_code = p.p_code)
+		        left join (select a.p_code p_code, count(b.p_code) chat from product a left outer join chat_room b on(a.p_code = b.p_code) group by a.p_code) cc on(cc.p_code = p.p_code)
+		    where (p.open_status = 1 and (p.trade_status = 'S' or p.trade_status = 'R') and delete_yn = 'N')
+		)x
+		where x.rnum between 1 and 8
+	</select>
+	<select id="elevenToTwenty" resultType="productDTO">
+		select x.*
+		from
+		(
+		    select p.p_code, p.seller, p.title, p.price, p.pull, trunc(sysdate - p.reg_date) reg_date, substr(m.address, instr(m.address, ' ', 1, 1), instr(m.address, ' ', 1, 2)) address, wc.wish, cc.chat, row_number()over(order by wc.wish desc) rnum
+		    from product p left join member m on(p.seller = m.user_id)
+		        left join (select a.p_code p_code, count(b.p_code) wish from product a left outer join wish b on(a.p_code = b.p_code) group by a.p_code) wc on(wc.p_code = p.p_code)
+		        left join (select a.p_code p_code, count(b.p_code) chat from product a left outer join chat_room b on(a.p_code = b.p_code) group by a.p_code) cc on(cc.p_code = p.p_code)
+		    where (p.open_status = 1 and (p.trade_status = 'S' or p.trade_status = 'R') and delete_yn = 'N')
+		)x
+		where x.rnum between 9 and 16	
+	</select>
 
 
 	<!-- 전체 리스트 -->

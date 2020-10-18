@@ -293,6 +293,18 @@ public class ProductDaoImpl implements ProductDao
         return session.selectOne("product.reviewISent", reviewCode);
     }
 
+    @Override
+    public List<ProductDTO> oneToTen()
+    {
+        return session.selectList("product.oneToTen");
+    }
+
+    @Override
+    public List<ProductDTO> elevenToTwenty()
+    {
+        return session.selectList("product.elevenToTwenty");
+    }
+
 
 
 

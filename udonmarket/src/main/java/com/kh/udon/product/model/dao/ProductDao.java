@@ -105,6 +105,10 @@ public interface ProductDao
 
     String reviewIsent(int reviewCode);
 
+    List<ProductDTO> oneToTen();
+
+    List<ProductDTO> elevenToTwenty();
+
 
 
 

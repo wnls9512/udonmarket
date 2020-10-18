@@ -292,6 +292,18 @@ public class ProductServiceImpl implements ProductService
         return dao.reviewIsent(reviewCode);
     }
 
+    @Override
+    public List<ProductDTO> oneToTen()
+    {
+        return dao.oneToTen();
+    }
+
+    @Override
+    public List<ProductDTO> elevenToTwenty()
+    {
+        return dao.elevenToTwenty();
+    }
+
 
 
     

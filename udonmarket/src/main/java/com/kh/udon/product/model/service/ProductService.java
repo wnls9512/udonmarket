@@ -96,6 +96,10 @@ public interface ProductService
 
     String reviewISent(int reviewCode);
 
+    List<ProductDTO> oneToTen();
+
+    List<ProductDTO> elevenToTwenty();
+
 
 
 
