@@ -267,6 +267,10 @@ function reportBoard(reasonCode, bCode, userId)
 				reportId: userId
 			},
 	        dataType: "text",
+	        beforeSend: function(xhr)
+			{
+	            xhr.setRequestHeader("${_csrf.headerName}", "${_csrf.token}");
+	        },
 			success: function(result)
 			{
 				alert(result);
@@ -297,6 +301,10 @@ function reportUser(reasonCode, suspectId, userId)
 				reportId: userId
 			},
 	        dataType: "text",
+	        beforeSend: function(xhr)
+			{
+	            xhr.setRequestHeader("${_csrf.headerName}", "${_csrf.token}");
+	        },
 			success: function(result)
 			{
 				alert(result);
@@ -424,6 +432,10 @@ function reportReply(reasonCode, replyCode, userId)
 				reportId: userId
 			},
 	        dataType: "text",
+	        beforeSend: function(xhr)
+			{
+	            xhr.setRequestHeader("${_csrf.headerName}", "${_csrf.token}");
+	        },
 			success: function(result)
 			{
 				alert(result);
@@ -454,6 +466,10 @@ function reportUser(reasonCode, suspectId, userId)
 				reportId: userId
 			},
 	        dataType: "text",
+	        beforeSend: function(xhr)
+			{
+	            xhr.setRequestHeader("${_csrf.headerName}", "${_csrf.token}");
+	        },
 			success: function(result)
 			{
 				alert(result);
@@ -512,10 +528,19 @@ function reportUser(reasonCode, suspectId, userId)
          <div class="row">
             <div class="col-lg-8 posts-list">
                <div class="single-post">
-                  <div class="feature-img">
-                     <img class="img-fluid" src="${pageContext.request.contextPath}/resources/img/blog/no_img.png" alt="">
+                  <div class="feature-img" style="background-color: #fffdfc; width: 750px; height: 450px;">
+                  <div id="vertical" style="text-align: center;">
+                     <c:forEach items="${photos }" var="photo">
+                     <%-- <img class="img-fluid" src="${pageContext.request.contextPath}/resources/img/blog/no_img.png" alt=""> --%>
+<%-- 				<div class="img-fluid" style=" margin: 0 auto; text-align:center;" data-thumb="${pageContext.request.contextPath }/resources/upload/${photo.uploadPath}/${photo.uuid}_${photo.originalFilename}"> --%>
+				<div data-thumb="${pageContext.request.contextPath }/resources/upload/${photo.uploadPath}/${photo.uuid}_${photo.originalFilename}">
+				  <img style="width: 500px; height: 450px;" src="${pageContext.request.contextPath }/resources/upload/${photo.uploadPath}/${photo.uuid}_${photo.originalFilename}" />
+				</div>
+				</c:forEach>
+				</div>
                   </div>
                   <div class="blog_details">
+                  <br /><br />
                   
                   			<%-- <c:if test="${ community.categoryCode == 22 }">
 								<a class="genric-btn success-border medium" style="border-color: red; font-weight: bold;">공지사항</a>
@@ -731,8 +756,8 @@ function reportUser(reasonCode, suspectId, userId)
                                       &nbsp;&nbsp; &nbsp;&nbsp;
                                       
                                       <c:if test="${ r.userId eq userId }">
-	                                      <a href="#">수정</a>&nbsp;
-	                                      <p>·</p>&nbsp;
+	                                      <!-- <a href="#">수정</a>&nbsp; -->
+	                                      <!-- <p>·</p>&nbsp; -->
 	                                      <a href="${pageContext.request.contextPath }/community/deleteReply?replyCode=${r.replyCode}&bCode=${community.BCode}&userId=${userId}">삭제</a>&nbsp;
 
                                       
