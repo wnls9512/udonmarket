@@ -1,20 +1,27 @@
 package com.kh.udon.chat.controller;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.kh.udon.chat.model.service.ChatService;
 import com.kh.udon.chat.model.vo.ChatMessage;
 import com.kh.udon.chat.model.vo.ChatRoom;
+import com.kh.udon.common.util.Utils;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -97,5 +104,41 @@ public class ChatController
     	}
 
     	return url;
+
     }    
+    
+    @RequestMapping(value = "/sendPhoto",
+    				method = RequestMethod.POST,
+    				produces = "text/plain; charset=utf-8")
+    @ResponseBody
+    public String sendPhoto(MultipartFile file,
+    						HttpServletRequest request){
+
+    	String result = "";
+    	
+    	//파일 저장될 경로 가져오기 (HttpServletRequest 필요함)
+		String saveDirectory = request.getServletContext() //context-path (webapp)
+									  .getRealPath("/resources/upload/chat");
+
+
+
+		String fileName = file.getOriginalFilename();
+		log.debug("fileName = {}", fileName);
+
+		//파일명 생성
+		String renamedFileName = Utils.getRenamedFileName(fileName);
+		
+		//메모리의 파일 -> 서버경로상의 파일로 이동
+		File newFile = new File(saveDirectory, renamedFileName);
+		try {
+			file.transferTo(newFile);
+		} catch (IllegalStateException | IOException e) {
+			e.printStackTrace();
+		}			
+		
+		result = fileName + "/" + renamedFileName ;
+
+    	return result;
+    }       
+    
 }

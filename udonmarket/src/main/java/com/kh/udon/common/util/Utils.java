@@ -1,5 +1,11 @@
 package com.kh.udon.common.util;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class Utils {
 
 	public static String getPageBarHtml(int cPage, int numPerPage, int totalContents, String url) {
@@ -57,6 +63,25 @@ public class Utils {
 		}
 		
 		return pageBar;
+	}
+	
+	public static String getRenamedFileName(String oname) {
+		
+		//확장자  따로 빼기
+		int beginIndex = oname.lastIndexOf("."); //확장자앞에서 잘라내기 위해서 . 찾아냄
+		String ext = oname.substring(beginIndex); // 확장자 .txt 
+		
+		//년원일_시분초밀리초_ 포맷팅설정
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmmssSSS_");
+		//랜덤값구하기
+		int rndNum = (int) (Math.random() * 1000) ; //0 ~ 9999
+		
+		//합치기 
+		String rname = sdf.format(new Date()) + rndNum + ext;
+		
+		log.debug("rname = {}", rname);
+		
+		return rname;
 	}
 	
 }

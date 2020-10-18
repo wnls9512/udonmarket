@@ -136,8 +136,6 @@ function likeThis(bCode)
 	        dataType: "json",
 			success: function()
 			{
-				$countLike++;
-				
 				//알림보내기
 				if(sock) {
 					console.log("like :: socket >> ", sock);

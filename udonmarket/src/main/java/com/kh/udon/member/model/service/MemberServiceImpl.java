@@ -297,4 +297,9 @@ public class MemberServiceImpl implements MemberService
 	public int deleteBlockUser(Map<String, Object> map) {
 		return memberDao.deleteBlockUser(map);
 	}
+
+	@Override
+	public List<Keyword> selectAllKeywordList() {
+		return memberDao.selectAllkeywordList();
+	}
 }

@@ -106,4 +106,6 @@ public interface MemberService
 
 	int deleteBlockUser(Map<String, Object> map);
 
+	List<Keyword> selectAllKeywordList();
+
 }
