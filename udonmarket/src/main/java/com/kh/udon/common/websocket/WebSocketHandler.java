@@ -146,7 +146,17 @@ public class WebSocketHandler extends TextWebSocketHandler{
 				String receiver = strs[2];
 				int roomCode = Integer.parseInt(strs[3]);
 				String content = strs[4];
+				
 				String renamedFileName = null;
+				
+				String[] fileArr = content.split("/");
+				
+				ChatMessage m = new ChatMessage(0, roomCode, sender, content, null, null, renamedFileName, null);
+				
+				if(fileArr != null && fileArr.length == 2) {					
+					m.setOriginalFileName(fileArr[0]);
+					m.setRenamedFileName(fileArr[1]);
+				}
 				
 				System.out.println("cmd = " + cmd);
 				log.debug("sender = {}", sender);
@@ -160,7 +170,6 @@ public class WebSocketHandler extends TextWebSocketHandler{
 				SimpleDateFormat fmt = new SimpleDateFormat ("yyyy/MM/dd HH:mm");
 				//fmt.format(now);
 
-				ChatMessage m = new ChatMessage(0, roomCode, sender, content, null, null, renamedFileName, null);
 
 				if("chat".equals(cmd) && receiverSession != null) {
 						
@@ -177,11 +186,8 @@ public class WebSocketHandler extends TextWebSocketHandler{
 					TextMessage tmpMsg = new TextMessage(sendMsg);
 					receiverSession.sendMessage(tmpMsg);
 				}
+				
 				else if("file".equals(cmd) && receiverSession != null) {
-					String[] fileArr = content.split("/");
-					
-					m.setOriginalFileName(fileArr[0]);
-					m.setRenamedFileName(fileArr[1]);
 					
 					String sendMsg = roomCode + 
 							"@<div name='sendMsg' class='media w-50 mb-3'><img src='https://res.cloudinary.com/mhmd/image/upload/v1564960395/avatar_usae7z.svg' alt='user' width='50' class='rounded-circle'>" +
