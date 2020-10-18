@@ -125,8 +125,6 @@
 <script>
 //사진 업로드
 $("#file").bind('change', function(){
-	//var $file = $(this).prop("files")[0];
-	//console.log($file);
 
 	let receiver = $("#receiver").val();
 	let myId = "${userId}";
