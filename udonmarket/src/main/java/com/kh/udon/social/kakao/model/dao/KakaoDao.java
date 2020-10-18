@@ -1,11 +1,11 @@
 package com.kh.udon.social.kakao.model.dao;
 
-import com.kh.udon.member.model.vo.Member;
+import java.util.Map;
 
 public interface KakaoDao {
 
 	int getKakaoLogin(String userId);
 
-	Member kakaoLoginPass(String userId);
+	int insertMember(Map<String, Object> map);
 
 }

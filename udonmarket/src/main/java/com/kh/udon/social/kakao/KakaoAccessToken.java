@@ -16,58 +16,47 @@ import org.apache.http.message.BasicNameValuePair;
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.map.ObjectMapper;
 
-
-
 public class KakaoAccessToken {
-	
 	public static JsonNode getAccessToken(String code) {
-		
+
 		final String RequestUrl = "https://kauth.kakao.com/oauth/token";
 		final List<NameValuePair> postParams = new ArrayList<NameValuePair>();
-		
-		String CLIENT_ID = "91a359c6f4f2628b3f78a34ef78b9d82";
-		String REDIRECT_URI = "http://localhost:9090/udon/kakaologin";
-		
+
 		postParams.add(new BasicNameValuePair("grant_type", "authorization_code"));
-		postParams.add(new BasicNameValuePair("client_id", "91a359c6f4f2628b3f78a34ef78b9d82"));
-		postParams.add(new BasicNameValuePair("redirect_uri", "http://localhost:9090/udon/kakaologin"));
-		postParams.add(new BasicNameValuePair("code", code));
-		
+		postParams.add(new BasicNameValuePair("client_id", "85f4a0fdfed755ce3d9b2b081af17f44")); // REST API KEY
+		postParams.add(new BasicNameValuePair("redirect_uri", "http://localhost:8080/MS/kakaologin")); // 리다이렉트 URI
+		postParams.add(new BasicNameValuePair("code", code)); // 로그인 과정중 얻은 code 값
+
 		final HttpClient client = HttpClientBuilder.create().build();
 		final HttpPost post = new HttpPost(RequestUrl);
-		
+
 		JsonNode returnNode = null;
-		
+
 		try {
 			post.setEntity(new UrlEncodedFormEntity(postParams));
-			
+
 			final HttpResponse response = client.execute(post);
 			final int responseCode = response.getStatusLine().getStatusCode();
 
 			System.out.println("\nSending 'POST' request to URL : " + RequestUrl);
 			System.out.println("Post parameters : " + postParams);
 			System.out.println("Response Code : " + responseCode);
-			
+
 			// JSON 형태 반환값 처리
 			ObjectMapper mapper = new ObjectMapper();
 
 			returnNode = mapper.readTree(response.getEntity().getContent());
-			
-			
+
 		} catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (ClientProtocolException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
-			 // clear resources
+			// clear resources
 		}
 		
 		return returnNode;
 	}
-
 }

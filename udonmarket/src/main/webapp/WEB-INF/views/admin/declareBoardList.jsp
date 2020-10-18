@@ -77,7 +77,7 @@ a {
 												<td>${ report.reportCode }</td>
 												<td>${ report.reasonCode }</td>
 												<td>${ report.reportId }</td>
-												<td>${ report.bCode }</td>
+												<td>${ report.BCode }</td>
 												<td>${ report.reasonContent }</td>
 											</tr>
 										</c:forEach>			
