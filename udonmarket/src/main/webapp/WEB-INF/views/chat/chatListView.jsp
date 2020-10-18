@@ -85,7 +85,7 @@
 		        <div class="input-group">
 		        
 		          <!-- 사진보내기 START -->
-		          <form action="" method="post" id="fileForm">
+		          <form action="" method="post" id="fileForm" enctype="multipart/form-data">
 			          <input type="file" name="file" id="file" 
 			          		 accept="image/jpeg, image/png" style="display:none"/>
 		              <button id="fileBtn" 
@@ -125,24 +125,48 @@
 <script>
 //사진 업로드
 $("#file").bind('change', function(){
-	var $file = $(this).prop("files")[0];
-	console.log($file);
+	//var $file = $(this).prop("files")[0];
+	//console.log($file);
 
-	var form = $("#fileForm");
+	let receiver = $("#receiver").val();
+	let myId = "${userId}";
+	let roomCode = $("#sendBtn").val();
+	
+	var form = $("#fileForm")[0];
 	var formData = new FormData(form);
-	formData.append("file", $file);
 
 	$.ajax({
 		 url: "${pageContext.request.contextPath}/chat/sendPhoto",
          processData: false,
+         //false : form-data 를 String으로 변환하지 않음
          contentType: false,
+         //false : multipart/form-data
          data: formData,
          type: 'POST',
          beforeSend : function(xhr){
              xhr.setRequestHeader("${_csrf.headerName}", "${_csrf.token}");
          },
          success: function(result){
-             alert("업로드 성공!!");
+
+        	 var name = result.split("/");
+        	 var fileName = name[0];
+        	 var renamedFileName = name[1];
+
+   			console.log("chat :: socket >> ", sock);
+   			sock.send("file," + myId + "," + receiver + "," + roomCode + "," + result); 
+
+   			let myMsg = "<div class='media w-50 ml-auto mb-3'>" +
+   					        "<div class='media-body'>" +
+   					          "<div class='bg-primary rounded py-2 px-3 mb-2'>" +
+   					          "<img src='${pageContext.request.contextPath }/resources/upload/chat/" + renamedFileName +"' width='150'>" +
+   					          "</div>" +
+   					          "<p class='small text-muted'>" + formatDate(new Date()) + "</p>" +
+   					        "</div>" +
+   					      "</div>";
+
+   			$("#chatBox").prepend(myMsg);
+   			$("#message").val("");
+        	 
          },
          error : function(xhr, status, err){
  			console.log("처리 실패", xhr, status, err);
@@ -246,36 +270,70 @@ $("[name=chatRoom]").click(function(){
 
 			for(let i = 0; i<msg.length; i++){
 
-				//내가 보낸 메세지
-				if(msg[i].userId != $myId){
+				if(msg[i].renamedFileName == null){
 
-					let senderMsg = "<div class='media w-50 mb-3'><img src='https://res.cloudinary.com/mhmd/image/upload/v1564960395/avatar_usae7z.svg' alt='user' width='50' class='rounded-circle'>" +
-							          "<div class='media-body ml-3'>" +
-							            "<div class='bg-light rounded py-2 px-3 mb-2'>" +
-							              "<p class='text-small mb-0 text-muted'>" + msg[i].chatContent + "</p>" +
-							            "</div>" +
-							            "<p class='small text-muted'>" + formatDate(msg[i].chatDate) + "</p>" +
-							          "</div>" +
-							        "</div>";
-
-					$("#chatBox").append(senderMsg);							
-				}
-				//상대방이 보낸 메세지
-				else if (msg[i].userId == $myId){
-
-					let recieverMsg = "<div class='media w-50 ml-auto mb-3'>" +
-								          "<div class='media-body'>" +
-								            "<div class='bg-primary rounded py-2 px-3 mb-2'>" +
-								              "<p class='text-small mb-0 text-white'>" + msg[i].chatContent + "</p>" +
+					//내가 보낸 메세지
+					if(msg[i].userId != $myId){
+	
+						let senderMsg = "<div class='media w-50 mb-3'><img src='https://res.cloudinary.com/mhmd/image/upload/v1564960395/avatar_usae7z.svg' alt='user' width='50' class='rounded-circle'>" +
+								          "<div class='media-body ml-3'>" +
+								            "<div class='bg-light rounded py-2 px-3 mb-2'>" +
+								              "<p class='text-small mb-0 text-muted'>" + msg[i].chatContent + "</p>" +
 								            "</div>" +
-								            "<p class='small text-muted'>" + formatDate(msg[i].chatDate) +"</p>" +
+								            "<p class='small text-muted'>" + formatDate(msg[i].chatDate) + "</p>" +
 								          "</div>" +
 								        "</div>";
-
-					
-					$("#chatBox").append(recieverMsg);		
+	
+						$("#chatBox").append(senderMsg);							
+					}
+					//상대방이 보낸 메세지
+					else if (msg[i].userId == $myId){
+	
+						let recieverMsg = "<div class='media w-50 ml-auto mb-3'>" +
+									          "<div class='media-body'>" +
+									            "<div class='bg-primary rounded py-2 px-3 mb-2'>" +
+									              "<p class='text-small mb-0 text-white'>" + msg[i].chatContent + "</p>" +
+									            "</div>" +
+									            "<p class='small text-muted'>" + formatDate(msg[i].chatDate) +"</p>" +
+									          "</div>" +
+									        "</div>";
+	
+						
+						$("#chatBox").append(recieverMsg);		
+					}
 				}
-				
+				else {
+
+					//내가 보낸 메세지
+					if(msg[i].userId != $myId){
+	
+						let senderMsg = "<div class='media w-50 mb-3'><img src='https://res.cloudinary.com/mhmd/image/upload/v1564960395/avatar_usae7z.svg' alt='user' width='50' class='rounded-circle'>" +
+								          "<div class='media-body ml-3'>" +
+								            "<div class='bg-light rounded py-2 px-3 mb-2'>" +
+								              "<img src='${pageContext.request.contextPath }/resources/upload/chat/" + msg[i].renamedFileName +"' width='150'>" +
+								            "</div>" +
+								            "<p class='small text-muted'>" + formatDate(msg[i].chatDate) + "</p>" +
+								          "</div>" +
+								        "</div>";
+	
+						$("#chatBox").append(senderMsg);							
+					}
+					//상대방이 보낸 메세지
+					else if (msg[i].userId == $myId){
+	
+						let recieverMsg = "<div class='media w-50 ml-auto mb-3'>" +
+									          "<div class='media-body'>" +
+									            "<div class='bg-primary rounded py-2 px-3 mb-2'>" +
+									            "<img src='${pageContext.request.contextPath }/resources/upload/chat/" + msg[i].renamedFileName +"' width='150'>" +
+									            "</div>" +
+									            "<p class='small text-muted'>" + formatDate(msg[i].chatDate) +"</p>" +
+									          "</div>" +
+									        "</div>";
+	
+						
+						$("#chatBox").append(recieverMsg);		
+					}
+				}			
 			} 
 
 			if($enabled == 'false'){
