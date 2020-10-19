@@ -48,6 +48,11 @@ public class Member implements Serializable, UserDetails{
 	public String getUsername() {
 		return userId;
 	}
+	
+	@Override
+	public String getPassword() {
+		return password;
+	}
 
 
 	@Override

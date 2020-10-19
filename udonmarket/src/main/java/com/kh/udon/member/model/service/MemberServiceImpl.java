@@ -312,4 +312,9 @@ public class MemberServiceImpl implements MemberService
 	public List<Keyword> selectAllKeywordList() {
 		return memberDao.selectAllkeywordList();
 	}
+
+	@Override
+	public Member selectOnePasswordMember(String password) {
+		return memberDao.selectOnePasswordMember(password);
+	}
 }

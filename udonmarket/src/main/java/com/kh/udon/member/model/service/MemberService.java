@@ -112,4 +112,6 @@ public interface MemberService
 
 	List<Keyword> selectAllKeywordList();
 
+	Member selectOnePasswordMember(String string);
+
 }

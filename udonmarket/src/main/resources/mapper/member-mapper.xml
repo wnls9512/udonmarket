@@ -158,6 +158,12 @@
 	where user_id = #{userId}
 </select>
 
+<select id="selectOnePasswordMember" resultMap="memberMap">
+	select *
+	from member
+	where password = #{password}
+</select>
+
 <resultMap type="member" id="memberMap">
 
 </resultMap>

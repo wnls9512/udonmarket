@@ -295,4 +295,9 @@ public class MemberDaoImpl implements MemberDao
 	public List<Keyword> selectAllkeywordList() {
 		return session.selectList("member.selectAllkeywordList");
 	}
+
+	@Override
+	public Member selectOnePasswordMember(String password) {
+		return session.selectOne("member.selectOnePasswordMember", password);
+	}
 }

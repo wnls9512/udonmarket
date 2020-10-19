@@ -10,7 +10,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.security.web.savedrequest.SavedRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -61,6 +63,7 @@ public class MemberController {
 	
 	@Autowired
 	private Email emailVo;
+	
 	
 	@RequestMapping(value="/memberLoginSuccess.do")
 	public ModelAndView memberLoginSuccess(ModelAndView mav, 
@@ -265,15 +268,36 @@ public class MemberController {
 	public String pwdCheck(Member member,
 						   @RequestParam("userId") String userId,
 						   @RequestParam("password") String password,
-						   RedirectAttributes rttr)
+						   RedirectAttributes rttr, Authentication authentication)
 	{
+		System.out.println("패스워드 = "+ member.getPassword());
+		
+		if(authentication != null) {
+			log.debug("타입 정보  = ", authentication.getClass() );
+			System.out.println("타입 정보  = "+ authentication.getClass());
+			
+			
+			//세션 정보 객체 반환
+			WebAuthenticationDetails web = (WebAuthenticationDetails)authentication.getDetails();
+			log.debug("세션 ID = ", web.getSessionId());
+			System.out.println("세션 ID  = "+ web.getSessionId());
+			log.debug("접속 IP = ", web.getRemoteAddress());
+			System.out.println("접속 IP = "+ authentication.getClass());
+			
+			//UsernamePasswordAuthenticationToken에 넣었던 member 객체 반환
+			member = (Member)authentication.getPrincipal();
+			log.debug("ID정보  = ", member.getUserId());
+			System.out.println("ID정보 = "+ member.getUserId());
+			log.debug("password정보 = ", member.getPassword());
+			System.out.println("password정보 = "+ member.getPassword());
+		}
 		rttr.addAttribute("userId", member.getUserId());
 		return "redirect:/member/updatePwd";
 	}
 	
 	
 	//비밀번호 수정
-	@RequestMapping("/updatePwd" )
+	@RequestMapping(value = "/updatePwd")
 	public String updatePwd(@RequestParam("userId") String userId, 
 							  Model model)
 	{
