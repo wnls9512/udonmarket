@@ -92,6 +92,8 @@ public class WebSocketHandler extends TextWebSocketHandler{
 				String title = strs[4];
 				String noti = strs[5];
 				
+				Noti n = new Noti(0, cmd, sender, receiver, pCode, title, noti, false, null);
+				
 				//현재 접속 중인 (로그인 중인) 사용자 중에 receiver가 있을때만 알림을 보낸다
 				WebSocketSession receiverSession = userSessions.get(receiver); 
 				
@@ -103,7 +105,10 @@ public class WebSocketHandler extends TextWebSocketHandler{
 					receiverSession.sendMessage(tmpMsg);									
 				}
 				else if("keyword".equals(cmd) && receiverSession != null) {
-					TextMessage tmpMsg = new TextMessage("[키워드:" + noti + "] " + sender + "님이" + pCode + "를 판매합니다");
+					TextMessage tmpMsg = new TextMessage("[키워드:" + noti + "] '" + title + "' 이 올라왔어요.");
+					
+				//	TextMessage tmpMsg = new TextMessage("[키워드 : " + noti + "] " 
+				//			+ "<a href='/udon/product/productDetailView?pCode=" + pCode + "'>" + title +"</a>의 가격이 " + noti + " 원으로 변동 되었어요.");
 					receiverSession.sendMessage(tmpMsg);
 				}
 				else if("reply".equals(cmd) && receiverSession != null) {
@@ -126,8 +131,6 @@ public class WebSocketHandler extends TextWebSocketHandler{
 					receiverSession.sendMessage(tmpMsg);
 				}
 			
-				//insert Noti
-				Noti n = new Noti(0, cmd, sender, receiver, pCode, title, noti, false, null);
 				log.debug("noti = {}", n);
 				try {
 					int result = service.insertNoti(n);

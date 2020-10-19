@@ -305,6 +305,18 @@ public class ProductDaoImpl implements ProductDao
         return session.selectList("product.elevenToTwenty");
     }
 
+    @Override
+    public int hide(int pCode)
+    {
+        return session.update("product.hide", pCode);
+    }
+
+    @Override
+    public List<ProductDTO> popular(String userId)
+    {
+        return session.selectList("product.popular", userId);
+    }
+
 
 
 

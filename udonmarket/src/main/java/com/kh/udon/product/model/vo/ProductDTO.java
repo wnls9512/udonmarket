@@ -22,6 +22,12 @@ public class ProductDTO implements Serializable
     private int wish;
     private int chat;
     
+    // photo
+    private String uploadPath;
+    private String uuid;
+    private String originalFilename;
+    
+    
     // detail
     private String buyer;
     private int categoryCode;

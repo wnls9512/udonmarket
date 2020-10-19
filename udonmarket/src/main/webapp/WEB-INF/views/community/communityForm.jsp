@@ -18,9 +18,9 @@
 
 
 <style>
-.breadcrumb_bg_01
+.breadcrumb_bg_02
 {
-	background-image: url(${pageContext.request.contextPath}/resources/img/breadcrumb_01.png);
+	background-image: url(${pageContext.request.contextPath}/resources/img/breadcrumb_02.png);
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
@@ -42,7 +42,7 @@ body
 
     <!--================Home Banner Area =================-->
     <!-- breadcrumb start-->
-    <section class="breadcrumb breadcrumb_bg">
+    <section class="breadcrumb breadcrumb_bg_02">
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-lg-8">
