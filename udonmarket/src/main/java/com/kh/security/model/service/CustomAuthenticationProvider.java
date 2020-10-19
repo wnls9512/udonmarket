@@ -33,22 +33,27 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
 		String password = (String)authentication.getCredentials();
 		
 		log.debug("AuthenticationProvider :::::: 1");
+		System.out.println("AuthenticationProvider :::::: 1");
 		
 		Member member = (Member) userDetailService.loadUserByUsername(userId);
 		
 		log.debug("AuthenticationProvider loadUserByUsername :::::: 3");
+		System.out.println("AuthenticationProvider loadUserByUsername :::::: 3");
 		
 		if(!pwEncoding.matches(password, member.getPassword())) {
 			log.debug("matchPassword :::::::: false!");
+			System.out.println("matchPassword :::::::: false!");
 			throw new BadCredentialsException(userId);
 		}
 		
 		if(!member.isEnabled()) {
 			log.debug("isEnabled ::::: false");
+			System.out.println("matchPassword :::::::: false!");
 			throw new BadCredentialsException(userId);
 		}
 		
 		log.debug("matchPassword :::::::: true!");
+		System.out.println("matchPassword :::::::: true!");
 		
 		
 		Authentication newAuth = new UsernamePasswordAuthenticationToken(member, null, member.getAuthorities());

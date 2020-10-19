@@ -290,10 +290,10 @@ public class MemberController {
 						   String username,
 						   Authentication authentication)
 	{
-		boolean result = service.checkPwd(userId,member.getPassword());
+		/* boolean result = service.checkPwd(userId,member.getPassword()); */
 		
-		log.debug("result = {} " ,result);
-		if(result) {
+//		log.debug("result = {} " ,result);
+//		if(result) {
 		System.out.println("패스워드 = "+ member.getPassword());
 		
 		if(authentication != null) {
@@ -314,19 +314,34 @@ public class MemberController {
 			System.out.println("ID정보 = "+ member.getUserId());
 			log.debug("password정보 = ", member.getPassword());
 			System.out.println("password정보 = "+ member.getPassword());
+			
+			if(!bcryptPasswordEncoder.matches(password, member.getPassword())) {
+				log.debug("matchPassword :::::::: false!");
+				System.out.println("matchPassword :::::::: false!");
+				rttr.addFlashAttribute("msg","비밀번호 인증 실패");
+				rttr.addAttribute("userId", member.getUserId());
+				return "redirect:/member/mypage";
+			}
+			else {
+				System.out.println("matchPassword :::::::: success!");
+				rttr.addAttribute("userId", member.getUserId());
+				rttr.addFlashAttribute("msg","비밀번호 인증 성공");
+				return "redirect:/member/updatePwd";
+			}
 		}
 		rttr.addAttribute("userId", member.getUserId());
+		System.out.println("matchPassword :::::::: success!");
 		return "redirect:/member/updatePwd";
 		}
-		else
-		{
-			rttr.addFlashAttribute("msg","비밀번호 인증 실패");
-			rttr.addAttribute("userId", member.getUserId());
-			return "redirect:/member/mypage";
-		}
+//		else
+//		{
+//			rttr.addFlashAttribute("msg","비밀번호 인증 실패");
+//			rttr.addAttribute("userId", member.getUserId());
+//			return "redirect:/member/mypage";
+//		}
 //			
 //	}
-	}
+//	}
 //		userDeSer.loadUserByUsername(username);
 //		
 //		boolean result = service.loadUserByUsername(username);
