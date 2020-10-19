@@ -533,8 +533,8 @@ function reportUser(reasonCode, suspectId, userId)
                      <c:forEach items="${photos }" var="photo">
                      <%-- <img class="img-fluid" src="${pageContext.request.contextPath}/resources/img/blog/no_img.png" alt=""> --%>
 <%-- 				<div class="img-fluid" style=" margin: 0 auto; text-align:center;" data-thumb="${pageContext.request.contextPath }/resources/upload/${photo.uploadPath}/${photo.uuid}_${photo.originalFilename}"> --%>
-				<div data-thumb="${pageContext.request.contextPath }/resources/upload/${photo.uploadPath}/${photo.uuid}_${photo.originalFilename}">
-				  <img style="width: 500px; height: 450px;" src="${pageContext.request.contextPath }/resources/upload/${photo.uploadPath}/${photo.uuid}_${photo.originalFilename}" />
+				<div data-thumb="${pageContext.request.contextPath }/resources/upload/${photo.uploadPath}/${photo.uuid}/${photo.originalFilename}">
+				  <img style="width: 500px; height: 450px;" src="${pageContext.request.contextPath }/resources/upload/${photo.uploadPath}/${photo.uuid}/${photo.originalFilename}" />
 				</div>
 				</c:forEach>
 				</div>
