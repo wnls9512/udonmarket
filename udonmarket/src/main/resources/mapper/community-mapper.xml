@@ -12,7 +12,8 @@
             m.address,
             p.upload_path,
             p.uuid,
-            p.original_filename
+            p.original_filename,
+            (SELECT COUNT(reply_code) FROM reply r WHERE r.b_code = b.b_code) as reply_count
 		from 
 		    board b
 		   		left join
@@ -399,6 +400,9 @@
 		</if>
 		0
 		)
+		<selectKey keyProperty="bCode" resultType="_int" order="AFTER">
+		select seq_board_no.currval from dual
+		</selectKey>
 	</insert>
 	
 	<!-- 게시글 수정 폼 -->

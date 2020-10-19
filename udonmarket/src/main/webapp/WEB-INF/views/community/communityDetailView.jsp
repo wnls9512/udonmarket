@@ -16,6 +16,15 @@
 <sec:authentication property="principal.username" var="userId"/>
 
 
+<style>
+.breadcrumb_bg_02
+{
+	background-image: url(${pageContext.request.contextPath}/resources/img/breadcrumb_02.png);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+</style>
 
 <script>
 
@@ -492,7 +501,7 @@ function reportUser(reasonCode, suspectId, userId)
 
     <!--================Home Banner Area =================-->
     <!-- breadcrumb start-->
-    <section class="breadcrumb breadcrumb_bg">
+    <section class="breadcrumb breadcrumb_bg_02">
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-lg-8">
@@ -528,19 +537,19 @@ function reportUser(reasonCode, suspectId, userId)
          <div class="row">
             <div class="col-lg-8 posts-list">
                <div class="single-post">
-                  <div class="feature-img" style="background-color: #fffdfc; width: 750px; height: 450px;">
+                  <div class="feature-img" style="background-color: #e6d2d1; width: 750px; height: 450px;">
                   <div id="vertical" style="text-align: center;">
                      <c:forEach items="${photos }" var="photo">
                      <%-- <img class="img-fluid" src="${pageContext.request.contextPath}/resources/img/blog/no_img.png" alt=""> --%>
 <%-- 				<div class="img-fluid" style=" margin: 0 auto; text-align:center;" data-thumb="${pageContext.request.contextPath }/resources/upload/${photo.uploadPath}/${photo.uuid}_${photo.originalFilename}"> --%>
-				<div data-thumb="${pageContext.request.contextPath }/resources/upload/${photo.uploadPath}/${photo.uuid}_${photo.originalFilename}">
-				  <img style="width: 500px; height: 450px;" src="${pageContext.request.contextPath }/resources/upload/${photo.uploadPath}/${photo.uuid}_${photo.originalFilename}" />
+				<div data-thumb="${pageContext.request.contextPath }/resources/upload/${photo.uploadPath}/${photo.uuid}/${photo.originalFilename}">
+				  <img style="width: 500px; height: 450px;" src="${pageContext.request.contextPath }/resources/upload/${photo.uploadPath}/${photo.uuid}/${photo.originalFilename}" />
 				</div>
 				</c:forEach>
 				</div>
                   </div>
                   <div class="blog_details">
-                  <br /><br />
+                  
                   
                   			<%-- <c:if test="${ community.categoryCode == 22 }">
 								<a class="genric-btn success-border medium" style="border-color: red; font-weight: bold;">공지사항</a>
