@@ -102,10 +102,14 @@
 						<c:forEach items="${products}" var="p">
                         <div class="col-lg-4 col-sm-6">
                             <div class="single_product_item">
-                                <img src="${pageContext.request.contextPath}/resources/img/product/product_1.png" alt=""
-                                	 onclick="location.href='${pageContext.request.contextPath}/product/productDetailView?pCode=${p.PCode}&userId=${userId }';">
+								<c:if test="${p.uploadPath == null}">
+								<img src="${pageContext.request.contextPath }/resources/img/noimage.png" alt="">
+								</c:if>
+								<c:if test="${p.uploadPath != null}">
+                                <img src="${pageContext.request.contextPath }/resources/upload/${p.uploadPath}/${p.uuid}/${p.originalFilename}" alt="">
+								</c:if>
                                 <div class="single_product_text">
-                                    <h4>${p.title}</h4>
+                                    <h4 onclick="location.href='${pageContext.request.contextPath}/product/productDetailView?pCode=${p.PCode}&userId=${userId }';">${p.title}</h4>
                                     <span style="color: gray;">${p.address} · <c:if test="${p.pull }">끌올 &nbsp;</c:if>
                                     										   <c:if test="${p.regDate != 0}">${p.regDate} days ago</c:if>
                                     										   <c:if test="${p.regDate == 0}">today</c:if></span>

@@ -7,10 +7,12 @@
 		select x.*
 		from
 		(
-		    select p.p_code, p.seller, p.title, p.price, p.pull, trunc(sysdate - p.reg_date) reg_date, substr(m.address, instr(m.address, ' ', 1, 1), instr(m.address, ' ', 1, 2)) address, wc.wish, cc.chat, row_number()over(order by wc.wish desc) rnum
+		    select p.p_code, p.seller, p.title, p.price, p.pull, trunc(sysdate - p.reg_date) reg_date, substr(m.address, instr(m.address, ' ', 1, 1), instr(m.address, ' ', 1, 2)) address, wc.wish, cc.chat, row_number()over(order by wc.wish desc) rnum,
+				   photo.uuid, photo.original_filename, photo.upload_path
 		    from product p left join member m on(p.seller = m.user_id)
-		        left join (select a.p_code p_code, count(b.p_code) wish from product a left outer join wish b on(a.p_code = b.p_code) group by a.p_code) wc on(wc.p_code = p.p_code)
-		        left join (select a.p_code p_code, count(b.p_code) chat from product a left outer join chat_room b on(a.p_code = b.p_code) group by a.p_code) cc on(cc.p_code = p.p_code)
+		        	   	   left join (select a.p_code p_code, count(b.p_code) wish from product a left outer join wish b on(a.p_code = b.p_code) group by a.p_code) wc on(wc.p_code = p.p_code)
+		       		   	   left join (select a.p_code p_code, count(b.p_code) chat from product a left outer join chat_room b on(a.p_code = b.p_code) group by a.p_code) cc on(cc.p_code = p.p_code)
+		               	   left join (select * from product_photo where photo_code in (select min(photo_code) from product_photo group by p_code)) photo on(p.p_code = photo.p_code)
 		    where (p.open_status = 1 and (p.trade_status = 'S' or p.trade_status = 'R') and delete_yn = 'N')
 		)x
 		where x.rnum between 1 and 8
@@ -19,10 +21,12 @@
 		select x.*
 		from
 		(
-		    select p.p_code, p.seller, p.title, p.price, p.pull, trunc(sysdate - p.reg_date) reg_date, substr(m.address, instr(m.address, ' ', 1, 1), instr(m.address, ' ', 1, 2)) address, wc.wish, cc.chat, row_number()over(order by wc.wish desc) rnum
+		    select p.p_code, p.seller, p.title, p.price, p.pull, trunc(sysdate - p.reg_date) reg_date, substr(m.address, instr(m.address, ' ', 1, 1), instr(m.address, ' ', 1, 2)) address, wc.wish, cc.chat, row_number()over(order by wc.wish desc) rnum,
+			   	   photo.uuid, photo.original_filename, photo.upload_path
 		    from product p left join member m on(p.seller = m.user_id)
-		        left join (select a.p_code p_code, count(b.p_code) wish from product a left outer join wish b on(a.p_code = b.p_code) group by a.p_code) wc on(wc.p_code = p.p_code)
-		        left join (select a.p_code p_code, count(b.p_code) chat from product a left outer join chat_room b on(a.p_code = b.p_code) group by a.p_code) cc on(cc.p_code = p.p_code)
+		    		       left join (select a.p_code p_code, count(b.p_code) wish from product a left outer join wish b on(a.p_code = b.p_code) group by a.p_code) wc on(wc.p_code = p.p_code)
+					       left join (select a.p_code p_code, count(b.p_code) chat from product a left outer join chat_room b on(a.p_code = b.p_code) group by a.p_code) cc on(cc.p_code = p.p_code)
+		              	   left join (select * from product_photo where photo_code in (select min(photo_code) from product_photo group by p_code)) photo on(p.p_code = photo.p_code)
 		    where (p.open_status = 1 and (p.trade_status = 'S' or p.trade_status = 'R') and delete_yn = 'N')
 		)x
 		where x.rnum between 9 and 16	
@@ -32,10 +36,12 @@
 	<!-- 전체 리스트 -->
 	<select id="selectAll" resultType="productDTO">
 	<![CDATA[
-		select p.p_code, p.seller, p.title, p.price, p.pull, trunc(sysdate - p.reg_date) reg_date, substr(m.address, instr(m.address, ' ', 1, 1), instr(m.address, ' ', 1, 2)) address, wc.wish, cc.chat
+		select p.p_code, p.seller, p.title, p.price, p.pull, trunc(sysdate - p.reg_date) reg_date, substr(m.address, instr(m.address, ' ', 1, 1), instr(m.address, ' ', 1, 2)) address, wc.wish, cc.chat,
+			   photo.uuid, photo.original_filename, photo.upload_path
 		from product p left join member m on(p.seller = m.user_id)
 		               left join (select a.p_code p_code, count(b.p_code) wish from product a left outer join wish b on(a.p_code = b.p_code) group by a.p_code) wc on(wc.p_code = p.p_code)
 		               left join (select a.p_code p_code, count(b.p_code) chat from product a left outer join chat_room b on(a.p_code = b.p_code) group by a.p_code) cc on(cc.p_code = p.p_code)
+		               left join (select * from product_photo where photo_code in (select min(photo_code) from product_photo group by p_code)) photo on(p.p_code = photo.p_code)
 		where (p.open_status = 1 and (p.trade_status = 'S' or p.trade_status = 'R') and delete_yn = 'N'
 		      and p.seller in (
 		                        select l.user_id 
@@ -53,10 +59,12 @@
 	<!-- 카테고리 리스트 -->
 	<select id="selectCategoryProducts" resultType="productDTO">
 	<![CDATA[
-		select p.p_code, p.seller, p.title, p.price, p.pull, trunc(sysdate - p.reg_date) reg_date, substr(m.address, instr(m.address, ' ', 1, 1), instr(m.address, ' ', 1, 2)) address, wc.wish, cc.chat
+		select p.p_code, p.seller, p.title, p.price, p.pull, trunc(sysdate - p.reg_date) reg_date, substr(m.address, instr(m.address, ' ', 1, 1), instr(m.address, ' ', 1, 2)) address, wc.wish, cc.chat,
+			   photo.uuid, photo.original_filename, photo.upload_path
 		from product p left join member m on(p.seller = m.user_id)
 		               left join (select a.p_code p_code, count(b.p_code) wish from product a left outer join wish b on(a.p_code = b.p_code) group by a.p_code) wc on(wc.p_code = p.p_code)
 		               left join (select a.p_code p_code, count(b.p_code) chat from product a left outer join chat_room b on(a.p_code = b.p_code) group by a.p_code) cc on(cc.p_code = p.p_code)
+		               left join (select * from product_photo where photo_code in (select min(photo_code) from product_photo group by p_code)) photo on(p.p_code = photo.p_code)
 		where (p.open_status = 1 and (p.trade_status = 'S' or p.trade_status = 'R') and delete_yn = 'N' and p.category = #{categoryCode} 
 		      and p.seller in (
 		                        select l.user_id 
@@ -73,10 +81,12 @@
 
 	<!-- 검색결과 리스트 -->
 	<select id="search" resultType="productDTO">
-		select p.p_code, p.seller, p.title, p.price, p.pull, trunc(sysdate - p.reg_date) reg_date, substr(m.address, instr(m.address, ' ', 1, 1), instr(m.address, ' ', 1, 2)) address, wc.wish, cc.chat
+		select p.p_code, p.seller, p.title, p.price, p.pull, trunc(sysdate - p.reg_date) reg_date, substr(m.address, instr(m.address, ' ', 1, 1), instr(m.address, ' ', 1, 2)) address, wc.wish, cc.chat,
+			   photo.uuid, photo.original_filename, photo.upload_path
 		from product p left join member m on(p.seller = m.user_id)
 		               left join (select a.p_code p_code, count(b.p_code) wish from product a left outer join wish b on(a.p_code = b.p_code) group by a.p_code) wc on(wc.p_code = p.p_code)
 		               left join (select a.p_code p_code, count(b.p_code) chat from product a left outer join chat_room b on(a.p_code = b.p_code) group by a.p_code) cc on(cc.p_code = p.p_code)
+		               left join (select * from product_photo where photo_code in (select min(photo_code) from product_photo group by p_code)) photo on(p.p_code = photo.p_code)
 		<where>
 			((p.title like '%'||#{keyword}||'%' or p.content like '%'||#{keyword}||'%')
 			and p.open_status = 1 and (p.trade_status = 'S' or p.trade_status = 'R') and delete_yn = 'N'
