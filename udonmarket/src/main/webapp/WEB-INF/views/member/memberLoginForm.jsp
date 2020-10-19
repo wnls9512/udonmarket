@@ -67,8 +67,6 @@
                                     <a class="lost_pass" href="${pageContext.request.contextPath }/member/passwordFind" style="font-size: large; font-weight: 800">비밀번호 찾기</a>
                                 </div>
                             </form:form>
-                        <a href="https://kauth.kakao.com/oauth/authorize?client_id=91a359c6f4f2628b3f78a34ef78b9d82&redirect_uri=http://localhost:9090/udon/kakaologin&response_type=code"><img src="${pageContext.request.contextPath }/resources/img/kakao_login_page.png" style="width: 31em; border-radius: 2em;"></a>
-                        <a class="lost_pass" href="https://developers.kakao.com/logout" style="font-size: large; font-weight: 800;">카카오 로그아웃</a>
                         </div>
                     </div>
                 </div>
