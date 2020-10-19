@@ -102,6 +102,10 @@ public interface MemberService
 
 	int selectNotiTotalContents(String userId);
 
+	boolean checkPwd(String userId,String password);
+
+	void updatePwd(Member member);
+	
 	int insertBlockUser(Map<String, Object> map);
 
 	int deleteBlockUser(Map<String, Object> map);

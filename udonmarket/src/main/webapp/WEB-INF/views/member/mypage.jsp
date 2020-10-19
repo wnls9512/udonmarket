@@ -18,6 +18,16 @@
 a{text-decoration: none; color: black;}
 </style>
 
+<script>
+
+$(function(){
+	$("#passwordAuthModal").modal()
+					.on("hide.bs.modal", function(){
+						location.href = "${ header.referer }";
+					});
+});
+</script>
+
     <!--================Home Banner Area =================-->
     <!-- breadcrumb start-->
 	<section class="breadcrumb" style="background-color : #ecfdff;">
@@ -75,6 +85,13 @@ a{text-decoration: none; color: black;}
 	           <!-- 여백맞추기용 -->
 	           <p></p><p></p><p></p><p></p>
 	                <ul class="list-inline mb-0">
+	               		<li class="list-inline-item">            
+	                       <h6 class="font-weight-bold mb-0 d-block">	                       	
+	                       	<a href="javascript:void(0);" data-toggle="modal" data-target="#passwordAuth">
+	                       		<i class="fa fa-key fa-2x" ></i> <br /> 비밀번호 변경
+	                       	</a>
+	                       </h6>
+	                    </li>
 	                    <li class="list-inline-item">            
 	                       <h6 class="font-weight-bold mb-0 d-block">	                       	
 	                       	<a href="${pageContext.request.contextPath }/member/salesList?userId=${member.userId}">
@@ -166,6 +183,35 @@ a{text-decoration: none; color: black;}
 	        </div>
 	    </div>
 	</div>
+	
+	<!-- =======비밀번호 인증 모달======= -->
+	<div class="modal fade" id="passwordAuth" tabindex="-1" role="dialog" aria-labelledby="passwordAuthModalLable" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">비밀번호를 한번 더 확인해주세요</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form action="${pageContext.request.contextPath }/member/pwdCheck?userId=${member.userId}" method="post">
+        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+          <div class="form-group">
+            <label for="recipient-name" class="col-form-label">Password:</label>
+            <input type="password" class="form-control" id="password" name="password">
+          </div>
+       
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+        <button type="submit" class="btn btn-primary">확인</button>
+      </div>
+       </form>
+    </div>
+  </div>
+</div>
+<!-- =======비밀번호 인증 모달======= -->
 
 
 
