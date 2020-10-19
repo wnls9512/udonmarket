@@ -111,6 +111,8 @@ public interface ProductDao
 
     int hide(int pCode);
 
+    List<ProductDTO> popular(String userId);
+
 
 
 

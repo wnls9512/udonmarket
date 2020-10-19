@@ -310,6 +310,12 @@ public class ProductServiceImpl implements ProductService
         return dao.hide(pCode);
     }
 
+    @Override
+    public List<ProductDTO> popular(String userId)
+    {
+        return dao.popular(userId);
+    }
+
 
 
     

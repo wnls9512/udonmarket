@@ -102,6 +102,8 @@ public interface ProductService
 
     int hide(int pCode);
 
+    List<ProductDTO> popular(String userId);
+
 
 
 

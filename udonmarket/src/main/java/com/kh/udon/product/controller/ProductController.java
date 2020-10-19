@@ -72,6 +72,7 @@ public class ProductController
         List<CategoryVO> category = service.selectAllCategory();
         List<Integer> categoryCount = service.selectAllCategoryCount(userId);
         int totalCount = service.selectTotalCount(userId);
+        List<ProductDTO> popular = service.popular(userId);
         
         // --- pagination ---
         PageInfo pi = Pagination.getPageInfo(totalCount, currentPage, 10, 9);
@@ -83,6 +84,7 @@ public class ProductController
         model.addAttribute("products", products);
         model.addAttribute("selectedCategory", 0);
         model.addAttribute("pi", pi);
+        model.addAttribute("popular", popular);
         
         return "product/productListView";
     }
@@ -106,6 +108,7 @@ public class ProductController
         List<CategoryVO> category = service.selectAllCategory();
         List<Integer> categoryCount = service.selectAllCategoryCount(userId);
         int totalCount = service.selectCategoryCount(map);
+        List<ProductDTO> popular = service.popular(userId);
         
         // --- pagination ---
         PageInfo pi = Pagination.getPageInfo(totalCount, currentPage, 10, 9);
@@ -117,6 +120,7 @@ public class ProductController
         model.addAttribute("products", products);
         model.addAttribute("selectedCategory", categoryCode);
         model.addAttribute("pi", pi);
+        model.addAttribute("popular", popular);
         
         return "product/productListView";
     }
@@ -140,6 +144,7 @@ public class ProductController
         List<CategoryVO> categoryList = service.selectAllCategory();
         List<Integer> categoryCount = service.selectAllCategoryCount(userId);
         int totalCount = service.selectSearchCount(map);
+        List<ProductDTO> popular = service.popular(userId);
         
         // --- pagination ---
         PageInfo pi = Pagination.getPageInfo(totalCount, currentPage, 10, 9);
@@ -153,6 +158,7 @@ public class ProductController
         model.addAttribute("pi", pi);
         if(products == null || products.size() == 0)
             model.addAttribute("msg", "검색된 상품이 없습니다.");
+        model.addAttribute("popular", popular);
         
         return "product/productListView";
     }
