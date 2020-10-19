@@ -227,6 +227,11 @@
 		    <artifactId>jackson-dataformat-xml</artifactId>
 		    <version>2.11.0</version>
 		</dependency>
+		<dependency>
+			<groupId>org.codehaus.jackson</groupId>
+			<artifactId>jackson-mapper-asl</artifactId>
+			<version>1.9.13</version>
+		</dependency>
 		
 		
 		<!-- spring websocket 웹 소켓 (알림) 시작 -->
@@ -247,14 +252,17 @@
 		
 <!-- 		카카오 로그인 페이지 시작 -->
 		<!-- httpcore(카카오) -->
-		<dependency> <groupId>org.apache.httpcomponents</groupId> <artifactId>httpcore</artifactId>
-		<version>4.4.6</version>
+		<dependency> 
+			<groupId>org.apache.httpcomponents</groupId> 
+			<artifactId>httpcore</artifactId>
+			<version>4.4.6</version>
 		</dependency>
 		
 		<!-- httpclient(카카오) -->
 		<dependency>
-		<groupId>org.apache.httpcomponents</groupId> <artifactId>httpclient</artifactId>
-		<version>4.5.2</version>
+			<groupId>org.apache.httpcomponents</groupId> 
+			<artifactId>httpclient</artifactId>
+			<version>4.5.2</version>
 		</dependency>
 <!-- 		카카오 로그인 페이지 끝 -->
 

@@ -62,16 +62,16 @@ a {
                         </aside>
                     </div>
                 </div>
- 			<div class="col-lg-9">
-                    <div class="row">
-                        <div class="col-lg-12">
-                            <div class="product_top_bar d-flex justify-content-between align-items-center">
-                                <div class="single_product_menu">
-                                    <p><span>${totalContents }</span> 개의 쿠폰</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+ 				<div class="col-lg-9">
+	                    <div class="row">
+	                        <div class="col-lg-12">
+	                            <div class="product_top_bar d-flex justify-content-between align-items-center">
+	                                <div class="single_product_menu">
+	                                    <p><span>${totalContents }</span> 개의 쿠폰</p>
+	                                </div>
+	                            </div>
+	                        </div>
+	                    </div>
                     <div class="row align-items-center latest_product_inner">
                             		<table id="tbl-coupon" class="table table-bordered">
 										<tr>
@@ -93,10 +93,19 @@ a {
 									</table>
                             </div>
                         </div>
+                       	<!-- 페이징처리 -->
+						<div class="col-lg-12">
+	                        <div class="pageination">
+	                            <nav aria-label="Page navigation example">
+	                                <ul class="pagination justify-content-center">
+	                                    ${pageBar }
+	                                </ul>
+	                            </nav>
+	                        </div>
+	                    </div>
+						<!-- 페이징처리 --> 
 					</div>
                 </div>
-            </div>
-        </div>
 	</section>
 	
 	<jsp:include page="/WEB-INF/views/common/footer.jsp"/>
