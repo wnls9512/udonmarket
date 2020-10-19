@@ -358,14 +358,15 @@ function fn_save()
 	//알림
 	var $title = $("#title").val();
 	var key = JSON.parse('${keyword}');
-	console.log(key);
+	//console.log(key);
 
 	for(let i=0; i<key.length; i++){
-		 console.log(key[i].keyContent);
+		 //console.log(key[i].keyContent);
 
 		 if($title.includes(key[i].keyContent)){
-			console.log("키워드있음");
-			alert("keyword," + $("#seller").val() + "," + key[i].userId + "," + 0 + "," + $title + "," + key[i].keyContent);
+			//console.log("키워드있음");
+			//alert("keyword," + $("#seller").val() + "," + key[i].userId + "," + 0 + "," + $title + "," + key[i].keyContent);
+			
 			//cmd/발신인/수신인/상품코드/상품제목/
 			sock.send("keyword," + $("#seller").val() + "," + key[i].userId + "," + 0 + "," + $title + "," + key[i].keyContent);	
 		}
