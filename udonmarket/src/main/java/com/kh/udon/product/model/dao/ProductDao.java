@@ -109,6 +109,8 @@ public interface ProductDao
 
     List<ProductDTO> elevenToTwenty();
 
+    int hide(int pCode);
+
 
 
 

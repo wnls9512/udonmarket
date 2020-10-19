@@ -389,4 +389,9 @@
 	<select id="reviewISent" resultType="string">
 		select content from review where review_code = #{reviewCode}
 	</select>
+	
+	<!-- 숨기기 -->
+	<update id="hide">
+		update product set open_status = 0 where p_code = #{pCode}
+	</update>
 </mapper>

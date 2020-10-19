@@ -174,7 +174,7 @@
 			      	 수정
 		      	  </a>
 			      <div class="dropdown-divider"></div>
-			      <a class="dropdown-item" href="#">숨기기</a>
+			      <a class="dropdown-item" href="javascript:hideProduct('${product.PCode }');">숨기기</a>
 			      <a class="dropdown-item" href="javascript:deleteProduct('${product.PCode }');">삭제</a>
 			    </div>
 			  </div>
@@ -702,6 +702,36 @@ function reviewSubmit()
 	$frm.submit();
 }
 
+/* 숨기기 */
+function hideProduct(pCode)
+{
+	if(confirm("숨기기 기능을 사용하면 상품이 이웃들에게 노출되지 않습니다."))
+	{
+		$.ajax
+		({
+			url: "${pageContext.request.contextPath}/product/hide/" + pCode,
+			method: "POST",
+			beforeSend: function(xhr)
+			{
+	            xhr.setRequestHeader("${_csrf.headerName}", "${_csrf.token}");
+	        },
+	        dataType: "json",
+			success: function(map)
+			{
+				alert(map.msg);
+				location.href = "${pageContext.request.contextPath}/product/productListView?userId=${userId}&currentPage=1";									
+			},
+			error: function(xhr, status, err)
+			{
+				alert("상품 숨기기에 실패했어요 💧");
+				console.log(xhr, status, err);
+			}
+		});
+
+	}
+	else
+		return false;
+}
 /* 삭제 */
 function deleteProduct(pCode)
 {
