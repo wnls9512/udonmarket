@@ -102,4 +102,8 @@ public interface MemberService
 
 	int selectNotiTotalContents(String userId);
 
+	boolean checkPwd(String userId,String password);
+
+	void updatePwd(Member member);
+
 }

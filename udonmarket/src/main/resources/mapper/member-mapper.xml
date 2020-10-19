@@ -426,6 +426,24 @@ where
 
 </select>
 
+<select id="checkPwd" resultType="int">
+	select
+		count(*)
+	from 
+		member
+	where
+		user_id = #{userId} AND password = #{password}
+</select>
+
+<update id="updatePwd">
+update 
+	member
+set 
+    password=#{password}
+where 
+	user_id=#{ userId }
+</update>
+
 
 
 

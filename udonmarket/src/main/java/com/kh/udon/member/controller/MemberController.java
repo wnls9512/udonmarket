@@ -254,6 +254,69 @@ public class MemberController {
 		return "/member/editProfile";
 	}
 	
+	@PostMapping("/pwdCheck")
+	public String pwdCheck(Member member,
+						   @RequestParam("userId") String userId,
+						   @RequestParam("password") String password,
+						   RedirectAttributes rttr)
+	{
+		rttr.addAttribute("userId", member.getUserId());
+		return "redirect:/member/updatePwd";
+	}
+	
+	
+	//비밀번호 수정
+	@RequestMapping("/updatePwd" )
+	public String updatePwd(@RequestParam("userId") String userId, 
+							  Model model)
+	{
+		
+		 Member member = service.selectOneMember(userId); 
+		 model.addAttribute("member",member);
+		 
+		return "/member/updatePwd";
+	}
+	@PostMapping("/pwdUpdate" )
+	public String pwdUpdate(Member member,
+							@RequestParam("userId") String userId,
+							@RequestParam("password") String password,
+							RedirectAttributes rttr)
+	{
+		String rawPassword = member.getPassword();
+		String encryptPassword = bcryptPasswordEncoder.encode(rawPassword);
+		member.setPassword(encryptPassword);
+		log.debug("member = {}", member);
+		
+		if(member != null && bcryptPasswordEncoder.matches(password,encryptPassword)) {
+			
+			/* boolean result = service.checkPwd(userId,member.getPassword()); */
+			log.debug("userId = {}", userId);
+			/* if(result) { */
+				service.updatePwd(member);
+				rttr.addFlashAttribute("msg","비밀번호가 변경되었습니다");
+				rttr.addAttribute("userId", member.getUserId());
+				return "redirect:/member/mypage";
+		}
+				
+			/*}*/
+			else {
+				log.debug("비밀번호 불일치");
+				rttr.addFlashAttribute("msg","비밀번호 변경 실패");
+				rttr.addAttribute("userId", member.getUserId());
+				return "redirect:/member/updatePwd";
+			}
+		
+		
+			/*
+			 * else { rttr.addFlashAttribute("msg","현재 입력한 암호가 틀렸습니다.");
+			 * rttr.addAttribute("userId", member.getUserId()); return
+			 * "redirect:/member/updatePwd"; }
+			 */
+		
+		
+	}
+
+	
 	//닉네임 수정
 	@PostMapping("/nickUpdate" )
 	public String nickUpdate(Member member,RedirectAttributes rttr)

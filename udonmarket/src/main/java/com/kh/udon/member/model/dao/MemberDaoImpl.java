@@ -1,24 +1,27 @@
 package com.kh.udon.member.model.dao;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.session.RowBounds;
+import org.apache.ibatis.session.SqlSession;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import com.kh.udon.member.model.vo.Coupon;
+
 import com.kh.udon.community.model.vo.Community;
 import com.kh.udon.community.model.vo.Reply;
 import com.kh.udon.community.model.vo.Report;
 import com.kh.udon.member.model.vo.Block;
+import com.kh.udon.member.model.vo.Coupon;
 import com.kh.udon.member.model.vo.Evaluate;
 import com.kh.udon.member.model.vo.Keyword;
 import com.kh.udon.member.model.vo.Member;
 import com.kh.udon.member.model.vo.Noti;
 import com.kh.udon.member.model.vo.Review;
-import com.kh.udon.member.model.vo.announce;
 import com.kh.udon.member.model.vo.Wish;
+import com.kh.udon.member.model.vo.announce;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -260,5 +263,22 @@ public class MemberDaoImpl implements MemberDao
 	@Override
 	public int selectNotiTotalContents(String userId) {
 		return session.selectOne("socket.selectNotiTotalContents", userId);
+	}
+
+	@Override
+	public boolean checkPwd(String userId,String password) {
+		boolean result = false;
+		Map<String, String> map = new HashMap<String, String>();
+		map.put("userId", userId);
+		map.put("password", password);
+		int count = session.selectOne("member.checkPwd",map);
+		if(count == 1) 
+			result = true;
+		return result;
+	}
+
+	@Override
+	public void updatePwd(Member member) {
+		session.update("member.updatePwd", member);
 	}
 }
