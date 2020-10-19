@@ -182,13 +182,7 @@ public class ProductController
     
     // 게시글 등록
     @PostMapping("/register")
-    public String register(ProductVO product,
-                           HttpServletRequest req,
-                           RedirectAttributes rttr
-                           //HttpSession session,
-                           //WebSocketSession ws
-                           )
-                           RedirectAttributes rttr)
+    public String register(ProductVO product,HttpServletRequest req,RedirectAttributes rttr)
     {
         int result = 0;
         
