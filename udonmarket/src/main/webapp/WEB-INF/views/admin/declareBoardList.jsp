@@ -12,9 +12,7 @@
 	<jsp:include page="/WEB-INF/views/common/header.jsp">
 		<jsp:param value="신고자관리(동네생활)" name="pageTitle"/>
 	</jsp:include>
-
-
-
+	
 <style>
 a {
 	text-decoration: none;

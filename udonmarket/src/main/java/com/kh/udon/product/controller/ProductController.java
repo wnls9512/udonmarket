@@ -171,9 +171,10 @@ public class ProductController
     @PostMapping("/register")
     public String register(ProductVO product,
                            HttpServletRequest req,
-                           RedirectAttributes rttr,
-                           HttpSession session,
-                           WebSocketSession ws)
+                           RedirectAttributes rttr
+                           //HttpSession session,
+                           //WebSocketSession ws
+                           )
     {
         int result = 0;
         
