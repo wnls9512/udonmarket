@@ -77,7 +77,7 @@ body
                                 <div class="col-md-12 form-group p_star" style="margin-top: 10%;">
                                     <input type="text" name="title" placeholder="글 제목"
 											onfocus="this.placeholder = ''" onblur="this.placeholder = '글 제목'" required
-											id=""
+											id="title"
 											class="single-input-primary"
 											style="background: #f9f9ff;">
                                 </div>
@@ -355,7 +355,24 @@ function fn_save()
 	document.frm.action = "<c:url value='/product/register'/>";
 	document.frm.submit();
 
+	//알림
+	var $title = $("#title").val();
+	var key = JSON.parse('${keyword}');
+	console.log(key);
+
+	for(let i=0; i<key.length; i++){
+		 console.log(key[i].keyContent);
+
+		 if($title.includes(key[i].keyContent)){
+			console.log("키워드있음");
+			alert("keyword," + $("#seller").val() + "," + key[i].userId + "," + 0 + "," + $title + "," + key[i].keyContent);
+			//cmd/발신인/수신인/상품코드/상품제목/
+			sock.send("keyword," + $("#seller").val() + "," + key[i].userId + "," + 0 + "," + $title + "," + key[i].keyContent);	
+		}
+	}
+	//알림
 }
+
 </script>
 <jsp:include page="/WEB-INF/views/common/footer.jsp"/>
 	

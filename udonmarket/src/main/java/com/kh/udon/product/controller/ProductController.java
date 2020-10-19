@@ -3,6 +3,7 @@ package com.kh.udon.product.controller;
 import java.io.File;
 import java.net.URLDecoder;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -20,7 +21,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -31,10 +31,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.socket.TextMessage;
+import org.springframework.web.socket.WebSocketMessage;
 import org.springframework.web.socket.WebSocketSession;
 
 import com.kh.udon.common.model.vo.PageInfo;
 import com.kh.udon.common.template.Pagination;
+import com.kh.udon.common.websocket.WebSocketHandler;
+import com.kh.udon.member.model.vo.Keyword;
 import com.kh.udon.member.model.vo.Wish;
 import com.kh.udon.product.model.service.ProductService;
 import com.kh.udon.product.model.vo.CategoryVO;
@@ -49,6 +53,7 @@ import com.kh.udon.product.model.vo.ReviewDTO;
 import com.kh.udon.product.model.vo.SellerDTO;
 
 import lombok.extern.slf4j.Slf4j;
+import net.sf.json.JSONArray;
 
 @Controller
 @Slf4j
@@ -159,11 +164,17 @@ public class ProductController
     
     // 상품 등록 화면
     @GetMapping("/register")
-    public void register(@RequestParam String userId, Model model) 
+    public void register(@RequestParam String userId, Model model, HttpSession session) 
     {
         CouponDTO coupon = service.selectCoupon(userId);
         List<CategoryVO> category = service.selectAllCategory();
+
+        //List를 json 타입으로
+        List<Keyword> keyword = (List<Keyword>) session.getAttribute("keywordList");
+        JSONArray jsonArr = new JSONArray();
+        log.debug("keywordList = {}", jsonArr.fromObject(keyword));
         
+        model.addAttribute("keyword", jsonArr.fromObject(keyword));
         model.addAttribute("category", category);
         model.addAttribute("coupon", coupon);
     }
@@ -172,10 +183,7 @@ public class ProductController
     @PostMapping("/register")
     public String register(ProductVO product,
                            HttpServletRequest req,
-                           RedirectAttributes rttr
-                           //,HttpSession session,
-                           //WebSocketSession ws
-                           )
+                           RedirectAttributes rttr)
     {
         int result = 0;
         
@@ -198,44 +206,7 @@ public class ProductController
         
         rttr.addFlashAttribute("msg", result > 0 ? "상품 등록 성공 💛" : "상품 등록 실패 🤔");
         rttr.addAttribute("userId", product.getSeller());
-
-        //키워드 알림 START /////////////////////////////////////////////////////////////////////
-        //세션에 있는 모든 키워드를 꺼내서 (login 성공 시 세션에 저장함)
-        //해당 상품 제목과 비교한뒤 websocketHandler에 sendMsg 하기
-//        List<Keyword> keyWordAllList = (List<Keyword>) session.getAttribute("keywordList");
-//        log.debug("keywordAlList = {}", keyWordAllList);
-//        
-//        String title = product.getTitle();
-//        List<String> keyHasUserId = new ArrayList<>();
-//        
-//        for(Keyword k : keyWordAllList) {
-//        	if(title.contains(k.getKeyContent())) {
-//        		keyHasUserId.add(k.getUserId());
-//        	}
-//        }
-//        log.debug("keyHasUserId List = {}", keyHasUserId);
-//        
-//        WebSocketHandler webSocketHandler = new WebSocketHandler();
-//
-//        //UserId 개수만큼 ws에 메세지 전송
-//        for(int i=0; i<keyHasUserId.size(); i++) {
-//        	
-//        	//keyword/발신인/수신인/상품코드/상품제목/
-//        	String msg = "keyword," + product.getSeller() + "," + keyHasUserId.get(i) + ","
-//        				  + pCode + "," + product.getTitle();
-//        	
-//			WebSocketMessage<String> message = new TextMessage(msg);
-//			try {
-//				webSocketHandler.handleMessage(ws, message);
-//			} catch (Exception e) {
-//				e.printStackTrace();
-//			}
-//        	
-//        }        
-        //키워드 알림  END ////////////////////////////////////////////////////////////////////////
-
         rttr.addAttribute("currentPage", 1);
-
         
         return "redirect:/product/productListView";
     }
