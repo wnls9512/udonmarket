@@ -57,6 +57,7 @@
 			</authentication-provider>
 	</authentication-manager>
 	
+	
 	<beans:bean id="securityService" class="com.kh.security.model.service.SecurityService"/>
 	<beans:bean id="memberAuthProvider" class="com.kh.security.model.service.CustomAuthenticationProvider"/>
 	

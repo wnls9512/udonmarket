@@ -169,7 +169,6 @@ function deleteBoard(bCode)
 						  <thead>
 						    <tr>
 						      <th scope="col"><h2>${ announce.boardTitle }</h2></th>
-						      <th scope="col"><p>${ announce.regDate }</p></th>
 						    </tr>
 						  </thead>
 						  <tbody>
@@ -192,6 +191,9 @@ function deleteBoard(bCode)
                             </sec:authorize>
 						  	
 				        </nav>
+				        <ul class="nav justify-content-end">
+		                  	<a class="btn btn-primary" href="${pageContext.request.contextPath }/member/FAQ?userId=${member.userId}">목록보기</a>
+		               </ul>
 	                </div>
 	            </div>
 	        </div>
