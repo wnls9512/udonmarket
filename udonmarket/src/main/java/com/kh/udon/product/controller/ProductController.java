@@ -30,10 +30,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.springframework.web.socket.WebSocketSession;
 
 import com.kh.udon.common.model.vo.PageInfo;
 import com.kh.udon.common.template.Pagination;
+import com.kh.udon.member.model.vo.Keyword;
 import com.kh.udon.member.model.vo.Wish;
 import com.kh.udon.product.model.service.ProductService;
 import com.kh.udon.product.model.vo.CategoryVO;
@@ -48,6 +48,7 @@ import com.kh.udon.product.model.vo.ReviewDTO;
 import com.kh.udon.product.model.vo.SellerDTO;
 
 import lombok.extern.slf4j.Slf4j;
+import net.sf.json.JSONArray;
 
 @Controller
 @Slf4j
@@ -71,6 +72,7 @@ public class ProductController
         List<CategoryVO> category = service.selectAllCategory();
         List<Integer> categoryCount = service.selectAllCategoryCount(userId);
         int totalCount = service.selectTotalCount(userId);
+        List<ProductDTO> popular = service.popular(userId);
         
         // --- pagination ---
         PageInfo pi = Pagination.getPageInfo(totalCount, currentPage, 10, 9);
@@ -82,6 +84,7 @@ public class ProductController
         model.addAttribute("products", products);
         model.addAttribute("selectedCategory", 0);
         model.addAttribute("pi", pi);
+        model.addAttribute("popular", popular);
         
         return "product/productListView";
     }
@@ -105,6 +108,7 @@ public class ProductController
         List<CategoryVO> category = service.selectAllCategory();
         List<Integer> categoryCount = service.selectAllCategoryCount(userId);
         int totalCount = service.selectCategoryCount(map);
+        List<ProductDTO> popular = service.popular(userId);
         
         // --- pagination ---
         PageInfo pi = Pagination.getPageInfo(totalCount, currentPage, 10, 9);
@@ -116,6 +120,7 @@ public class ProductController
         model.addAttribute("products", products);
         model.addAttribute("selectedCategory", categoryCode);
         model.addAttribute("pi", pi);
+        model.addAttribute("popular", popular);
         
         return "product/productListView";
     }
@@ -139,6 +144,7 @@ public class ProductController
         List<CategoryVO> categoryList = service.selectAllCategory();
         List<Integer> categoryCount = service.selectAllCategoryCount(userId);
         int totalCount = service.selectSearchCount(map);
+        List<ProductDTO> popular = service.popular(userId);
         
         // --- pagination ---
         PageInfo pi = Pagination.getPageInfo(totalCount, currentPage, 10, 9);
@@ -152,28 +158,31 @@ public class ProductController
         model.addAttribute("pi", pi);
         if(products == null || products.size() == 0)
             model.addAttribute("msg", "검색된 상품이 없습니다.");
+        model.addAttribute("popular", popular);
         
         return "product/productListView";
     }
     
     // 상품 등록 화면
     @GetMapping("/register")
-    public void register(@RequestParam String userId, Model model) 
+    public void register(@RequestParam String userId, Model model, HttpSession session) 
     {
         CouponDTO coupon = service.selectCoupon(userId);
         List<CategoryVO> category = service.selectAllCategory();
+
+        //List를 json 타입으로
+        List<Keyword> keyword = (List<Keyword>) session.getAttribute("keywordList");
+        JSONArray jsonArr = new JSONArray();
+        log.debug("keywordList = {}", jsonArr.fromObject(keyword));
         
+        model.addAttribute("keyword", jsonArr.fromObject(keyword));
         model.addAttribute("category", category);
         model.addAttribute("coupon", coupon);
     }
     
     // 게시글 등록
     @PostMapping("/register")
-    public String register(ProductVO product,
-                           HttpServletRequest req,
-                           RedirectAttributes rttr
-                           /*HttpSession session,
-                           WebSocketSession ws*/)
+    public String register(ProductVO product,HttpServletRequest req,RedirectAttributes rttr)
     {
         int result = 0;
         
@@ -196,44 +205,7 @@ public class ProductController
         
         rttr.addFlashAttribute("msg", result > 0 ? "상품 등록 성공 💛" : "상품 등록 실패 🤔");
         rttr.addAttribute("userId", product.getSeller());
-
-        //키워드 알림 START /////////////////////////////////////////////////////////////////////
-        //세션에 있는 모든 키워드를 꺼내서 (login 성공 시 세션에 저장함)
-        //해당 상품 제목과 비교한뒤 websocketHandler에 sendMsg 하기
-//        List<Keyword> keyWordAllList = (List<Keyword>) session.getAttribute("keywordList");
-//        log.debug("keywordAlList = {}", keyWordAllList);
-//        
-//        String title = product.getTitle();
-//        List<String> keyHasUserId = new ArrayList<>();
-//        
-//        for(Keyword k : keyWordAllList) {
-//        	if(title.contains(k.getKeyContent())) {
-//        		keyHasUserId.add(k.getUserId());
-//        	}
-//        }
-//        log.debug("keyHasUserId List = {}", keyHasUserId);
-//        
-//        WebSocketHandler webSocketHandler = new WebSocketHandler();
-//
-//        //UserId 개수만큼 ws에 메세지 전송
-//        for(int i=0; i<keyHasUserId.size(); i++) {
-//        	
-//        	//keyword/발신인/수신인/상품코드/상품제목/
-//        	String msg = "keyword," + product.getSeller() + "," + keyHasUserId.get(i) + ","
-//        				  + pCode + "," + product.getTitle();
-//        	
-//			WebSocketMessage<String> message = new TextMessage(msg);
-//			try {
-//				webSocketHandler.handleMessage(ws, message);
-//			} catch (Exception e) {
-//				e.printStackTrace();
-//			}
-//        	
-//        }        
-        //키워드 알림  END ////////////////////////////////////////////////////////////////////////
-
         rttr.addAttribute("currentPage", 1);
-
         
         return "redirect:/product/productListView";
     }
@@ -389,6 +361,30 @@ public class ProductController
         {
             log.error("메뉴 삭제 오류", e);
             msg = "삭제에 실패했어요 💧";
+        }
+        
+        map.put("msg", msg);
+        
+        return map;
+    }
+    
+    // 상품 숨기기
+    @PostMapping("/hide/{pCode}")
+    @ResponseBody
+    public Map<String, Object> hideMenu(@PathVariable int pCode)
+    {
+        Map<String, Object> map = new HashMap<>();
+        
+        String msg = "숨김처리 완료 😄";
+        
+        try 
+        {
+            int result = service.hide(pCode);
+        } 
+        catch(Exception e) 
+        {
+            log.error("숨기기 오류", e);
+            msg = "숨기기에 실패했어요 💧";
         }
         
         map.put("msg", msg);

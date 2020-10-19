@@ -74,6 +74,9 @@
 	
 	<beans:bean id="emailVo" class="com.kh.email.Email"/>
 	<beans:bean id="emailSender" class="com.kh.email.EmailSender"/>
+
+
+	
 	
 	
 	<!-- aop 어노테이션 처리용  -->

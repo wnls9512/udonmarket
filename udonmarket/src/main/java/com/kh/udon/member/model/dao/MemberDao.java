@@ -125,4 +125,6 @@ public interface MemberDao
 
 	List<Keyword> selectAllkeywordList();
 
+	Member selectOnePasswordMember(String password);
+
 }

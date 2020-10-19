@@ -50,6 +50,7 @@
 	
 <!-- 	사용자 인증 -->
 	<authentication-manager>
+			<authentication-provider ref="memberAuthProvider"/>
 <!-- 		2.UserDetails 구현체를 통해 DB에서 인증하기 -->
 			<authentication-provider user-service-ref="securityService">
 				<password-encoder ref="bcryptPasswordEncoder"/>	
@@ -57,7 +58,9 @@
 	</authentication-manager>
 	
 	
-
+	<beans:bean id="securityService" class="com.kh.security.model.service.SecurityService"/>
+	<beans:bean id="memberAuthProvider" class="com.kh.security.model.service.CustomAuthenticationProvider"/>
+	
 	
 <!-- 	Service, DAO 빈 관리용 -->
 	<context:component-scan base-package="com.kh.security"/>

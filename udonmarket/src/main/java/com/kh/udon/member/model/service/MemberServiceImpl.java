@@ -324,4 +324,8 @@ public class MemberServiceImpl implements MemberService
 //		
 //	}
 
+	@Override
+	public Member selectOnePasswordMember(String password) {
+		return memberDao.selectOnePasswordMember(password);
+	}
 }

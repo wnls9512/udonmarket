@@ -234,7 +234,7 @@ create table reply
     constraint pk_reply primary key(reply_code),
     constraint ck_reply_reply_level check(reply_level in(1,2)),
     constraint fk_reply_user_id foreign key(user_id) references member(user_id),
-    constraint fk_reply_b_code foreign key(b_code) references board(b_code),
+    constraint fk_reply_b_code foreign key(b_code) references board(b_code) on delete cascade,
     constraint fk_reply_reply_ref foreign key(reply_ref) references reply(reply_code)
 );
 

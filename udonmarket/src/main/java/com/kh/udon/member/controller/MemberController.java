@@ -17,7 +17,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.security.web.savedrequest.SavedRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -79,6 +81,7 @@ public class MemberController {
 	
 	@Autowired
 	private Email emailVo;
+	
 	
 	@RequestMapping(value="/memberLoginSuccess.do")
 	public ModelAndView memberLoginSuccess(ModelAndView mav, 
@@ -154,9 +157,9 @@ public class MemberController {
 		
 		log.debug("result@controller = {}", result);
 
-		String msg = (result > 0) ? "회원가입성공!" : "회원가입실패!";
+		String msg = (result > 0) ? "회원가입성공! 마이페이지 들어가서 동네설정을 먼저 해주시기 바랍니다." : "회원가입실패!";
 		log.debug("msg@controller = " + msg);
-		redirectAttr.addFlashAttribute("msg", msg);
+		redirectAttr.addAttribute("msg", msg);
 
 		return "redirect:/";
 	}
@@ -284,12 +287,34 @@ public class MemberController {
 						   @RequestParam("userId") String userId,
 						   @RequestParam("password") String password,
 						   RedirectAttributes rttr,
-						   String username)
+						   String username,
+						   Authentication authentication)
 	{
 		boolean result = service.checkPwd(userId,member.getPassword());
 		
 		log.debug("result = {} " ,result);
 		if(result) {
+		System.out.println("패스워드 = "+ member.getPassword());
+		
+		if(authentication != null) {
+			log.debug("타입 정보  = ", authentication.getClass() );
+			System.out.println("타입 정보  = "+ authentication.getClass());
+			
+			
+			//세션 정보 객체 반환
+			WebAuthenticationDetails web = (WebAuthenticationDetails)authentication.getDetails();
+			log.debug("세션 ID = ", web.getSessionId());
+			System.out.println("세션 ID  = "+ web.getSessionId());
+			log.debug("접속 IP = ", web.getRemoteAddress());
+			System.out.println("접속 IP = "+ authentication.getClass());
+			
+			//UsernamePasswordAuthenticationToken에 넣었던 member 객체 반환
+			member = (Member)authentication.getPrincipal();
+			log.debug("ID정보  = ", member.getUserId());
+			System.out.println("ID정보 = "+ member.getUserId());
+			log.debug("password정보 = ", member.getPassword());
+			System.out.println("password정보 = "+ member.getPassword());
+		}
 		rttr.addAttribute("userId", member.getUserId());
 		return "redirect:/member/updatePwd";
 		}
@@ -332,7 +357,7 @@ public class MemberController {
 	
 	
 	//비밀번호 수정
-	@RequestMapping("/updatePwd" )
+	@RequestMapping(value = "/updatePwd")
 	public String updatePwd(@RequestParam("userId") String userId, 
 							  Model model)
 	{

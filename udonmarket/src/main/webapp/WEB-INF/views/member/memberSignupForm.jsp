@@ -116,7 +116,7 @@
 				        	</tr>
 				        	</table>
 				        </nav>
-				        <div class="reg_button">
+				        <div class="reg_button" style="text-align: center;">
 <!-- 				        	<input type="submit" value="회원가입" class="nav-link-submit-reset px-4 rounded-pill"> -->
 <!-- 								<input type="reset" value="취소" class="nav-link-submit-reset px-4 rounded-pill"> -->
 								<button class="btn btn-primary px-3" id="reg_submit">

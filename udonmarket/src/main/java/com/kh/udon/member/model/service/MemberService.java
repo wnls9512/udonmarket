@@ -114,5 +114,6 @@ public interface MemberService
 
 //	boolean loadUserByUsername(String username);
 
+	Member selectOnePasswordMember(String string);
 
 }

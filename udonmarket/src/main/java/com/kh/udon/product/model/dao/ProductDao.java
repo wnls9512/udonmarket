@@ -109,6 +109,10 @@ public interface ProductDao
 
     List<ProductDTO> elevenToTwenty();
 
+    int hide(int pCode);
+
+    List<ProductDTO> popular(String userId);
+
 
 
 

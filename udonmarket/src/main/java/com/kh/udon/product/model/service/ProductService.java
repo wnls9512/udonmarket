@@ -100,6 +100,10 @@ public interface ProductService
 
     List<ProductDTO> elevenToTwenty();
 
+    int hide(int pCode);
+
+    List<ProductDTO> popular(String userId);
+
 
 
 
