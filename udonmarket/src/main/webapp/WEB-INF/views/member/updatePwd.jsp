@@ -44,24 +44,25 @@ a{text-decoration: none; color: black;}
     <div class="row py-5 px-4">
 	    <div class="col-md-5 mx-auto">
 	        <!-- Profile widget -->
-	       <form action="${pageContext.request.contextPath }/member/nickUpdate?userId=${member.userId}" method="post" enctype="multipart/form-data">
+	       <form action="${pageContext.request.contextPath }/member/pwdUpdate?userId=${member.userId}" method="post">
 	       <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 	       
 	        <div class="bg-white shadow rounded overflow-hidden">
 	            <div class="px-4 pt-0 pb-4 cover">
-	            <div class="d-flex justify-content-center">
 	                <div class="media align-items-end profile-head">
 	                    <div class="profile mr-3">
-	                    <img src="${pageContext.request.contextPath }/resources/img/member/${member.originalFileName}" 
+	                    <img src="${pageContext.request.contextPath }/resources/img/member/${member.renamedFileName == null 
+	                    															 ? member.originalFileName:member.renamedFileName}" 
 	                    		 alt="..." 
 	                    		 width="130" 
 	                    		 class="rounded mb-2 img-thumbnail">
+	                    <a href="${pageContext.request.contextPath }/member/mypage?userId=${member.userId}" class="btn btn-outline-dark btn-sm btn-block">Mypage</a>
+	                    </div>
+	                    <div class="media-body mb-5 text-white">
+	                        <h4 class="mt-0 mb-0" style="color:white;">${member.nickName}</h4>
+	                        <p class="small mb-4" style="color:white;"> <i class="fas fa-map-marker-alt mr-2"></i>${member.address}</p>
+	                    </div>
 	                </div>
-	                </div>
-	            </div>
-	            </div>
-	            <div>
-	             <input type="file" id = "originalFileName" class="btn btn-outline-dark btn-sm btn-block"/>
 	            </div>
 	            <div class="bg-light p-5 d-flex justify-content-end text-center">
 	            </div>
@@ -71,12 +72,14 @@ a{text-decoration: none; color: black;}
 				        <nav class="nav flex-column bg-white shadow-sm rounded p-3">
 						  <div class="form-row">
 						    <div class="col">
-						      <input type="text" name="nickName" class="form-control" value="${member.nickName}">
+						      
+						      <input type="password" class="form-control" id="password" name="password" placeholder="변경할 비밀번호">
+
 						    </div>
 						  </div>
 				        </nav>
 	                </div>
-	                <button style="margin:10px auto;" type="submit" class="btn btn-dark">적용</button>
+	                <button style="margin:10px auto;" type="submit" class="btn btn-dark">변경</button>
 	                </form>
 	            </div>
 	        </div>
@@ -87,3 +90,5 @@ a{text-decoration: none; color: black;}
 <jsp:include page="/WEB-INF/views/common/footer.jsp"/>
     
     
+
+	
