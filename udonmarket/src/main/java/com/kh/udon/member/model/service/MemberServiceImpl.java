@@ -6,6 +6,9 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -312,4 +315,13 @@ public class MemberServiceImpl implements MemberService
 	public List<Keyword> selectAllKeywordList() {
 		return memberDao.selectAllkeywordList();
 	}
+
+//	@Override
+//	public boolean loadUserByUsername(String username) throws UsernameNotFoundException {
+//		Member member = memberDao.loadUserByUsername(username);
+//		
+//		return member;
+//		
+//	}
+
 }

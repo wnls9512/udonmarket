@@ -112,4 +112,7 @@ public interface MemberService
 
 	List<Keyword> selectAllKeywordList();
 
+//	boolean loadUserByUsername(String username);
+
+
 }

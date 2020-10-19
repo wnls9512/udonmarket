@@ -10,6 +10,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.savedrequest.SavedRequest;
 import org.springframework.stereotype.Controller;
@@ -30,6 +37,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.kh.email.Email;
 import com.kh.email.EmailSender;
+import com.kh.security.model.service.CustomAuthenticationProvider;
+import com.kh.security.model.service.SecurityService;
 import com.kh.udon.common.util.Utils;
 import com.kh.udon.community.model.vo.Community;
 import com.kh.udon.community.model.vo.Reply;
@@ -51,7 +60,16 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class MemberController {
 	@Autowired
+    private UserDetailsService userDeSer;
+	
+	@Autowired
+	private SecurityService seService;
+	
+	@Autowired
 	private MemberService service;
+	
+	@Autowired 
+	private CustomAuthenticationProvider Custom;
 
 	@Autowired
 	private BCryptPasswordEncoder bcryptPasswordEncoder;
@@ -265,11 +283,52 @@ public class MemberController {
 	public String pwdCheck(Member member,
 						   @RequestParam("userId") String userId,
 						   @RequestParam("password") String password,
-						   RedirectAttributes rttr)
+						   RedirectAttributes rttr,
+						   String username)
 	{
+		boolean result = service.checkPwd(userId,member.getPassword());
+		
+		log.debug("result = {} " ,result);
+		if(result) {
 		rttr.addAttribute("userId", member.getUserId());
 		return "redirect:/member/updatePwd";
+		}
+		else
+		{
+			rttr.addFlashAttribute("msg","비밀번호 인증 실패");
+			rttr.addAttribute("userId", member.getUserId());
+			return "redirect:/member/mypage";
+		}
+//			
+//	}
 	}
+//		userDeSer.loadUserByUsername(username);
+//		
+//		boolean result = service.loadUserByUsername(username);
+//		 
+//		return username;
+//
+//	}
+//	public String pwdCheck(Member member,
+//						   @RequestParam("userId") String userId,
+//						   @RequestParam("password") String password,
+//						   RedirectAttributes rttr)
+//	{
+//		/* boolean result = service.checkPwd(userId,member.getPassword()); */
+//		/* boolean result = AuthenticationManager.authenticate(Authentication); */
+//		log.debug("result = {} " ,result);
+//		if(result) {
+//		rttr.addAttribute("userId", member.getUserId());
+//		return "redirect:/member/updatePwd";
+//		}
+//		else
+//		{
+//			rttr.addFlashAttribute("msg","비밀번호 변경 실패");
+//			rttr.addAttribute("userId", member.getUserId());
+//			return "redirect:/member/mypage";
+//		}
+//			
+//	}
 	
 	
 	//비밀번호 수정

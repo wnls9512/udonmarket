@@ -152,13 +152,15 @@ tr[data-board-no] {
 				        <nav class="nav flex-column bg-white shadow-sm rounded p-3">
 										<div class="tab-content" id="pills-tabContent">
 						  <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
-						  <table id="tbl-board" class="table table-striped table-hover">
-								<tr>
-									<th>번호</th>
-									<th>제목</th>
-									<th>작성자</th>
-									<th>작성일</th>
-								</tr>
+						  <table id="tbl-board" class="table table-hover">
+						  <thead class="thead-dark">
+							    <tr>
+							      <th scope="col">번호</th>
+							      <th scope="col">제목</th>
+							      <th scope="col">작성자</th>
+							      <th scope="col">작성일</th>
+							    </tr>
+							  </thead>
 									<c:forEach items="${list}" var="announce">
 								<c:if test="${announce.categoryCode eq '61' }">
 									<tr data-board-no="${ announce.BCode }"
