@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.kh.udon.chat.model.dao.ChatDao;
 import com.kh.udon.chat.model.vo.ChatMessage;
@@ -36,6 +37,7 @@ public class ChatServiceImpl implements ChatService
 		return dao.selectChatRoom(map);
 	}
 
+	@Transactional(rollbackFor = { Exception.class })
 	@Override
 	public int insertChatRoom(Map<String, Object> map) {
 		int result = 0;
@@ -57,6 +59,16 @@ public class ChatServiceImpl implements ChatService
 		 }
 
 		return result;
+	}
+
+	@Override
+	public int leaveChatRoom(Map<String, Object> map) {
+		return dao.leaveChatRoom(map);
+	}
+
+	@Override
+	public int enterChatRoom(Map<String, Object> map) {
+		return dao.enterChatRoom(map);
 	}
 
 

@@ -119,5 +119,10 @@ public interface MemberDao
 
 	void updatePwd(Member member);
 
+	int insertBlockUser(Map<String, Object> map);
+
+	int deleteBlockUser(Map<String, Object> map);
+
+	List<Keyword> selectAllkeywordList();
 
 }

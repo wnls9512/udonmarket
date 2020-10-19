@@ -53,8 +53,8 @@
           <div class="product_slider_img">
             <div id="vertical">
             	<c:forEach items="${photos }" var="photo">
-				<div data-thumb="${pageContext.request.contextPath }/resources/upload/${photo.uploadPath}/${photo.uuid}_${photo.originalFilename}">
-				  <img src="${pageContext.request.contextPath }/resources/upload/${photo.uploadPath}/${photo.uuid}_${photo.originalFilename}" />
+				<div data-thumb="${pageContext.request.contextPath }/resources/upload/${photo.uploadPath}/${photo.uuid}/${photo.originalFilename}">
+				  <img src="${pageContext.request.contextPath }/resources/upload/${photo.uploadPath}/${photo.uuid}/${photo.originalFilename}" />
 				</div>
 				</c:forEach>
             </div>
@@ -109,7 +109,7 @@
 				<c:when test="${seller.score le '50' }">#FFAD13</c:when>
 				<c:otherwise>#F76707</c:otherwise>
 				</c:choose>        	
-				;">${seller.score }℃ &nbsp;</strong></span>
+				;"><fmt:formatNumber value="${seller.score }" pattern=".0" />℃ &nbsp;</strong></span>
 				<!-- 온도bar 시작 -->
 				<c:choose>
 				<c:when test="${seller.score le '20' }">
@@ -203,7 +203,11 @@
             ${product.content }
             </p>
             <div class="card_area d-flex justify-content-between" style="border: none;">
-            	<span style="color: gray;">관심 ${product.wish} · 채팅 ${product.chat }<br /></span>
+            	<span style="color: gray;">
+            		<c:if test="${product.wish != 0 }">관심 ${product.wish}</c:if>
+            		<c:if test="${product.wish != 0 && product.chat !=  0}"> · </c:if>
+            		<c:if test="${product.chat != 0 }">채팅 ${product.chat }</c:if><br />
+            	</span>
             </div>
             <div class="card_area d-flex justify-content-between align-items-center">
               <c:if test="${userId == product.seller }">
@@ -248,6 +252,7 @@
             </div>
             <div class="row align-items-center justify-content-between">
                 <div class="col-lg-12">
+	            	<c:if test="${other != null }">
                     <div class="best_product_slider owl-carousel">
                     	<c:forEach items="${other }" var="p">
                         <div class="single_product_item">
@@ -259,10 +264,14 @@
                         </div>
                         </c:forEach>
                     </div>
+	                </c:if>
+	                <c:if test="${other == null || other.size() == 0}">
+	                <h4>판매자의 다른 상품이 없어요 💦</h4>
+	                </c:if>
                 </div>
             </div>
         </div>
-        <br/>
+        <br/><br/>
         <!-- 비슷한 상품 -->
         <div class="container">
             <div class="row justify-content-center">
@@ -457,15 +466,12 @@
 	<input type="hidden" name="score" />
 	<input type="hidden" name="content" />
 </form>
-
-
-
-
 <!-- ========== 구매자 선택 MODAL END ========== -->
 	
 <script>
+//채팅방 열기
 function openChatRoom(){
-	alert("클릭");
+	//alert("클릭");
 	let $userId = "${userId}";
 	let $seller = "${product.seller}";
 	let $pCode = "${product.PCode}";
@@ -483,10 +489,11 @@ function openChatRoom(){
             xhr.setRequestHeader("${_csrf.headerName}", "${_csrf.token}");
         },
         success: function(data){
-        	window.open("${pageContext.request.contextPath}" + data);							
+        	window.open('${pageContext.request.contextPath }'+data, 'chatting', 'width=1000px, height=800px');
+        	//window.open("${pageContext.request.contextPath}" + data);							
 		},
 		error: function(xhr, status, err){
-			alert("이미 관심목록에 추가되있어요 💘");
+			console.log("openChatRoom 실패");
 		}
 	});
 }
@@ -558,7 +565,7 @@ function addToWish(userId, pCode)
 		{
             xhr.setRequestHeader("${_csrf.headerName}", "${_csrf.token}");
         },
-			success: function(result)
+		success: function(result)
 		{
 			alert(result);										
 		},
@@ -700,6 +707,21 @@ function deleteProduct(pCode)
 {
 	if(confirm("삭제할까요?"))
 	{
+		// 파일 삭제
+		<c:forEach var="photo" items="${photos}">
+		$.ajax
+		({
+			url: "${pageContext.request.contextPath}/product/boardDeleteFile.do?fileId=${photo.uuid}",
+			method: "POST",
+			beforeSend: function(xhr)
+			{
+	            xhr.setRequestHeader("${_csrf.headerName}", "${_csrf.token}");
+	        },
+			success: function(result){},
+			error: function(xhr, status, err){}
+		});
+		</c:forEach>
+		
 		$.ajax
 		({
 			url: "${pageContext.request.contextPath}/product/" + pCode,
@@ -712,7 +734,7 @@ function deleteProduct(pCode)
 			success: function(map)
 			{
 				alert(map.msg);
-				location.href = "${pageContext.request.contextPath}/product/productListView?userId=${userId}";									
+				location.href = "${pageContext.request.contextPath}/product/productListView?userId=${userId}&currentPage=1";									
 			},
 			error: function(xhr, status, err)
 			{
@@ -720,6 +742,7 @@ function deleteProduct(pCode)
 				console.log(xhr, status, err);
 			}
 		});
+
 	}
 	else
 		return false;
@@ -824,6 +847,10 @@ function reportProduct(reasonCode, pCode, userId)
 				reportId: userId
 			},
 	        dataType: "text",
+			beforeSend: function(xhr)
+			{
+	            xhr.setRequestHeader("${_csrf.headerName}", "${_csrf.token}");
+	        },
 			success: function(result)
 			{
 				alert(result);
@@ -854,6 +881,10 @@ function reportUser(reasonCode, suspectId, userId)
 				reportId: userId
 			},
 	        dataType: "text",
+			beforeSend: function(xhr)
+			{
+	            xhr.setRequestHeader("${_csrf.headerName}", "${_csrf.token}");
+	        },
 			success: function(result)
 			{
 				alert(result);

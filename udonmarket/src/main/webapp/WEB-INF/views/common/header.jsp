@@ -41,6 +41,8 @@
     <script src="${pageContext.request.contextPath }/resources/js/notification.js"></script>
 	<!-- sockJS -->
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.3.0/sockjs.min.js"></script>
+	<!-- filepond -->
+	<link href="https://unpkg.com/filepond/dist/filepond.css" rel="stylesheet">
 <script>
 <%-- RedirectAttribute에 등록된 msg값 존재 여부 확인 후 출력 --%>
 <c:if test="${not empty msg }">
@@ -75,17 +77,17 @@
                                     <a class="nav-link" href="${pageContext.request.contextPath }">HOME</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="${pageContext.request.contextPath }/product/productListView?userId=${userId}">중고거래</a>
+                                    <a class="nav-link" href="${pageContext.request.contextPath }/product/productListView?userId=${userId}&currentPage=1">중고거래</a>
                                 </li>
                                 <li class="nav-item dropdown">
-                                    <a class="nav-link dropdown-toggle" href="${pageContext.request.contextPath }/community/communityListView" id="navbarDropdown_1"
+                                    <a class="nav-link dropdown-toggle" href="${pageContext.request.contextPath }/community/communityListView?userId=${userId}&currentPage=1" id="navbarDropdown_1"
                                         role="button" aria-haspopup="true" aria-expanded="false">동네생활
                                     </a>
                                     <div class="dropdown-menu" aria-labelledby="navbarDropdown_1">
-                                        <a class="dropdown-item" href="/udon/community/communityListView?categoryCode=17">동네생활이야기</a>
-                                        <a class="dropdown-item" href="/udon/community/communityListView?categoryCode=18">우리동네질문</a>
-										<a class="dropdown-item" href="/udon/community/communityListView?categoryCode=19">분실/실종센터</a>
-										<a class="dropdown-item" href="/udon/community/communityListView?categoryCode=20">동네사건사고</a>
+                                        <a class="dropdown-item" href="/udon/community/communityListView?userId=${userId}&categoryCode=17&currentPage=1">동네생활이야기</a>
+                                        <a class="dropdown-item" href="/udon/community/communityListView?userId=${userId}&categoryCode=18&currentPage=1">우리동네질문</a>
+										<a class="dropdown-item" href="/udon/community/communityListView?userId=${userId}&categoryCode=19&currentPage=1">분실/실종센터</a>
+										<a class="dropdown-item" href="/udon/community/communityListView?userId=${userId}&categoryCode=20&currentPage=1">동네사건사고</a>
                                     </div>
                                 </li>
 								<!--관리자메뉴 -->
@@ -104,8 +106,8 @@
                            	
                            	<!-- chatList 새창으로 열기-->
                            	<sec:authorize access="isAuthenticated()">
-                            <a href="${pageContext.request.contextPath }/chat/chatListView?userId=${userId}" 
-                               target = "_black">
+                            <a href="#" 
+                               onclick="window.open('${pageContext.request.contextPath }/chat/chatListView?userId=${userId}', 'chatting', 'width=1000px, height=800px')">
                             	<i class="ti-comments-smiley"></i>
                             </a>
                             </sec:authorize>

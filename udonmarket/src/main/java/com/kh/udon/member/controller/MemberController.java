@@ -30,6 +30,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.kh.email.Email;
 import com.kh.email.EmailSender;
+import com.kh.udon.common.util.Utils;
 import com.kh.udon.community.model.vo.Community;
 import com.kh.udon.community.model.vo.Reply;
 import com.kh.udon.member.model.service.MemberService;
@@ -79,7 +80,13 @@ public class MemberController {
 		Optional<SavedRequest> maybeSavedRequest = Optional.ofNullable(savedRequest);
 		loc = maybeSavedRequest.map(o -> o.getRedirectUrl())
 							   .orElse("/");
-		log.debug("loc@loginSuccess="+loc);
+		//log.debug("loc@loginSuccess="+loc);
+		
+		//모든 keyword들을 가져와서 세션에 저장해두기
+		List<Keyword> keywordList = service.selectAllKeywordList();
+		session.setAttribute("keywordList", keywordList);
+		//log.debug("session:keywordList = {}", session.getAttribute("keywordList"));
+		
 		//view단 지정
 //		mav.setViewName("redirect:"+loc);
 		mav.setViewName("redirect:/");
@@ -804,17 +811,33 @@ public class MemberController {
     //알림 모아보기 (마이페이지)
     @RequestMapping("/myNotiList")
     public Model myNotiList(@RequestParam("userId") String userId,
-    						Model model){
-    	
+			    		 	@RequestParam(defaultValue = "1", 
+			    		 				  value="cPage") int cPage,
+    						Model model,
+    						HttpServletRequest request){
+
+    	//사용자 입력값 
+		final int limit = 10; //numPerPage
+		int offset = (cPage - 1) * limit;
+
     	Member member = service.selectOneMember(userId);
-    	List<Noti> list = service.selectAllNoti(userId);
-    	
+    	List<Noti> list = service.selectAllNoti(userId, limit, offset);
+
+    	//전체컨텐츠수 구하기
+		int totalContents = service.selectNotiTotalContents(userId);
+
+		//페이지 바
+		String url = request.getRequestURI() + "?userId=" + userId + "&";
+		String pageBar = Utils.getPageBarHtml(cPage, limit, totalContents, url);
+
     	model.addAttribute("member", member);
     	model.addAttribute("list", list);
-    	
+    	model.addAttribute("pageBar", pageBar);
+    	model.addAttribute("totalContents", totalContents);
+
     	return model;
     }
-    
+    						
     //알림 상태 체크여부 바꾸기
     @RequestMapping("/updateCheck")
     @ResponseBody
@@ -842,5 +865,44 @@ public class MemberController {
     	
     	return model;
     }
+    
+    //차단하기
+    @GetMapping("/addBlockUser")
+    public String addBlockUser(@RequestParam("userId") String userId,
+    						   @RequestParam("blockUserId") String blockUserId){
+    	
+    	Map<String, Object> map = new HashMap<>();
+    	map.put("userId", userId);
+    	map.put("blockUserId", blockUserId);
 
+    	try {
+    		int result = service.insertBlockUser(map);    		
+    	}catch (Exception e) {
+			e.printStackTrace();
+		}
+    	
+    	return "redirect:/member/blockUser?userId=" + userId;
+    }
+    
+    //차단하기
+    @PostMapping("/deleteBlockUser")
+    @ResponseBody
+    public String deleteBlockUser(@RequestParam("userId") String userId,
+    							  @RequestParam("blockUserId") String blockUserId){
+    	
+    	Map<String, Object> map = new HashMap<>();
+    	map.put("userId", userId);
+    	map.put("blockUserId", blockUserId);
+    	
+    	String msg = "차단 해제 했어요 💗";
+    	try {
+    		int result = service.deleteBlockUser(map);    		
+    	}catch (Exception e) {
+    		e.printStackTrace();
+    		msg = "차단 해제 실패했어요 😥 ";
+    	}
+    	
+    	return msg;
+    }
+    
 }

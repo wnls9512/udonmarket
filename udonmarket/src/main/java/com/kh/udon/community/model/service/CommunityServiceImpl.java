@@ -1,16 +1,21 @@
 package com.kh.udon.community.model.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.kh.udon.common.model.vo.PageInfo;
 import com.kh.udon.community.model.dao.CommunityDao;
+import com.kh.udon.community.model.vo.Boardphoto;
 import com.kh.udon.community.model.vo.Community;
 import com.kh.udon.community.model.vo.LikeThis;
 import com.kh.udon.community.model.vo.Reply;
 import com.kh.udon.community.model.vo.Report;
 import com.kh.udon.community.model.vo.Search;
+import com.kh.udon.product.model.vo.ReasonReportVO;
+import com.kh.udon.product.model.vo.ReportVO;
 
 @Service
 public class CommunityServiceImpl implements CommunityService
@@ -19,9 +24,20 @@ public class CommunityServiceImpl implements CommunityService
     private CommunityDao dao;
     
     @Override
-	public List<Community> selectCommunityList(Search search) {
-		return dao.selectCommunityList(search);
+	public List<Community> selectCommunityList(Search search, PageInfo pi) {
+		return dao.selectCommunityList(search, pi);
 	}
+    
+    @Override
+   	public List<Community> selectCommunityNewList(Search search) {
+   		return dao.selectCommunityNewList(search);
+   	}
+    
+    @Override
+    public int selectCount(Map<String, Object> map)
+    {
+        return dao.selectCount(map);
+    }
     
 	/*
 	 * @Override public List<Community> selectCommunityList(int categoryCode) {
@@ -75,6 +91,12 @@ public class CommunityServiceImpl implements CommunityService
 		return dao.deleteReply(replyCode);
 
 	}
+	
+	@Override
+    public int updateCommunityCode(Map<String, Object> map)
+    {
+        return dao.updateCommunityCode(map);
+    }
 
 	@Override
 	
@@ -101,6 +123,24 @@ public class CommunityServiceImpl implements CommunityService
 	        return dao.insert(community);
 	    }
 	 
+	 @Override
+	    public int insert(Boardphoto boardphoto)
+	    {
+	        return dao.insert(boardphoto);
+	    }
+	 
+	 @Override
+	    public List<Boardphoto> selectPhotos(int bCode)
+	    {
+	        return dao.selectPhotos(bCode);
+	    }
+	 
+	 @Override
+	    public void deleteFile(String uuid)
+	    {
+	        dao.deleteFile(uuid);
+	    }
+	 
 	 
 	 @Override
 	    public Community selectByBCode(int bCode)
@@ -124,5 +164,47 @@ public class CommunityServiceImpl implements CommunityService
 	    public int likeThis(LikeThis like)
 	    {
 	        return dao.likeThis(like);
+	    }
+	 
+	 @Override
+	 public List<ReasonReportVO> selectReasonReport()
+	    {
+	        return dao.selectReasonReport();
+	    }
+	 
+	 @Override
+	 public List<ReasonReportVO> selectReasonReport2()
+	    {
+	        return dao.selectReasonReport2();
+	    }
+	 
+	 @Override
+	    public List<ReasonReportVO> selectReportListByRCode(int reasonCode)
+	    {
+	        return dao.selectReportListByRCode(reasonCode);
+	    }
+	 
+	 @Override
+	    public int reportBoard(ReportVO report)
+	    {
+	        return dao.reportBoard(report);
+	    }
+
+	    @Override
+	    public int reportUser(ReportVO report)
+	    {
+	        return dao.reportUser(report);
+	    }
+	    
+	    @Override
+	    public List<ReasonReportVO> selectReportListByRCode2(int reasonCode)
+	    {
+	        return dao.selectReportListByRCode2(reasonCode);
+	    }
+	 
+	 @Override
+	    public int reportReply(ReportVO report)
+	    {
+	        return dao.reportReply(report);
 	    }
 }

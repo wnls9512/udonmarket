@@ -99,6 +99,11 @@
 		key_code = #{keyCode}
 </delete>
 
+<!-- 키워드 모두 가져오기 -->
+<select id="selectAllkeywordList" resultType="keyword">
+	select * from keyword
+</select>
+
 <!-- 회원가입 -->
 <insert id="insertMember">
 	insert into member
@@ -267,6 +272,7 @@
 <select id="selectAllBuyPro" resultType="wish">
 	select 
 		P.buyer,
+		P.seller,
 	    P.p_code,
 	    P.title,
 	    M.address sellerAddr,
@@ -419,6 +425,23 @@ where
 		b.user_id = #{userId}
 </select>
 
+<!-- 차단사용자 추가하기 -->
+<insert id="insertBlockUser">
+	insert into
+		block
+	values(#{userId}, #{blockUserId})
+</insert>
+
+<!-- 차단사용자 해제하기 -->
+<delete id="deleteBlockUser">
+	delete
+		block
+	where 
+		user_id = #{userId}
+	and
+		block_id = #{blockUserId}
+</delete>
+
 <select id="selectDeclareMemberList" resultType="report">
 	select R.report_code, R.reason_code,R.report_id, R.shooter_id, RR.reason_content
 	from report R left join reason_report RR on R.reason_code = RR.reason_code
@@ -443,7 +466,6 @@ set
 where 
 	user_id=#{ userId }
 </update>
-
 
 
 

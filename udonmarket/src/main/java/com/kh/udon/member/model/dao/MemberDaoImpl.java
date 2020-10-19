@@ -281,4 +281,18 @@ public class MemberDaoImpl implements MemberDao
 	public void updatePwd(Member member) {
 		session.update("member.updatePwd", member);
 	}
+	
+	public int insertBlockUser(Map<String, Object> map) {
+		return session.insert("member.insertBlockUser", map);
+	}
+
+	@Override
+	public int deleteBlockUser(Map<String, Object> map) {
+		return session.delete("member.deleteBlockUser", map);
+	}
+
+	@Override
+	public List<Keyword> selectAllkeywordList() {
+		return session.selectList("member.selectAllkeywordList");
+	}
 }

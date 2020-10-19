@@ -61,12 +61,12 @@
                                 	<c:forEach items="${category }" var="c" varStatus="status">
                                     <li>
                                     	<c:if test="${selectedCategory == c.categoryCode}">
-                                        <a href="${pageContext.request.contextPath }/product/categoryList?category=${c.categoryCode }&userId=${userId}"
+                                        <a href="${pageContext.request.contextPath }/product/categoryList?category=${c.categoryCode }&userId=${userId}&currentPage=1"
                                            style="color: red;">
                                         			${c.categoryName }</a>
                                     	</c:if>
                                     	<c:if test="${selectedCategory != c.categoryCode}">
-                                        <a href="${pageContext.request.contextPath }/product/categoryList?category=${c.categoryCode }&userId=${userId}">
+                                        <a href="${pageContext.request.contextPath }/product/categoryList?category=${c.categoryCode }&userId=${userId}&currentPage=1">
                                         			${c.categoryName }</a>
                                     	</c:if>
                                         <span>(${categoryCount[status.index] })</span>
@@ -110,7 +110,11 @@
                                     										   <c:if test="${p.regDate != 0}">${p.regDate} days ago</c:if>
                                     										   <c:if test="${p.regDate == 0}">today</c:if></span>
                                     <h3><fmt:formatNumber type="number" maxFractionDigits="3" value="${p.price}" />원</h3>
-                                    <span class="float-right" style="color: gray;"><i class="far fa-heart"></i> ${p.wish}  <i class="far fa-comments"></i> ${p.chat }<br /></span>
+                                    <span class="float-right" style="color: gray;">
+                                    	<c:if test="${p.wish != 0 }"><i class="far fa-heart"></i> ${p.wish}  </c:if>
+                                    	<c:if test="${p.chat != 0 }"><i class="far fa-heart"></i> ${p.wish}  </c:if>
+                                    	<br />
+                                    </span>
         	                            <a href="javascript:addToWish('${userId}', '${p.PCode}')" class="add_cart">
                                     	+ add to favorite<i class="ti-heart"></i>
                                    	</a>
@@ -123,22 +127,52 @@
                         <div class="pageination">
                             <nav aria-label="Page navigation example">
                                 <ul class="pagination justify-content-center">
-                                    <li class="page-item">
+                                
+								<c:choose>
+		                		<c:when test="${ pi.currentPage eq 1 }">
+									<li class="page-item disabled">
                                         <a class="page-link" href="#" aria-label="Previous">
                                             <i class="ti-angle-double-left"></i>
                                         </a>
-                                    </li>
-                                    <li class="page-item"><a class="page-link" href="#">1</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">4</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">5</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">6</a></li>
-                                    <li class="page-item">
+                                    </li>     
+			                    </c:when>
+			                    <c:otherwise>
+									<li class="page-item">
+                                        <a class="page-link" href="${pageContext.request.contextPath }/product/productListView?currentPage=${pi.currentPage-1}&userId=${userId}" aria-label="Previous">
+                                            <i class="ti-angle-double-left"></i>
+                                        </a>
+                                    </li>     
+		                    	</c:otherwise>
+		                    	</c:choose>
+		                    	
+			                    <c:forEach var="p" begin="${ pi.startPage }" end="${ pi.endPage }">
+		                    	<c:choose>
+	                    		<c:when test="${ p eq pi.currentPage }">
+		                    		<li class="page-item disabled"><a class="page-link" href="#">${ p }</a></li>
+		                    	</c:when>
+		                    	<c:otherwise>
+		                    		<li class="page-item"><a class="page-link" href="${pageContext.request.contextPath }/product/productListView?currentPage=${ p }&userId=${userId}">${ p }</a></li>
+	                    		</c:otherwise>
+		                    	</c:choose>
+			                    </c:forEach>
+		                    	
+			                    <c:choose>
+		                    	<c:when test="${ pi.currentPage eq pi.maxPage }">
+                                    <li class="page-item disabled">
                                         <a class="page-link" href="#" aria-label="Next">
                                             <i class="ti-angle-double-right"></i>
                                         </a>
                                     </li>
+			                    </c:when>
+			                    <c:otherwise>
+                                    <li class="page-item">
+                                        <a class="page-link" href="${pageContext.request.contextPath }/product/productListView?currentPage=${pi.currentPage + 1}&userId=${userId}" aria-label="Next">
+                                            <i class="ti-angle-double-right"></i>
+                                        </a>
+                                    </li>
+		                    	</c:otherwise>
+			                    </c:choose>
+			                    
                                 </ul>
                             </nav>
                         </div>
@@ -210,6 +244,12 @@
 	
 	
 <script>
+// 검색결과 없을 시 이전페이지로 이동
+$(function()
+{
+	if(${products == null || products.size() == 0})
+		history.back();
+});
 // 관심 목록 추가
 function addToWish(userId, pCode)
 {
@@ -242,7 +282,7 @@ function addToWish(userId, pCode)
 function search(keyword) 
 {
 	location.href 
-		= "${pageContext.request.contextPath}/product/search?keyword=" + keyword + "&category=${selectedCategory}&userId=${userId}";
+		= "${pageContext.request.contextPath}/product/search?keyword=" + keyword + "&category=${selectedCategory}&userId=${userId}&currentPage=1";
 }
 
 

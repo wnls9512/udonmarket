@@ -31,13 +31,10 @@ function connectWS(){
          if((msg.data).includes('sendMsg')){
 
         		let msgArr = (msg.data).split("@");
-				//console.log(msgArr[0]); //roomCode
-				//console.log(msgArr[1]); //msg
-
-				//console.log($("#sendBtn").val());
-				//console.log(msgArr[0] == $("#sendBtn").val());
-				if(msgArr[0] == $("#sendBtn").val()){     	 
-					$("#chatBox").append(msgArr[1]);       	 
+        		
+				if(msgArr[0] == $("#sendBtn").val()){     	
+					    	 
+					$("#chatBox").prepend(msgArr[1]);       	 
 				}
 				
             // $("#chatBox").append(msg.data);	

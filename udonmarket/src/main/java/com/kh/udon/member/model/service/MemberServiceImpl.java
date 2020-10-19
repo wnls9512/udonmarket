@@ -298,4 +298,18 @@ public class MemberServiceImpl implements MemberService
 		memberDao.updatePwd(member);
 	}
 
+	@Override
+	public int insertBlockUser(Map<String, Object> map) {
+		return memberDao.insertBlockUser(map);
+	}
+
+	@Override
+	public int deleteBlockUser(Map<String, Object> map) {
+		return memberDao.deleteBlockUser(map);
+	}
+
+	@Override
+	public List<Keyword> selectAllKeywordList() {
+		return memberDao.selectAllkeywordList();
+	}
 }

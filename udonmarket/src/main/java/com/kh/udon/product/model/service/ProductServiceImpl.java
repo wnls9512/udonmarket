@@ -1,5 +1,6 @@
 package com.kh.udon.product.model.service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -7,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.kh.udon.common.model.vo.PageInfo;
 import com.kh.udon.community.model.vo.Report;
 import com.kh.udon.member.model.vo.Wish;
 import com.kh.udon.product.model.dao.ProductDao;
@@ -64,15 +66,15 @@ public class ProductServiceImpl implements ProductService
     }
 
     @Override
-    public List<ProductDTO> selectAll(String userId)
+    public List<ProductDTO> selectAll(PageInfo pi, String userId)
     {
-        return dao.selectAll(userId);
+        return dao.selectAll(pi, userId);
     }
 
     @Override
-    public List<ProductDTO> selectCategoryProducts(Map<String, Object> map)
+    public List<ProductDTO> selectCategoryProducts(Map<String, Object> map, PageInfo pi)
     {
-        return dao.selectCategoryProducts(map);
+        return dao.selectCategoryProducts(map, pi);
     }
 
     @Override
@@ -82,9 +84,9 @@ public class ProductServiceImpl implements ProductService
     }
 
     @Override
-    public List<ProductDTO> search(Map<String, Object> map)
+    public List<ProductDTO> search(Map<String, Object> map, PageInfo pi)
     {
-        return dao.search(map);
+        return dao.search(map, pi);
     }
 
     @Override
@@ -118,9 +120,23 @@ public class ProductServiceImpl implements ProductService
     }
 
     @Override
-    public int update(ProductVO product)
+    @Transactional
+    public int update(Map<String, Object> map)
     {
-        return dao.update(product);
+        /*
+         *      1. 수정 사진 pCode 업데이트
+         *      2. 게시판 수정
+         */
+        int result = 0;
+        
+        Map<String, Object> param = new HashMap<String, Object>();
+        param.put("uuids", (String[])map.get("uuids"));
+        param.put("pCode", ((ProductVO) map.get("product")).getPCode());
+        
+        result = dao.updateProductCode(param);
+        result = dao.update((ProductVO) map.get("product"));
+        
+        return result;
     }
 
     @Override
@@ -148,9 +164,9 @@ public class ProductServiceImpl implements ProductService
     }
 
     @Override
-    public List<ProductVO> selectOtherProducts(String seller)
+    public List<ProductVO> selectOtherProducts(Map<String, Object> map)
     {
-        return dao.selectOtherProducts(seller);
+        return dao.selectOtherProducts(map);
     }
 
     public List<ReasonReportVO> selectReasonReport()
@@ -250,10 +266,43 @@ public class ProductServiceImpl implements ProductService
                 
         return result;
     }
+    
+    @Override
+    public int insertReviewByBuyer(ReviewDTO review)
+    {
+        int result = 0;
+        
+        result = dao.insertEva(review);
+        result = dao.insertScore(review);
+        result = dao.insertReviewByBuyer(review);
+        result = dao.updateSeller(review);
+        
+        return result;
+    }
 
+    @Override
+    public List<Evaluation> selectEvaListforBuyer(int kind)
+    {
+        return dao.selectEvaListforBuyer(kind);
+    }
 
+    @Override
+    public String reviewISent(int reviewCode)
+    {
+        return dao.reviewIsent(reviewCode);
+    }
 
+    @Override
+    public List<ProductDTO> oneToTen()
+    {
+        return dao.oneToTen();
+    }
 
+    @Override
+    public List<ProductDTO> elevenToTwenty()
+    {
+        return dao.elevenToTwenty();
+    }
 
 
 

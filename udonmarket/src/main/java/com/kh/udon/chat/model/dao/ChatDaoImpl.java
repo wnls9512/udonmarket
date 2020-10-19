@@ -51,4 +51,14 @@ public class ChatDaoImpl implements ChatDao
 	public int insertChatSeller(Map<String, Object> map) {
 		return session.insert("socket.insertChatSeller", map);
 	}
+
+	@Override
+	public int leaveChatRoom(Map<String, Object> map) {
+		return session.update("socket.leaveChatRoom", map);
+	}
+
+	@Override
+	public int enterChatRoom(Map<String, Object> map) {
+		return session.update("socket.enterChatRoom", map);
+	}
 }

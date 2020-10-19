@@ -66,13 +66,18 @@
 	        from chat_user CU, member M 
 	        where CU.user_id = M.user_id 
 	        and room_code = R.room_code 
-	        and CU.user_id != #{userId}) senderNickName
+	        and CU.user_id != #{userId}) senderNickName,
+            (select enabled
+	        from chat_user 
+	        where room_code = R.room_code 
+	        and user_id != #{userId}) senderEnabled
 	from chat_room R
 	where R.room_code in (select R.room_code
 	                    from chat_room R
 	                        join chat_user U
 	                            on R.room_code = U.room_code
-	                    where user_id = #{userId})
+	                    where user_id = #{userId}
+	                    and u.enabled = 1)
 	order by room_code desc
 </select>
 
@@ -115,6 +120,28 @@
 	values(#{seller}, #{roomCode}, default)
 </insert>
 
+<!-- 채팅방 떠나기 -->
+<update id="leaveChatRoom">
+	update 
+		chat_user 
+	set 
+		enabled = 0 
+	where 
+		user_id = #{userId} 
+	and 
+		room_code = #{roomCode}
+</update>
+
+<!-- 채팅방 다시 활성화 -->
+<update id="enterChatRoom">
+	update 
+		chat_user 
+	set 
+		enabled = 1 
+	where 
+		room_code = #{roomCode}
+</update>
+
 <!-- 대화 내용 가져오기 -->
 <select id="selectChatMsg" resultType="chatMessage">
 	select MSG.*, 
@@ -123,7 +150,7 @@
 	    join member M
 	        on msg.user_id = m.user_id
 	where room_code = #{roomCode}
-	order by chat_date
+	order by chat_date desc
 </select>
 
 <!-- 메세지 테이블에 추가 -->
