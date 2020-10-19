@@ -287,6 +287,16 @@ public class MemberServiceImpl implements MemberService
 	public int selectNotiTotalContents(String userId) {
 		return memberDao.selectNotiTotalContents(userId);
 	}
+	
+	@Override
+	public boolean checkPwd(String userId,String password) {
+		return memberDao.checkPwd(userId,password);
+	}
+
+	@Override
+	public void updatePwd(Member member) {
+		memberDao.updatePwd(member);
+	}
 
 	@Override
 	public int insertBlockUser(Map<String, Object> map) {
