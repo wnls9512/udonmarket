@@ -119,7 +119,7 @@ body
                                 </div>
                                 <div class="col-md-12 form-group p_star">
 	                               <!-- <input type="submit" value="게시글 등록" class="btn_1" /> -->
-	                                <a onClick='fn_addtoBoard()' class="btn_3" style="text-align: center;">게시글 등록</a>
+	                                <a onClick='fn_addtoBoard()' class="btn_3" style="text-align: center; cursor:pointer;">게시글 등록</a>
 	                                    
                            		 </div>
                            		 </form>
