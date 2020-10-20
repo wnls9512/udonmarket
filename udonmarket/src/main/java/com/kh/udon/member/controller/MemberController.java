@@ -401,6 +401,7 @@ public class MemberController {
 				service.updatePwd(member);
 				rttr.addFlashAttribute("msg","비밀번호가 변경되었습니다");
 				rttr.addAttribute("userId", member.getUserId());
+				
 				return "redirect:/member/mypage";
 		}
 				
