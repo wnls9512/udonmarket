@@ -264,6 +264,36 @@ public class MemberController {
 		model.addAttribute("member", member);
         return model;
     }
+	
+	@RequestMapping("/yourpage")
+	public String yourpage(@RequestParam("searchId") String searchId,
+					       @RequestParam("userId") String userId,
+					       RedirectAttributes rttr,
+						Model model) {
+		
+		int result = 0;
+		Member member = service.selectOneMember(searchId);
+		model.addAttribute("member",member);
+		
+		List<Block> list = service.selectAllBlockUser(userId);
+		for(int i=0; i<list.size();i++) {
+			if(list.get(i).getBlockUserId().equals(searchId)) {
+				rttr.addFlashAttribute("msg","차단한 유저입니다.");
+				result++;
+				log.debug("차단유저:",list.get(i).getBlockUserId());
+			}
+						
+			else 
+				result = 0;
+			
+			
+			}
+//		log.debug("결과값=" ,result);
+		System.out.println(result);
+  		return result == 0? "/member/yourpage":"redirect:/";
+		
+
+	}
 
     //프로필 수정
 	@RequestMapping("/editprofile" )
