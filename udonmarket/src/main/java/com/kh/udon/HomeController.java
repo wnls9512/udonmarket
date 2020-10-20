@@ -12,9 +12,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import com.kh.udon.product.model.service.ProductService;
 import com.kh.udon.product.model.vo.ProductDTO;
 
+import lombok.extern.slf4j.Slf4j;
+
 /**
  * Handles requests for the application home page.
  */
+@Slf4j
 @Controller
 public class HomeController {
 	
@@ -33,6 +36,9 @@ public class HomeController {
 	    
 	    model.addAttribute("products1", products1);
 	    model.addAttribute("products2", products2);
+	  
+	    log.debug("product1 = {}" , products1);
+	    log.debug("product2 = {}" , products2);
 	    
 		return "forward:/index.jsp";
 	}
