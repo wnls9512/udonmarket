@@ -413,7 +413,10 @@
 	<!-- 게시글 수정 -->
 	<update id="update">
 		update board set 
-		category_code=#{categoryCode}, board_title=#{boardTitle}, board_content=#{boardContent}, hashtag_code=#{hashtagCode}
+		category_code=#{categoryCode}, board_title=#{boardTitle}, board_content=#{boardContent}
+		<if test="hashtagCode!=100">
+		,hashtag_code=#{hashtagCode}
+		</if>
 		where b_code = #{bCode}
 	</update>
 	

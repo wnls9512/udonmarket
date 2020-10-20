@@ -283,7 +283,7 @@ public class CommunityController
         
         rttr.addFlashAttribute("msg", result > 0 ? "게시글 수정 성공 💛" : "게시글 수정 실패 🤔");
         
-        return "redirect:/community/communityListView?userId=" + userId;
+        return "redirect:/community/communityListView?currentPage=1&userId=" + userId;
     }
     
     
