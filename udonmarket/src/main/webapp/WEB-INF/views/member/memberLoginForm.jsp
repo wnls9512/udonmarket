@@ -22,7 +22,7 @@
                 <div class="col-lg-8">
                     <div class="breadcrumb_iner">
                         <div class="breadcrumb_iner_item">
-                            <h2>LOGIN</h2>
+                            <h2>로그인</h2>
 							<!-- <h3>서울 강남구 논현동</h3> -->
                         </div>
                     </div>
@@ -43,18 +43,17 @@
                 <div class="col-lg-6 col-md-6">
                     <div class="login_part_text text-center">
                         <div class="login_part_text_iner">
-                            <h2>New to our Shop?</h2>
-                            <p>There are advances being made in science and technology
-                                everyday, and a good example of this is the</p>
-                            <a href="${pageContext.request.contextPath }/member/signupForm" class="btn_3">Create an Account</a>
+                            <h2>우동 마켓은 처음인가요?</h2>
+                            <p>처음 오신 회원이라면 회원가입을 시도해 주세요. <br></p>
+                            <a href="${pageContext.request.contextPath }/member/signupForm" class="btn_3">회원가입</a>
                         </div>
                     </div>
                 </div>
 				<div class="col-lg-6 col-md-6">
                     <div class="login_part_form">
                         <div class="login_part_form_iner">
-                            <h3>Welcome Back ! <br>
-                                Please Sign in now</h3>
+                            <h3>환영합니다! <br>
+                                                     로그인을 시도해 주십시오. </h3>
                             <form:form class="row contact_form" action="${pageContext.request.contextPath }/member/login" method="POST" novalidate="novalidate">
                                 <div class="col-md-12 form-group p_star">
                                     <input type="text" class="form-control" id="userId" name="userId" placeholder="아이디">

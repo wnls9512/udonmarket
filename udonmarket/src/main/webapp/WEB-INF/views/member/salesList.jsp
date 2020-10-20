@@ -149,9 +149,9 @@ a{text-decoration: none; color: black;}
 										      			style="margin: 0px 0.15rem;" value ="S"
 										      			onclick="changeStatus('${sale.PCode} ','${sale.tradeStatus}', this)">판매중으로 변경</button>
 										      	</c:if>
-										      	<button type="button" class="btn btn-outline-secondary btn-sm"
+										      	<%-- <button type="button" class="btn btn-outline-secondary btn-sm"
 										      			style="margin: 0px 0.15rem;" value="C"
-										      			onclick="changeStatus('${sale.PCode} ','${sale.tradeStatus}', this)">거래완료로 변경</button>
+										      			onclick="changeStatus('${sale.PCode} ','${sale.tradeStatus}', this)">거래완료로 변경</button> --%>
 									      	</div>
 									      	</c:if>
 									      </td>

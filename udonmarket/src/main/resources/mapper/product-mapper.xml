@@ -318,10 +318,18 @@
 	</select>
 	
 	<!-- 판매자 다른 상품 -->
-	<select id="selectOtherProducts" resultType="productVO">
-		select p_code, title, price from product
-		where seller = #{seller} and p_code != #{pCode} 
-			  and open_status = 1 and (trade_status = 'S' or trade_status = 'R') and delete_yn = 'N'
+	<select id="selectOtherProducts" resultType="productDTO">
+		select 
+		    P.p_code, 
+		    P.title, 
+		    P.price,
+		    Photo.upload_path,
+		    photo.original_filename,
+		    photo.uuid
+		from product p
+		    left join (select * from product_photo where photo_code in (select min(photo_code) from product_photo group by p_code)) photo on(p.p_code = photo.p_code)
+		where seller = #{seller} and P.p_code != #{pCode} 
+		and open_status = 1 and (trade_status = 'S' or trade_status = 'R') and delete_yn = 'N'
 	</select>
 	
 	<!-- 신고목록 -->

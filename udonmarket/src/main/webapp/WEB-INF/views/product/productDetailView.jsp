@@ -256,7 +256,12 @@
                     <div class="best_product_slider owl-carousel">
                     	<c:forEach items="${other }" var="p">
                         <div class="single_product_item">
-                            <img src="${pageContext.request.contextPath }/resources/img/product/product_1.png" alt="">
+                        	<c:if test="${p.uploadPath == null}">
+							<img src="${pageContext.request.contextPath }/resources/img/noimage.png" alt="">
+							</c:if>
+							<c:if test="${p.uploadPath != null}">
+                               <img src="${pageContext.request.contextPath }/resources/upload/${p.uploadPath}/${p.uuid}/${p.originalFilename}" alt="">
+							</c:if>
                             <div class="single_product_text">
                                 <h4>${p.title }</h4>
                                 <h3><fmt:formatNumber type="number" maxFractionDigits="3" value="${p.price}" />원</h3>
@@ -430,14 +435,9 @@
                                 <ul class="list">
                                 
                                 	<!-- test -->
-                                    <li>
-                                        <a href="javascript:updateBuyer('eunju')">eunju</a>
-                                        <span>></span>
-                                    </li>
-                                    
                    					<c:forEach items="${buyerList }" var="b">
                                     <li>
-                                        <a href="javascript:updateBuyer(${b })">${b }</a>
+                                        <a href="javascript:updateBuyer('${b }')">${b }</a>
                                         <span>></span>
                                     </li>
                                     </c:forEach>
@@ -453,6 +453,7 @@
 	  </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">지금 안할래요</button>
+		<button type='button' id='btn' class='btn btn-primary float-right' onclick='reviewSubmit()' style="display: none;">완료</button>
       </div>
     </div>
   </div>
@@ -675,9 +676,7 @@ function score(score)
 				str += "</div>";
 			});
 
-			var btn = "<button type='button' class='btn btn-primary float-right' onclick='reviewSubmit()'>완료</button>";
-			
-			$("#body").after(btn);
+			$("#btn").css({"display": "block"});
 			$("#eva").html(str);
 		},
 		error: function(xhr, status, err)

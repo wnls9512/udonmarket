@@ -100,7 +100,7 @@
                     </div>
                     <div class="row align-items-center latest_product_inner">
 						<c:forEach items="${products}" var="p">
-                        <div class="col-lg-4 col-sm-6">
+                        <div class="col-lg-4 col-sm-6" style="cursor: pointer;">
                             <div class="single_product_item">
 								<c:if test="${p.uploadPath == null}">
 								<img src="${pageContext.request.contextPath }/resources/img/noimage.png" alt="">
@@ -234,11 +234,11 @@
 	
 <script>
 // 검색결과 없을 시 이전페이지로 이동
-$(function()
+/* $(function()
 {
 	if(${products == null || products.size() == 0})
 		history.back();
-});
+}); */
 // 관심 목록 추가
 function addToWish(userId, pCode)
 {

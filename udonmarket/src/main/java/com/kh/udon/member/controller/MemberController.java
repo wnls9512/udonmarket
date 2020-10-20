@@ -379,11 +379,7 @@ public class MemberController {
 		return "/member/updatePwd";
 	}
 	@PostMapping("/pwdUpdate" )
-	public String pwdUpdate(Member member,
-							@RequestParam("userId") String userId,
-							@RequestParam("password") String password,
-							RedirectAttributes rttr,
-							SessionStatus sessionStatus)
+	public String pwdUpdate(Member member,@RequestParam("userId") String userId,@RequestParam("password") String password,RedirectAttributes rttr,SessionStatus sessionStatus)
 	{
 		String rawPassword = member.getPassword();
 		String encryptPassword = bcryptPasswordEncoder.encode(rawPassword);
@@ -404,7 +400,7 @@ public class MemberController {
 				}
 				System.out.println("%%%%%%%%%%%%");
 				rttr.addAttribute("userId", member.getUserId());
-
+				
 				SecurityContextHolder.clearContext();
 				sessionStatus.setComplete();
 				
@@ -413,8 +409,6 @@ public class MemberController {
 		return "redirect:/member/logout";
 //				rttr.addAttribute("userId", member.getUserId());
 		}
-	
-				
 
 	
 	//닉네임 수정
