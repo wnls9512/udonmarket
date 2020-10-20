@@ -115,10 +115,15 @@ a{text-decoration: none; color: black;}
 									    <tr>
 									      <th scope="row">
 								      		<!-- 첫번째 상품 이미지로 가져오기 -->
-								      		<img src="/udon/resources/img/product/product/feature-product/f-p-1.jpg" 
-								      			 onclick="location.href='${pageContext.request.contextPath}/product/productDetailView?pCode=${sale.PCode}';"
-								      			 class="img-fluid" alt="product"
-								      			 style="max-height: 230px;">
+								      		<c:if test="${sale.uploadPath == null}">
+											<img src="${pageContext.request.contextPath }/resources/img/noimage.png" alt="">
+											</c:if>
+											<c:if test="${sale.uploadPath != null}">
+				                               <img src="${pageContext.request.contextPath }/resources/upload/${sale.uploadPath}/${sale.uuid}/${sale.originalFilename}" 
+				                               		onclick="location.href='${pageContext.request.contextPath}/product/productDetailView?pCode=${sale.PCode}';"
+									      			class="img-fluid" alt="product"
+									      			style="max-height: 230px;">
+											</c:if>
 									       </th>
 									      <td colspan="3">
 									      	<p style="font-size: 1rem;">${sale.title }</p>
@@ -159,8 +164,7 @@ a{text-decoration: none; color: black;}
 				                                    </a>
 				                                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown_1">
 				                                    	<button class="dropdown-item" type="button" onclick="updateProduct('${sale.PCode}', '${sale.categoryName }');">수정</button>
-													    <button class="dropdown-item" type="button" >숨기기</button>
-													    <button class="dropdown-item" type="button">끌어 올리기</button>
+													    <button class="dropdown-item" type="button" onclick="hideProduct('${sale.PCode }');">숨기기</button>
 													    <button class="dropdown-item" type="button" onclick="deleteProduct('${sale.PCode }');">게시물 삭제</button>
 				                                    </div>
 				                                </li>
@@ -185,10 +189,15 @@ a{text-decoration: none; color: black;}
 									    <tr>
 									      <th scope="row">
 								      		<!-- 첫번째 상품 이미지로 가져오기 -->
-								      		<img src="/udon/resources/img/product/product/feature-product/f-p-1.jpg" 
-								      			 onclick="location.href='${pageContext.request.contextPath}/product/productDetailView?pCode=${c.PCode}';"
-								      			 class="img-fluid" alt="product"
-								      			 style="max-height: 230px;">
+								      		<c:if test="${c.uploadPath == null}">
+											<img src="${pageContext.request.contextPath }/resources/img/noimage.png" alt="">
+											</c:if>
+											<c:if test="${c.uploadPath != null}">
+				                               <img src="${pageContext.request.contextPath }/resources/upload/${c.uploadPath}/${c.uuid}/${c.originalFilename}" 
+				                               		onclick="location.href='${pageContext.request.contextPath}/product/productDetailView?pCode=${c.PCode}';"
+									      			class="img-fluid" alt="product"
+									      			style="max-height: 230px;">
+											</c:if>
 									       </th>
 									      <td colspan="3">
 									      	<p style="font-size: 1rem;">${c.title }</p>
@@ -216,7 +225,7 @@ a{text-decoration: none; color: black;}
 				                                    </a>
 				                                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown_1">
 				                                    	<button class="dropdown-item" type="button" onclick="updateProduct('${c.PCode}', '${c.categoryName }');">수정</button>
-				                                    	<button class="dropdown-item" type="button" >숨기기</button>
+				                                    	 <button class="dropdown-item" type="button" onclick="hideProduct('${c.PCode }');">숨기기</button>
 														<button class="dropdown-item" type="button" onclick="deleteProduct('${c.PCode }');">게시물 삭제</button>
 				                                    </div>
 				                                </li>
@@ -242,13 +251,15 @@ a{text-decoration: none; color: black;}
 									    <tr>
 									      <th scope="row">
 									      	<!-- 상품 상세 페이지로 이동하게 설정할 것  p_code -->
-									      	<a href="#">
-									      		<!-- 첫번째 상품 이미지로 가져오기 -->
-									      		<img src="/udon/resources/img/product/product/feature-product/f-p-1.jpg" 
-									      			 onclick="location.href='${pageContext.request.contextPath}/product/productDetailView?pCode=${h.PCode}';"
-									      			 class="img-fluid" alt="product"
-									      			 style="max-height: 230px;">
-									      	</a>
+									      	<c:if test="${h.uploadPath == null}">
+											<img src="${pageContext.request.contextPath }/resources/img/noimage.png" alt="">
+											</c:if>
+											<c:if test="${h.uploadPath != null}">
+				                               <img src="${pageContext.request.contextPath }/resources/upload/${h.uploadPath}/${h.uuid}/${h.originalFilename}" 
+				                               		onclick="location.href='${pageContext.request.contextPath}/product/productDetailView?pCode=${h.PCode}';"
+									      			class="img-fluid" alt="product"
+									      			style="max-height: 230px;">
+											</c:if>
 									       </th>
 									      <td colspan="3">
 									      	<p style="font-size: 1rem;">${h.title }</p>
@@ -260,7 +271,8 @@ a{text-decoration: none; color: black;}
 									      	<i class="far fa-comments"></i> ${h.totalChat }<br />
 									      	<div style="margin:10px 0px;">
 									      	<button type="button" class="btn btn-outline-secondary btn-sm"
-									      			style="margin: 0px 0.15rem;">숨기기 해제</button>
+									      			style="margin: 0px 0.15rem;"
+									      			onclick="openProduct('${h.PCode }');">숨기기 해제</button>
 									      	</div>
 									      </td>
 									      <td>
@@ -297,6 +309,67 @@ a{text-decoration: none; color: black;}
 <jsp:include page="/WEB-INF/views/common/footer.jsp"/>
 	
 <script>
+/* 숨기기 */
+function hideProduct(pCode)
+{
+	if(confirm("숨기기 기능을 사용하면 상품이 이웃들에게 노출되지 않습니다."))
+	{
+		$.ajax
+		({
+			url: "${pageContext.request.contextPath}/product/hide/" + pCode,
+			method: "POST",
+			beforeSend: function(xhr)
+			{
+	            xhr.setRequestHeader("${_csrf.headerName}", "${_csrf.token}");
+	        },
+	        dataType: "json",
+			success: function(map)
+			{
+				alert(map.msg);
+				location.href = "${pageContext.request.contextPath}/member/salesList?userId=${loggedInUserId}";									
+			},
+			error: function(xhr, status, err)
+			{
+				alert("상품 숨기기에 실패했어요 💧");
+				console.log(xhr, status, err);
+			}
+		});
+
+	}
+	else
+		return false;
+}
+//숨기기해제
+function openProduct(pCode)
+{
+	if(confirm("이웃들에게 다시 상품을 보여줄까요?"))
+	{
+		$.ajax
+		({
+			url: "${pageContext.request.contextPath}/product/show/" + pCode,
+			method: "POST",
+			beforeSend: function(xhr)
+			{
+	            xhr.setRequestHeader("${_csrf.headerName}", "${_csrf.token}");
+	        },
+	        dataType: "json",
+			success: function(map)
+			{
+				alert(map.msg);
+				location.href = "${pageContext.request.contextPath}/member/salesList?userId=${loggedInUserId}";									
+			},
+			error: function(xhr, status, err)
+			{
+				alert("상품 숨기기에 실패했어요 💧");
+				console.log(xhr, status, err);
+			}
+		});
+
+	}
+	else
+		return false;
+}
+
 function updateProduct(pCode, category){
 	location.href = "${ pageContext.request.contextPath }/product/updateProduct?pCode=" + pCode + "&categoryName=" + category;
 }

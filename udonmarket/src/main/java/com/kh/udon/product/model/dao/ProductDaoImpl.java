@@ -317,6 +317,11 @@ public class ProductDaoImpl implements ProductDao
         return session.selectList("product.popular", userId);
     }
 
+	@Override
+	public int show(int pCode) {
+		return session.update("product.show", pCode);
+	}
+
 
 
 

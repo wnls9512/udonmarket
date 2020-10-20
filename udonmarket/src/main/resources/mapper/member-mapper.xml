@@ -260,8 +260,12 @@
         (select review_code from review where sender = P.buyer and review.p_code = P.p_code) reviewCode,
         P.trade_status,
         p.open_status,
-        (select count(*) from chat_room where chat_room.p_code = P.p_code) totalChat
+        (select count(*) from chat_room where chat_room.p_code = P.p_code) totalChat,
+        Photo.upload_path,
+        photo.original_filename,
+        photo.uuid
 	from product P
+		left join (select * from product_photo where photo_code in (select min(photo_code) from product_photo group by p_code)) photo on(p.p_code = photo.p_code)
     	join member M
         	on P.seller = M.user_id
         join category C
@@ -286,8 +290,12 @@
 	    P.price,
 	    (select count(*) from wish where wish.p_code = p.p_code) totalWish,
 	    (select review_code from review where sender = P.buyer and review.p_code = P.p_code) reviewCode,
-	    (select count(*) from chat_room where chat_room.p_code = P.p_code) totalChat
+	    (select count(*) from chat_room where chat_room.p_code = P.p_code) totalChat,
+        Photo.upload_path,
+        photo.original_filename,
+        photo.uuid
 	from product P
+        left join (select * from product_photo where photo_code in (select min(photo_code) from product_photo group by p_code)) photo on(p.p_code = photo.p_code)
 	    join member M
 	        on P.seller = M.user_id
 	where 
@@ -309,11 +317,15 @@
         P.title,
         M.address sellerAddr,
         P.price,
-        (select count(*) from wish where wish.p_code = p.p_code) totalWish
+        (select count(*) from wish where wish.p_code = p.p_code) totalWish,
+        Photo.upload_path,
+        photo.original_filename,
+        photo.uuid
 	from 
 		wish W 
 	    join product P 
 	    	on W.p_code = P.p_code
+	    left join (select * from product_photo where photo_code in (select min(photo_code) from product_photo group by p_code)) photo on(p.p_code = photo.p_code)
 	    join member M 
 	    	on P.seller = M.user_id
 	where 

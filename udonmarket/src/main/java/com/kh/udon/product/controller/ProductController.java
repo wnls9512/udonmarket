@@ -392,6 +392,30 @@ public class ProductController
         return map;
     }
     
+    // 상품 숨기기 해제
+    @PostMapping("/show/{pCode}")
+    @ResponseBody
+    public Map<String, Object> showMenu(@PathVariable int pCode)
+    {
+    	Map<String, Object> map = new HashMap<>();
+    	
+    	String msg = "숨김 해제 완료 😄";
+    	
+    	try 
+    	{
+    		int result = service.show(pCode);
+    	} 
+    	catch(Exception e) 
+    	{
+    		log.error("숨기기 해제 오류", e);
+    		msg = "숨기기 해제에 실패했어요 💧";
+    	}
+    	
+    	map.put("msg", msg);
+    	
+    	return map;
+    }
+    
     // 끌올
     @PutMapping("/pull/{price}/{pCode}")
     @ResponseBody
