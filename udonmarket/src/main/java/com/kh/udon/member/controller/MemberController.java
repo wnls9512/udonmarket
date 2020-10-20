@@ -11,6 +11,7 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.WebAuthenticationDetails;
@@ -380,7 +381,8 @@ public class MemberController {
 	public String pwdUpdate(Member member,
 							@RequestParam("userId") String userId,
 							@RequestParam("password") String password,
-							RedirectAttributes rttr)
+							RedirectAttributes rttr,
+							SessionStatus sessionStatus)
 	{
 		String rawPassword = member.getPassword();
 		String encryptPassword = bcryptPasswordEncoder.encode(rawPassword);
@@ -395,7 +397,11 @@ public class MemberController {
 				service.updatePwd(member);
 				rttr.addFlashAttribute("msg","비밀번호가 변경되었습니다");
 				rttr.addAttribute("userId", member.getUserId());
-				return "redirect:/member/mypage";
+
+				SecurityContextHolder.clearContext();
+				sessionStatus.setComplete();
+				
+				return "/member/memberLoginForm";
 		}
 				
 			/*}*/
