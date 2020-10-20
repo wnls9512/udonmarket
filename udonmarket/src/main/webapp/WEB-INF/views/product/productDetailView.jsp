@@ -453,6 +453,7 @@
 	  </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">지금 안할래요</button>
+		<button type='button' id='btn' class='btn btn-primary float-right' onclick='reviewSubmit()' style="display: none;">완료</button>
       </div>
     </div>
   </div>
@@ -675,9 +676,7 @@ function score(score)
 				str += "</div>";
 			});
 
-			var btn = "<button type='button' class='btn btn-primary float-right' onclick='reviewSubmit()'>완료</button>";
-			
-			$("#body").after(btn);
+			$("#btn").css({"display": "block"});
 			$("#eva").html(str);
 		},
 		error: function(xhr, status, err)
