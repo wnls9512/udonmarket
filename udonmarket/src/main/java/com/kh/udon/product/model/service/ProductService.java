@@ -104,6 +104,8 @@ public interface ProductService
 
     List<ProductDTO> popular(String userId);
 
+	int show(int pCode);
+
 
 
 
