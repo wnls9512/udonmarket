@@ -161,7 +161,7 @@ public class ProductDaoImpl implements ProductDao
     }
 
     @Override
-    public List<ProductVO> selectOtherProducts(Map<String, Object> map)
+    public List<ProductDTO> selectOtherProducts(Map<String, Object> map)
     {
         return session.selectList("product.selectOtherProducts", map);
     }

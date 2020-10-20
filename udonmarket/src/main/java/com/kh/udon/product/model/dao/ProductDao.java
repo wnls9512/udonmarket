@@ -61,7 +61,7 @@ public interface ProductDao
 
     List<ProductVO> selectSimilarProducts(Map<String, Object> map);
 
-    List<ProductVO> selectOtherProducts(Map<String, Object> map);
+    List<ProductDTO> selectOtherProducts(Map<String, Object> map);
 
     List<ReasonReportVO> selectReasonReport();
 

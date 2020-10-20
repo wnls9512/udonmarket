@@ -261,7 +261,7 @@ public class ProductController
         List<ProductVO> similar = service.selectSimilarProducts(map);
         
         // --- 판매자 다른 상품 ---
-        List<ProductVO> other = service.selectOtherProducts(map);
+        List<ProductDTO> other = service.selectOtherProducts(map);
         
         // --- 시간 차 구하기 ---
         long timeMillis = System.currentTimeMillis() - product.getOriginalRegDate().getTime();
