@@ -1,5 +1,7 @@
 package com.kh.udon.member.controller;
 
+import java.nio.file.Path;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -29,6 +31,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -413,13 +416,16 @@ public class MemberController {
 	
 	//닉네임 수정
 	@PostMapping("/nickUpdate" )
-	public String nickUpdate(Member member,RedirectAttributes rttr)
+	public String nickUpdate(Member member,RedirectAttributes rttr,HttpServletRequest req)
 	{
+		//===========================닉네임 수정
 		log.debug("member = {}", member);
 		
 		int result = service.updateNick(member);
 		rttr.addFlashAttribute("msg", result > 0 ? "닉네임 수정 성공" : "닉네임 수정 실패");
 		rttr.addAttribute("userId", member.getUserId());
+		//===========================닉네임 수정
+		
 		
 		return "redirect:/member/mypage";
 		
@@ -991,5 +997,7 @@ public class MemberController {
     	
     	return msg;
     }
+    
+    
     
 }
