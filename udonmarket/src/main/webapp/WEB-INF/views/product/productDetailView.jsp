@@ -435,14 +435,9 @@
                                 <ul class="list">
                                 
                                 	<!-- test -->
-                                    <li>
-                                        <a href="javascript:updateBuyer('eunju')">eunju</a>
-                                        <span>></span>
-                                    </li>
-                                    
                    					<c:forEach items="${buyerList }" var="b">
                                     <li>
-                                        <a href="javascript:updateBuyer(${b })">${b }</a>
+                                        <a href="javascript:updateBuyer('${b }')">${b }</a>
                                         <span>></span>
                                     </li>
                                     </c:forEach>
