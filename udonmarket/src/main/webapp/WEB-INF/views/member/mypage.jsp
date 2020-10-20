@@ -121,7 +121,7 @@ $(function(){
 	                </div>
 	                 <!-- 매너온도 게이지 -->
 	              <div class="progress" style="height: 20px;">
-					  <div class="progress-bar" role="progressbar" style="width: 25%;" aria-valuenow="36.5" aria-valuemin="0" aria-valuemax="100">36.5ºc</div>
+					  <div class="progress-bar" role="progressbar" style="width: 25%;" aria-valuenow="36.5" aria-valuemin="0" aria-valuemax="100">${seller.score}ºc</div>
 					</div>
 	            </div>
 	            <div class="bg-white">
@@ -132,9 +132,6 @@ $(function(){
 				        <nav class="nav flex-column bg-white shadow-sm rounded p-3">			          
 				          <a href="${pageContext.request.contextPath }/member/myNotiList?userId=${member.userId}" class="nav-link px-4 rounded-pill">
 		                      <i class="far fa-bell"></i>&nbsp; 알림 모아보기
-	                      </a>
-	                      <a href="${pageContext.request.contextPath}/member/interList" class="nav-link px-4 rounded-pill">
-		                      <i class="far fa-star"></i>&nbsp; 관심 주제 목록
 	                      </a>
 	  				      <a href="${pageContext.request.contextPath }/member/settingsArea?userId=${member.userId}" class="nav-link px-4 rounded-pill">
 	                           <i class="fas fa-map-marker-alt"></i>&nbsp; 내 동네 설정

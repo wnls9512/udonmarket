@@ -198,6 +198,7 @@ public class MemberController {
 	@RequestMapping("/logout")
 	public String memberLogout(SessionStatus sessionStatus) {
 		if (sessionStatus.isComplete() == false) {
+			System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
 			sessionStatus.setComplete();
 		}
 
@@ -386,7 +387,8 @@ public class MemberController {
 	public String pwdUpdate(Member member,
 							@RequestParam("userId") String userId,
 							@RequestParam("password") String password,
-							RedirectAttributes rttr)
+							RedirectAttributes rttr,
+							SessionStatus sessionStatus)
 	{
 		String rawPassword = member.getPassword();
 		String encryptPassword = bcryptPasswordEncoder.encode(rawPassword);
@@ -399,27 +401,19 @@ public class MemberController {
 			log.debug("userId = {}", userId);
 			/* if(result) { */
 				service.updatePwd(member);
+				System.out.println("update success!!!!!!!!!!!!!!");
 				rttr.addFlashAttribute("msg","비밀번호가 변경되었습니다");
-				rttr.addAttribute("userId", member.getUserId());
-				return "redirect:/member/mypage";
-		}
+				System.out.println("$$$$$$$$$$$$");
+				if (sessionStatus.isComplete() == false) {
+				memberLogout(sessionStatus);
+				}
+				System.out.println("%%%%%%%%%%%%");
 				
-			/*}*/
-			else {
-				log.debug("비밀번호 불일치");
-				rttr.addFlashAttribute("msg","비밀번호 변경 실패");
-				rttr.addAttribute("userId", member.getUserId());
-				return "redirect:/member/updatePwd";
-			}
-		
-		
-			/*
-			 * else { rttr.addFlashAttribute("msg","현재 입력한 암호가 틀렸습니다.");
-			 * rttr.addAttribute("userId", member.getUserId()); return
-			 * "redirect:/member/updatePwd"; }
-			 */
-		
-		
+//				rttr.addAttribute("userId", member.getUserId());
+		}
+		return "redirect:/member/logout";
+	
+				
 	}
 
 	
