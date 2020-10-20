@@ -165,7 +165,6 @@ a{text-decoration: none; color: black;}
 				                                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown_1">
 				                                    	<button class="dropdown-item" type="button" onclick="updateProduct('${sale.PCode}', '${sale.categoryName }');">수정</button>
 													    <button class="dropdown-item" type="button" onclick="hideProduct('${sale.PCode }');">숨기기</button>
-													    <button class="dropdown-item" type="button">끌어 올리기</button>
 													    <button class="dropdown-item" type="button" onclick="deleteProduct('${sale.PCode }');">게시물 삭제</button>
 				                                    </div>
 				                                </li>
