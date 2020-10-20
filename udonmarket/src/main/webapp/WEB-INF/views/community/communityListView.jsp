@@ -114,7 +114,7 @@ $(function(){
                         		 <img class="card-img rounded-0" style="height: 400px; width: 400px; text-align: center;" src="${pageContext.request.contextPath}/resources/img/blog/no_img.png" alt="">
 								</c:if>
 								<c:if test="${ c.uuid != null }">
-                                <img style="height: 400px; width: 400px; text-align: center;" class="card-img rounded-0" src="${pageContext.request.contextPath }/resources/upload/${c.uploadPath}/${c.uuid}/${c.originalFilename}" alt="">
+                                <img style="height: 400px; width: 400px; text-align: center; margin-bottom: 4em;" class="card-img rounded-0" src="${pageContext.request.contextPath }/resources/upload/${c.uploadPath}/${c.uuid}/${c.originalFilename}" alt="">
 								</c:if>
                                 <a href="#" class="blog_item_date">
                                     <h3></h3>
@@ -142,7 +142,7 @@ $(function(){
 							</c:if>
                             	
                             	<br/><br/>
-                                <a class="d-inline-block" data-board-no="${ c.BCode }" >
+                                <a class="d-inline-block" data-board-no="${ c.BCode }" style="cursor: pointer;">
                                 
                                 	
                                     <h2>${ c.boardTitle }</h2>
@@ -310,7 +310,7 @@ $(function(){
 
                         <aside class="single_sidebar_widget post_category_widget">
                             <h4 class="widget_title">카테고리</h4>
-                            <ul class="list cat-list">
+                            <ul class="list cat-list" style="cursor: pointer">
                     			<!-- <li>
                                     <a data-category-code="22" class="d-flex" style="">
                                         <p>공지사항</p>
