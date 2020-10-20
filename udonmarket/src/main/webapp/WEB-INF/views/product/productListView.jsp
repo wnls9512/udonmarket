@@ -100,7 +100,7 @@
                     </div>
                     <div class="row align-items-center latest_product_inner">
 						<c:forEach items="${products}" var="p">
-                        <div class="col-lg-4 col-sm-6">
+                        <div class="col-lg-4 col-sm-6" style="cursor: pointer;">
                             <div class="single_product_item">
 								<c:if test="${p.uploadPath == null}">
 								<img src="${pageContext.request.contextPath }/resources/img/noimage.png" alt="">

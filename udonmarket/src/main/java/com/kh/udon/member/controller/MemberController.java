@@ -378,11 +378,7 @@ public class MemberController {
 		return "/member/updatePwd";
 	}
 	@PostMapping("/pwdUpdate" )
-	public String pwdUpdate(Member member,
-							@RequestParam("userId") String userId,
-							@RequestParam("password") String password,
-							RedirectAttributes rttr,
-							SessionStatus sessionStatus)
+	public String pwdUpdate(Member member,@RequestParam("userId") String userId,@RequestParam("password") String password,RedirectAttributes rttr,SessionStatus sessionStatus)
 	{
 		String rawPassword = member.getPassword();
 		String encryptPassword = bcryptPasswordEncoder.encode(rawPassword);
@@ -397,29 +393,18 @@ public class MemberController {
 				service.updatePwd(member);
 				rttr.addFlashAttribute("msg","비밀번호가 변경되었습니다");
 				rttr.addAttribute("userId", member.getUserId());
-
+				
 				SecurityContextHolder.clearContext();
 				sessionStatus.setComplete();
 				
 				return "/member/memberLoginForm";
 		}
-				
-			/*}*/
 			else {
 				log.debug("비밀번호 불일치");
 				rttr.addFlashAttribute("msg","비밀번호 변경 실패");
 				rttr.addAttribute("userId", member.getUserId());
 				return "redirect:/member/updatePwd";
 			}
-		
-		
-			/*
-			 * else { rttr.addFlashAttribute("msg","현재 입력한 암호가 틀렸습니다.");
-			 * rttr.addAttribute("userId", member.getUserId()); return
-			 * "redirect:/member/updatePwd"; }
-			 */
-		
-		
 	}
 
 	
