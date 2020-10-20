@@ -11,6 +11,7 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.WebAuthenticationDetails;
@@ -377,10 +378,7 @@ public class MemberController {
 		return "/member/updatePwd";
 	}
 	@PostMapping("/pwdUpdate" )
-	public String pwdUpdate(Member member,
-							@RequestParam("userId") String userId,
-							@RequestParam("password") String password,
-							RedirectAttributes rttr)
+	public String pwdUpdate(Member member,@RequestParam("userId") String userId,@RequestParam("password") String password,RedirectAttributes rttr,SessionStatus sessionStatus)
 	{
 		String rawPassword = member.getPassword();
 		String encryptPassword = bcryptPasswordEncoder.encode(rawPassword);
@@ -396,25 +394,17 @@ public class MemberController {
 				rttr.addFlashAttribute("msg","비밀번호가 변경되었습니다");
 				rttr.addAttribute("userId", member.getUserId());
 				
-				return "redirect:/member/mypage";
-		}
+				SecurityContextHolder.clearContext();
+				sessionStatus.setComplete();
 				
-			/*}*/
+				return "/member/memberLoginForm";
+		}
 			else {
 				log.debug("비밀번호 불일치");
 				rttr.addFlashAttribute("msg","비밀번호 변경 실패");
 				rttr.addAttribute("userId", member.getUserId());
 				return "redirect:/member/updatePwd";
 			}
-		
-		
-			/*
-			 * else { rttr.addFlashAttribute("msg","현재 입력한 암호가 틀렸습니다.");
-			 * rttr.addAttribute("userId", member.getUserId()); return
-			 * "redirect:/member/updatePwd"; }
-			 */
-		
-		
 	}
 
 	

@@ -201,8 +201,6 @@ $(function(){
           <div class="form-group">
             <label for="recipient-name" class="col-form-label">Password:</label>
             <input type="password" class="form-control" id="password" name="password">
-            <input type="hidden" id="idValid" value="0" />
-            <div class="check_font" id="pw2_check"></div>
           </div>
        
       </div>
@@ -215,36 +213,6 @@ $(function(){
   </div>
 </div>
 <!-- =======비밀번호 인증 모달======= -->
-<script>
-$("#password").keyup(function(){
-
-	$.ajax({
-		url : "${pageContext.request.contextPath}/member/passwordCheckDuplicate",
-		data: {
-			password : $(this).val()
-		},
-		dataType : "json",
-		success : function(data) {
-			console.log(data);
-
-			if(data.isUsable == true){
-				$("#pw2_check").text("비밀번호를 다시 입력해주세요. ");
-				$("#pw2_check").css('color', 'red');
-				$("#idValid").val(1);
-			}
-			else {
-				$("#pw2_check").text("비밀번호가 인증되었습니다. 확인 버튼을 눌러주세요.");
-				$("#pw2_check").css('color', 'green');
-				$("#idValid").val(0);
-			}
-		},
-		error : function(xhr, status, err){
-			console.log("처리실패", xhr, status, err);
-		}
-	});
-});
-
-</script>
 
 
 <jsp:include page="/WEB-INF/views/common/footer.jsp"/>
