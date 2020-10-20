@@ -2,6 +2,7 @@ package com.kh.udon.member.model.vo;
 
 import java.io.Serializable;
 
+import com.kh.udon.product.model.vo.ProductDTO;
 import com.kh.udon.product.model.vo.ProductVO;
 
 import lombok.AllArgsConstructor;
@@ -16,7 +17,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @ToString(callSuper = true)
 //(wish/buy/sales)List 공통 사용 VO
-public class Wish extends ProductVO implements Serializable {
+public class Wish extends ProductDTO implements Serializable {
 	
 	private int wishCode;
 	private String userId; //사용자 아이디
@@ -27,4 +28,5 @@ public class Wish extends ProductVO implements Serializable {
 	private String categoryName;
 	private int totalChat; //열린 채팅방 개수
 	
+	private boolean openStatus;
 }

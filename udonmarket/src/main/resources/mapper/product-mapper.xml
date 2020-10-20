@@ -431,4 +431,7 @@
 	<update id="hide">
 		update product set open_status = 0 where p_code = #{pCode}
 	</update>
+	<update id="show">
+		update product set open_status = 1 where p_code = #{pCode}
+	</update>
 </mapper>

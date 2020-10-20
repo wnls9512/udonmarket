@@ -10,14 +10,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.security.web.savedrequest.SavedRequest;
@@ -408,13 +403,18 @@ public class MemberController {
 				memberLogout(sessionStatus);
 				}
 				System.out.println("%%%%%%%%%%%%");
+				rttr.addAttribute("userId", member.getUserId());
+
+				SecurityContextHolder.clearContext();
+				sessionStatus.setComplete();
 				
-//				rttr.addAttribute("userId", member.getUserId());
+				return "/member/memberLoginForm";
 		}
 		return "redirect:/member/logout";
+//				rttr.addAttribute("userId", member.getUserId());
+		}
 	
 				
-	}
 
 	
 	//닉네임 수정

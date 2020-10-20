@@ -113,6 +113,8 @@ public interface ProductDao
 
     List<ProductDTO> popular(String userId);
 
+	int show(int pCode);
+
 
 
 

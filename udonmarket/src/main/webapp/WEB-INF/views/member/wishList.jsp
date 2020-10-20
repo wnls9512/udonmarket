@@ -106,10 +106,15 @@ html { font-size: 16px; }
 							    <tr>
 							      <th scope="row">
 						      		<!-- 첫번째 상품 이미지로 가져오기 -->
-						      		<img src="/udon/resources/img/product/product/feature-product/f-p-1.jpg" 
-						      			 onclick="location.href='${pageContext.request.contextPath}/product/productDetailView?pCode=${wish.PCode}';"
-						      			 class="img-fluid" alt="product"
-						      			 style="max-height: 200px;"> 	
+						      		<c:if test="${wish.uploadPath == null}">
+									<img src="${pageContext.request.contextPath }/resources/img/noimage.png" alt="">
+									</c:if>
+									<c:if test="${wish.uploadPath != null}">
+		                               <img src="${pageContext.request.contextPath }/resources/upload/${wish.uploadPath}/${wish.uuid}/${wish.originalFilename}" 
+		                               		onclick="location.href='${pageContext.request.contextPath}/product/productDetailView?pCode=${wish.PCode}';"
+							      			class="img-fluid" alt="product"
+							      			style="max-height: 230px;">
+									</c:if>	
 							       </th>
 							      <td colspan="3">
 							      	<p style="font-size: 1rem;">${wish.title}</p>

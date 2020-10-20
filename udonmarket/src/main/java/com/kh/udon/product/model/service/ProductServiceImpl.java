@@ -316,6 +316,11 @@ public class ProductServiceImpl implements ProductService
         return dao.popular(userId);
     }
 
+	@Override
+	public int show(int pCode) {
+		return dao.show(pCode);
+	}
+
 
 
     
