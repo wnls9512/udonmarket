@@ -445,7 +445,9 @@ where
 		b.user_id userId,
         block_id blockUserId, 
         m.nickname blockUserNickName,
-        m.address blockUserAddr
+        m.address blockUserAddr,
+         m.original_filename,
+         m.renamed_filename
 	from 
 		block B, member M
 	where 

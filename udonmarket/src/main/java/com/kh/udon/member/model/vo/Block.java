@@ -19,5 +19,7 @@ public class Block implements Serializable {
 	private String blockUserId;
 	private String blockUserNickName;
 	private String blockUserAddr;
+	private String originalFilename;
+	private String renamedFilename;
 	
 }
