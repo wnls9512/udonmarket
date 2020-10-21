@@ -507,7 +507,15 @@ function reportUser(reasonCode, suspectId, userId)
                 <div class="col-lg-8">
                     <div class="breadcrumb_iner">
                         <div class="breadcrumb_iner_item">
-                            <h2>${ community.boardTitle }</h2>
+                            <c:if test="${ community.boardTitle.length() < 15 }">
+                            <h2 style="font-weight: bold;">${ community.boardTitle }</h2>
+                        	</c:if>
+                        	<c:if test="${ community.boardTitle.length() >= 15 && community.boardTitle.length() < 25 }">
+                            <h3 style="font-weight: bold;">${ community.boardTitle }</h3>
+                        	</c:if>
+                        	<c:if test="${ community.boardTitle.length() >= 25 }">
+                            <h4 style="font-weight: bold;">${ community.boardTitle }</h4>
+                        	</c:if>
                             <c:if test="${ community.categoryCode == 17 }">
 								<h3>동네생활이야기</h3>
 							</c:if>
