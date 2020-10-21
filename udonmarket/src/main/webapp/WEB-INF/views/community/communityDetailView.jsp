@@ -886,7 +886,13 @@ function reportUser(reasonCode, suspectId, userId)
                            		<c:if test="${ c.categoryCode == 17 || c.categoryCode == 18 || c.categoryCode == 19 || c.categoryCode == 20}">
 								<div class="media post_item">
 									<a data-board-no="${ c.BCode }">
-									<img src="${pageContext.request.contextPath}/resources/img/blog/no_img.png" alt="post" style="width: 42px; height: 42px">
+									<%-- <img src="${pageContext.request.contextPath}/resources/img/blog/no_img.png" alt="post" style="width: 42px; height: 42px"> --%>
+									<c:if test="${ c.uuid == null }">
+                        		 <img class="card-img rounded-0" style="height: 42px; width: 42px;" src="${pageContext.request.contextPath}/resources/img/blog/no_img.png" alt="">
+								</c:if>
+								<c:if test="${ c.uuid != null }">
+                                <img style="height: 42px; width: 42px;" class="card-img rounded-0" src="${pageContext.request.contextPath }/resources/upload/${c.uploadPath}/${c.uuid}/${c.originalFilename}" alt="">
+								</c:if>
 									<div class="media-body">
 										<h3 style="font-weight: bold;">${c.boardTitle}</h3>
 									<p><fmt:formatDate value="${ c.regDate }" type="both"/></p>
