@@ -114,7 +114,7 @@ $(function(){
                         		 <img class="card-img rounded-0" style="height: 400px; width: 400px; text-align: center;" src="${pageContext.request.contextPath}/resources/img/blog/no_img.png" alt="">
 								</c:if>
 								<c:if test="${ c.uuid != null }">
-                                <img style="height: 400px; width: 400px; text-align: center; margin-bottom: 4em;" class="card-img rounded-0" src="${pageContext.request.contextPath }/resources/upload/${c.uploadPath}/${c.uuid}/${c.originalFilename}" alt="">
+                                <img style="height: 400px; width: 400px; text-align: center;" class="card-img rounded-0" src="${pageContext.request.contextPath }/resources/upload/${c.uploadPath}/${c.uuid}/${c.originalFilename}" alt="">
 								</c:if>
                                 <a href="#" class="blog_item_date">
                                     <h3></h3>

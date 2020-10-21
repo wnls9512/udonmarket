@@ -507,7 +507,15 @@ function reportUser(reasonCode, suspectId, userId)
                 <div class="col-lg-8">
                     <div class="breadcrumb_iner">
                         <div class="breadcrumb_iner_item">
-                            <h2>${ community.boardTitle }</h2>
+                        	<c:if test="${ community.boardTitle.length() < 15 }">
+                            <h2 style="font-weight: bold;">${ community.boardTitle }</h2>
+                        	</c:if>
+                        	<c:if test="${ community.boardTitle.length() >= 15 && community.boardTitle.length() < 25 }">
+                            <h3 style="font-weight: bold;">${ community.boardTitle }</h3>
+                        	</c:if>
+                        	<c:if test="${ community.boardTitle.length() >= 25 }">
+                            <h4 style="font-weight: bold;">${ community.boardTitle }</h4>
+                        	</c:if>
                             <c:if test="${ community.categoryCode == 17 }">
 								<h3>동네생활이야기</h3>
 							</c:if>
@@ -878,7 +886,13 @@ function reportUser(reasonCode, suspectId, userId)
                            		<c:if test="${ c.categoryCode == 17 || c.categoryCode == 18 || c.categoryCode == 19 || c.categoryCode == 20}">
 								<div class="media post_item">
 									<a data-board-no="${ c.BCode }">
-									<img src="${pageContext.request.contextPath}/resources/img/blog/no_img.png" alt="post" style="width: 42px; height: 42px">
+									<%-- <img src="${pageContext.request.contextPath}/resources/img/blog/no_img.png" alt="post" style="width: 42px; height: 42px"> --%>
+									<c:if test="${ c.uuid == null }">
+                        		 <img class="card-img rounded-0" style="height: 42px; width: 42px;" src="${pageContext.request.contextPath}/resources/img/blog/no_img.png" alt="">
+								</c:if>
+								<c:if test="${ c.uuid != null }">
+                                <img style="height: 42px; width: 42px;" class="card-img rounded-0" src="${pageContext.request.contextPath }/resources/upload/${c.uploadPath}/${c.uuid}/${c.originalFilename}" alt="">
+								</c:if>
 									<div class="media-body">
 										<h3 style="font-weight: bold;">${c.boardTitle}</h3>
 									<p><fmt:formatDate value="${ c.regDate }" type="both"/></p>

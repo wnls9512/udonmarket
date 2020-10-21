@@ -131,17 +131,22 @@
 		order by b.b_code desc
 	</select>
 	
-	<!-- 게시글 조회 & 검색 -->
+	<!-- 최근게시글 -->
 	<select id="selectCommunityNewList" resultType="community">
 	<![CDATA[
 		select 
 			b.*,
 		    m.nickname,
-            m.address
+            m.address,
+            p.upload_path,
+            p.uuid,
+            p.original_filename
 		from 
 		    board b
 		   		left join
     				member m on(b.user_id = m.user_id)
+    			left join
+                    board_photo p on(b.b_code = p.b_code)
     	where b.user_id in (
 		                        select l.user_id 
 		                        from location l,(select latitude, longitude, radius from location where user_id = #{userId}) a
