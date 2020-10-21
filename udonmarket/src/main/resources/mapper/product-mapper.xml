@@ -298,13 +298,13 @@
 	
 	<!-- 관련 상품 -->
 	<select id="selectSimilarProduct" resultType="productVO">
-		select p_code, title, price from product
+		select p.p_code, p.title, p.price, photo.upload_path, photo.original_filename, photo.uuid from product p left join product_photo photo on(p.p_code = photo.p_code)
 		<where>
 		<foreach collection="keywords" item="k" open="(" close=")" separator="or">
-			title like '%'||#{k}||'%' 
+			p.title like '%'||#{k}||'%' 
 		</foreach>
-		and p_code not in (#{pCode}) and open_status = 1 and (trade_status = 'S' or trade_status = 'R') and delete_yn = 'N'
-		and seller in (
+		and p.p_code not in (#{pCode}) and open_status = 1 and (trade_status = 'S' or trade_status = 'R') and p.delete_yn = 'N'
+		and p.seller in (
    	            		select l.user_id 
        	         		from location l,(select latitude, longitude, radius from location where user_id = #{userId}) a
 						<![CDATA[
@@ -313,8 +313,8 @@
 					   )
 		</where>
 		union
-		select p_code, title, price from product 
-		where category = #{category} and p_code not in (#{pCode}) and open_status = 1 and (trade_status = 'S' or trade_status = 'R') and delete_yn = 'N'
+		select p.p_code, p.title, p.price, photo.upload_path, photo.original_filename, photo.uuid from product p left join product_photo photo on(p.p_code = photo.p_code)
+		where p.category = #{category} and p.p_code not in (#{pCode}) and p.open_status = 1 and (p.trade_status = 'S' or p.trade_status = 'R') and p.delete_yn = 'N'
 	</select>
 	
 	<!-- 판매자 다른 상품 -->
