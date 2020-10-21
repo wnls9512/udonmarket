@@ -74,7 +74,7 @@ function fn_addtoBoard(){
 
     //댓글 등록 알림 관련
     let $bCode = $("#bCode").val();
-    alert($bCode);
+    //alert($bCode);
     let $title = "${ community.boardTitle }";
     let $sender = $("#userId").val();
     let $bWriter = "${ community.userId }";
