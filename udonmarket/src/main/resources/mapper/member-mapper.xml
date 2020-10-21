@@ -132,9 +132,13 @@
 
 <!-- 로그인 -->
 <select id="selectOneMember" resultMap="memberMap">
-	select *
-	from member
-	where user_id = #{userId}
+	select 
+		M.*,
+        (select round(total_score/count, 2) from score where score.user_id = M.user_id) score
+	from 
+		member M
+	where 
+		M.user_id = #{userId}
 </select>
 
 <!-- 관리자 회원 조회 여기에 where 절 조건 삽입--> 
