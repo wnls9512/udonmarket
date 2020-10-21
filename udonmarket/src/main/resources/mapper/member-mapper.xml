@@ -217,6 +217,13 @@
 	    count desc
 </select>
 
+<update id="udpateProfile">
+	update member
+	set renamed_filename = #{renamedFileName}
+	where user_id = #{userId}
+
+</update>
+
 <!-- 거래 후기 총 개수 -->
 <select id="selectTotalReview" resultType="_int">
 	select 

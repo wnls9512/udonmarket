@@ -300,4 +300,9 @@ public class MemberDaoImpl implements MemberDao
 	public Member selectOnePasswordMember(String password) {
 		return session.selectOne("member.selectOnePasswordMember", password);
 	}
+
+	@Override
+	public int updateProfile(Member member) {
+		return session.update("member.udpateProfile", member);
+	}
 }

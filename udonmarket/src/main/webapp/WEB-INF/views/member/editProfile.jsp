@@ -4,6 +4,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
 <fmt:requestEncoding value="utf-8"/>
 
@@ -150,16 +151,16 @@ a{text-decoration: none; color: black;}
 				  
 				  
 				  <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
-				   <form action="${pageContext.request.contextPath }/member/imgUpdate?userId=${member.userId}" method="post" enctype="multipart/form-data">
+				   <form:form action="${pageContext.request.contextPath }/member/imgUpdate?userId=${member.userId}" method="post" enctype="multipart/form-data">
 				     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 				      <div class="form-row">
 					    <div class="col">
-					       <input type="file" name="renamedFileName" id="renamedFileName"
+					       <input type="file" name="file" id="file"
 					       		  accept="image/jpeg, image/png">
 					    </div>
 					  </div>
 					    <button style="margin:10px auto;" type="submit" class="btn btn-dark">적용</button>
-				     </form>
+				     </form:form>
 				  </div>
 				  
 				  

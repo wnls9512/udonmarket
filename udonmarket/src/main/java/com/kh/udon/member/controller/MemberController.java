@@ -2,8 +2,6 @@ package com.kh.udon.member.controller;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Path;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -463,35 +461,52 @@ public class MemberController {
 	@RequestMapping(value = "/imgUpdate",
 				method = RequestMethod.POST,
 				produces = "text/plain; charset=utf-8")
-public String imgUpdate(MultipartFile file,
+public String imgUpdate(
 						HttpServletRequest request,
 						RedirectAttributes rttr,
-						Member member){
-
-	String result = "";
-	
-	//파일 저장될 경로 가져오기 (HttpServletRequest 필요함)
-	String saveDirectory = request.getServletContext() //context-path (webapp)
-								  .getRealPath("/resources/img/member");
+						Member member, @RequestParam("userId") String userId, @RequestParam(value = "file", required=false) MultipartFile[] renamedFileNames){
 
 
-
-	String fileName = file.getOriginalFilename();
-	log.debug("fileName = {}", fileName);
-
-	//파일명 생성
-	String renamedFileName = Utils.getRenamedFileName(fileName);
-	
-	//메모리의 파일 -> 서버경로상의 파일로 이동
-	File newFile = new File(saveDirectory, renamedFileName);
-	try {
-		file.transferTo(newFile);
-	} catch (IllegalStateException | IOException e) {
-		e.printStackTrace();
-	}			
-	
-	result = fileName + "/" + renamedFileName ;
-	
+//		List<Member> memberList = new ArrayList<>();
+		String saveDirectory = request.getServletContext()
+									  .getRealPath("/resources/img/member");
+		
+		System.out.println("saveDirectory = " + saveDirectory);
+		
+		
+		for(MultipartFile f : renamedFileNames) {
+			
+			if(!f.isEmpty() && f.getSize() != 0) {
+				
+				String renamedFileName = Utils.getRenamedFileName(f.getOriginalFilename());
+				
+				System.out.println("renamedFileName = " + renamedFileName);
+				
+				File newFile = new File(saveDirectory , renamedFileName);
+				
+				System.out.println("newFile = " + newFile);
+				
+				try {
+					f.transferTo(newFile);
+				} catch(IllegalStateException | IOException e) {
+					e.printStackTrace();
+				}
+				
+				member.setOriginalFileName(f.getOriginalFilename());
+				member.setRenamedFileName(renamedFileName);
+				
+				System.out.println("member = " + member);
+//				memberList.add(member);
+			}
+		}
+		
+		try {
+			int result = service.updateProfile(member);
+			
+		} catch(Exception e) {
+			log.error("게시물 등록  오류", e);
+		}
+		
 	rttr.addAttribute("userId", member.getUserId());
 
 	return "redirect:/member/mypage";

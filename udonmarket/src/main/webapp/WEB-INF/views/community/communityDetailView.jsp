@@ -625,7 +625,8 @@ function reportUser(reasonCode, suspectId, userId)
                      <a href="${pageContext.request.contextPath}/member/mypage?userId=${community.userId}">
                      <div class="blog-author" style="width: 100%;/*  margin:0 auto; */ margin-top: 5px; /* background-color: white; */">
                   <div class="media align-items-center" >
-                     <img src="${pageContext.request.contextPath}/resources/img/member/default_profile.jpg" alt="">
+                     <img src="${pageContext.request.contextPath }/resources/img/member/${member.renamedFileName == null 
+	                    															 ? member.originalFileName:member.renamedFileName}">
                      <div class="media-body">
                         
                            <h4>${ community.nickname }</h4>

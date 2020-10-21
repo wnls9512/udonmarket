@@ -127,4 +127,6 @@ public interface MemberDao
 
 	Member selectOnePasswordMember(String password);
 
+	int updateProfile(Member member);
+
 }

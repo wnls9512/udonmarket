@@ -116,4 +116,6 @@ public interface MemberService
 
 	Member selectOnePasswordMember(String string);
 
+	int updateProfile(Member member);
+
 }
