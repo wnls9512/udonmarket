@@ -1,5 +1,7 @@
 package com.kh.udon.member.controller;
 
+import java.io.File;
+import java.io.IOException;
 import java.nio.file.Path;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -290,13 +292,10 @@ public class MemberController {
 			else 
 				result = 0;
 			
-			
 			}
 //		log.debug("결과값=" ,result);
 		System.out.println(result);
-  		return result == 0? "/member/yourpage":"redirect:/";
-		
-
+  		return result == 0? "/member/mypage?" + userId :"redirect:/";
 	}
 
     //프로필 수정
@@ -460,6 +459,43 @@ public class MemberController {
 		return "redirect:/member/mypage";
 		
 	}
+	
+	@RequestMapping(value = "/imgUpdate",
+				method = RequestMethod.POST,
+				produces = "text/plain; charset=utf-8")
+public String imgUpdate(MultipartFile file,
+						HttpServletRequest request,
+						RedirectAttributes rttr,
+						Member member){
+
+	String result = "";
+	
+	//파일 저장될 경로 가져오기 (HttpServletRequest 필요함)
+	String saveDirectory = request.getServletContext() //context-path (webapp)
+								  .getRealPath("/resources/img/member");
+
+
+
+	String fileName = file.getOriginalFilename();
+	log.debug("fileName = {}", fileName);
+
+	//파일명 생성
+	String renamedFileName = Utils.getRenamedFileName(fileName);
+	
+	//메모리의 파일 -> 서버경로상의 파일로 이동
+	File newFile = new File(saveDirectory, renamedFileName);
+	try {
+		file.transferTo(newFile);
+	} catch (IllegalStateException | IOException e) {
+		e.printStackTrace();
+	}			
+	
+	result = fileName + "/" + renamedFileName ;
+	
+	rttr.addAttribute("userId", member.getUserId());
+
+	return "redirect:/member/mypage";
+}       
 	
     //관심목록
     @RequestMapping("/wishList")

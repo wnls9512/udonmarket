@@ -154,7 +154,8 @@ a{text-decoration: none; color: black;}
 				     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 				      <div class="form-row">
 					    <div class="col">
-					       <input type="file" name="renamedFileName" id="renamedFileName">
+					       <input type="file" name="renamedFileName" id="renamedFileName"
+					       		  accept="image/jpeg, image/png">
 					    </div>
 					  </div>
 					    <button style="margin:10px auto;" type="submit" class="btn btn-dark">적용</button>
