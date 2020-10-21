@@ -21,6 +21,12 @@ public class ProductVO implements Serializable
     String tradeStatus;
     boolean coupon;
     boolean offer;
+    String uploadPath;
+    String originalFilename;
+    String uuid;
+//    Photo.upload_path,
+//    photo.original_filename,
+//    photo.uuid
  
     String photoId;
 }
