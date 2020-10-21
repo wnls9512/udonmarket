@@ -291,7 +291,12 @@
                     <div class="best_product_slider owl-carousel">
                     	<c:forEach items="${similar }" var="p">
                         <div class="single_product_item">
-                            <img src="${pageContext.request.contextPath }/resources/img/product/product_1.png" alt="">
+                            <c:if test="${p.uploadPath == null}">
+				<img src="${pageContext.request.contextPath }/resources/img/noimage.png" alt="">
+			    </c:if>
+			    <c:if test="${p.uploadPath != null}">
+                               	<img src="${pageContext.request.contextPath }/resources/upload/${p.uploadPath}/${p.uuid}/${p.originalFilename}" alt="">
+			    </c:if>
                             <div class="single_product_text">
                                 <h4>${p.title }</h4>
                                 <h3><fmt:formatNumber type="number" maxFractionDigits="3" value="${p.price}" />원</h3>
