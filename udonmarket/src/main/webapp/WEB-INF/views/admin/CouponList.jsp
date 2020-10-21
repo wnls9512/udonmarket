@@ -68,6 +68,9 @@ a {
 	                            <div class="product_top_bar d-flex justify-content-between align-items-center">
 	                                <div class="single_product_menu">
 	                                    <p><span>${totalContents }</span> 개의 쿠폰</p>
+	                                	<button type="button" class="btn_3" data-toggle="modal" data-target="#exampleModalLong">
+									  		쿠폰 발행하기
+										</button>
 	                                </div>
 	                            </div>
 	                        </div>
@@ -107,5 +110,23 @@ a {
 					</div>
                 </div>
 	</section>
+	
+<!-- modal -->
+<div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+    	<div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        </div>
+      	<div class="modal-body">
+			<c:forEach items="${rank }" var="r" begin="1" end="3" step="1">
+				<p>${r.seller }</p>
+			</c:forEach>
+      	</div>
+    </div>
+  </div>
+</div>
 	
 	<jsp:include page="/WEB-INF/views/common/footer.jsp"/>

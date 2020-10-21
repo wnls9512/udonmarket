@@ -14,6 +14,7 @@ import com.kh.udon.member.model.vo.Member;
 import com.kh.udon.member.model.vo.Noti;
 import com.kh.udon.member.model.vo.Review;
 import com.kh.udon.member.model.vo.announce;
+import com.kh.udon.member.model.vo.rankSeller;
 import com.kh.udon.member.model.vo.Wish;
 import com.kh.udon.product.model.vo.ProductVO;
 
@@ -117,5 +118,7 @@ public interface MemberService
 	Member selectOnePasswordMember(String string);
 
 	int updateProfile(Member member);
+
+	List<rankSeller> selectRankSeller(String format);
 
 }

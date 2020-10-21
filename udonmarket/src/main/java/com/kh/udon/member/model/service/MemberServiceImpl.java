@@ -28,6 +28,7 @@ import com.kh.udon.member.model.vo.Member;
 import com.kh.udon.member.model.vo.Noti;
 import com.kh.udon.member.model.vo.Review;
 import com.kh.udon.member.model.vo.announce;
+import com.kh.udon.member.model.vo.rankSeller;
 import com.kh.udon.member.model.vo.Wish;
 
 import lombok.extern.slf4j.Slf4j;
@@ -333,4 +334,11 @@ public class MemberServiceImpl implements MemberService
 	public int updateProfile(Member member) {
 		return memberDao.updateProfile(member);
 	}
+
+	@Override
+	public List<rankSeller> selectRankSeller(String format) {
+		return memberDao.selectRankSeller(format);
+	}
+
+
 }

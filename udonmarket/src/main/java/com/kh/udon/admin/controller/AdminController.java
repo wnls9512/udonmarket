@@ -1,6 +1,8 @@
 package com.kh.udon.admin.controller;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,6 +27,7 @@ import com.kh.udon.member.model.service.MemberService;
 import com.kh.udon.member.model.vo.Coupon;
 import com.kh.udon.member.model.vo.Member;
 import com.kh.udon.member.model.vo.announce;
+import com.kh.udon.member.model.vo.rankSeller;
 import com.kh.udon.product.model.service.ProductService;
 
 import lombok.extern.slf4j.Slf4j;
@@ -196,12 +199,15 @@ public class AdminController {
 	@RequestMapping("/CouponList")
 	public ModelAndView CouponList(ModelAndView mav,@RequestParam(defaultValue = "1", value = "cPage") int cPage, HttpServletRequest request) {
 	
-		
 		final int limit = 10;
 		int offset = (cPage - 1) * limit;
 		
 		List<Coupon> list = memberService.selectCouponList(limit, offset); 
 		log.debug("list = {}", list);
+	
+		Date now = new Date();
+		SimpleDateFormat fmt = new SimpleDateFormat ("yyyy/MM");
+		List<rankSeller> rankSeller = memberService.selectRankSeller(fmt.format(now));
 		
 		//전체 컨텐츠 수
 		int totalContents = memberService.selectCouponTotalContents();
@@ -214,6 +220,7 @@ public class AdminController {
 		mav.addObject("pageBar", pageBar);
 		mav.addObject("totalContents", totalContents);
 		mav.addObject("list", list);
+		mav.addObject("rank", rankSeller);
 		mav.setViewName("admin/CouponList");
 		
 		return mav;
