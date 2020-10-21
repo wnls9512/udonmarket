@@ -17,8 +17,8 @@ import lombok.Setter;
 import lombok.ToString;
 
 
-@Getter
 @Setter
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
@@ -35,8 +35,8 @@ public class Member implements Serializable, UserDetails{
 	private boolean enabled;
 	private char quitYn;
 	private List<SimpleGrantedAuthority> authorities;
-	
 
+	private float score;
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
