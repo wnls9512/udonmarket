@@ -156,7 +156,7 @@
         </div>
         <div class="search_input" id="search_input_box">
             <div class="container ">
-                <form class="d-flex justify-content-between search-inner" method="post" action="${pageContext.request.contextPath}/member/yourpage ">
+                <form class="d-flex justify-content-between search-inner" method="post" action="${pageContext.request.contextPath}/member/yourpages">
                     <input type="text" class="form-control" id="search_input" placeholder="Search Here" name="searchId">
                     <button type="submit" class="btn"></button>
                      <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
