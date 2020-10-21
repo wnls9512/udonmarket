@@ -129,4 +129,6 @@ public interface MemberDao
 
 	int updateProfile(Member member);
 
+	int insertCoupon(Coupon coupon);
+
 }

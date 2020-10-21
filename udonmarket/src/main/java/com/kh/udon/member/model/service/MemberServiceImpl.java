@@ -333,4 +333,9 @@ public class MemberServiceImpl implements MemberService
 	public int updateProfile(Member member) {
 		return memberDao.updateProfile(member);
 	}
+
+	@Override
+	public int insertCoupon(Coupon coupon) {
+		return memberDao.insertCoupon(coupon);
+	}
 }

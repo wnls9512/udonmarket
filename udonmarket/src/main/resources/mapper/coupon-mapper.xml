@@ -15,5 +15,11 @@
 		select count(*)
 		from coupon
 	</select>
+	
+	<insert id="insertCoupon">
+		insert into coupon
+		values (#{couponCode},#{userId},#{couponName},#{expireDate},#{usageStatus})
+	
+	</insert>
 
 </mapper>
