@@ -361,7 +361,9 @@
            	b.like_this,
 		    m.nickname,
             m.address,
-            (SELECT COUNT(reply_code) FROM reply WHERE b_code = #{bCode}) as reply_count
+            (SELECT COUNT(reply_code) FROM reply WHERE b_code = #{bCode}) as reply_count,
+            m.original_filename,
+            m.renamed_filename
 		from 
 		    board b
 		   		left join

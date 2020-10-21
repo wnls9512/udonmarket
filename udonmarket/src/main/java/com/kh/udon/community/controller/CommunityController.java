@@ -8,8 +8,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 import java.util.Map.Entry;
+import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -40,6 +40,7 @@ import com.kh.udon.community.model.vo.Community;
 import com.kh.udon.community.model.vo.LikeThis;
 import com.kh.udon.community.model.vo.Reply;
 import com.kh.udon.community.model.vo.Search;
+import com.kh.udon.member.model.vo.Member;
 import com.kh.udon.product.model.vo.ReasonReportVO;
 import com.kh.udon.product.model.vo.ReportVO;
 
@@ -106,7 +107,7 @@ public class CommunityController
     public String communityDetail(@RequestParam(value="bCode") int bCode, @RequestParam(value="userId") String userId,
 			  Model model,
 			  @RequestParam(required = false, defaultValue = "board_title") String searchType
-				, @RequestParam(required = false) String keyword) throws Exception {
+				, @RequestParam(required = false) String keyword,Member member) throws Exception {
 		
     	Search search = new Search();
 		
@@ -115,6 +116,8 @@ public class CommunityController
 		search.setKeyword(keyword);
 		
 		search.setUserId(userId);
+		
+		
 		
     	
     			Community community = service.selectOneCommunityCollection(bCode);
@@ -125,6 +128,8 @@ public class CommunityController
     			List<Boardphoto> photos = service.selectPhotos(bCode);
     			log.debug("Community = {}", community);
 				log.debug("list = {}", list);
+				
+				
 
     			model.addAttribute("community", community);
     			model.addAttribute("list", list);
@@ -132,6 +137,8 @@ public class CommunityController
     			model.addAttribute("reasonReport", reasonReport);
     			model.addAttribute("reasonReport2", reasonReport2);
     			model.addAttribute("photos", photos);
+    			model.addAttribute("member", member);
+    			
     			return "community/communityDetailView";
     }
     

@@ -24,6 +24,7 @@ public class Community implements Serializable
 	private String uploadPath;
 	private String uuid;
 	private String originalFilename;
+	private String renamedFilename;
 	
 	private int replyCount;
 	

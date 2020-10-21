@@ -623,18 +623,17 @@ function reportUser(reasonCode, suspectId, userId)
                      </c:if>
                      <br /><br />
                      <a href="${pageContext.request.contextPath}/member/mypage?userId=${community.userId}">
-                     <div class="blog-author" style="width: 100%;/*  margin:0 auto; */ margin-top: 5px; /* background-color: white; */">
-                  <div class="media align-items-center" >
-                     <img src="${pageContext.request.contextPath }/resources/img/member/${member.renamedFileName == null 
-	                    															 ? member.originalFileName:member.renamedFileName}">
-                     <div class="media-body">
-                        
-                           <h4>${ community.nickname }</h4>
-                        
-                        <p>${ community.address }</p>
-                     </div>
-                  </div>
-               </div>
+                     <div class="blog-author" style="width: 100%; margin-top: 5px;">
+                  		<div class="media align-items-center" >
+	                     <img src="${pageContext.request.contextPath }/resources/img/member/${community.renamedFilename == null ? community.originalFilename:community.renamedFilename}">
+	                     <div class="media-body">
+	                        
+	                           <h4>${ community.nickname }</h4>
+	                        
+	                        <p>${ community.address }</p>
+	                     </div>
+	                  </div>
+               		</div>
                </a>
                   
                   </div>
