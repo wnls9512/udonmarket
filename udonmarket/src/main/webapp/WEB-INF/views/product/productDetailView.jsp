@@ -389,7 +389,7 @@
       	<div class="media" style="background-color: #F9F9FF;">
              <div class="d-flex ml-4 my-2" style="width: 17%;">
                <img class="rounded-circle" 
-               	 src="${pageContext.request.contextPath }/resources/img/member/${seller.originalFilename }"  
+               	 src="${pageContext.request.contextPath }/resources/img/member/${seller.renamedFilename == null ? seller.originalFilename:seller.renamedFilename}"  
                	 alt="" />
              </div>
              <div class="my-4 ml-4 text-left" style="width: 37%;">
