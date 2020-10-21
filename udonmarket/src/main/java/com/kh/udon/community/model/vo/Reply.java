@@ -25,5 +25,7 @@ public class Reply implements Serializable {
 	private Date regDate;
 	private String nickname;
 	private int replyCount;
+	private String originalFilename;
+	private String renamedFilename;
 	
 }

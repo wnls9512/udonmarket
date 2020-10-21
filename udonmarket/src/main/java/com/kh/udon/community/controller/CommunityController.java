@@ -91,7 +91,7 @@ public class CommunityController
 				int totalCount = service.selectCount(map);
 				
 			
-				PageInfo pi = Pagination.getPageInfo(totalCount, currentPage, 10, 6);
+				PageInfo pi = Pagination.getPageInfo(totalCount, currentPage, 10, 10);
 				List<Community> list = service.selectCommunityList(search, pi);
 
 				log.debug("list = {}", list);
