@@ -22,6 +22,7 @@ import com.kh.udon.member.model.vo.Noti;
 import com.kh.udon.member.model.vo.Review;
 import com.kh.udon.member.model.vo.Wish;
 import com.kh.udon.member.model.vo.announce;
+import com.kh.udon.member.model.vo.rankSeller;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -304,5 +305,14 @@ public class MemberDaoImpl implements MemberDao
 	@Override
 	public int updateProfile(Member member) {
 		return session.update("member.udpateProfile", member);
+	}
+
+	@Override
+	public List<rankSeller> selectRankSeller(String format) {
+		return session.selectList("member.selectRankSeller", format);
+	}
+
+	public int insertCoupon(Coupon coupon) {
+		return session.insert("coupon.insertCoupon", coupon);
 	}
 }

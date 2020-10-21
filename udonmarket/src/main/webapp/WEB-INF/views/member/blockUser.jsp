@@ -51,7 +51,14 @@ html { font-size: 16px; }
 	            <div class="px-4 pt-0 pb-4 cover">
 	                <div class="media align-items-end profile-head">
 	                    <div class="profile mr-3">
+<<<<<<< HEAD
 	                    	 <img src="${pageContext.request.contextPath }/resources/img/member/${member.renamedFilename == null ? member.originalFilename:member.renamedFilename}">
+=======
+	                    	 <img src="${pageContext.request.contextPath }/resources/img/member/${member.renamedFileName == null ? member.originalFileName:member.renamedFileName}" 
+	                    	 	 alt="..." 
+	                    		 width="130" 
+	                    		 class="rounded mb-2 img-thumbnail">
+>>>>>>> branch 'master' of https://github.com/oheunju/udonmarket.git
 	                    	<a href="${pageContext.request.contextPath }/member/mypage?userId=${member.userId}" class="btn btn-outline-dark btn-sm btn-block">Mypage</a>
 	                    </div>
 	                    <div class="media-body mb-5 text-white">
@@ -101,7 +108,7 @@ html { font-size: 16px; }
 								<c:if test="${ not empty list}">
 									<c:forEach items="${list}" var="b">
 										<tr>
-											<th><img src="${pageContext.request.contextPath }/resources/img/member/${b.renamedFilename == null ? b.originalFilename:b.renamedFilename}"
+											<th><img class="rounded-circle" src="${pageContext.request.contextPath }/resources/img/member/${b.renamedFilename == null ? b.originalFilename:b.renamedFilename}" 
 												     alt=""
 												     style="max-width: 80px;"></th>
 											<td><a href="${pageContext.request.contextPath }/member/mypage?userId=${member.userId}">
