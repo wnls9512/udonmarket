@@ -336,9 +336,15 @@ public class MemberServiceImpl implements MemberService
 	}
 
 	@Override
+<<<<<<< HEAD
 	public List<rankSeller> selectRankSeller(String format) {
 		return memberDao.selectRankSeller(format);
 	}
 
 
+=======
+	public int insertCoupon(Coupon coupon) {
+		return memberDao.insertCoupon(coupon);
+	}
+>>>>>>> branch 'master' of https://github.com/oheunju/udonmarket.git
 }

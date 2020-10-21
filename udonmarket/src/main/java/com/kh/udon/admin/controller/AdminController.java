@@ -129,6 +129,8 @@ public class AdminController {
 		return "redirect:/admin/memberList";
 	}
 	
+
+	
 	@RequestMapping(value="/adminMemberQuit", method = RequestMethod.POST)
 	public String adminMemberQuit(@RequestParam("userId") String userId, RedirectAttributes redirectAttr) {
 		
@@ -225,6 +227,25 @@ public class AdminController {
 		
 		return mav;
 		
+	}
+	
+	@RequestMapping(value="/adminCouponEnroll", method = RequestMethod.GET)
+	public String adminCouponEnroll() {
+		
+		return "admin/CouponList";
+	}
+	
+	@RequestMapping(value="adminCouponEnroll",method = RequestMethod.POST)
+	public String adminCouponEnroll(Coupon coupon, RedirectAttributes redirectAttr) {
+		
+		
+		int result = memberService.insertCoupon(coupon);
+		
+		String msg = (result > 0) ? "쿠폰등록성공!" : "쿠폰등록실패!";
+		log.debug("msg@controller = " + msg);
+		redirectAttr.addFlashAttribute("msg", msg);
+		
+		return "redirect:/admin/CouponList";
 	}
 	
 	@RequestMapping("/declareProductList")

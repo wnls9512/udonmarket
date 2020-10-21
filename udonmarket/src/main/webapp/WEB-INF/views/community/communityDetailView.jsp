@@ -757,8 +757,8 @@ function reportUser(reasonCode, suspectId, userId)
                   <div class="comment-list">
                      <div class="single-comment justify-content-between d-flex">
                         <div class="user justify-content-between d-flex">
-                           <div class="thumb">
-                              <a href="${pageContext.request.contextPath }/member/mypage?userId=${r.userId}"><img src="${pageContext.request.contextPath}/resources/img/member/default_profile.jpg" alt=""></a>
+                           <div class="thumb"> 
+                              <a href="${pageContext.request.contextPath }/member/mypage?userId=${r.userId}"><img src="${pageContext.request.contextPath }/resources/img/member/${r.renamedFilename == null ? r.originalFilename:r.renamedFilename}" alt=""></a>
                            </div>
                            <div class="desc">
                               <p class="comment">

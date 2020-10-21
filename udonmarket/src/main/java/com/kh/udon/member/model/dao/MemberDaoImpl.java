@@ -308,8 +308,14 @@ public class MemberDaoImpl implements MemberDao
 	}
 
 	@Override
+<<<<<<< HEAD
 	public List<rankSeller> selectRankSeller(String format) {
 		return session.selectList("member.selectRankSeller", format);
 	}
 
+=======
+	public int insertCoupon(Coupon coupon) {
+		return session.insert("coupon.insertCoupon", coupon);
+	}
+>>>>>>> branch 'master' of https://github.com/oheunju/udonmarket.git
 }
