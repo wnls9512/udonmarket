@@ -130,10 +130,8 @@ public interface MemberDao
 
 	int updateProfile(Member member);
 
-<<<<<<< HEAD
 	List<rankSeller> selectRankSeller(String format);
-=======
+
 	int insertCoupon(Coupon coupon);
->>>>>>> branch 'master' of https://github.com/oheunju/udonmarket.git
 
 }
