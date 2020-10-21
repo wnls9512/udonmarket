@@ -118,4 +118,6 @@ public interface MemberService
 
 	int updateProfile(Member member);
 
+	int insertCoupon(Coupon coupon);
+
 }

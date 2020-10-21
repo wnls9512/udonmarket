@@ -305,4 +305,9 @@ public class MemberDaoImpl implements MemberDao
 	public int updateProfile(Member member) {
 		return session.update("member.udpateProfile", member);
 	}
+
+	@Override
+	public int insertCoupon(Coupon coupon) {
+		return session.insert("coupon.insertCoupon", coupon);
+	}
 }

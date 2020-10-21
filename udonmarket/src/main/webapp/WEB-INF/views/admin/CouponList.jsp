@@ -73,6 +73,7 @@ a {
 	                        </div>
 	                    </div>
                     <div class="row align-items-center latest_product_inner">
+                    	<form:form id="adminCouponFrm" action="adminCouponEnroll" method="POST">
                             		<table id="tbl-coupon" class="table table-bordered">
 										<tr>
 											<th>쿠폰코드</th>
@@ -90,7 +91,28 @@ a {
 												<td>${ coupon.usageStatus }</td>
 											</tr>
 										</c:forEach>
+										<tr>
+											<td>
+												<input type="text" class="input-field1" name="couponCode" id="couponCode" placeholder="쿠폰코드" />
+											</td>
+											<td>
+												<input type="text" class="input-field1" name="userId" id="userId" placeholder="아이디" />											
+											</td>
+											<td>
+												<input type="text" class="input-field1" name="couponName" id="couponName" placeholder="쿠폰이름" />
+											</td>
+											<td>
+												<input type="date" class="input-field1" name="expireDate" id="expireDate" placeholder="닉네임" />
+											</td>
+											<td>
+												<input type="text" class="input-field1" name="usageStatus" id="usageStatus" placeholder="사용 상태" />
+											</td>
+											<td>
+												<input type="submit" value="쿠폰등록" />
+											</td>
+										</tr>
 									</table>
+							</form:form>
                             </div>
                         </div>
                        	<!-- 페이징처리 -->
