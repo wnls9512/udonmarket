@@ -95,7 +95,7 @@ a {
 											<td>
 												<input type="text" class="input-field1" name="couponCode" id="couponCode" placeholder="쿠폰코드" />
 											</td>
-											<td>
+											<td style="padding-top:0.5em;">
 								                <select name="userId" id="userId" multiple >
 								                	<c:forEach items="${rank }" var="r" begin="1" end="3" step="1">
 								                    <option value="${r.seller }">${r.seller }</option>
