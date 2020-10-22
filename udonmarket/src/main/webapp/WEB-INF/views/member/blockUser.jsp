@@ -51,8 +51,8 @@ html { font-size: 16px; }
 	            <div class="px-4 pt-0 pb-4 cover">
 	                <div class="media align-items-end profile-head">
 	                    <div class="profile mr-3">
-	                    	 <img src="${pageContext.request.contextPath }/resources/img/member/${member.renamedFileName == null ? member.originalFileName:member.renamedFileName}" 
-	                    	 	 alt="..." 
+	                    	 <img src="${pageContext.request.contextPath }/resources/img/member/${member.renamedFileName == null ? member.originalFileName:member.renamedFileName}"
+	                    	  alt="..." 
 	                    		 width="130" 
 	                    		 class="rounded mb-2 img-thumbnail">
 	                    	<a href="${pageContext.request.contextPath }/member/mypage?userId=${member.userId}" class="btn btn-outline-dark btn-sm btn-block">Mypage</a>

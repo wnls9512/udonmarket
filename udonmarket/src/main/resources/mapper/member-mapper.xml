@@ -446,8 +446,8 @@ where
         block_id blockUserId, 
         m.nickname blockUserNickName,
         m.address blockUserAddr,
-         m.original_filename,
-         m.renamed_filename
+        m.original_filename,
+        m.renamed_filename
 	from 
 		block B, member M
 	where 
@@ -508,5 +508,8 @@ where
 	    seller
 	order by count desc
 </select>
+
+
+
 
 </mapper>
