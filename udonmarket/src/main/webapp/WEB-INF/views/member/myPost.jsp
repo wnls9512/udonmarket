@@ -62,7 +62,7 @@ $(function(){
 
 	$("tr[data-board-no]").click(function(){
 		var BCode = $(this).attr("data-board-no");
-		location.href = "${ pageContext.request.contextPath }/community/communityDetailView?bCode=" + BCode;
+		location.href = "${ pageContext.request.contextPath }/community/communityDetailView?userId=${userId}&bCode=" + BCode;
 	});
 	
 });

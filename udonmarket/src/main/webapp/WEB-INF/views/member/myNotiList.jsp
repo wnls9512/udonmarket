@@ -130,7 +130,7 @@ html { font-size: 16px; }
 													</th>
 													<td>
 														<span><a href="${pageContext.request.contextPath }/member/mypage?userId=${noti.sender }">${noti.senderNickName }</a>님이 게시글
-														<a href="${pageContext.request.contextPath }/community/communityDetailView?bCode=${noti.PCode }"
+														<a href="${pageContext.request.contextPath }/community/communityDetailView?userId=${userId}&bCode=${noti.PCode }"
 														   onclick='updateCheck(${noti.notiCode})'>'${noti.PTitle}'</a>
 														에 댓글을 달았어요 💬												
 														</span>
