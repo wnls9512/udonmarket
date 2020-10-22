@@ -86,7 +86,7 @@ $(function(){
 	           <!-- 여백맞추기용 -->
 	           <p></p><p></p><p></p><p></p>
 	                <ul class="list-inline mb-0">
-	                <c:if test="${loggedInUserId == member.userId }">
+	              <%--   <c:if test="${loggedInUserId == member.userId }">
 	               		<li class="list-inline-item">            
 	                       <h6 class="font-weight-bold mb-0 d-block">	                       	
 	                       	<a href="javascript:void(0);" data-toggle="modal" data-target="#passwordAuth">
@@ -94,7 +94,7 @@ $(function(){
 	                       	</a>
 	                       </h6>
 	                    </li>
-	                </c:if>
+	                </c:if> --%>
 	                    <li class="list-inline-item">            
 	                       <h6 class="font-weight-bold mb-0 d-block">	                       	
 	                       	<a href="${pageContext.request.contextPath }/member/salesList?userId=${member.userId}">
@@ -254,7 +254,7 @@ $(function(){
 	    </div>
 	</div>
 	
-	<!-- =======비밀번호 인증 모달======= -->
+	<%-- <!-- =======비밀번호 인증 모달======= -->
 	<div class="modal fade" id="passwordAuth" tabindex="-1" role="dialog" aria-labelledby="passwordAuthModalLable" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -281,7 +281,7 @@ $(function(){
     </div>
   </div>
 </div>
-<!-- =======비밀번호 인증 모달======= -->
+<!-- =======비밀번호 인증 모달======= --> --%>
 
 
 <jsp:include page="/WEB-INF/views/common/footer.jsp"/>
