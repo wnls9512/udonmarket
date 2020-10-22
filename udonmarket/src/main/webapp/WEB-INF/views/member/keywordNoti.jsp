@@ -251,13 +251,9 @@ $("#btn-insert").click(function(){
         },
 		success : function(data){
 				alert("키워드를 추가했어요 💗");
-				$keyword.val(''); //초기화
 
-				let $span = $("<span class='btn btn-outline-primary btn-sm'>"+ data.keyword +"</span>");
-				$span.append('<button type="button" onclick="deleteKey(' + data.keyCode +')" style="background: none; border: none;">x</button>');
-				$("#keywordList").append($span); 
-
-				$("#totalKeywordContents").html(${totalKeywordContents} + 1);
+				//ajax 새로고침으로 변경
+				location.href = "${pageContext.request.contextPath}/member/keywordNoti?userId=" + $userId.val();
 				
 		},
 		error : function(xhr, status, err){
