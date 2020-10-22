@@ -116,6 +116,11 @@ public class AdminController {
 		
 		map.put("list", num);
 		map.put("userId", member.getUserId());
+		map.put("password", member.getPassword());
+		map.put("email", member.getEmail());
+		map.put("nickName", member.getNickName());
+		
+		
 				
 		int result = memberService.insertMemberLocAuthScoreEvaluate(map);
 		
