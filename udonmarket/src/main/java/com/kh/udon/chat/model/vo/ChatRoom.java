@@ -23,5 +23,7 @@ public class ChatRoom implements Serializable{
 		private String sender;
 		private String senderNickName;
 		private boolean senderEnabled;
+		private String originalFilename;
+		private String renamedFilename;
 		
 }

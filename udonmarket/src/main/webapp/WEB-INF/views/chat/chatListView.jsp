@@ -59,7 +59,7 @@
 						      <input type="hidden" name="roomCode" value=${r.roomCode } />
 						      <input type="hidden" name="receiver" value=${r.sender } />
 						      <input type="hidden" name="enabled" value=${r.senderEnabled } />
-				              <div class="media"><img src="https://res.cloudinary.com/mhmd/image/upload/v1564960395/avatar_usae7z.svg" alt="user" width="50" class="rounded-circle">
+				              <div class="media"><img src="${pageContext.request.contextPath }/resources/img/member/${r.renamedFilename == null ? r.originalFilename:r.renamedFilename}" alt="user" width="50" class="rounded-circle">
 				                <div class="media-body ml-4">
 				                  <div class="d-flex align-items-center justify-content-between mb-1">
 				                    <h6 class="mb-0">${r.senderNickName}</h6><small class="small font-weight-bold"><fmt:formatDate value="${r.regDate }" pattern="yy/MM/dd"/></small>

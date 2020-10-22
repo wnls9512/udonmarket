@@ -70,8 +70,17 @@
             (select enabled
 	        from chat_user 
 	        where room_code = R.room_code 
-	        and user_id != #{userId}) senderEnabled
-	from chat_room R
+	        and user_id != #{userId}) senderEnabled,
+	       	(select m.original_filename
+	        from chat_user cu left join member m on(cu.user_id = m.user_id)
+	        where room_code = R.room_code 
+	        and cu.user_id != #{userId}) originalFilename,
+            (select m.renamed_filename
+	        from chat_user cu left join member m on(cu.user_id = m.user_id)
+	        where room_code = R.room_code 
+	        and cu.user_id != #{userId}) renamedFilename
+	from chat_room R 
+
 	where R.room_code in (select R.room_code
 	                    from chat_room R
 	                        join chat_user U
