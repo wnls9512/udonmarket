@@ -205,16 +205,32 @@ function showNoti(){
 							case "like": kind = "좋아요"; break;
 							case "nego": kind = "가격 제안"; break;
 					    }
-		
-						add += "<div class='notifications-item'>" + 
+
+						if(noti[i].notiKind == "reply" || noti[i].notiKind == "like"){
+
+							add += "<div class='notifications-item'>" + 
 							   "<div class='text'>" + 
 							   		"<h4>[" + kind +"] " + 
-							   			"<a href='${pageContext.request.contextPath }/product/productDetailView?pCode= " + noti[i].pcode + "' " + 
+							   			"<a href='${pageContext.request.contextPath }/community/communityDetailView?userId=" + $userId + "&bCode= " + noti[i].pcode + "' " + 
 							   				"onclick='updateCheck(" + noti[i].notiCode +")'>" +
 							   			 	noti[i].ptitle + "</a>" +
 							   		"</h4>" + 
 							   "</div>" + 
 							   "</div>";
+							   
+						}else if(noti[i].notiKind == "price" || noti[i].notiKind == "nego" || noti[i].notiKind == "keyword"){
+
+							add += "<div class='notifications-item'>" + 
+								   "<div class='text'>" + 
+								   		"<h4>[" + kind +"] " + 
+								   			"<a href='${pageContext.request.contextPath }/product/productDetailView?pCode= " + noti[i].pcode + "' " + 
+								   				"onclick='updateCheck(" + noti[i].notiCode +")'>" +
+								   			 	noti[i].ptitle + "</a>" +
+								   		"</h4>" + 
+								   "</div>" + 
+								   "</div>";
+							}
+						
 					}
 				}
 					$("#noti_").html(add);
