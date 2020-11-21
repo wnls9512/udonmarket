@@ -33,6 +33,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.kh.udon.common.model.vo.PageInfo;
 import com.kh.udon.common.template.Pagination;
+import com.kh.udon.common.util.Utils;
 import com.kh.udon.member.model.vo.Keyword;
 import com.kh.udon.member.model.vo.Wish;
 import com.kh.udon.product.model.service.ProductService;
@@ -486,6 +487,8 @@ public class ProductController
                                 Model model, 
                                 HttpSession session) throws Exception 
     {
+    	//유일한 식별자 생성 (파일명)
+    	//객체로 리턴. toSring()으로 꺼낸다
         UUID uuid = UUID.randomUUID();
 
         // ------ make folder(yyyy/MM/dd) ------
@@ -494,6 +497,7 @@ public class ProductController
         File uploadPath = new File(uploadFolder, uploadFolderPath+File.separator+uuid);
         
         if(uploadPath.exists() == false)
+        	//디렉토리 폴더 생성
             uploadPath.mkdirs();
         
         // 한 번에 파일이 여러 개 업로드되는 경우
@@ -533,6 +537,7 @@ public class ProductController
                 // local에 저장
                 File saveFile = new File(uploadPath, uploadFileName);
                 multipartFile.transferTo(saveFile);
+                Utils.addTextWatermark("UDONMARKET", saveFile, new File(uploadPath, uploadFileName));
             }
         }
         
