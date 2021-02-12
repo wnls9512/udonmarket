@@ -8,11 +8,11 @@
 * 상품 사진을 게시할 때 워터마크를 적용해 도용을 방지합니다.(Add 21.11.2020)
 
 ## Skills
+* Java
 * Spring
 * JavaScript
 * Oracle
-* HTML
-* CSS
+* HTML/CSS
 * JQuery
 * AWS RDS
 * Git
@@ -20,5 +20,13 @@
 * WebSocket/SockJS
 * Maven
 
-## UPDATE
-* 2020. 11. 20 - Add Photo WaterMark
+## Menu
+* 실시간 알림 / 채팅
+* 가격 제안 하기
+* 관심 목록 찜하기
+* 마이페이지
+* 현재 위치(좌표)로 사용자 주소 설정 및 게시글 조회
+* 사용자 신고 / 차단하기
+
+## Update
+*  Add Photo WaterMark [2020. 11. 20]
